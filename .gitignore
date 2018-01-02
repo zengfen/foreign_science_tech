@@ -10,6 +10,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+!/tmp/pids/.keep
 !/log/.keep
 !/tmp/.keep
 /config/database.yml
