@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   def logged_in_user
     unless logged_in?
     	store_location
-      flash[:notice] = "Please log in first."
+      flash[:notice] = "请先登录！"
       redirect_to login_path
     end
   end
