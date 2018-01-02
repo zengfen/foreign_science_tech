@@ -1,0 +1,34 @@
+<% provide(:title, "Reset password") %>
+<div class="passwordBox animated fadeInDown">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="ibox-content">
+
+                <h2 class="font-bold text-center">Reset password</h2>
+
+                <p>
+                    Enter your new password and your password will be reset to you.
+                </p>
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+                    	  <%= form_for(@user, url: password_reset_path(params[:id]), class: "m-t",role: "form") do |f| %>
+                    	     <%= hidden_field_tag :email, @user.email %>
+                            <div class="form-group">
+                            	<%= f.password_field :password, class: 'form-control',placeholder: "Password", required: true  %>
+                            </div>
+                            <div class="form-group">
+                             <%= f.password_field :password_confirmation, class: 'form-control',placeholder: "Confirmation Password", required: true  %>
+                           </div>
+														<%= f.submit "Submit", class: "btn btn-primary block full-width m-b" %>
+                        <%end%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+<%= render 'layout_shares/empty_layout_footer' %>
+</div>

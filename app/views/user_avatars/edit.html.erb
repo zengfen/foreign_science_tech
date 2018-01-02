@@ -1,0 +1,110 @@
+<% provide(:title, "update avatar") %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>User Avatars</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="<%= url_for root_path %>">首页</a>
+      </li>
+      <li class="active">
+        <strong>更改头像</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title  back-change">
+                <h5>团队logo上传 <small></small></h5>
+                <div class="ibox-tools">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <p>
+                  开始图像裁剪
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="image-crop">
+                            <img src="<%= image_path(current_user.avatar.url) %>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>图片预览</h4>
+                        <div class="img-preview img-preview-sm" style="height: 200px"></div>
+                        <h4>提示</h4>
+                        <p>
+                          您可以手动上传新的图片并裁剪出合适的图片进行上传。
+                        </p>
+						           <%=form_tag user_avatar_path(current_user),:method=>:PUT, :id=>"form", :multipart => true do%>
+                        <input type="hidden" value="<%=current_user.avatar%>" name="avatar" class="imageG"/>
+                        <div class="btn-group">
+                            <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                                <input type="file" accept="image/*" id="inputImage" class="hide" value="<%=current_user.avatar%>">
+                               选择图片文件...
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="submit_button" >上传</button>
+                        <%end%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% content_for :javascript do %>
+
+<script type="text/javascript">
+
+
+$(function() {
+
+    var $image = $(".image-crop > img")
+    $($image).cropper({
+        aspectRatio: 1,
+        preview: ".img-preview",
+        done: function (data) {
+            // Output the result data for cropping image.
+        }
+    });
+
+    var $inputImage = $("#inputImage");
+    if (window.FileReader) {
+        $inputImage.change(function () {
+            var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+
+            if (!files.length) {
+                return;
+            }
+
+            file = files[0];
+            if (/^image\/\w+$/.test(file.type)) {
+                fileReader.readAsDataURL(file);
+                fileReader.onload = function () {
+                    $inputImage.val("");
+                    $image.cropper("reset", true).cropper("replace", this.result);
+                };
+            } else {
+                showMessage("Please choose an image file.");
+            }
+        });
+    } else {
+        $inputImage.addClass("hide");
+    }
+    });
+    $("#submit_button").click(function () {
+        $(".imageG").val($(".image-crop > img").cropper("getDataURL"));
+        $("#form").submit();
+    });
+</script>
+
+<% end %>
+
+

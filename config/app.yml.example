@@ -1,0 +1,23 @@
+# config/app.yml for rails-settings-cached
+defaults: &defaults
+  mailer_provider: 'smtp'
+  mailer_sender: 'service@xjgreat.com'
+  mailer_options:
+    address: 'smtp.exmail.qq.com'
+    port: 25
+    domain: 'exmail.qq.com'
+    user_name: 'service@xjgreat.com'
+    password: 'XiJia12345'
+    authentication: 'login'
+    enable_starttls_auto: true
+
+development:
+  <<: *defaults
+  domain: 'http://localhost:8028'
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  domain: 'http://archon-center.aggso.com'

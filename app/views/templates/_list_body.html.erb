@@ -1,0 +1,27 @@
+<%if !@lists.blank?%>
+  <table class="table table-striped table-bordered table-hover table-vcenter">
+    <thead>
+      <tr>
+        <th class="text-center">表头1</th>
+        <th class="text-center">表头2</th>
+        <th class="text-center">表头3</th>
+        <th class="text-center">表头4</th>
+        <th class="text-center">表头5</th>
+        <th class="text-center">表头6</th>
+        <th colspan="5" class="text-center">操作</th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+
+      <% @lists.each do |obj| %>
+       <%=render :partial=>"one_data_in_list",:locals=>{:obj=>obj}%>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="text-center">
+    <%= paginate @lists%>
+  </div>
+<%else%>
+   <%= render "shared/no_data" %>
+<%end%>
+

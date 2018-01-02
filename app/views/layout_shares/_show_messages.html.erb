@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    <% if !flash[:error].blank? %>
+    swal({
+        title: "提示",
+        text: "<%=raw flash[:error]%>",
+        type: "error",
+    })
+    <% end %>
+    <% if !flash[:notice].blank? %>
+    swal({
+        title: "提示",
+        text: "<%=raw flash[:notice]%>",
+        type: "warning",
+    })
+    <% end %>
+    <% if !flash[:success].blank? %>
+    swal({
+        title: "提示",
+        text: "<%=raw flash[:success]%>",
+        type: "success",
+    })
+    <% end %>
+</script>
