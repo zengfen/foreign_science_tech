@@ -20,3 +20,6 @@ module ArchonCenter
     config.time_zone = 'Beijing'
   end
 end
+
+
+$archon_redis = Redis.new(Rails.application.config_for(:redis))
