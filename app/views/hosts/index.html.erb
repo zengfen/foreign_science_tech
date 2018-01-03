@@ -57,11 +57,12 @@
                   </tr>
                 </thead>
                 <tbody class="text-center">
-                  <% if !@current_command.blank? %>
+                  <% @hosts.each do |h| %>
                     <tr>
-                      <td><%= Time.at(@current_command["command_magic"].to_i) %></td>
-                      <td><%= @current_command["command"] %></td>
-                      <td><%=  (@current_command["command_magic"].to_i + 60) - Time.now.to_i %>秒</td>
+                      <td><%= h[0] %></td>
+                      <td><%= h[1] %></td>
+                      <td><%= h[2] %></td>
+                      <td><%= h[3] %>秒</td>
                     </tr>
                   <% end %>
                 </tbody>
