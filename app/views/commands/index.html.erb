@@ -61,7 +61,7 @@
                     <tr>
                       <td><%= @current_command["command_magic"] %></td>
                       <td><%= @current_command["command"] %></td>
-                      <td><%= Time.now.to_i - @current_command["command_magic"].to_i %>秒</td>
+                      <td><%=  (@current_command["command_magic"].to_i + 60) - Time.now.to_i %>秒</td>
                     </tr>
                   <% end %>
                 </tbody>
