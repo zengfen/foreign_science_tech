@@ -9,7 +9,7 @@ class HostsController < ApplicationController
 
     hosts.each do |k, v|
       agent_status = agents_status[k]
-      c = GeoIP.new('GeoIP.dat').country(k)
+      c = $geo_ip.country(k)
       country = c.country_code == "CN" ? "国内" : "国外"
 
       if agent_status.blank?
