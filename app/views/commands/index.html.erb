@@ -58,7 +58,7 @@
                 <tbody class="text-center">
                   <% if !@current_command.blank? %>
                     <tr>
-                      <td><%= @current_command["command_magic"] %></td>
+                      <td><%= Time.at(@current_command["command_magic"].to_i) %></td>
                       <td><%= @current_command["command"] %></td>
                       <td><%=  (@current_command["command_magic"].to_i + 60) - Time.now.to_i %>秒</td>
                     </tr>
