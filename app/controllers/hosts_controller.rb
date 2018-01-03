@@ -10,7 +10,7 @@ class HostsController < ApplicationController
     hosts.each do |k, v|
       agent_status = agents_status[k]
       c = $geo_ip.country(k)
-      country = c.country_code == "CN" ? "国内" : "国外"
+      country = c.country_code2 == "CN" ? "国内" : "国外"
 
       if agent_status.blank?
         @hosts << [k, country, Time.now.to_i - v.to_i, "未知"]
