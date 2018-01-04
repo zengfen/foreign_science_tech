@@ -1,4 +1,5 @@
 class HostsController < ApplicationController
+  include ActionView::Helpers::DateHelper
 
   def index
     hosts = $archon_redis.hgetall("host_list")
