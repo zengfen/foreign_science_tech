@@ -1,15 +1,16 @@
+<% provide(:title, "Spiders") %>
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
 
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>列表demo</h5>
+          <h5>爬虫列表</h5>
         </div>
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: :search),:class=>"-form-horizontal",:method=>:post do%>
+          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
                 <div class="col-md-8">
@@ -28,10 +29,10 @@
                 </div>
                 <div class="ibox-tools fr">
                   <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加列表项</a>
-                    
+                    添加</a>
+<!--                     
                     <a class="btn btn-primary " href="#" >
-                    按钮2</a>
+                    按钮2</a> -->
                 </div>
               </div>
 
@@ -42,7 +43,7 @@
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
             <li class="tab-li active">
-              <a href="#" data-target="all-page">全部列表项</a>
+              <a href="#" data-target="all-page">列表信息</a>
             </li>
               </ul>
 
@@ -88,7 +89,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">添加列表项</h4>
+              <h4 class="modal-title">添加</h4>
             </div>
             <div class="modal-body">
               <!-- modal-body -->
@@ -102,7 +103,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">编辑列表项</h4>
+              <h4 class="modal-title">编辑</h4>
             </div>
             <div class="modal-body" id="edit_obj">
             </div>
@@ -169,7 +170,6 @@ $(document)
       //需要传到数据库中，需要后台传输数据，局部刷新页面
       var url = $this.attr("href");
       if (url != "##") {
-        //              alert(url);
         $.get(url, function (data) {
           if (data.message=="SUCCESS"){
             _this.closest('.modal').modal("hide");
@@ -192,7 +192,6 @@ $('.add-sql').on('click', function (e) {
   $modal.modal("show");
 })
 
-
 $(function() {
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
@@ -200,8 +199,6 @@ $(function() {
     });
 
 });
-
-
     </script>
   <% end %>
 

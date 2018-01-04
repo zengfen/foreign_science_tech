@@ -3,6 +3,7 @@ zh-CN:
   activerecord:
     models:
       user: "用户"
+      spider: "爬虫"
     attributes:
       user:
         current_password: "当前密码"
@@ -13,6 +14,9 @@ zh-CN:
         remember_me: "记住登录信息"
         reset_password_token: 
         unlock_token:  
+      spider:
+        spider_name: "爬虫名称"
+        additional_function: "附加条件"
     errors:
       models:
         user: 用户
