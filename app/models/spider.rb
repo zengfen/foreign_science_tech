@@ -45,10 +45,12 @@ class Spider < ApplicationRecord
 	def self.build_spider(spider_params)
 		additional_function = spider_params.delete(:additional_function)
 		spider = Spider.new(spider_params)
-		begin
-			spider.additional_function = JSON.parse(additional_function)
-		rescue
-			spider.errors.add(:additional_function, "格式错误")
+		if !additional_function.blank?
+			begin
+				spider.additional_function = JSON.parse(additional_function)
+			rescue
+				spider.errors.add(:additional_function, "格式错误")
+			end
 		end
 		return spider
 	end

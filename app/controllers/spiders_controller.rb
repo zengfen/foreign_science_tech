@@ -36,11 +36,18 @@ class SpidersController < ApplicationController
 	def update
 		update_params = spider_params.clone
 		additional_function = update_params.delete(:additional_function)
-
-		begin
-			update_params[:additional_function] = JSON.parse(additional_function)
-		rescue
-			@spider.errors.add(:additional_function,"格式错误")
+    
+    if !additional_function.blank?
+			begin
+				update_params[:additional_function] = JSON.parse(additional_function)
+			rescue
+				@spider.errors.add(:additional_function,"格式错误")
+				flash[:error] = @spider.errors.full_messages.join('\n')
+				redirect_to spiders_path 
+				return 
+			end
+		else
+			update_params[:additional_function] = []
 		end
 		
 		if @spider.update_attributes(update_params)
