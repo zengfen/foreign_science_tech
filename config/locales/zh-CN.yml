@@ -4,6 +4,7 @@ zh-CN:
     models:
       user: "用户"
       spider: "爬虫"
+      spider_task: "爬虫任务"
     attributes:
       user:
         current_password: "当前密码"
@@ -17,6 +18,9 @@ zh-CN:
       spider:
         spider_name: "爬虫名称"
         additional_function: "附加条件"
+      spider_task:
+        spider_id: "爬虫模板"
+        level: "优先级别"
     errors:
       models:
         user: 用户

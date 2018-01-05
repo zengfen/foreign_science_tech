@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <!-- 添加form -->
+        <%= form_for(@spider_task,url: spider_spider_tasks_path(@spider,@spider_task),:html=>{:class=>"form-horizontal"}) do |f| %>
+            <%= f.hidden_field :spider_id,value:@spider.id%> 
+          <div class="form-group">
+            <label class="col-sm-2 control-label">特殊标签</label>
+            <div class="col-sm-10">
+               <div id="ionrange_3"></div>
+              <%= f.text_field :special_tag,:placeholder=>"特殊标签",:class=>"form-control"%>  
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">优先级</label>
+            <div class="col-sm-10">
+               <div id="ionrange_3"></div>
+              <%= f.hidden_field :level,:class=>"level_num"%>  
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
+          <%if @spider.has_keyword%>
+          <div class="form-group">
+           <label class="col-sm-2 control-label">关键词</label>
+            <div class="col-sm-10">
+              <%= f.text_field :keyword,:placeholder=>"关键词",:class=>"form-control"%>  
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
+          <%end%>
+          <div class="form-group">
+              <div class="col-sm-2 col-sm-offset-10">
+                  <button class="btn btn-primary" type="submit">保存</button>
+              </div>
+          </div>
+       <%end%>
+      </div>
+    </div>
+  </div>
+
+</div>
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $("#ionrange_3").ionRangeSlider({
+    min: 1,
+    max: 10,
+    from: <%=raw @spider_task.level.to_i%>,
+    //postfix: "",
+    grid: true,
+    grid_num: 9,
+    onFinish: function (data) {
+     console.log(data)
+    $(".level_num").val(data.from);
+}
+});
+</script>
+<%end%>

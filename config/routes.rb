@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   get 'user_avatar/edit'
 
   get 'home/index'
@@ -16,6 +17,14 @@ Rails.application.routes.draw do
     member do
       get 'load_edit_form'
     end
+    collection do
+    end
+  resources :spider_tasks do 
+    member do
+    end
+    collection do
+    end
+  end
   end
   resources :templates do
   	member do

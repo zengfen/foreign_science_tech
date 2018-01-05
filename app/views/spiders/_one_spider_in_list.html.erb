@@ -6,7 +6,10 @@
   <td><%= show_boolean_cn(spider.proxy_support) %></td>
   <td><%= show_boolean_cn(spider.has_keyword) %></td>
   <td><%= spider.template_name %></td>
-  <td><%= truncate_utf(spider.additional_function.to_json)%></td>
+  <%
+  additional_function = spider.additional_function.blank? ? "": spider.additional_function.to_json
+  %>
+  <td><%= truncate_utf(additional_function)%></td>
   <td><%= show_format_time(spider.created_at) %></td>
   <td class="pos-r">
     <a href="##">
@@ -14,13 +17,13 @@
     </a>
     <ul class="more-ul dn">
       <li class="bor-b">
-       <%= link_to("",:remote=>true) do%>***<%end%>
+       <%= link_to(spider_spider_tasks_path(spider)) do%>任务<%end%>
       </li>
       <li class="bor-b">
        <%= link_to(load_edit_form_spider_path(spider),:class=>"edit",:remote=>true) do%>编辑<%end%>
        </li>
       <li>
-        <%=link_to(spider_path(spider),:method=>:delete,:class=>"remove-line") do%>删除<%end%>
+        <%=link_to(spider_path(spider),:class=>"remove-line") do%>删除<%end%>
       </li>
 
     </ul>

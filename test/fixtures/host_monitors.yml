@@ -1,16 +1,17 @@
 # == Schema Information
 #
-# Table name: spiders
+# Table name: host_monitors
 #
 #  id                  :integer          not null, primary key
-#  spider_name         :string
-#  spider_type         :integer
+#  extranet_ip         :inet
+#  intranet_ip         :inet
 #  network_environment :integer          default("1")
-#  proxy_support       :boolean          default("false")
-#  has_keyword         :boolean          default("false")
-#  template_name       :string
-#  category            :string
-#  additional_function :json             is an Array
+#  cpu                 :string
+#  memory              :string
+#  disk                :string
+#  host_status         :integer          default("0")
+#  process_status      :integer          default("0")
+#  recording_time      :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #

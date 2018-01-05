@@ -16,7 +16,7 @@
             <div class="col-sm-10">
               <%Spider.spider_types.each_with_index do |k,i|%>
                 <div class="i-checks inline">
-                  <label> 
+                  <label class="control-label"> 
                     <%= f.radio_button(:spider_type, k.last,:checked=>(@spider.spider_type.blank? ? (i==0) : (@spider.spider_type == k.last)))%>
                     <i></i> <%=k.first%>
                   </label>
@@ -37,7 +37,7 @@
             <div class="col-sm-10">
               <%Spider.network_environments.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label> 
+                  <label class="control-label"> 
                     <%= f.radio_button(:network_environment, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -51,7 +51,7 @@
             <div class="col-sm-10">
               <%{"是"=>true,"否"=>false}.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label> 
+                  <label class="control-label"> 
                     <%= f.radio_button(:proxy_support, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -65,7 +65,7 @@
             <div class="col-sm-10">
               <%{"是"=>true,"否"=>false}.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label> 
+                  <label class="control-label"> 
                     <%= f.radio_button(:has_keyword, v)%>
                     <i></i> <%=k%>
                   </label>

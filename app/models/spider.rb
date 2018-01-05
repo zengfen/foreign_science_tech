@@ -1,10 +1,29 @@
+# == Schema Information
+#
+# Table name: spiders
+#
+#  id                  :integer          not null, primary key
+#  spider_name         :string
+#  spider_type         :integer
+#  network_environment :integer          default("1")
+#  proxy_support       :boolean          default("false")
+#  has_keyword         :boolean          default("false")
+#  template_name       :string
+#  category            :string
+#  additional_function :json             is an Array
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
 class Spider < ApplicationRecord
+	has_many :spider_tasks
 
   validates :spider_name, presence: true, length: { maximum: 50 },
                     uniqueness: { case_sensitive: false }
 
 	def self.categories
-		{"新闻"=> "news",
+		{
+		 "新闻"=> "news",
 		 "论坛"=> "forums",
 		 "视频"=>"video",
 		 "电商"=>"electric_business",

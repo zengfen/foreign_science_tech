@@ -1,4 +1,5 @@
 class SpidersController < ApplicationController
+	before_action :logged_in_user
 	before_action :get_spider, only: [:show,:show_info, :load_edit_form, :update, :destroy]
 	
 	def index
@@ -12,10 +13,6 @@ class SpidersController < ApplicationController
 
 
 	def show
-		
-	end
-
-	def show_info
 		
 	end
 
@@ -60,8 +57,7 @@ class SpidersController < ApplicationController
 	end
 
 	def destroy
-		@spider.destroy
-		redirect_to spiders_path
+		render json: {type: "success",message:"操作成功！"} if @spider.destroy	
 	end
 
 	private
