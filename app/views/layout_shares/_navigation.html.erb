@@ -28,9 +28,23 @@
                 </div>
             </li>
             <li class="<%= is_active_controller('spiders') %>">
-                <a href=""><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Spiders</span> <span class="fa arrow"></span></a>
+                <a href=""><i class="fa fa-bug"></i> <span class="nav-label">Spiders</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
-                    <li class="<%= is_active_action('list') %>"><%= link_to "Spiders", spiders_path %></li>
+                    <li class="<%= is_active_action('index') %>"><%= link_to "Spiders", spiders_path %></li>
+                </ul>
+            </li>
+
+            <li class="<%= is_active_controller('tasks') %>">
+                <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">Tasks</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse <%= is_active_controller('tasks') %>">
+                    <li class="<%= is_active_action('index') %>"><%= link_to "Tasks", tasks_path %></li>
+                </ul>
+            </li>
+
+            <li class="<%= is_active_controller('hosts') %>">
+                <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">Hosts</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse <%= is_active_controller('hosts') %>">
+                    <li class="<%= is_active_action('list') %>"><%= link_to "Hosts", spiders_path %></li>
                 </ul>
             </li>
             <li class="<%= is_active_controller('templates') %>">
