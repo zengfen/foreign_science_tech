@@ -54,3 +54,39 @@ zh-CN:
       previous: "&lsaquo; 上一页"
       next: "下一页 &rsaquo;"
       truncate: "&hellip;"
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: 1小时
+        other:  '%{count} 小时'
+      about_x_months:
+        one: 1个月
+        other: '%{count} 个月'
+      about_x_years:
+        one: 1年
+        other: '%{count} 年'
+      almost_x_years:
+        one: 1年
+        other: '%{count} 年'
+      half_a_minute: 半分钟
+      less_than_x_minutes:
+        one: 1分钟
+        other: '%{count} 分钟'
+      less_than_x_seconds:
+        one: 1秒
+        other: '%{count} 秒'
+      over_x_years:
+        one: 1年多
+        other: '%{count} 年多'
+      x_days:
+        one: 1天
+        other: '%{count} 天'
+      x_minutes:
+        one: 1分钟
+        other: '%{count} 分钟'
+      x_months:
+        one: 1个月
+        other: '%{count} 个月'
+      x_seconds:
+        one: 1秒
+        other: '%{count} 秒'

@@ -30,8 +30,8 @@
                   <a class="btn btn-primary mb0" href="/commands/new" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
                     添加命令</a>
 
-                  <a class="btn btn-primary " href="#" >
-                    按钮2</a>
+<!--                   <a class="btn btn-primary " href="#" >
+                    按钮2</a> -->
                 </div>
               </div>
 
@@ -62,7 +62,7 @@
                     <tr>
                       <td><%= h[0] %></td>
                       <td><%= h[1] %></td>
-                      <td><%= h[2] %>秒前</td>
+                      <td><%= time_ago_in_words(h[2])前 %></td>
                       <td><%= h[3] %></td>
                       <td><a href="/host_metrics/show?ip=<%= h[0] %>" >查看</a></td>
                     </tr>
