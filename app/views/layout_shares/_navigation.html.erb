@@ -27,6 +27,11 @@
           IN+
         </div>
       </li>
+       <li class="<%= is_active_controller('home') %>">
+        <%= link_to root_path do %><i class="fa fa-large"></i> <span class="nav-label">Home</span>
+        <%end%>
+       
+      </li>
       <li class="<%= is_active_controller('spiders') %>">
         <a href=""><i class="fa fa-bug"></i> <span class="nav-label">Spiders</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
