@@ -9,8 +9,7 @@
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="clear">
               <span class="block m-t-xs">
-                <strong class="font-bold">David Williams</strong>
-              </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span>
+              </span> <span class="text-muted text-xs block"><%=current_user.name%> <b class="caret"></b></span>
             </span>
           </a>
           <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -19,7 +18,7 @@
             <li><%= link_to "修改信息", edit_user_path(current_user) %>
             </li>
             <li class="divider"></li>
-            <li><%=link_to logout_path,:method=>:delete do %>Logout<%end%>
+            <li><%=link_to logout_path,:method=>:delete do %>退出<%end%>
             </li>
           </ul>
         </div>

@@ -15,6 +15,7 @@
 !/tmp/.keep
 /config/database.yml
 /config/app.yml
+/config/redis.yml
 /Gemfile.lock
 
 /public/*
