@@ -6,10 +6,7 @@
   <td><%= show_boolean_cn(spider.proxy_support) %></td>
   <td><%= show_boolean_cn(spider.has_keyword) %></td>
   <td><%= spider.template_name %></td>
-  <%
-  additional_function = spider.additional_function.blank? ? "": spider.additional_function.to_json
-  %>
-  <td><%= truncate_utf(additional_function)%></td>
+  <td><%= truncate_utf(format_additional_function(spider.additional_function))%></td>
   <td><%= show_format_time(spider.created_at) %></td>
   <td class="pos-r">
     <a href="##">
