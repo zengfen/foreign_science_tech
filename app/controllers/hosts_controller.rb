@@ -1,6 +1,6 @@
 class HostsController < ApplicationController
   include ActionView::Helpers::DateHelper
-
+  before_action :logged_in_user
   def index
     hosts = $archon_redis.hgetall("host_list")
     agents_status = $archon_redis.hgetall("host_agent_status_list")
