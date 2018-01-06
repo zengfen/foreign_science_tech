@@ -16,4 +16,12 @@
 #
 
 class Host < ApplicationRecord
+
+	def self.network_environments
+		{"境内"=>1, "境外"=>2}
+	end
+	
+	def network_environment_cn
+		Spider.network_environments.invert[self.network_environment]
+	end
 end

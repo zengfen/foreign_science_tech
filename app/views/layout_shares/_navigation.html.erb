@@ -1,4 +1,4 @@
-<nav class="navbar-default navbar-static-side" role="navigation">
+<nav class="navbar-default navbar-static-side" role="navigation" >
   <div class="sidebar-collapse">
     <ul class="nav metismenu" id="side-menu">
       <li class="nav-header">
@@ -23,7 +23,7 @@
           </ul>
         </div>
         <div class="logo-element">
-          IN+
+          God
         </div>
       </li>
       <li class="<%= is_active_controller('home') %>">
@@ -45,7 +45,7 @@
       <li class="<%= is_active_controller('hosts') %>">
         <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">Hosts</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts') %>">
-          <li class="<%= is_active_action('list') %>"><%= link_to "Hosts", spiders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Hosts", hosts_path %></li>
         </ul>
       </li>
     </ul>
