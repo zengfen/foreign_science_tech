@@ -1,33 +1,36 @@
 <% provide(:title, "Media Account") %>
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
-
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>境外媒体账号列表</h5>
         </div>
-
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
-
                 <div class="col-md-8">
                   <div class="form-group mb0">
-
                     <input type="text" placeholder="账号名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" style=></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
-
-
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <select class="input-sm form-control input-s-sm inline" name="account_type">
+                      <option value="">全部</option>
+                      <option value="facebook">facebook</option>
+                      <option value="twitter">twitter</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
                   <!-- <a class="btn btn-primary btn-warning w70 mb0">
                     搜索</a> -->
                 </div>
-<!--                 <div class="ibox-tools fr">
+                <!--                 <div class="ibox-tools fr">
                   <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
                     添加</a>
                     
@@ -35,114 +38,107 @@
                     按钮2</a>
                 </div> -->
               </div>
-
-          <%end%>
+            <%end%>
           </div>
         </div>
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-            <li class="tab-li active">
-              <a href="#" data-target="all-page">境外媒体账号列表</a>
-            </li>
-              </ul>
-
+              <li class="tab-li active">
+                <a href="#" data-target="all-page">境外媒体账号列表</a>
+              </li>
+            </ul>
             <div class="ibox-content p15-0 all-page table-content">
               <%= render "list_body" %>
             </div>
-
-        </div>
+          </div>
         </div>
       </div>
     </div>
-    </div>
   </div>
-
-  <% content_for :javascript do %>
-    <script>
-
-$(document)
-.on("click",".tab-li a",function(e){
-  e.preventDefault();
-  var $this = $(this);
-  if ($this.find('.icon-result').length > 0) return;
-  var targetClass = $this.data('target');
-  var $thisP = $this.closest('.ibox-content');
-  $this.closest('li').addClass('active').siblings('li').removeClass('active');
-  $thisP.children('.ibox-content').addClass('dn');
-  $thisP.children('.' + targetClass).removeClass('dn');
-  $('.more-ul').addClass('dn');
-
-  if (targetClass) {
-    var url = $this.attr("href");
-    if (url != "##") {
-      $("#current_url").val(url);
-      $.get(url, function (data) {
-        $("." + targetClass).html(data);
-      })
-      return false;
-    }
-  }
-})
-.on("click",'.icon-more',function(e){
-   e.preventDefault();
-    var $this = $(this), $thisMoreUl = $this.closest('td').find('.more-ul');
-    var isDn = $thisMoreUl.hasClass('dn');
-    $('.more-ul').addClass('dn');
-    if (isDn) {
-      $thisMoreUl.removeClass('dn');
-    }
-    //点击其他的地方关闭更多
-    $(document).on('click', function moreShow(e) {
-      var $target = $(e.target)
-        if ($target.closest('.pos-r').length == 0) {
-          $('.more-ul').addClass('dn');
-          $(document).off('click', moreShow);
+</div>
+<% content_for :javascript do %>
+  <script>
+    $(document)
+    .on("click",".tab-li a",function(e){
+      e.preventDefault();
+      var $this = $(this);
+      if ($this.find('.icon-result').length > 0) return;
+      var targetClass = $this.data('target');
+      var $thisP = $this.closest('.ibox-content');
+      $this.closest('li').addClass('active').siblings('li').removeClass('active');
+      $thisP.children('.ibox-content').addClass('dn');
+      $thisP.children('.' + targetClass).removeClass('dn');
+      $('.more-ul').addClass('dn');
+    
+      if (targetClass) {
+        var url = $this.attr("href");
+        if (url != "##") {
+          $("#current_url").val(url);
+          $.get(url, function (data) {
+            $("." + targetClass).html(data);
+          })
+          return false;
         }
-    })
-})
-.on("click",".remove-line",function(e){
-  
-    e.preventDefault();
-
-    //删除本行数据
-    //var _$this = $(this);
-    var $this = $(this),html = $this.closest('tr').find('td').first().html();
-    var $modal = $('#modal-form-remove');
-    $modal.find('.remove-html').html(html);
-    $modal.modal("show");
-
-    $('.sure-remove').off().on('click', function (e) {
-       e.preventDefault();
-      var _this=$(this);
-      //需要传到数据库中，需要后台传输数据，局部刷新页面
-      var url = $this.attr("href");
-      if (url != "##") {
-        $.ajax({
-          url: url,
-          type: 'DELETE',
-          success:function(data){
-          if (data.type=="success"){
-            _this.closest('.modal').modal("hide");
-            $this.closest('tr').remove();
-          }
-        }});
       }
-     
+    })
+    .on("click",'.icon-more',function(e){
+       e.preventDefault();
+        var $this = $(this), $thisMoreUl = $this.closest('td').find('.more-ul');
+        var isDn = $thisMoreUl.hasClass('dn');
+        $('.more-ul').addClass('dn');
+        if (isDn) {
+          $thisMoreUl.removeClass('dn');
+        }
+        //点击其他的地方关闭更多
+        $(document).on('click', function moreShow(e) {
+          var $target = $(e.target)
+            if ($target.closest('.pos-r').length == 0) {
+              $('.more-ul').addClass('dn');
+              $(document).off('click', moreShow);
+            }
+        })
+    })
+    .on("click",".remove-line",function(e){
+    
+        e.preventDefault();
+    
+        //删除本行数据
+        //var _$this = $(this);
+        var $this = $(this),html = $this.closest('tr').find('td').first().html();
+        var $modal = $('#modal-form-remove');
+        $modal.find('.remove-html').html(html);
+        $modal.modal("show");
+    
+        $('.sure-remove').off().on('click', function (e) {
+           e.preventDefault();
+          var _this=$(this);
+          //需要传到数据库中，需要后台传输数据，局部刷新页面
+          var url = $this.attr("href");
+          if (url != "##") {
+            $.ajax({
+              url: url,
+              type: 'DELETE',
+              success:function(data){
+              if (data.type=="success"){
+                _this.closest('.modal').modal("hide");
+                $this.closest('tr').remove();
+              }
+            }});
+          }
+    
+        });
+    
+    }).on("click",'.cancel-remove',function(e){
+       var $modal = $('#modal-form-remove');
+          $modal.modal("hide");
     });
-  
-}).on("click",'.cancel-remove',function(e){
-   var $modal = $('#modal-form-remove');
-      $modal.modal("hide");
-});
-
-
-$('.add-sql').on('click', function (e) {
-  e.preventDefault();
-  var $modal = $('#modal-form-add-sql');
-  $modal.modal("show");
-})
-
-    </script>
-  <% end %>
-
+    
+    
+    $('.add-sql').on('click', function (e) {
+      e.preventDefault();
+      var $modal = $('#modal-form-add-sql');
+      $modal.modal("show");
+    })
+  </script>
+<% end %>
