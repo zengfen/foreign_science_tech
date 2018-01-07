@@ -7,7 +7,7 @@
 #  level         :integer          default("1")
 #  keyword       :string
 #  special_tag   :string
-#  status        :integer          default("0")    {0=>"未执行",1=>"执行中",2=>"执行结束"}
+#  status        :integer          default("0")
 #  success_count :integer          default("0")
 #  fail_count    :integer          default("0")
 #  refresh_time  :datetime

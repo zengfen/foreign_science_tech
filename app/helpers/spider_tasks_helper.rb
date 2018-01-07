@@ -1,7 +1,7 @@
 module SpiderTasksHelper
-	def status_html(spider_task)
+	def status_html(obj)
 		span_class = ""
-		case spider_task.status
+		case obj.status
 		when 0
 			span_class = "label-info"
 		when 1
@@ -9,7 +9,7 @@ module SpiderTasksHelper
 		when 2
 			span_class = "label-primary"
 		end
-		html = "<span class=\"label #{span_class}\">#{spider_task.status_cn}</span>"
+		html = "<span class=\"label #{span_class}\">#{obj.status_cn}</span>"
 		return html
 	end
 end
