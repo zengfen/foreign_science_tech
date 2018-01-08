@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"input form-control input-s-sm inline")%>
+                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
 
@@ -207,6 +207,7 @@ $(function() {
     });
 
 });
+ $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
     </script>
   <% end %>
 
