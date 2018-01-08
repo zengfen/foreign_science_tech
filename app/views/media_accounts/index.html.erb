@@ -19,7 +19,7 @@
                 <div class="col-md-2">
                   <div class="form-group mb0">
                     <%account_types = ["facebook","twitter","youtube","lk"].collect{|x| [x,x]}%>
-                    <%=select_tag(:account_type,options_for_select(account_types,params["account_type"]),include_blank: "类型",:class=>"input-sm form-control input-s-sm inline")%>
+                    <%=select_tag(:account_type,options_for_select(account_types,params["account_type"]),include_blank: "类型",:class=>"input form-control input-s-sm inline")%>
                   </div>
                 </div>
                 <div class="ibox-tools dib">
