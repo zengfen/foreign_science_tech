@@ -199,6 +199,7 @@ $('.add-sql').on('click', function (e) {
   var $modal = $('#modal-form-add-sql');
   $modal.modal("show");
 })
+$('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
 
 $(function() {
     $('.i-checks').iCheck({
@@ -207,7 +208,7 @@ $(function() {
     });
 
 });
- $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
+ 
     </script>
   <% end %>
 
