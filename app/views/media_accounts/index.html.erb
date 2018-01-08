@@ -18,11 +18,8 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <select class="input-sm form-control input-s-sm inline" name="account_type">
-                      <option value="">类型：全部</option>
-                      <option <%if params["account_type"]=="facebook"%>selected="selected"<%end%> value="facebook">类型：facebook</option>
-                      <option <%if params["account_type"]=="twitter"%>selected="selected"<%end%> value="twitter">类型：twitter</option>
-                    </select>
+                    <%account_types = ["facebook","twitter","youtube","lk"].collect{|x| [x,x]}%>
+                    <%=select_tag(:account_type,options_for_select(account_types,params["account_type"]),include_blank: "类型",:class=>"input-sm form-control input-s-sm inline")%>
                   </div>
                 </div>
                 <div class="ibox-tools dib">
