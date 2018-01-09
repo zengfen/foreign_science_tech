@@ -8,7 +8,7 @@ class MediaAccountsController < ApplicationController
 	    opts1[:short_name] = params[:keyword]
     end
 
-    @media_accounts = MediaAccount.where(opts).or(MediaAccount.where(opts1)).order("created_at desc").page(params[:page]).per(20)
+    @media_accounts = MediaAccount.where(opts).or(MediaAccount.where(opts1)).order("created_at asc").page(params[:page]).per(20)
   end
 
 end
