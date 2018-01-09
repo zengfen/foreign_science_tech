@@ -110,7 +110,7 @@ class SocialAccount < ApplicationRecord
   end
 
   def account_category_cn
-    SocialAccount.account_categories[self.account_category_cn]
+    SocialAccount.account_categories[self.account_category]
   end
 
 end
