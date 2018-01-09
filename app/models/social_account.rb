@@ -17,7 +17,7 @@ class SocialAccount < ApplicationRecord
   def self.import_data
     max_count = File.open("#{Rails.root}/tmp/people.csv").readlines.count
     File.open("#{Rails.root}/tmp/people.csv").readlines.each_with_index do |line,i|
-      next if i < 20013
+      next if i < 224774
       doc = line.split("\",\"").collect{|x| x.gsub("\"","")}
       puts "-"*100 + "index:#{i},max:#{max_count}"
       if !doc[6].blank?
