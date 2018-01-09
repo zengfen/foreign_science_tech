@@ -7,6 +7,8 @@ class CreateMediaAccounts < ActiveRecord::Migration[5.1]
     	t.integer :status      
     	t.timestamps
     end
+    add_index :media_accounts,:name, name: 'name_index'
+    add_index :media_accounts,:short_name, name: 'short_name_index'
   end
 end
 
