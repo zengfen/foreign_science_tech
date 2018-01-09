@@ -2,13 +2,14 @@
 #
 # Table name: social_accounts
 #
-#  id           :integer          not null, primary key
-#  name         :string
-#  account_type :string
-#  account      :string
-#  status       :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id               :integer          not null, primary key
+#  name             :string
+#  account_type     :string
+#  account          :string
+#  status           :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  account_category :integer          default("0")
 #
 
 class SocialAccount < ApplicationRecord
