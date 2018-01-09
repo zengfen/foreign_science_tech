@@ -32,13 +32,15 @@ class MediaAccount < ApplicationRecord
       header = ss.row(1).collect{|x| x.strip}
       for i in (ss.first_row+1)..ss.last_row
         row = Hash[[header, ss.row(i)].transpose]
-        name = row["名称"].to_s.strip
-        short_name = JSON.parse(row["简称"]).first
+        # name = row["名称"].to_s.strip
+        # short_name = JSON.parse(row["简称"]).first
+        name = row["news_publishername"].to_s.strip
+        short_name = (name.include?" ")? name.split(' ').collect{|x| x.first}.join().upcase : name.upcase.to_s
         ma = MediaAccount.find_by(:name=>name)
         ma = MediaAccount.new if ma.blank?
         ma.name = name
         ma.short_name = short_name
-        ma.status = rand(0..1)
+        ma.status = 1
         ma.save
       end
     end 
