@@ -10,7 +10,7 @@
           <div class="bg-search">
             <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
-                <div class="col-md-8">
+                <div class="col-md-7">
                   <div class="form-group mb0">
                     <input type="text" placeholder="账号名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" style=></i>
@@ -20,6 +20,11 @@
                   <div class="form-group mb0">
                     <%account_types = ["facebook","twitter","youtube","linkedin"].collect{|x| [x,x]}%>
                     <%=select_tag(:account_type,options_for_select(account_types,params["account_type"]),include_blank: "类型",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <%=select_tag(:category,options_for_select(SocialAccount.account_categories.invert.to_a,params["account_category"]),include_blank: "账号性质",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="ibox-tools dib">

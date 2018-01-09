@@ -14,4 +14,16 @@ def social_account_type_i(account_type)
 		html = "<i class=\"fa #{i_class}\" title=\"#{account_type}\"></i>"
 		return html
 end
+
+def social_account_category_i(social_account)
+		i_class = ""
+		case social_account.account_category
+		when 0
+			i_class = "fa-users"
+		when 1
+			i_class = "fa-user"
+		end
+		html = "<i class=\"fa #{i_class}\" title=\"#{social_account.account_category_cn}\"></i>"
+		return html
+end
 end

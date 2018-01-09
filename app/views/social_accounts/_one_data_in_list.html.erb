@@ -1,7 +1,7 @@
 <tr>
   <td><%= social_account.name%></td>
   <td><%= social_account.account %></td>
-  <td><%= social_account.account_category_cn %></td>
+  <td><%= raw social_account_category_i(social_account) %></td>
   <td><%= raw social_account_type_i(social_account.account_type)%></td>  
   <td><%= raw status_html(social_account) %></td>
 </tr>
