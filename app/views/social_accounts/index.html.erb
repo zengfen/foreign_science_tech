@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:category,options_for_select(SocialAccount.account_categories.invert.to_a,params["account_category"]),include_blank: "账号性质",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:account_category,options_for_select(SocialAccount.account_categories.invert.to_a,params["account_category"]),include_blank: "账号性质",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="ibox-tools dib">
