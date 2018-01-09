@@ -104,4 +104,13 @@ class SocialAccount < ApplicationRecord
   def status_cn
     SocialAccount.statuses[self.status]
   end
+
+  def self.account_categories
+    {0=>"组织",1=>"人物"}
+  end
+
+  def account_category_cn
+    SocialAccount.account_categories[self.account_category_cn]
+  end
+
 end
