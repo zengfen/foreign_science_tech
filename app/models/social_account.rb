@@ -14,35 +14,38 @@
 class SocialAccount < ApplicationRecord
 
   def self.import_data
-    max_count = File.open("#{Rails.root}/tmp/organizations.csv").readlines.count
-    File.open("#{Rails.root}/tmp/organizations.csv").readlines.each_with_index do |line,i|
+    max_count = File.open("#{Rails.root}/tmp/people.csv").readlines.count
+    File.open("#{Rails.root}/tmp/people.csv").readlines.each_with_index do |line,i|
       next if i == 0
       doc = line.split("\",\"").collect{|x| x.gsub("\"","")}
       puts "-"*100 + "index:#{i},max:#{max_count}"
+      if !doc[6].blank?
+        ma = SocialAccount.find_by(account: doc[6])
+        ma = SocialAccount.new if ma.blank?
+        ma.name = "#{doc[2]} #{doc[3]}"
+        ma.account_type = "facebook"
+        ma.account = doc[6]
+        ma.account_category = 1
+        ma.status = rand(0..1)
+        ma.save
+      end
+      if !doc[7].blank?
+        ma = SocialAccount.find_by(account: doc[7])
+        ma = SocialAccount.new if ma.blank?
+        ma.name = "#{doc[2]} #{doc[3]}"
+        ma.account_type = "twitter"
+        ma.account = doc[7]
+        ma.account_category = 1
+        ma.status = rand(0..1)
+        ma.save
+      end
       if !doc[8].blank?
         ma = SocialAccount.find_by(account: doc[8])
         ma = SocialAccount.new if ma.blank?
-        ma.name = doc[1]
-        ma.account_type = "facebook"
-        ma.account = doc[8]
-        ma.status = rand(0..1)
-        ma.save
-      end
-      if !doc[9].blank?
-        ma = SocialAccount.find_by(account: doc[9])
-        ma = SocialAccount.new if ma.blank?
-        ma.name = doc[1]
-        ma.account_type = "twitter"
-        ma.account = doc[9]
-        ma.status = rand(0..1)
-        ma.save
-      end
-      if !doc[10].blank?
-        ma = SocialAccount.find_by(account: doc[10])
-        ma = SocialAccount.new if ma.blank?
-        ma.name = doc[1]
+        ma.name = "#{doc[2]} #{doc[3]}"
         ma.account_type = "linkedin"
-        ma.account = doc[10]
+        ma.account = doc[8]
+        ma.account_category = 1
         ma.status = rand(0..1)
         ma.save
       end
