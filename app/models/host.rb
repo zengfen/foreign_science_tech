@@ -22,6 +22,6 @@ class Host < ApplicationRecord
 	end
 	
 	def network_environment_cn
-		Spider.network_environments.invert[self.network_environment]
+		Host.network_environments.invert[self.network_environment]
 	end
 end
