@@ -54,6 +54,11 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # When a console cannot be shown for a given IP address or content type, a messages like the following is printed in the server logs:
+  # Cannot render console from 192.168.1.133! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  #If you don't wanna see this message anymore, set this option to false
+  config.web_console.whiny_requests = false
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
