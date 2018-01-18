@@ -157,7 +157,7 @@ class SocialAccount < ApplicationRecord
     end 
 	end
 
-	def self.import_organization_datas(path="/Users/li/Downloads/organizations.csv")
+	def self.import_organization_datas(path="#{Rails.root}/organizations.csv")
 	  type = path.split(".").last
     begin
       case type
