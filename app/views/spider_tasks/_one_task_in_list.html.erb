@@ -6,7 +6,7 @@
   <td><%= spider_task.success_count %></td>
   <td><%= spider_task.fail_count %></td>
   <td><%= show_format_time(spider_task.created_at) %></td>
-  <th>
+  <td>
     <% if spider_task.can_start? %>
       <%= link_to "启动", start_spider_spider_task_path(spider_task.spider, spider_task) %>
     <% end %>
@@ -14,6 +14,6 @@
     <% if spider_task.can_stop? %>
       <%= link_to "暂停", stop_spider_spider_task_path(spider_task.spider, spider_task) %>
     <% end %>
-  </th>
+  </td>
 </tr>
 
