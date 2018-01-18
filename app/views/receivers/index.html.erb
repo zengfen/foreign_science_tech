@@ -55,6 +55,13 @@
                   </tr>
                 </thead>
                 <tbody class="text-center">
+                  <% @all_receivers.each do |x| %>
+                    <tr>
+                      <td><%= x[0] %></td>
+                      <td></td>
+                      <td><%= time_ago_in_words(Time.at(x[1].to_i)) %>前</td>
+                    </tr>
+                  <% end %>
                 </tbody>
               </table>
               <div class="text-center">
