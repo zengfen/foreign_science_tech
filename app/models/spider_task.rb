@@ -136,7 +136,13 @@ class SpiderTask < ApplicationRecord
 
 
   def current_running_count
-    current_total_count - success_count - fail_count - warning_count
+    current_total_count - success_count - fail_count
+  end
+
+
+  def maybe_finished?
+    # current_running_count == 0
+    current_total_count == success_count + fail_count
   end
 
 end
