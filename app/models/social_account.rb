@@ -97,6 +97,126 @@ class SocialAccount < ApplicationRecord
     end
   end
 
+ 	def self.import_people_datas(path="#{Rails.root}/people.csv")
+	  type = path.split(".").last
+    begin
+      case type
+      when "xlsx" then
+        ss = Roo::Excelx.new(path)
+      when "xls" then
+        ss = Roo::Excel.new(path)
+      when "csv" then
+        ss = Roo::CSV.new(path)
+      end
+    rescue Exception=>e
+      return false
+    end
+    ss.sheets.each do |s|
+      ss.default_sheet = s
+      header = ss.row(1).collect{|x| x.strip}
+      for i in (ss.first_row+1)..ss.last_row
+        row = Hash[[header, ss.row(i)].transpose]
+        next if (!row.has_key?"twitter_url")&&(!row.has_key?"facebook_url")&&(!row.has_key?"linkedin_url")
+        name = "#{row["first_name"].to_s.strip} #{row["last_name"].to_s.strip}"
+        puts i
+        # break if i==100
+	      if !row["twitter_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["twitter_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "twitter"
+	        #个人
+	        ma.account_category = 1
+	        ma.account = row["twitter_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+	      if !row["facebook_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["facebook_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "facebook"
+	        #个人
+	        ma.account_category = 1
+	        ma.account = row["facebook_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+        if !row["linkedin_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["linkedin_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "linkedin"
+	        #个人
+	        ma.account_category = 1
+	        ma.account = row["linkedin_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+      end
+    end 
+	end
+
+	def self.import_organization_datas(path="#{Rails.root}/organizations.csv")
+	  type = path.split(".").last
+    begin
+      case type
+      when "xlsx" then
+        ss = Roo::Excelx.new(path)
+      when "xls" then
+        ss = Roo::Excel.new(path)
+      when "csv" then
+        ss = Roo::CSV.new(path)
+      end
+    rescue Exception=>e
+      return false
+    end
+    ss.sheets.each do |s|
+      ss.default_sheet = s
+      header = ss.row(1).collect{|x| x.strip}
+      for i in (ss.first_row+1)..ss.last_row
+        row = Hash[[header, ss.row(i)].transpose]
+        next if (!row.has_key?"twitter_url")&&(!row.has_key?"facebook_url")&&(!row.has_key?"linkedin_url")
+        name = row["company_name"].to_s.strip
+        puts i
+         break if i==100
+	      if !row["twitter_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["twitter_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "twitter"
+	        #个人
+	        ma.account_category = 0
+	        ma.account = row["twitter_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+	      if !row["facebook_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["facebook_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "facebook"
+	        #个人
+	        ma.account_category = 0
+	        ma.account = row["facebook_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+        if !row["linkedin_url"].blank?
+	        ma = SocialAccount.find_by(:account=>row["linkedin_url"])
+	        ma = SocialAccount.new if ma.blank?
+	        ma.name = name
+	        ma.account_type = "linkedin"
+	        #个人
+	        ma.account_category = 0
+	        ma.account = row["linkedin_url"]
+	        ma.status = 1
+	        ma.save
+	      end
+      end
+    end 
+	end
+
   def self.statuses
     {0=>"停止",1=>"采集中"}
   end
