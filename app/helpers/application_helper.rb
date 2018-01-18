@@ -3,8 +3,19 @@ module ApplicationHelper
     controller_names.split(",").include?(params[:controller]) ? "active" : nil
   end
 
-  def is_active_action(action_names)
-    action_names.split(",").include?(params[:action]) ? "active" : nil
+  def is_active_action(action_name, controller_name = nil)
+    if action_name.blank?
+      return params[:controller] == controller_name ? "active" : nil
+    end
+    if controller_name.blank?
+      return params[:action] == action_name ? "active" : nil
+    end
+
+    if !action_name.blank? && !controller_name.blank?
+      return (params[:action] == action_name && params[:controller] == controller_name ) ? "active" : nil
+    end
+
+    nil
   end
 
   def show_boolean_cn(obj)
