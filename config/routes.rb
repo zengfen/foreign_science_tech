@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
   resources :tasks do 
     collection do 
+      get 'index'
       get 'error_tasks'
     end
   end
