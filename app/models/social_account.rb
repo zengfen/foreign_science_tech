@@ -9,7 +9,7 @@
 #  status           :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  account_category :integer          default("0")
+#  account_category :integer          default(0)
 #
 
 class SocialAccount < ApplicationRecord

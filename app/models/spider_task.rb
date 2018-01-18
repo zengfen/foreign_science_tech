@@ -2,17 +2,18 @@
 #
 # Table name: spider_tasks
 #
-#  id            :integer          not null, primary key
-#  spider_id     :integer
-#  level         :integer          default("1")
-#  keyword       :string
-#  special_tag   :string
-#  status        :integer          default("0")
-#  success_count :integer          default("0")
-#  fail_count    :integer          default("0")
-#  refresh_time  :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id              :integer          not null, primary key
+#  spider_id       :integer
+#  level           :integer          default(1)
+#  keyword         :string
+#  special_tag     :string
+#  status          :integer          default(0)
+#  success_count   :integer          default(0)
+#  fail_count      :integer          default(0)
+#  refresh_time    :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  max_retry_count :integer          default(2)
 #
 
 class SpiderTask < ApplicationRecord
