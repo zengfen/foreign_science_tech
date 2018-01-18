@@ -71,7 +71,7 @@ class SpiderTask < ApplicationRecord
 
 
     $archon_redis.hset("archon_task_details_#{self.id}", task["task_md5"], task.to_json)
-    $archon_redis.zadd("tasks_#{self.id}", Time.now.to_i, task["task_md5"])
+    $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task["task_md5"])
   end
 
 
