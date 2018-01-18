@@ -7,7 +7,8 @@ class TasksController < ApplicationController
   end
 
   def error_tasks
-  	
+  	@task = SpiderTask.find(params[:id])
+  	@error_details = $archon_redis.hget("archon_tasks_errors_#{@task.id}")
   end
 
 end

@@ -40,7 +40,6 @@
         <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('tasks') %>">
           <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", tasks_path %></li>
-          <li class="<%= is_active_action('error_tasks') %>"><%= link_to "错误详情队列", tasks_path %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
