@@ -49,9 +49,10 @@
               <table class="table table-striped table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th class="text-center">主机IP</th>
+                    <th class="text-center">接收器IP</th>
                     <th class="text-center">对应域名</th>
                     <th class="text-center">心跳时间</th>
+                    <th class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
@@ -60,6 +61,7 @@
                       <td><%= x[0] %></td>
                       <td></td>
                       <td><%= time_ago_in_words(Time.at(x[1].to_i)) %>前</td>
+                      <td><a href="" >设置通用</a>|<a href="" >设置Agent专用</a></td>
                     </tr>
                   <% end %>
                 </tbody>
