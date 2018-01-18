@@ -26,10 +26,18 @@ class SpiderTasksController < ApplicationController
 
 
   def start
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.start!
+
+    redirect_to spider_spider_tasks_path(@spider)
   end
 
 
   def stop
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.stop!
+
+    redirect_to spider_spider_tasks_path(@spider)
   end
 
 

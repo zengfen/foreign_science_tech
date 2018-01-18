@@ -36,9 +36,37 @@ class SpiderTask < ApplicationRecord
     self.status == 0 || self.status == 3
   end
 
+  def start!
+    return if !can_start?
+
+    self.status = 1
+    self.save
+
+    if self.spider.network_environment == 1
+      $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
+    else
+      $archon_redis.zadd("archon_external_tasks", self.level, self.id)
+    end
+  end
+
 
   def can_stop?
     self.status == 1
+  end
+
+
+  def stop!
+    return if !can_stop?
+
+    self.status = 3
+    self.save
+
+    if self.spider.network_environment == 1
+      $archon_redis.zrem("archon_internal_tasks", self.id)
+    else
+      $archon_redis.zrem("archon_external_tasks", self.id)
+    end
+
   end
 
 
@@ -86,21 +114,4 @@ class SpiderTask < ApplicationRecord
     $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task["task_md5"])
   end
 
-
-  def start_task
-    if self.spider.network_environment == 1
-      $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
-    else
-      $archon_redis.zadd("archon_external_tasks", self.level, self.id)
-    end
-  end
-
-
-  def stop_task
-    if self.spider.network_environment == 1
-      $archon_redis.zrem("archon_internal_tasks", self.id)
-    else
-      $archon_redis.zrem("archon_external_tasks", self.id)
-    end
-  end
 end
