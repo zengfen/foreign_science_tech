@@ -11,7 +11,9 @@ class ReceiversController < ApplicationController
   end
 
   def set_common
-    $archon_redis.zadd('archon_common_receivers_pool', 0, params[:ip])
+    # 根据ip 找到配置的域名
+    # FIX ME:
+    $archon_redis.zadd('archon_common_receivers_pool', 0, "http://archon-receiver.aggso.com")
 
     redirect_back(fallback_location: {action: "index"})
   end

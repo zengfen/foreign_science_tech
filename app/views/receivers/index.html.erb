@@ -59,7 +59,7 @@
                   <% @all_receivers.each do |x| %>
                     <tr>
                       <td><%= x[0] %></td>
-                      <td></td>
+                      <td>http://archon-receiver.aggso.com</td>
                       <td><%= time_ago_in_words(Time.at(x[1].to_i)) %>前</td>
                       <td><a href="/receivers/set_common?ip=<%= x[0] %>" >设置通用</a>|<a href="/receivers/set_agents?ip=<%= x[0] %>" >设置Agent专用</a></td>
                     </tr>
