@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   resources :user_avatars,:tasks,:hosts,:media_accounts,:social_accounts, :controllers, :dispatchers,  :loaders
 
   resources :receivers do
-    member do
+    collection do
       get "set_common"
       get "set_agent"
     end
