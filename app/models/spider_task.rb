@@ -65,7 +65,7 @@ class SpiderTask < ApplicationRecord
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
-      'extra_config' => {}
+      'extra_config' => {special_tag: self.special_tag}
     }
 
     if self.spider.network_environment == 1
