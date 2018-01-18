@@ -84,6 +84,7 @@ class SpiderTask < ApplicationRecord
     { 'success' => '保存成功！' }
   end
 
+
   def enqueue
     # // ArchonInternalTaskKey 国内顶级任务的列表
     # ArchonInternalTaskKey = "archon_internal_tasks"
@@ -109,9 +110,33 @@ class SpiderTask < ApplicationRecord
     }
 
 
-
     $archon_redis.hset("archon_task_details_#{self.id}", task["task_md5"], task.to_json)
     $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task["task_md5"])
+  end
+
+
+  def success_count
+    $archon_redis.scard("archon_tasks_completed_#{self.id}")
+  end
+
+
+  def fail_count
+    $archon_redis.scard("archon_tasks_discard_#{self.id}")
+  end
+
+
+  def warning_count
+    $archon_redis.scard("archon_tasks_warning_#{self.id}")
+  end
+
+
+  def current_total_count
+    $archon_redis.hlen("archon_tasks_#{self.id}")
+  end
+
+
+  def current_running_count
+    current_total_count - success_count - fail_count - warning_count
   end
 
 end
