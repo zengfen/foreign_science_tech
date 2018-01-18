@@ -14,6 +14,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  max_retry_count :integer          default(2)
+#  warning_count   :integer          default(0)
 #
 
 class SpiderTask < ApplicationRecord
