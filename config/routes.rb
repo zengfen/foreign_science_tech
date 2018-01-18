@@ -40,8 +40,8 @@ Rails.application.routes.draw do
 
   resources :receivers do
     member do
-      get :set_common
-      get :set_agent
+      get "set_common"
+      get "set_agent"
     end
   end
   resources :password_resets,     only: [:new, :create, :edit, :update]
