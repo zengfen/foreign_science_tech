@@ -5,9 +5,9 @@
 #  id                  :integer          not null, primary key
 #  spider_name         :string
 #  spider_type         :integer
-#  network_environment :integer          default("1")
-#  proxy_support       :boolean          default("false")
-#  has_keyword         :boolean          default("false")
+#  network_environment :integer          default(1)
+#  proxy_support       :boolean          default(FALSE)
+#  has_keyword         :boolean          default(FALSE)
 #  template_name       :string
 #  category            :string
 #  additional_function :json             is an Array

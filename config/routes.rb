@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
     collection do
     end
-  resources :spider_tasks do 
+  resources :spider_tasks do
     member do
     end
     collection do
@@ -36,7 +36,14 @@ Rails.application.routes.draw do
   		get 'load_edit_form'
 		end
   end
-  resources :user_avatars,:tasks,:hosts,:media_accounts,:social_accounts
+  resources :user_avatars,:tasks,:hosts,:media_accounts,:social_accounts, :controllers, :dispatchers,  :loaders
+
+  resources :receivers do
+    collection do
+      get "set_common"
+      get "set_agent"
+    end
+  end
   resources :password_resets,     only: [:new, :create, :edit, :update]
   match ':controller(/:action(/:id))(.:format)',via: :all
 end

@@ -27,7 +27,7 @@
         </div>
       </li>
       <li class="<%= is_active_controller('home') %>">
-        <%= link_to root_path do %><i class="fa fa-dashboard""></i> <span class="nav-label">Dashboard</span>
+        <%= link_to root_path do %><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span>
         <%end%>
       </li>
       <li class="<%= is_active_controller('spiders') %>">
@@ -42,10 +42,14 @@
           <li class="<%= is_active_action('index') %>"><%= link_to "Tasks", tasks_path %></li>
         </ul>
       </li>
-      <li class="<%= is_active_controller('hosts') %>">
+      <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
         <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">Hosts</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "Hosts", hosts_path %></li>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
+          <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "Hosts", hosts_path %></li>
+          <li class="<%= is_active_action(nil, "controllers") %>"><%= link_to "主机控制器", controllers_path %></li>
+          <li class="<%= is_active_action(nil, "dispatchers") %>"><%= link_to "任务分发器", dispatchers_path %></li>
+          <li class="<%= is_active_action(nil, "loaders") %>"><%= link_to "数据Loaders", loaders_path %></li>
+          <li class="<%= is_active_action(nil, "receivers") %>"><%= link_to "数据接收器", receivers_path %></li>
         </ul>
       </li>
      <li class="<%= is_active_controller('social_accounts') %>">

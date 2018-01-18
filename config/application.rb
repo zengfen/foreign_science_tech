@@ -21,6 +21,9 @@ module ArchonCenter
   end
 end
 
-
-$archon_redis = Redis.new(Rails.application.config_for(:redis))
-$geo_ip =  GeoIP.new('config/GeoIP.dat')
+begin
+  $archon_redis = Redis.new(Rails.application.config_for(:redis))
+  $geo_ip = GeoIP.new('config/GeoIP.dat')
+rescue Exception => e
+  puts e
+end
