@@ -30,6 +30,17 @@ class SpiderTask < ApplicationRecord
     cn_hash[status]
   end
 
+
+  def can_start?
+    self.status == 0 || self.status == 3
+  end
+
+
+  def can_stop?
+    self.status == 1
+  end
+
+
   def save_with_spilt_keywords
     if spider.has_keyword && !spider.blank?
       keywords = keyword.split(',')

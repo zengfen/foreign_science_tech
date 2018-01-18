@@ -9,10 +9,10 @@
         <th class="text-center">成功数</th>
         <th class="text-center">失败数</th>
         <th class="text-center">创建时间</th>
+        <th class="text-center">操作</th>
       </tr>
     </thead>
     <tbody class="text-center">
-
       <% @spider_tasks.each do |spider_task| %>
        <%=render :partial=>"one_task_in_list",:locals=>{:spider_task=>spider_task}%>
       <% end %>
