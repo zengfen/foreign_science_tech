@@ -13,7 +13,7 @@ class ReceiversController < ApplicationController
   def set_common
     $archon_redis.zadd('common_receivers_pool', 0, params[:ip])
 
-    redirect_back
+    redirect_back(fallback_location: {action: "index"})
   end
 
   def set_agent
@@ -22,6 +22,6 @@ class ReceiversController < ApplicationController
     agent_ip = ''
     $archon_redis.zadd("ip_receivers_#{agent_ip}", 0, params[:ip])
 
-    redirect_back
+    redirect_back(fallback_location: {action: "index"})
   end
 end
