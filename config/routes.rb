@@ -36,7 +36,14 @@ Rails.application.routes.draw do
   		get 'load_edit_form'
 		end
   end
-  resources :user_avatars,:tasks,:hosts,:media_accounts,:social_accounts, :controllers, :receivers, :dispatchers, :receivers, :loaders
+  resources :user_avatars,:tasks,:hosts,:media_accounts,:social_accounts, :controllers, :dispatchers, :receivers, :loaders
+
+  resources :receivers do
+    collection do
+      get :set_common
+      get :set_agent
+    end
+  end
   resources :password_resets,     only: [:new, :create, :edit, :update]
   match ':controller(/:action(/:id))(.:format)',via: :all
 end
