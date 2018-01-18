@@ -42,16 +42,7 @@
           <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", tasks_path %></li>
         </ul>
       </li>
-      <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
-        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
-          <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "Agent节点", hosts_path %></li>
-          <li class="<%= is_active_action(nil, "controllers") %>"><%= link_to "主机控制器", controllers_path %></li>
-          <li class="<%= is_active_action(nil, "dispatchers") %>"><%= link_to "任务分发器", dispatchers_path %></li>
-          <li class="<%= is_active_action(nil, "loaders") %>"><%= link_to "数据Loaders", loaders_path %></li>
-          <li class="<%= is_active_action(nil, "receivers") %>"><%= link_to "数据接收器", receivers_path %></li>
-        </ul>
-      </li>
+      
       <li class="<%= is_active_controller('social_accounts') %>">
         <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
@@ -80,6 +71,16 @@
         </ul>
       </li>
 
+      <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
+        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
+          <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "Agent节点", hosts_path %></li>
+          <li class="<%= is_active_action(nil, "controllers") %>"><%= link_to "主机控制器", controllers_path %></li>
+          <li class="<%= is_active_action(nil, "dispatchers") %>"><%= link_to "任务分发器", dispatchers_path %></li>
+          <li class="<%= is_active_action(nil, "loaders") %>"><%= link_to "数据Loaders", loaders_path %></li>
+          <li class="<%= is_active_action(nil, "receivers") %>"><%= link_to "数据接收器", receivers_path %></li>
+        </ul>
+      </li>
       
     </ul>
   </div>
