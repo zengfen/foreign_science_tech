@@ -11,4 +11,21 @@ class ReceiversController < ApplicationController
     end
   end
 
+
+  def set_common
+    $archon_redis.zadd("common_receivers_pool", 0, params[:ip])
+
+    redirect_to :back
+  end
+
+
+  def set_agent
+    #  选择一组agent hosts
+    #
+    agent_ip = ""
+    $archon_redis.zadd("ip_receivers_#{agent_ip}", 0, params[:ip])
+
+    redirect_to :back
+  end
+
 end
