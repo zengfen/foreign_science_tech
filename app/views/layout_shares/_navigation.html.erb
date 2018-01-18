@@ -27,7 +27,7 @@
         </div>
       </li>
       <li class="<%= is_active_controller('home') %>">
-        <%= link_to root_path do %><i class="fa fa-dashboard""></i> <span class="nav-label">Dashboard</span>
+        <%= link_to root_path do %><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span>
         <%end%>
       </li>
       <li class="<%= is_active_controller('spiders') %>">
@@ -46,6 +46,10 @@
         <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">Hosts</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts') %>">
           <li class="<%= is_active_action('index') %>"><%= link_to "Hosts", hosts_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Controller", controllers_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Dispatcher", dispatcher_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Loaders", loaders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Receivers", receivers_path %></li>
         </ul>
       </li>
      <li class="<%= is_active_controller('social_accounts') %>">
