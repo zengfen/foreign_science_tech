@@ -4,12 +4,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Status</span>
+          <span class="label label-success pull-right">Status</span>
           <h5>集群名称</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["cluster_name"]%></h1>
-          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <div class="stat-percent font-bold text-success">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
@@ -17,12 +17,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Status</span>
+          <span class="label label-success pull-right">Status</span>
           <h5>集群状态</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["active_shards_percent_as_number"]%></h1>
-          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <div class="stat-percent font-bold text-success">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
@@ -43,7 +43,7 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-info pull-right">DataNodes</span>
+          <span class="label label-success pull-right">DataNodes</span>
           <h5>数据节点数</h5>
         </div>
         <div class="ibox-content">
@@ -58,12 +58,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Shards</span>
+          <span class="label label-info pull-right">Shards</span>
           <h5>总分片数</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["active_primary_shards"]%></h1>
-          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <div class="stat-percent font-bold text-info">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
@@ -71,12 +71,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-primary pull-right">Primary</span>
+          <span class="label label-info pull-right">Primary</span>
           <h5>主分片数</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["active_primary_shards"]%></h1>
-          <div class="stat-percent font-bold text-navy">100% </div>
+          <div class="stat-percent font-bold text-info">100% </div>
           <small></small>
         </div>
       </div>
@@ -84,12 +84,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Status</span>
+          <span class="label label-info pull-right">Status</span>
           <h5>未分配分片</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["unassigned_shards"]%></h1>
-          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <div class="stat-percent font-bold text-info">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
@@ -97,12 +97,12 @@
     <div class="col-lg-3">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Status</span>
+          <span class="label label-info pull-right">Status</span>
           <h5>丢失分片</h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%=@cluster["delayed_unassigned_shards"]%></h1>
-          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <div class="stat-percent font-bold text-info">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
