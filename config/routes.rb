@@ -26,6 +26,14 @@ Rails.application.routes.draw do
       end
     end
   end
+
+
+  resources :lucene do
+    collection do
+      get 'index'
+    end
+  end
+
   resources :templates do
     member do
     end
@@ -38,8 +46,8 @@ Rails.application.routes.draw do
   end
   resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders
 
-  resources :tasks do 
-    collection do 
+  resources :tasks do
+    collection do
       get 'index'
       get 'error_tasks'
     end
