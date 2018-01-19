@@ -1,165 +1,125 @@
 <% provide(:title, "Spiders") %>
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-2">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-success pull-right">Today</span>
-          <h5>今日任务数量</h5>
+          <span class="label label-success pull-right">Nodes</span>
+          <h5>集群节点数</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">128513</h1>
-          <div class="stat-percent font-bold text-success">99% <i class="fa fa-bolt"></i></div>
+          <h1 class="no-margins"><%=@cluster["number_of_nodes"]%></h1>
+          <div class="stat-percent font-bold text-success">100% <i class="fa fa-bolt"></i></div>
           <small></small>
         </div>
       </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-info pull-right">Success</span>
-          <h5>今日成功任务</h5>
+          <span class="label label-info pull-right">DataNodes</span>
+          <h5>数据节点数</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">128197</h1>
-          <div class="stat-percent font-bold text-info">1% <i class="fa fa-level-up"></i></div>
+          <h1 class="no-margins"><%=@cluster["number_of_data_nodes"]%></h1>
+          <div class="stat-percent font-bold text-success">100% <i class="fa fa-level-up"></i></div>
           <small></small>
         </div>
       </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-primary pull-right">Running</span>
-          <h5>执行中任务</h5>
+          <span class="label label-primary pull-right">Primary</span>
+          <h5>主分片数</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">8120</h1>
+          <h1 class="no-margins"><%=@cluster["active_primary_shards"]%></h1>
           <div class="stat-percent font-bold text-navy">100% </div>
           <small></small>
         </div>
       </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-2">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-danger pull-right">Fail</span>
-          <h5>今日失败任务</h5>
+          <span class="label label-danger pull-right">Shards</span>
+          <h5>总分片数</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">316</h1>
-          <div class="stat-percent font-bold text-danger">4% <i class="fa fa-level-down"></i></div>
+          <h1 class="no-margins"><%=@cluster["active_primary_shards"]%></h1>
+          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
+          <small></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-danger pull-right">Status</span>
+          <h5>集群状态</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins"><%=@cluster["active_shards_percent_as_number"]%></h1>
+          <div class="stat-percent font-bold text-danger">100% <i class="fa fa-level-down"></i></div>
           <small></small>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-lg-3">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <span class="label label-success pull-right">All</span>
-          <h5>历史全部任务</h5>
-        </div>
-        <div class="ibox-content">
-          <h1 class="no-margins">51414619</h1>
-          <div class="stat-percent font-bold text-success"></div>
-          <small></small>
-        </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>索引列表</h5>
       </div>
-    </div>
-    <div class="col-lg-3">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <span class="label label-info pull-right">Success</span>
-          <h5>成功任务</h5>
-        </div>
-        <div class="ibox-content">
-          <h1 class="no-margins">51213587</h1>
-          <div class="stat-percent font-bold text-info"></div>
-          <small></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <span class="label label-primary pull-right">Total</span>
-          <h5>获取数据量</h5>
-        </div>
-        <div class="ibox-content">
-          <h1 class="no-margins">584971415</h1>
-          <div class="stat-percent font-bold text-danger"></div>
-          <small></small>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <span class="label label-danger pull-right">Fail</span>
-          <h5>失败任务</h5>
-        </div>
-        <div class="ibox-content">
-          <h1 class="no-margins">201032</h1>
-          <div class="stat-percent font-bold text-navy"></div>
-          <small></small>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>索引列表</h5>
-        </div>
-        <div class="ibox-content pl15">
-          <div class="bg-search">
-            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
-              <div id="rcontent" class="clear-p">
-                <div class="col-md-8">
-                  <div class="form-group mb0">
-                    <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                    <i class="search-line" style=></i>
-                    <i class="fa fa-search search-icon"></i></div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group mb0">
-                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
-                  </div>
-                </div>
-                <div class="ibox-tools dib">
-                  <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
-                  <!-- <a class="btn btn-primary btn-warning w70 mb0">
-                    搜索</a> -->
-                </div>
-                <div class="ibox-tools fr">
-                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加</a>
-                  <!--                     
-                    <a class="btn btn-primary " href="#" >
-                    按钮2</a> -->
+      <div class="ibox-content pl15">
+        <div class="bg-search">
+          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+            <div id="rcontent" class="clear-p">
+              <div class="col-md-8">
+                <div class="form-group mb0">
+                  <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
+                  <i class="search-line" style=></i>
+                  <i class="fa fa-search search-icon"></i></div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group mb0">
+                  <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
                 </div>
               </div>
-            <%end%>
-          </div>
-        </div>
-        <div id="result_release">
-          <div class="ibox-content table-sql">
-            <ul class="tab-ul clear-p">
-              <li class="tab-li active">
-                <a href="#" data-target="all-page">列表信息</a>
-              </li>
-            </ul>
-            <div class="ibox-content p15-0 all-page table-content">
-              <%= render "list_body" %>
+              <div class="ibox-tools dib">
+                <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                <!-- <a class="btn btn-primary btn-warning w70 mb0">
+                    搜索</a> -->
+              </div>
+              <div class="ibox-tools fr">
+                <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
+                  添加</a>
+                <!--                     
+                    <a class="btn btn-primary " href="#" >
+                    按钮2</a> -->
+              </div>
             </div>
+          <%end%>
+        </div>
+      </div>
+      <div id="result_release">
+        <div class="ibox-content table-sql">
+          <ul class="tab-ul clear-p">
+            <li class="tab-li active">
+              <a href="#" data-target="all-page">列表信息</a>
+            </li>
+          </ul>
+          <div class="ibox-content p15-0 all-page table-content">
+            <%= render "list_body" %>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 <!--这里是提示框-->
 <div id="modal-form-remove" class="modal fade in" aria-hidden="true">
