@@ -10,7 +10,7 @@ class HostsController < ApplicationController
       country = c.country_code2 == "CN" ? "国内" : "国外"
       service_count = $archon_redis.hlen("archon_host_services_#{k}")
 
-      running_service_count = $archon_redis.hgetll("archon_host_services_#{k}").count{|m, n| n == "true"}
+      running_service_count = $archon_redis.hgetall("archon_host_services_#{k}").count{|m, n| n == "true"}
 
       @hosts << [k, country, Time.at(v.to_i), service_count, running_service_count]
     end
