@@ -3,7 +3,7 @@ class AgentsController < ApplicationController
     service_name = 'agent'
     @results = {}
     $archon_redis.keys('archon_host_services_*').each do |key|
-      status = $archon_redis.hexist(key, service_name)
+      status = $archon_redis.hget(key, service_name)
       next if status.blank?
       ip = key.gsub('archon_host_services_', '')
       heartbeat_at = $archon_redis.hget('archon_hosts', ip).to_i
