@@ -52,7 +52,7 @@
       <li class="<%= is_active_controller('monitoring') %>">
         <a href=""><i class="fa fa-thermometer-2"></i> <span class="nav-label">性能监控</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('monitoring') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "数据存储资源监控", lucene_monitoring_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "数据存储资源监控", "/monitoring/lucene" %></li>
           <li class="<%= is_active_action('index') %>"><%= link_to "Kafka监控", social_accounts_path %></li>
           <li class="<%= is_active_action('index') %>"><%= link_to "Agent监控", social_accounts_path %></li>
         </ul>
