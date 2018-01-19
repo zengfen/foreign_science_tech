@@ -59,7 +59,7 @@
                   <% @all_receivers.each do |x| %>
                     <tr>
                       <td><%= x[0] %></td>
-                      <td></td>
+                      <td>http://archon-receiver.aggso.com</td>
                       <td><%= time_ago_in_words(Time.at(x[1].to_i)) %>前</td>
                       <td><a href="/receivers/set_common?ip=<%= x[0] %>" >设置通用</a>|<a href="/receivers/set_agents?ip=<%= x[0] %>" >设置Agent专用</a></td>
                     </tr>
@@ -85,7 +85,7 @@
               <table class="table table-striped table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th class="text-center">ip</th>
+                    <th class="text-center">域名</th>
                     <th class="text-center">负载</th>
                   </tr>
                 </thead>
@@ -117,10 +117,22 @@
                 <thead>
                   <tr>
                     <th class="text-center">主机IP</th>
-                    <th class="text-center">对应接收器</th>
+                    <th class="text-center">对应域名</th>
+                    <th class="text-center">负载</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
+                  <tr>
+                    <td class="text-center">Agent IP1</th>
+                    <td class="text-center">Receiver Domain1</th>
+                    <td class="text-center">0</th>
+                  </tr>
+                  <tr>
+                    <td class="text-center">Agent IP1</th>
+                    <td class="text-center">Receiver Domain2</th>
+                    <td class="text-center">0</th>
+                  </tr>
+
                 </tbody>
               </table>
               <div class="text-center">

@@ -13,7 +13,7 @@ class SpiderTasksController < ApplicationController
   end
 
   def show
-  	
+
   end
 
   def create
@@ -22,6 +22,22 @@ class SpiderTasksController < ApplicationController
 	  flash[message.keys.first.to_sym] = message.values.first
 
   	redirect_to spider_spider_tasks_path(@spider)
+  end
+
+
+  def start
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.start!
+
+    redirect_to spider_spider_tasks_path(@spider)
+  end
+
+
+  def stop
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.stop!
+
+    redirect_to spider_spider_tasks_path(@spider)
   end
 
 

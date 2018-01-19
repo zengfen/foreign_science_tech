@@ -27,44 +27,60 @@
         </div>
       </li>
       <li class="<%= is_active_controller('home') %>">
-        <%= link_to root_path do %><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span>
+        <%= link_to root_path do %><i class="fa fa-dashboard"></i> <span class="nav-label">仪表盘</span>
         <%end%>
       </li>
       <li class="<%= is_active_controller('spiders') %>">
-        <a href=""><i class="fa fa-bug"></i> <span class="nav-label">Spiders</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-bug"></i> <span class="nav-label">模板中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "Spiders", spiders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "模板库", spiders_path %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('tasks') %>">
-        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">Tasks</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('tasks') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "Tasks", tasks_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", tasks_path %></li>
         </ul>
       </li>
+      
+      <li class="<%= is_active_controller('social_accounts') %>">
+        <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据中心</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "ES索引库", social_accounts_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "数据检索", social_accounts_path %></li>
+        </ul>
+      </li>
+      <li class="<%= is_active_controller('social_accounts') %>">
+        <a href=""><i class="fa fa-thermometer-2"></i> <span class="nav-label">性能监控</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "数据存储资源监控", social_accounts_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Kafka监控", social_accounts_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "Agent监控", social_accounts_path %></li>
+        </ul>
+      </li>
+     <li class="<%= is_active_controller('social_accounts') %>">
+        <a href=""><i class="fa fa-users"></i> <span class="nav-label">社交账号库</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "社交账号库", social_accounts_path %></li>
+        </ul>
+      </li>
+       <li class="<%= is_active_controller('media_accounts') %>">
+        <a href=""><i class="fa fa-inbox"></i> <span class="nav-label">媒体库</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('media_accounts') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "媒体库", media_accounts_path %></li>
+        </ul>
+      </li>
+
       <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
-        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">Hosts</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers') %>">
-          <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "Hosts", hosts_path %></li>
+          <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "Agent节点", hosts_path %></li>
           <li class="<%= is_active_action(nil, "controllers") %>"><%= link_to "主机控制器", controllers_path %></li>
           <li class="<%= is_active_action(nil, "dispatchers") %>"><%= link_to "任务分发器", dispatchers_path %></li>
           <li class="<%= is_active_action(nil, "loaders") %>"><%= link_to "数据Loaders", loaders_path %></li>
           <li class="<%= is_active_action(nil, "receivers") %>"><%= link_to "数据接收器", receivers_path %></li>
         </ul>
       </li>
-     <li class="<%= is_active_controller('social_accounts') %>">
-        <a href=""><i class="fa fa-users"></i> <span class="nav-label">Social Accounts</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "Social Accounts", social_accounts_path %></li>
-        </ul>
-      </li>
-       <li class="<%= is_active_controller('media_accounts') %>">
-        <a href=""><i class="fa fa-th-list"></i> <span class="nav-label">Media</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('media_accounts') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "Media", media_accounts_path %></li>
-        </ul>
-      </li>
-
       
     </ul>
   </div>

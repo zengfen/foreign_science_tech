@@ -14,6 +14,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  max_retry_count :integer          default(2)
+#  warning_count   :integer          default(0)
 #
 
 class SpiderTask < ApplicationRecord
@@ -26,9 +27,48 @@ class SpiderTask < ApplicationRecord
   after_create :enqueue
 
   def status_cn
-    cn_hash = { 0 => '未执行', 1 => '执行中', 2 => '执行结束' }
+    cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '执行结束', 3 => "已暂停"}
     cn_hash[status]
   end
+
+
+  def can_start?
+    self.status == 0 || self.status == 3
+  end
+
+  def start!
+    return if !can_start?
+
+    self.status = 1
+    self.save
+
+    if self.spider.network_environment == 1
+      $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
+    else
+      $archon_redis.zadd("archon_external_tasks", self.level, self.id)
+    end
+  end
+
+
+  def can_stop?
+    self.status == 1
+  end
+
+
+  def stop!
+    return if !can_stop?
+
+    self.status = 3
+    self.save
+
+    if self.spider.network_environment == 1
+      $archon_redis.zrem("archon_internal_tasks", self.id)
+    else
+      $archon_redis.zrem("archon_external_tasks", self.id)
+    end
+
+  end
+
 
   def save_with_spilt_keywords
     if spider.has_keyword && !spider.blank?
@@ -43,6 +83,7 @@ class SpiderTask < ApplicationRecord
     end
     { 'success' => '保存成功！' }
   end
+
 
   def enqueue
     # // ArchonInternalTaskKey 国内顶级任务的列表
@@ -68,13 +109,40 @@ class SpiderTask < ApplicationRecord
       'extra_config' => {special_tag: self.special_tag}
     }
 
-    if self.spider.network_environment == 1
-      $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
-    else
-      $archon_redis.zadd("archon_external_tasks", self.level, self.id)
-    end
 
     $archon_redis.hset("archon_task_details_#{self.id}", task["task_md5"], task.to_json)
-    $archon_redis.zadd("tasks_#{self.id}", Time.now.to_i, task["task_md5"])
+    $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task["task_md5"])
   end
+
+
+  def success_count
+    $archon_redis.scard("archon_tasks_completed_#{self.id}")
+  end
+
+
+  def fail_count
+    $archon_redis.scard("archon_tasks_discard_#{self.id}")
+  end
+
+
+  def warning_count
+    $archon_redis.scard("archon_tasks_warning_#{self.id}")
+  end
+
+
+  def current_total_count
+    $archon_redis.hlen("archon_tasks_#{self.id}")
+  end
+
+
+  def current_running_count
+    current_total_count - success_count - fail_count
+  end
+
+
+  def maybe_finished?
+    # current_running_count == 0
+    current_total_count == success_count + fail_count
+  end
+
 end
