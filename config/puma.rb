@@ -27,8 +27,13 @@ environment ENV.fetch("RAILS_ENV") { "production" }
 # the concurrency of the application would be max `threads` * `workers`.
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
+rails_env = ENV.fetch("RAILS_ENV") || "production" 
 #	计算机核数
-workers ENV.fetch("WEB_CONCURRENCY") { 3 }
+if rails_env == "production"
+  workers ENV.fetch("WEB_CONCURRENCY") { 3 }
+else
+  workers 1
+end
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
