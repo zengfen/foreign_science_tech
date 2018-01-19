@@ -179,7 +179,6 @@ class SocialAccount < ApplicationRecord
         next if (!row.has_key?"twitter_url")&&(!row.has_key?"facebook_url")&&(!row.has_key?"linkedin_url")
         name = row["company_name"].to_s.strip
         puts i
-         break if i==100
 	      if !row["twitter_url"].blank?
 	        ma = SocialAccount.find_by(:account=>row["twitter_url"])
 	        ma = SocialAccount.new if ma.blank?
