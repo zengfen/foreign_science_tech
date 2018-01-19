@@ -53,8 +53,9 @@
                     <th class="text-center">主机IP</th>
                     <th class="text-center">国家</th>
                     <th class="text-center">心跳时间</th>
-                    <th class="text-center">Agent状态</th>
-                    <th class="text-center">主机指标</th>
+                    <th class="text-center">安装服务</th>
+                    <th class="text-center">运行服务</th>
+                    <th class="text-center">操作</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
@@ -64,6 +65,7 @@
                       <td><%= h[1] %></td>
                       <td><%= time_ago_in_words(h[2]) %>前</td>
                       <td><%= h[3] %></td>
+                      <td><%= h[4] %></td>
                       <td><a href="/host_metrics/show?ip=<%= h[0] %>" >查看</a></td>
                     </tr>
                   <% end %>
