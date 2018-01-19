@@ -67,59 +67,58 @@
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <h5>索引列表</h5>
-      </div>
-      <div class="ibox-content pl15">
-        <div class="bg-search">
-          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
-            <div id="rcontent" class="clear-p">
-              <div class="col-md-8">
-                <div class="form-group mb0">
-                  <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                  <i class="search-line" style=></i>
-                  <i class="fa fa-search search-icon"></i></div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group mb0">
-                  <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>索引列表</h5>
+        </div>
+        <div class="ibox-content pl15">
+          <div class="bg-search">
+            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+              <div id="rcontent" class="clear-p">
+                <div class="col-md-8">
+                  <div class="form-group mb0">
+                    <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
+                    <i class="search-line" style=></i>
+                    <i class="fa fa-search search-icon"></i></div>
                 </div>
-              </div>
-              <div class="ibox-tools dib">
-                <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
-                <!-- <a class="btn btn-primary btn-warning w70 mb0">
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="ibox-tools dib">
+                  <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                  <!-- <a class="btn btn-primary btn-warning w70 mb0">
                     搜索</a> -->
-              </div>
-              <div class="ibox-tools fr">
-                <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                  添加</a>
-                <!--                     
+                </div>
+                <div class="ibox-tools fr">
+                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
+                    添加</a>
+                  <!--                     
                     <a class="btn btn-primary " href="#" >
                     按钮2</a> -->
+                </div>
               </div>
-            </div>
-          <%end%>
+            <%end%>
+          </div>
         </div>
-      </div>
-      <div id="result_release">
-        <div class="ibox-content table-sql">
-          <ul class="tab-ul clear-p">
-            <li class="tab-li active">
-              <a href="#" data-target="all-page">列表信息</a>
-            </li>
-          </ul>
-          <div class="ibox-content p15-0 all-page table-content">
-            <%= render "list_body" %>
+        <div id="result_release">
+          <div class="ibox-content table-sql">
+            <ul class="tab-ul clear-p">
+              <li class="tab-li active">
+                <a href="#" data-target="all-page">列表信息</a>
+              </li>
+            </ul>
+            <div class="ibox-content p15-0 all-page table-content">
+              <%= render "list_body" %>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 <!--这里是提示框-->
 <div id="modal-form-remove" class="modal fade in" aria-hidden="true">
