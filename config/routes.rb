@@ -50,7 +50,7 @@ Rails.application.routes.draw do
       get 'load_edit_form'
     end
   end
-  resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders
+  resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders, :agents
 
   resources :tasks do
     collection do
