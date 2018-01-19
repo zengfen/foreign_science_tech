@@ -9,7 +9,7 @@ class AgentsController < ApplicationController
       heartbeat_at = $archon_redis.hget('archon_hosts', ip).to_i
       c = $geo_ip.country(ip)
       country = c.country_code2 == 'CN' ? '国内' : '国外'
-      @agents << [ip, country, status, heartbeat_at]
+      @agents << [ip, country,  heartbeat_at, status]
     end
   end
 end
