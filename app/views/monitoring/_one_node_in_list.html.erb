@@ -1,0 +1,10 @@
+<tr>
+  <td><%= v["name"]%></td>
+  <td><%= v["host"] %></td>
+  <td><%= v["roles"].join(",") %></td>
+  <td><%= v["process"]["cpu"]["percent"] %> %</td>
+  <td><%= v["jvm"]["mem"]["heap_used"] %> / <%= v["jvm"]["mem"]["heap_committed"] %></td>
+  <td><%= (v["fs"]["total"]["total_in_bytes"]-v["fs"]["total"]["total_in_bytes"])/1024.to_f/1024.to_f/1024.to_f %>gb / <%= v["fs"]["total"]["total"] %></td>
+  <td><%= v["jvm"]["threads"]["count"] %></td>
+  <td><%= v["http"]["current_open"] %></td>
+</tr>
