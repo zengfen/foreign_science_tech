@@ -1,7 +1,7 @@
 class AgentsController < ApplicationController
   def index
     service_name = 'agent'
-    @results = {}
+    @results = []
     $archon_redis.keys('archon_host_services_*').each do |key|
       status = $archon_redis.hget(key, service_name)
       next if status.blank?
