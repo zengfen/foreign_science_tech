@@ -45,8 +45,8 @@
       <li class="<%= is_active_controller('lucene') %>">
         <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('lucene') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "ES索引库", social_accounts_path %></li>
-          <li class="<%= is_active_action('index') %>"><%= link_to "数据检索", social_accounts_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "ES索引库", lucene_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "数据检索", lucene_path %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('social_accounts') %>">
