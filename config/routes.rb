@@ -34,6 +34,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :monitoring do
+    collection do
+      get 'lucene'
+    end
+  end
+
   resources :templates do
     member do
     end
