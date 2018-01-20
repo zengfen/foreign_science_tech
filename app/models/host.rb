@@ -33,4 +33,21 @@ class Host < ApplicationRecord
 
     status == "true" ? "运行中" : "已停止"
   end
+
+
+  def self.services
+    {
+      "agent" => "爬虫节点",
+      "supervisor" => "节点监控器",
+      "controller" => "主机控制器",
+      "dispatcher" => "任务分发器",
+      "loader" => "数据loaders",
+      "receiver" => "数据接收器"
+    }
+  end
+
+
+  def self.get_service_name(service)
+    services[service]
+  end
 end

@@ -64,7 +64,7 @@
 
                   <% @services.each do |k, v| %>
                     <tr>
-                      <td><%= k %></td>
+                      <td><%= Host.get_service_name(k) %></td>
                       <td><%= Host.get_status(@heartbeat_at, v) %></td>
                     </tr>
                   <% end %>
