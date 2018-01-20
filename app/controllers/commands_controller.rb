@@ -22,4 +22,11 @@ class CommandsController < ApplicationController
     redirect_to action: :index
   end
 
+
+  def new_supervisor
+    {
+      "supervisor_stop" => "重启"
+    }
+  end
+
 end
