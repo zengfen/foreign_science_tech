@@ -27,7 +27,7 @@ class Host < ApplicationRecord
 
 
   def self.get_status(heartbeat_at, status)
-    if Time.now - heartbeat_at > 60 && status == "true"
+    if (Time.now - heartbeat_at) > 60 && status == "true"
       return "未知"
     end
 
