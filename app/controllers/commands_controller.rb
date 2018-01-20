@@ -30,6 +30,7 @@ class CommandsController < ApplicationController
 
     @current_command = $archon_redis.get("archon_current_command")
 
+    @statuses = {}
     if !@current_command.blank?
       @statuses = $archon_redis.hgetall("archon_host_command_statuses")
     end
