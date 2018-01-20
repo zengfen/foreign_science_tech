@@ -57,16 +57,18 @@
                   <% @statuses.each do |k, v| %>
                     <tr>
                       <td class="text-center"><%= k %></td>
-                      <% if v.blank? %>
-                        <td class="text-center">等待执行</td>
-                      <% else %>
-                        <% cmd = JSON.parse(v) %>
-                        <% if cmd["status"] == 0 %>
-                          执行成功
+                      <td class="text-center">
+                        <% if v.blank? %>
+                          等待执行
                         <% else %>
-                          执行失败: <%= cmd['message'] %>
+                          <% cmd = JSON.parse(v) %>
+                          <% if cmd["status"] == 0 %>
+                            执行成功
+                          <% else %>
+                            执行失败: <%= cmd['message'] %>
                         <% end %>
                       <% end %>
+                      </td>
                     </tr>
                   <% end %>
                 </tbody>
