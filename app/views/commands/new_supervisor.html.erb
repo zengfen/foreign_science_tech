@@ -57,7 +57,7 @@
                   <% @statuses.each do |k, v| %>
                     <tr>
                       <td class="text-center"><%= k %></td>
-                      <td class="text-center"><%= v %></td>
+                      <td class="text-center"><%= v.blank? ? "等待执行" : v %></td>
                     </tr>
                   <% end %>
                 </tbody>
