@@ -27,8 +27,6 @@ class Host < ApplicationRecord
 
 
   def self.get_status(heartbeat_at, status)
-    Rails.logger.info(Time.now.to_i )
-    Rails.logger.info(heartbeat_at)
     if (Time.now.to_i - heartbeat_at) > 60 && status == "true"
       return "未知"
     end
