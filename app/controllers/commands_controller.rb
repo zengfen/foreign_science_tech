@@ -44,7 +44,7 @@ class CommandsController < ApplicationController
       redirect_to action: :new_supervisor
     end
 
-    $redis.hgetall("archon_hosts").each do |k, v|
+    $archon_redis.hgetall("archon_hosts").each do |k, v|
       $archon_redis.hset("archon_host_commands", k, command)
       $archon_redis.hset("archon_host_command_statuses", k, "")
     end
