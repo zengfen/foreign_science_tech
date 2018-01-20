@@ -24,7 +24,7 @@ class CommandsController < ApplicationController
 
 
   def new_supervisor
-    {
+    @commands = {
       "supervisor_stop" => "重启"
     }
   end
