@@ -41,7 +41,7 @@ class CommandsController < ApplicationController
     command = params[:command]
 
     if !$archon_redis.setnx("archon_current_command", command)
-      redirect_to action: :new_supervisor
+      return redirect_to action: :new_supervisor
     end
 
     $archon_redis.hgetall("archon_hosts").each do |k, v|
