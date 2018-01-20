@@ -27,6 +27,28 @@ class CommandsController < ApplicationController
     @commands = {
       "supervisor_stop" => "重启"
     }
+
+    @current_command = $archon_redis.get("archon_current_command")
+
+    if !@current_command.blank?
+      @statuses = $archon_redis.hgetall("archon_host_command_statuses")
+    end
+  end
+
+
+  def create_supervisor
+    command = params[:command]
+
+    if !$archon_redis.setnx("archon_current_command", command)
+      redirect_to action: :new_supervisor
+    end
+
+    $redis.hgetall("archon_hosts").each do |k, v|
+      $archon_redis.hset("archon_host_commands", k, command)
+      $archon_redis.hset("archon_host_command_statuses", k, "")
+    end
+
+    redirect_to action: :new_supervisor
   end
 
 end
