@@ -22,4 +22,66 @@ class CommandsController < ApplicationController
     redirect_to action: :index
   end
 
+
+  def new_supervisor
+    @commands = {
+      "supervisor_stop" => "重启"
+    }
+
+    @current_command = $archon_redis.get("archon_current_command")
+
+    @statuses = {}
+    if !@current_command.blank?
+      @statuses = $archon_redis.hgetall("archon_host_command_statuses")
+    end
+  end
+
+
+  def create_supervisor
+    command = params[:command]
+
+    if !$archon_redis.setnx("archon_current_command", command)
+      return redirect_to action: :new_supervisor
+    end
+
+    $archon_redis.hgetall("archon_hosts").each do |k, v|
+      $archon_redis.hset("archon_host_commands", k, command)
+      $archon_redis.hset("archon_host_command_statuses", k, "")
+    end
+
+    redirect_to action: :new_supervisor
+  end
+
+
+  def new_agent
+    @commands = {
+      "agent_restart" => "重启",
+      "agent_stop" => "停止"
+    }
+
+    @current_command = $archon_redis.get("archon_current_command")
+
+    @statuses = {}
+    if !@current_command.blank?
+      @statuses = $archon_redis.hgetall("archon_host_command_statuses")
+    end
+  end
+
+
+  def create_agent
+    command = params[:command]
+
+    if !$archon_redis.setnx("archon_current_command", command)
+      return redirect_to action: :new_agent
+    end
+
+    $archon_redis.hgetall("archon_hosts").each do |k, v|
+      $archon_redis.hset("archon_host_commands", k, command)
+      $archon_redis.hset("archon_host_command_statuses", k, "")
+    end
+
+    redirect_to action: :new_agent
+  end
+
+
 end

@@ -9,7 +9,7 @@ class ReceiversController < ApplicationController
       heartbeat_at = $archon_redis.hget('archon_hosts', ip).to_i
       c = $geo_ip.country(ip)
       country = c.country_code2 == 'CN' ? '国内' : '国外'
-      @agents << [ip, country,  heartbeat_at, status == "true" ? "运行中" : "已停止"]
+      @agents << [ip, country,  heartbeat_at, Host.get_status(heartbeat_at, status)]
     end
     # @all_receivers = $archon_redis.hgetall('archon_receivers')
     # @common_receivers = $archon_redis.zrange('archon_common_receivers_pool', 0, -1, withscores: true)
