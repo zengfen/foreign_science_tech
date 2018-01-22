@@ -19,7 +19,8 @@ class LuceneController < ApplicationController
       render :json=>"category is null"
       return
     end
-    Spider.create_index(params[:category],yms)
+    #Spider.create_index(params[:category],yms)
+    ProcessPhotoJob.perform_later(params[:category],yms)
     redirect_to "/lucene/index"
   end
 
