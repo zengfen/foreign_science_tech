@@ -14,7 +14,7 @@ class LuceneController < ApplicationController
   end
 
   def create_index
-    months = (Date.parse(params[:begin_time])..Date.parse(params[:end_time])).map{|d| "#{d.year}#{d.month}"}
+    months = (Date.parse(params[:begin_time]+"-01")..Date.parse(params[:end_time]+"-01")).map{|d| "#{d.year}#{d.month}"}
     render :json=> months
   end
 
