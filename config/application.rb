@@ -15,6 +15,7 @@ module ArchonCenter
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.eager_load_paths << Rails.root.join('app/models/index')
     config.i18n.default_locale = 'zh-CN'
     config.active_record.default_timezone = :local
     config.time_zone = 'Beijing'
