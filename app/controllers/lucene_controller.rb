@@ -20,7 +20,7 @@ class LuceneController < ApplicationController
       return
     end
     #Spider.create_index(params[:category],yms)
-    ProcessPhotoJob.perform_later(params[:category],yms)
+    ElasticsearchIndex.perform_later(params[:category],yms)
     redirect_to "/lucene/index"
   end
 
