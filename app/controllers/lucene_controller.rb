@@ -4,7 +4,7 @@ class LuceneController < ApplicationController
     link = "http://10.27.3.39:9200/_cat/indices/?format=json&pretty&s=docs.count:desc"
     unless params[:category].blank? || params[:keyword].blank?
       key = params[:keyword].blank? ? params[:category] : params[:keyword]
-      link = "http://10.27.3.39:9200/_cat/indices/#{key}?format=json&pretty&s=docs.count:desc"
+      link = "http://10.27.3.39:9200/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
     end
     body = RestClient.get(link).body
     indices = JSON.parse(body)
