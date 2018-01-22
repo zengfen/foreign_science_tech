@@ -77,6 +77,29 @@
     </div>
   </div>
 </div>
+<div id="modal-form-reset" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 460px;top: 190px;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="m-t-none m-b">提示</h3>
+            <div class="hr-line-dashed"></div>
+            <p class="text-center">
+              <strong style="font-size: 14px;">您确定要重建<span class="reset-html"></span>吗？</strong></p>
+            <div class="hr-line-dashed"></div>
+            <div>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-reset" type="button" style="margin-left: 20px;">
+                <strong>确定</strong></button>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-reset" type="button"  style="">
+                <strong>取消</strong></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
   <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
     <div class="modal-content">
@@ -145,6 +168,40 @@
             }
         })
     })
+    .on("click",".reset-line",function(e){
+    
+        e.preventDefault();
+    
+        //删除本行数据
+        //var _$this = $(this);
+        var $this = $(this),html = $this.closest('tr').find('td').first().html();
+        var $modal = $('#modal-form-reset');
+        $modal.find('.reset-html').html(html);
+        $modal.modal("show");
+    
+        $('.sure-reset').off().on('click', function (e) {
+           e.preventDefault();
+          var _this=$(this);
+          //需要传到数据库中，需要后台传输数据，局部刷新页面
+          var url = $this.attr("href");
+          if (url != "##") {
+            $.ajax({
+              url: url,
+              type: 'GET',
+              success:function(data){
+              if (data.type=="success"){
+                _this.closest('.modal').modal("hide");
+                //$this.closest('tr').remove();
+              }
+            }});
+          }
+    
+        });
+    
+    }).on("click",'.cancel-reset',function(e){
+       var $modal = $('#modal-form-reset');
+          $modal.modal("hide");
+    });
     .on("click",".remove-line",function(e){
     
         e.preventDefault();
