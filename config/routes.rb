@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   resources :lucene do
     collection do
       get 'index'
+      get 'reset'
+      get 'remove'
     end
   end
 
