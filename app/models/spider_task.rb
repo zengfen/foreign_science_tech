@@ -2,19 +2,21 @@
 #
 # Table name: spider_tasks
 #
-#  id              :integer          not null, primary key
-#  spider_id       :integer
-#  level           :integer          default(1)
-#  keyword         :string
-#  special_tag     :string
-#  status          :integer          default(0)
-#  success_count   :integer          default(0)
-#  fail_count      :integer          default(0)
-#  refresh_time    :datetime
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  max_retry_count :integer          default(2)
-#  warning_count   :integer          default(0)
+#  id                   :integer          not null, primary key
+#  spider_id            :integer
+#  level                :integer          default("1")
+#  keyword              :string
+#  special_tag          :string
+#  status               :integer          default("0")
+#  success_count        :integer          default("0")
+#  fail_count           :integer          default("0")
+#  refresh_time         :datetime
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  max_retry_count      :integer          default("2")
+#  warning_count        :integer          default("0")
+#  spider_cycle_task_id :integer
+#  task_type            :integer          default("1")
 #
 
 class SpiderTask < ApplicationRecord
@@ -23,6 +25,10 @@ class SpiderTask < ApplicationRecord
   validates :max_retry_count, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
 
   belongs_to :spider
+  belongs_to :spider_cycle_task,required: false
+
+  scope :cycle, -> {where().not(task_type: 1)}
+  scope :not_cycle, -> {where(task_type: 1)}
 
   after_create :enqueue
 

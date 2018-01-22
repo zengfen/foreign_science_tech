@@ -20,6 +20,7 @@ zh-CN:
         additional_function: "附加条件"
       spider_task:
         spider_id: "爬虫模板"
+        max_retry_count: "重试次数"
         level: "优先级别"
     errors:
       models:

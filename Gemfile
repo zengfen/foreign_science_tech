@@ -40,6 +40,7 @@ gem 'kaminari'
 
 #sidekiq 异步请求
 gem 'sidekiq'
+gem 'sidekiq-cron'
 gem 'redis-namespace'
 
 #db注释

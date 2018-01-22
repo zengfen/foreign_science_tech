@@ -10,6 +10,11 @@ defaults: &defaults
     password: 'XiJia12345'
     authentication: 'login'
     enable_starttls_auto: true
+  redis:
+    host: '127.0.0.1'
+    port: 6379
+    db: 0
+    password: '***'
 
 development:
   <<: *defaults
