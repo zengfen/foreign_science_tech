@@ -25,7 +25,7 @@ class LuceneController < ApplicationController
   end
 
   def reset
-    key = params[:id].gsub(/_\d+/,"")[0].to_s
+    key = params[:id].gsub(/_\d+/,"").to_s
     date = params[:id].match(/_(\d+)/)[1].to_s
     if Spider.index_categories.values.include?(key) || !date.blank?
       key.classify.constantize.create_index(date)
