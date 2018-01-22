@@ -1,11 +1,10 @@
-
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
 
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>爬虫节点</h5>
+          <h5>主机<%= @ip %></h5>
         </div>
 
         <div class="ibox-content pl15">
@@ -31,7 +30,7 @@
                   <a class="btn btn-primary mb0" href="/commands/new" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
                     添加命令</a>
 
-<!--                   <a class="btn btn-primary " href="#" >
+                  <!--                   <a class="btn btn-primary " href="#" >
                     按钮2</a> -->
                 </div>
               </div>
@@ -43,29 +42,30 @@
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
               <li class="tab-li active">
-                <a href="#" data-target="all-page">全部主机列表</a>
+                <a href="#" data-target="all-page">详情</a>
               </li>
             </ul>
 
             <div class="ibox-content p15-0 all-page table-content">
               <table class="table table-striped table-bordered table-hover table-vcenter">
-                <thead>
-                  <tr>
-                    <th class="text-center">主机IP</th>
-                    <th class="text-center">国家</th>
-                    <th class="text-center">心跳时间</th>
-                    <th class="text-center">运行状态</th>
-                    <th class="text-center">操作</th>
-                  </tr>
-                </thead>
                 <tbody class="text-center">
-                  <% @agents.each do |h| %>
+                  <tr>
+                    <td>IP</td>
+                    <td><%= @ip %></td>
+                  </tr>
+                  <tr>
+                    <td>心跳时间</td>
+                    <td><%= time_ago_in_words(@heartbeat_at) %></td>
+                  </tr>
+                  <tr>
+                    <td>国家</td>
+                    <td><%= @country %></td>
+                  </tr>
+
+                  <% @services.each do |k, v| %>
                     <tr>
-                      <td><%= h[0] %></td>
-                      <td><%= h[1] %></td>
-                      <td><%= time_ago_in_words(h[2]) %>前</td>
-                      <td><%= h[3] %></td>
-                      <td><a href="/hosts/show?ip=<%= h[0] %>" >查看</a></td>
+                      <td><%= Host.get_service_name(k) %></td>
+                      <td><%= Host.get_status(@heartbeat_at.to_i, v) %></td>
                     </tr>
                   <% end %>
                 </tbody>

@@ -1,0 +1,22 @@
+<tr>
+  <td><%= inx["index"]%></td>
+  <td><%= inx["health"] %></td>
+  <td><%= inx["status"] %></td>
+  <td><%= inx["pri"] %></td>
+  <td><%= inx["rep"] %></td>
+  <td><%= inx["docs.count"] %></td>
+  <td><%= inx["store.size"] %></td>
+  <td class="pos-r">
+    <a href="##">
+      <i class="icon_data_analysis icon-more"></i>
+    </a>
+    <ul class="more-ul dn">
+      <li class="bor-b">
+        <%= link_to "重建","/lucene"%>
+      </li>
+      <li>
+        <%= link_to "删除","/lucene"%>
+      </li>
+    </ul>
+  </td>
+</tr>

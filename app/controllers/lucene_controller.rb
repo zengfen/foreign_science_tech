@@ -1,9 +1,20 @@
 class LuceneController < ApplicationController
   def index
-    opts = {}
-    opts[:category] = params[:category] if  !params[:category].blank?
-    opts[:spider_name] = params[:keyword] if !params[:keyword].blank?
-    @spiders = Spider.where(opts).order("created_at desc").page(params[:page]).per(10)
-    @spider = Spider.new
+
+    link = "http://10.27.3.39:9200/_cat/indices/*news*,*weibo*?format=json&pretty&s=docs.count:desc"
+    if !params[:category].blank? || !params[:keyword].blank?
+      key = params[:category].blank? ? params[:keyword] : params[:category]
+      link = "http://10.27.3.39:9200/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
+    end
+    Rails.logger.info(link)
+    body = RestClient.get(link).body
+    indices = JSON.parse(body)
+    @indices = Kaminari.paginate_array(indices, total_count: indices.count).page(params[:page]).per(100)
+
   end
+
+  def create_index
+
+  end
+
 end

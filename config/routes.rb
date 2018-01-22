@@ -42,6 +42,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :monitoring do
+    collection do
+      get 'lucene'
+    end
+  end
+
   resources :templates do
     member do
     end
@@ -52,7 +58,7 @@ Rails.application.routes.draw do
       get 'load_edit_form'
     end
   end
-  resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders
+  resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors
 
   resources :tasks do
     collection do

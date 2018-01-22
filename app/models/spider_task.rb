@@ -122,17 +122,17 @@ class SpiderTask < ApplicationRecord
 
 
   def success_count
-    $archon_redis.scard("archon_tasks_completed_#{self.id}")
+    $archon_redis.scard("archon_completed_tasks_#{self.id}")
   end
 
 
   def fail_count
-    $archon_redis.scard("archon_tasks_discard_#{self.id}")
+    $archon_redis.scard("archon_discard_tasks_#{self.id}")
   end
 
 
   def warning_count
-    $archon_redis.scard("archon_tasks_warning_#{self.id}")
+    $archon_redis.scard("archon_warning_tasks_#{self.id}")
   end
 
 

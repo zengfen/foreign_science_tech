@@ -1,7 +1,7 @@
-class DispatchersController < ApplicationController
+class SupervisorsController < ApplicationController
 
   def index
-    service_name = 'dispatcher'
+    service_name = 'supervisor'
     @agents = []
     $archon_redis.keys('archon_host_services_*').each do |key|
       status = $archon_redis.hget(key, service_name)
