@@ -24,4 +24,21 @@ class LuceneController < ApplicationController
     redirect_to "/lucene/index"
   end
 
+  def reset
+    key = params[:id].split("_")[0]
+    date = params[:id].split("_")[1]
+    if Spider.index_categories.values.include?(key) || !date.blank?
+      key.classify.constantize.create_index(date)
+    else
+      render :json=>"invalid index"
+      return
+    end
+    redirect_to "/lucene/index"
+  end
+
+  def remove
+    $elastic.indices.delete index:"#{params[:id]}"
+    redirect_to "/lucene/index"
+  end
+
 end
