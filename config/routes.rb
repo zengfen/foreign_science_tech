@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       get 'index'
       get 'reset'
       get 'remove'
+      get 'console'
     end
   end
 
