@@ -33,7 +33,7 @@ class LuceneController < ApplicationController
       render :json=>"invalid index"
       return
     end
-    redirect_to "/lucene/index"
+    render json: {type: "success",message:"操作成功！"}
   end
 
   def remove
