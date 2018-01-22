@@ -38,17 +38,23 @@
   </div>
 </div>
 <script type="text/javascript">
-  $('#begin_date').datetimepicker({
+  $('#begin_date').datepicker({
       //todayBtn: "linked",
       //keyboardNavigation: false,
       //forceParse: false,
       //calendarWeeks: true,
-      startView: 'decade',
-      minView: 'year',
+  
+      //startView: 'decade',
+      //minView: 'year',
       autoclose: true,
-      format: 'yyyy-mm'
+      format: 'yyyy-mm'，
+      showButtonPanel: true,
+      stepMonths: 0,
+      onSelect: function(selectedDate) {
+     console.log(selectedDate);
+   }
   });
-  $('#end_date').datetimepicker({
+  $('#end_date').datepicker({
       startView: 'decade',
       minView: 'year',
       autoclose: true,
