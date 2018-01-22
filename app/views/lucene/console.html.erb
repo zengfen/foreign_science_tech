@@ -34,69 +34,49 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-6">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content text-center p-md">
-          <h4 class="m-b-xxs">Basci left side nabigation layout </h4>
-          <small>(main layout)</small>
-          <p>Avalible configure options</p>
-          <span class="simple_tag">Collapse menu</span>
-          <span class="simple_tag">Fixed sidebar</span>
-          <span class="simple_tag">Scroll navbar</span>
-          <span class="simple_tag">Top fixed navbar</span>
-          <span class="simple_tag">Boxed layout</span>
-          <span class="simple_tag">Scroll footer</span>
-          <span class="simple_tag">Fixed footer</span>
-          <div class="m-t-md">
-            <p>Check the Dashboard v.4 with basic layout</p>
-            <div class="p-lg">
-              <a href="/dashboards/dashboard_4_1"><img class="img-responsive img-shadow" src="http://templet.aggso.com/assets/dashbard4_1-1141c546a628711ec54f7d938116e2be952858dd505bf0d97cf6f0c2ec293063.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content text-center p-md">
-          <h4 class="m-b-xxs">Full height - Outlook view <span class="label label-primary">NEW</span></h4>
-          <small>(optional layout)</small>
-          <p>Avalible configure options</p>
-          <span class="simple_tag">Scroll navbar</span>
-          <span class="simple_tag">Boxed layout</span>
-          <span class="simple_tag">Scroll footer</span>
-          <span class="simple_tag">Fixed footer</span>
-          <div class="m-t-md">
-            <p>Check the Outlook view in in full height page</p>
-            <div class="p-lg ">
-              <a href="/appviews/outlook_view"><img class="img-responsive img-shadow" src="http://templet.aggso.com/assets/full_height-3e9650c8aed268aa012dfbf6921d28af8d5e8f621135bcfa09e29bf4906feab3.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content text-center p-md">
-          <h4 class="m-b-xxs">Off canvas menu <span class="label label-primary">NEW</span></h4>
-          <small>(optional layout)</small>
-          <p>Avalible configure options</p>
-          <span class="simple_tag">Collapse menu</span>
-          <span class="simple_tag">Fixed sidebar</span>
-          <span class="simple_tag">Top fixed navbar</span>
-          <span class="simple_tag">Boxed layout</span>
-          <span class="simple_tag">Scroll footer</span>
-          <span class="simple_tag">Fixed footer</span>
-          <div class="m-t-md">
-            <p>Check the off canvas menu on example article page</p>
-            <div class="p-lg">
-              <a href="/layoutsoptions/off_canvas"><img class="img-responsive img-shadow" src="http://templet.aggso.com/assets/off_canvas-9c03eedda759003848645e284f03c87fc817cab963e2e965e6967bfdd7e8fc48.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="col-lg-6" id="tree">
     </div>
   </div>
 </div>
+<% content_for :javascript do %>
+  <script>
+    function getTree() {
+        var data = [
+      {
+    text:"Parent 1",
+    nodes: [
+      {
+        text:"Child 1",
+        nodes: [
+          {
+            text:"Grandchild 1"
+          },
+          {
+            text:"Grandchild 2"
+          }
+        ]
+      },
+      {
+        text:"Child 2"
+      }
+    ]
+      },
+      {
+    text:"Parent 2"
+      },
+      {
+    text:"Parent 3"
+      },
+      {
+    text:"Parent 4"
+      },
+      {
+    text:"Parent 5"
+      }
+    ];
+        return data;
+    }
+    
+    $('#tree').treeview({data: getTree()});
+  </script>
+<% end %>
