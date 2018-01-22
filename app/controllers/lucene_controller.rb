@@ -19,7 +19,7 @@ class LuceneController < ApplicationController
       render :json=>"category is null"
       return
     end
-    create_index(params[:category],yms)
+    Spider.create_index(params[:category],yms)
     redirect_to :index
   end
 
