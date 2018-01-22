@@ -5,6 +5,8 @@ class ArchonNews
   end
 
   def self.create_index(date)
+    $elastic = Elasticsearch::Client.new hosts:[{ host: "10.46.226.135",port: "9200",user: "elastic",password: "changeme"},{ host: "10.27.3.39",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.145",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.192",port: "9200",user: "elastic",password: "changeme"}],randomize_hosts: true, log: false,send_get_body_as: "post"
+
     es_table_name = "#{table_name}_#{date}"
     if !($elastic.indices.exists? index: "#{es_table_name}")
       $elastic.indices.create index: "#{es_table_name}", type:"#{es_table_name}", body: {
