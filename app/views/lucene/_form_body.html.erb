@@ -7,7 +7,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">索引类别</label>
             <div class="col-sm-10">
-              <%= f.select(:category,Spider.categories.to_a,{},{class: "form-control m-b"}) %>
+              <%= select_tag(:category,Spider.categories.to_a,{},{class: "form-control m-b"}) %>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -15,11 +15,11 @@
             <label class="col-sm-2 control-label">时间区间</label>
             <div class="col-sm-5">
               <div id="ionrange_3"></div>
-              <%= f.text_field :start_time,:placeholder=>"开始时间",:class=>"form-control"%>
+              <%= text_field_tag :start_time,:placeholder=>"开始时间",:class=>"form-control"%>
             </div>
             <div class="col-sm-5">
               <div id="ionrange_3"></div>
-              <%= f.text_field :end_time,:placeholder=>"结束时间",:class=>"form-control"%>
+              <%= text_field_tag :end_time,:placeholder=>"结束时间",:class=>"form-control"%>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
