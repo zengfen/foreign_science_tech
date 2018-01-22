@@ -3,7 +3,7 @@ class LuceneController < ApplicationController
 
     link = "http://10.27.3.39:9200/_cat/indices/?format=json&pretty&s=docs.count:desc"
     if !params[:category].blank? || !params[:keyword].blank?
-      key = params[:keyword].blank? ? params[:category] : params[:keyword]
+      key = params[:category].blank? ? params[:keyword] : params[:category]
       link = "http://10.27.3.39:9200/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
     end
     Rails.logger.info(link)
