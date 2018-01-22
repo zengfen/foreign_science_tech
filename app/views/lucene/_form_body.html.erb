@@ -46,13 +46,13 @@
   
       //startView: 'decade',
       //minView: 'year',
-      autoclose: true,
-      format: 'yyyy-mm',
-      showButtonPanel: true,
-      stepMonths: 0,
-      onSelect: function(selectedDate) {
-        console.log(selectedDate);
-      }
+          changeYear: true,          // 年下拉菜单
+         changeMonth: true,             // 月下拉菜单
+         showButtonPanel: true,         // 显示按钮面板
+         showMonthAfterYear: true,  // 月份显示在年后面
+         currentText: "本月",         // 当前日期按钮提示文字
+         closeText: "关闭",           // 关闭按钮提示文字
+         dateFormat: "yy-mm"      // 日期格式
   });
   
   $('#end_date').datepicker({
