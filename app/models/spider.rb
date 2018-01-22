@@ -92,4 +92,11 @@ class Spider < ApplicationRecord
     end
     return spider
   end
+
+  def self.create_index(category,dates)
+    dates.each do |date|
+      category.classify.constantize.create_index(date)
+    end
+  end
+
 end
