@@ -39,16 +39,18 @@
 </div>
 <script type="text/javascript">
   $('#begin_date').datepicker({
-     changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
+      //todayBtn: "linked",
+      //keyboardNavigation: false,
+      //forceParse: false,
+      //calendarWeeks: true,
+      startView: 'year',
+      minView: 'year',
       autoclose: true,
       format: 'yyyy-mm'
   });
   $('#end_date').datepicker({
-     changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
+      startView: 'year',
+      minView: 'year',
       autoclose: true,
       format: 'yyyy-mm'
   });
