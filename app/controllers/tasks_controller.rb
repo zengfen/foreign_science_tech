@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
-
+  before_action :logged_in_user
+  
   def index
   	opts = {}
     opts[:special_tag] = params[:keyword] if !params[:keyword].blank?

@@ -18,6 +18,7 @@ module ArchonCenter
     config.i18n.default_locale = 'zh-CN'
     config.active_record.default_timezone = :local
     config.time_zone = 'Beijing'
+    config.active_job.queue_adapter = :sidekiq
   end
 end
 

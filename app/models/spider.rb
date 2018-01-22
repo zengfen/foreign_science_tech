@@ -5,9 +5,9 @@
 #  id                  :integer          not null, primary key
 #  spider_name         :string
 #  spider_type         :integer
-#  network_environment :integer          default(1)
-#  proxy_support       :boolean          default(FALSE)
-#  has_keyword         :boolean          default(FALSE)
+#  network_environment :integer          default("1")
+#  proxy_support       :boolean          default("false")
+#  has_keyword         :boolean          default("false")
 #  template_name       :string
 #  category            :string
 #  additional_function :json             is an Array
@@ -16,6 +16,7 @@
 #
 
 class Spider < ApplicationRecord
+	has_many :spider_cycle_tasks,dependent: :destroy
 	has_many :spider_tasks, dependent: :destroy
 
   validates :spider_name, presence: true, length: { maximum: 50 },

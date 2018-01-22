@@ -25,6 +25,14 @@ Rails.application.routes.draw do
       collection do
       end
     end
+    resources :spider_cycle_tasks do
+      member do
+        get 'start'
+        get 'stop'
+      end
+      collection do
+      end
+    end
   end
 
 
@@ -60,5 +68,13 @@ Rails.application.routes.draw do
     end
   end
   resources :password_resets, only: %i[new create edit update]
+
+  require 'sidekiq/web'
+  require 'sidekiq/cron/web'
+  mount Sidekiq::Web, at: '/sidekiq'
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == 'archon' && password == 'archon'
+  end
+
   match ':controller(/:action(/:id))(.:format)', via: :all
 end
