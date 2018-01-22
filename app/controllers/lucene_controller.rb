@@ -20,7 +20,7 @@ class LuceneController < ApplicationController
       return
     end
     Spider.create_index(params[:category],yms)
-    redirect_to :index
+    redirect_to "/lucene/index"
   end
 
 end
