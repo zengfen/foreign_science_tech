@@ -38,7 +38,7 @@ class LuceneController < ApplicationController
 
   def remove
     $elastic.indices.delete index:"#{params[:id]}"
-    redirect_to "/lucene/index"
+    #redirect_to "/lucene/index"
   end
 
 end
