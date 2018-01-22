@@ -280,39 +280,345 @@
 <% content_for :javascript do %>
   <script>
     function getTree() {
-        var data = [
-      {
-    text:"Parent 1",
-    nodes: [
-      {
-        text:"Child 1",
-        nodes: [
-          {
-            text:"Grandchild 1"
-          },
-          {
-            text:"Grandchild 2"
-          }
-        ]
+        var data = {
+      "took": 1243,
+      "timed_out": false,
+      "_shards": {
+    "total": 10,
+    "successful": 10,
+    "failed": 0
       },
+      "hits": {
+    "total": 1,
+    "max_score": 16.428444,
+    "hits": [
       {
-        text:"Child 2"
+        "_index": "person_records",
+        "_type": "person_record",
+        "_id": "3313285",
+        "_score": 16.428444,
+        "_source": {
+          "id": 3313285,
+          "full_name": "Tabatha  Hickman",
+          "normal_name": "Tabatha Hickman",
+          "gender": "Female",
+          "ob_record_id": "11009219",
+          "crunchbase_uid": null,
+          "linkedin_id": null,
+          "facebook_id": null,
+          "twitter_id": null,
+          "edus": null,
+          "birthday": null,
+          "relevance_pfa2_images": [],
+          "relevance_pfa2_deceaseds": [
+            {
+              "deceased": "No"
+            }
+          ],
+          "relevance_pfa2_addresses": [
+            {
+              "address_line": "Birmingham Road",
+              "address_city": "Stratford-upon-Avon;England",
+              "address_country": "UK",
+              "url": ""
+            }
+          ],
+          "relevance_pfa2_role_details": [],
+          "relevance_pfa2_date_details": [],
+          "relevance_pfa2_birth_places": [],
+          "relevance_pfa2_descriptions": [
+            {
+              "id": 2981313,
+              "pfa2_record_id": 11009219,
+              "code_pfa2_description1_list_id": 3,
+              "code_pfa2_description2_list_id": 9,
+              "code_pfa2_description3_list_id": null,
+              "created_at": "2017-11-08T15:44:30.177Z",
+              "updated_at": "2017-11-08T15:44:30.177Z",
+              "code_pfa2_description1_list": {
+                "record_type": "Person",
+                "name": "Special Interest Person (SIP)"
+              },
+              "code_pfa2_description2_list": {
+                "name": "Trafficking"
+              }
+            }
+          ],
+          "relevance_pfa2_name_details": [
+            {
+              "name_detail_type": "Surname",
+              "value": "Hickman",
+              "code_pfa2_name_type_list": {
+                "record_type": "Entity",
+                "name": "Primary Name"
+              }
+            },
+            {
+              "name_detail_type": "FirstName",
+              "value": "Tabatha",
+              "code_pfa2_name_type_list": {
+                "record_type": "Entity",
+                "name": "Primary Name"
+              }
+            }
+          ],
+          "relevance_pfa2_profile_notes": [
+            {
+              "profile_note": "Keywords: conspiracy, narcotics People mentioned: Tabatha Hickman Profile:Tabatha Hickman was sentenced to two years in prison, suspended for two years, at Warwick Crown Court on February 10, 2017, after pleading guilty to two counts of conspiracy to supply Class A drugs, namely crack cocaine and heroin worth GBP 300,000 between September 2013 and December 2014.The court heard that a total of 21 individuals were arrested as a result of an 18-month joint investigation by the Serious and Organised Crime Unit of Warwickshire Police and West Mercia Police codenamed Operation Southall, which targeted a Wolverhampton-based drug dealing ring that stretched to Warwickshire and Worcestershire. According to the prosecution, the defendants were arrested in June 2015 after the execution of warrants across Wolverhampton and Stratford-upon-Avon."
+            }
+          ],
+          "relevance_pfa2_vessel_details": [],
+          "relevance_pfa2_id_number_types": [],
+          "relevance_pfa2_active_statuses": [
+            {
+              "status": "Active"
+            }
+          ],
+          "relevance_pfa2_company_details": [],
+          "relevance_pfa2_country_details": [
+            {
+              "country_type": "Country of Reported Allegation",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Resident of",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Citizenship",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            }
+          ],
+          "relevance_pfa2_source_descriptions": [
+            {
+              "source_name": "Birmingham Mail, 14-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMAI0020170214ed2e0001d&cat=a&ep=ASE)"
+            },
+            {
+              "source_name": "coventrytelegraph.net, 10-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=COVENONL20170210ed2a0018h&cat=a&ep=ASE)"
+            },
+            {
+              "source_name": "birminghammail.co.uk, 11-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMONL020170211ed2b00108&cat=a&ep=ASE)"
+            }
+          ],
+          "analyzer_relevance_pfa2_country_details": [
+            {
+              "country_type": "Country of Reported Allegation",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Resident of",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Citizenship",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            }
+          ],
+          "relevance_pfa2_sanctions_references": [],
+          "pfa2_associations": [
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009210,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009211,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009212,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009213,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009214,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009215,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009216,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009217,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009218,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009220,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009221,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009222,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009223,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009230,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009231,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009232,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009233,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009234,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009235,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009236,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            }
+          ],
+          "created_at": "2018-01-15T15:07:05.303Z",
+          "updated_at": "2018-01-15T15:07:05.303Z",
+          "youtobe_id": null,
+          "instagram_id": null,
+          "baike_id": null,
+          "wiki_id": null,
+          "country_name": null,
+          "state_name": null,
+          "region": null,
+          "city": null,
+          "address": null,
+          "primary_organization_id": null,
+          "organization_category": null
+        }
       }
     ]
-      },
-      {
-    text:"Parent 2"
-      },
-      {
-    text:"Parent 3"
-      },
-      {
-    text:"Parent 4"
-      },
-      {
-    text:"Parent 5"
       }
-    ];
+    }
         return data;
     }
     
