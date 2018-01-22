@@ -38,7 +38,7 @@
   </div>
 </div>
 <script type="text/javascript">
-  $('#begin_date').datepicker({
+  $('#begin_date').datetimepicker({
       //todayBtn: "linked",
       //keyboardNavigation: false,
       //forceParse: false,
@@ -46,16 +46,13 @@
   
       //startView: 'decade',
       //minView: 'year',
-          changeYear: true,          // 年下拉菜单
-         changeMonth: true,             // 月下拉菜单
-         showButtonPanel: true,         // 显示按钮面板
-         showMonthAfterYear: true,  // 月份显示在年后面
-         currentText: "本月",         // 当前日期按钮提示文字
-         closeText: "关闭",           // 关闭按钮提示文字
-         dateFormat: "yy-mm"      // 日期格式
+      startView: 'decade',
+      minView: 'year',
+      autoclose: true,
+      format: 'yyyy-mm'
   });
   
-  $('#end_date').datepicker({
+  $('#end_date').datetimepicker({
       startView: 'decade',
       minView: 'year',
       autoclose: true,
