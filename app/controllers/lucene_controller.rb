@@ -14,7 +14,7 @@ class LuceneController < ApplicationController
   end
 
   def create_index
-
+    render :json=> params
   end
 
 end
