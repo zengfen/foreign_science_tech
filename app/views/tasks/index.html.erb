@@ -10,7 +10,9 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+           <% form_url = params.permit(:task_type, :action).clone
+            %>
+          <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
                 <div class="col-md-9">
@@ -47,7 +49,7 @@
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-           <% url = params.permit(:controller, :action).clone
+           <% url = params.permit(:controller, :action,:keyword).clone
             %>
             <li class="tab-li <%= is_active_params(params, "task_type", nil) %>">
               <a href="<%= url_for(url.merge(:task_type => nil))%>" data-target="all-page">任务列表</a>
