@@ -65,7 +65,7 @@ Rails.application.routes.draw do
 
   resources :tasks do
     collection do
-      get 'index'
+      get 'get_spider'
       get 'error_tasks'
     end
   end

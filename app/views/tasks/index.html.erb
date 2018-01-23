@@ -13,11 +13,11 @@
           <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-8">
+                <div class="col-md-9">
                   <div class="form-group mb0">
 
                     <input type="text" placeholder="特殊标签" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                    <i class="search-line" style=></i>
+                    <i class="search-line" ></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
 
@@ -27,13 +27,18 @@
                   <!-- <a class="btn btn-primary btn-warning w70 mb0">
                     搜索</a> -->
                 </div>
-<!--                 <div class="ibox-tools fr">
-                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加</a>
-                    
+                <div class="ibox-tools fr">
+                <div class="btn-group pull-left">
+                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fa fa-plus"></i>添加任务</button>
+                    <ul class="dropdown-menu">
+                        <li><a class='add-spider-task'>单次任务</a></li>
+                        <li><a class='add-spider-cycle-task'>周期任务</a></li>
+                    </ul>
+                </div>
+<!--                     
                     <a class="btn btn-primary " href="#" >
-                    按钮2</a>
-                </div> -->
+                    按钮2</a> -->
+                </div>
               </div>
 
           <%end%>
@@ -58,6 +63,61 @@
     </div>
   </div>
 
+<!--这里是提示框-->
+<div id="modal-form-remove" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 460px;top: 190px;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="m-t-none m-b">提示</h3>
+            <div class="hr-line-dashed"></div>
+            <p class="text-center">
+            <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
+            <div class="hr-line-dashed"></div>
+            <div>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
+                                                                                     
+                <strong>确定</strong></button>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
+                                                                                      
+                <strong>取消</strong></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-form-add-spider-task" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">添加单次任务</h4>
+      </div>
+      <div class="modal-body">
+        <!-- modal-body -->
+        <%=render "spider_task_form"%>
+      </div>
+    </div>
+    </div>
+</div>
+<div id="modal-form-add-spider-cycle-task" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">添加周期任务</h4>
+      </div>
+      <div class="modal-body">
+        <!-- modal-body -->
+        <%=render "spider_cycle_task_form"%>
+      </div>
+    </div>
+    </div>
+</div>
   <% content_for :javascript do %>
     <script>
 
@@ -137,9 +197,14 @@ $(document)
 });
 
 
-$('.add-sql').on('click', function (e) {
+$('.add-spider-task').on('click', function (e) {
   e.preventDefault();
-  var $modal = $('#modal-form-add-sql');
+  var $modal = $('#modal-form-add-spider-task');
+  $modal.modal("show");
+})
+$('.add-spider-cycle-task').on('click', function (e) {
+  e.preventDefault();
+  var $modal = $('#modal-form-add-spider-cycle-task');
   $modal.modal("show");
 })
 

@@ -30,7 +30,7 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.start!
 
-    redirect_to spider_spider_tasks_path(@spider)
+    redirect_to "/tasks"
   end
 
 
@@ -38,13 +38,13 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.stop!
 
-    redirect_to spider_spider_tasks_path(@spider)
+    redirect_to "/tasks"
   end
 
 
   private
   def spider_task_params
-  		params.require(:spider_task).permit(:spider_id,:special_tag, :level, :keyword)
+  		params.require(:spider_task).permit(:spider_id,:special_tag, :level, :keyword,:max_retry_count)
   end
 
   def get_spider
