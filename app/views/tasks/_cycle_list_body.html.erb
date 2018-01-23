@@ -22,7 +22,7 @@
     </tbody>
   </table>
   <div class="text-center">
-    <%= paginate @spider_cycle_tasks%>
+    <%= paginate @spider_cycle_tasks,params: {:task_type => 0}%>
   </div>
 <%else%>
    <%= render "shared/no_data" %>
