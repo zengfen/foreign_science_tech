@@ -10,7 +10,9 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+           <% form_url = params.permit(:task_type, :action).clone
+            %>
+          <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
                 <div class="col-md-9">
@@ -32,7 +34,7 @@
                     <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><i class="fa fa-plus"></i>添加任务</button>
                     <ul class="dropdown-menu">
                         <li><a class='add-spider-task'>单次任务</a></li>
-                        <li><a class='add-spider-cycle-task'>周期任务</a></li>
+                        <li><a class='add-spider-cycle-task'>周期规则</a></li>
                     </ul>
                 </div>
 <!--                     
@@ -47,13 +49,21 @@
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-            <li class="tab-li active">
-              <a href="#" data-target="all-page">列表信息</a>
+           <% url = params.permit(:controller, :action,:keyword).clone
+            %>
+            <li class="tab-li <%= is_active_params(params, "task_type", nil) %>">
+              <a href="<%= url_for(url.merge(:task_type => nil))%>" data-target="all-page">任务列表</a>
             </li>
-              </ul>
+            <li class="tab-li <%= is_active_params(params, "task_type", "0") %>">
+              <a href="<%= url_for(url.merge(:task_type => 0))%>" data-target="cycle-page">周期规则</a>
+            </li>
+            </ul>
 
-            <div class="ibox-content p15-0 all-page table-content">
+            <div class="ibox-content p15-0 all-page table-content <%=params[:task_type].blank? ? '': 'dn' %>">
               <%= render "list_body" %>
+            </div>
+            <div class="ibox-content p15-0 cycle-page  table-content <%=params[:task_type]=="0" ? '': 'dn' %> ">
+              <%= render "cycle_list_body" %>
             </div>
 
         </div>
@@ -207,7 +217,20 @@ $('.add-spider-cycle-task').on('click', function (e) {
   var $modal = $('#modal-form-add-spider-cycle-task');
   $modal.modal("show");
 })
-
+$(".submit_btn").on('click', function (e) {
+    $this = $(this);
+    $form = $this.closest('form');
+    var str = $form.find('.spider').val();
+    if (str == ''){
+    swal({
+        title: "提示",
+        text: "请选择爬虫模版！",
+        type: "error",
+    })
+    }else{
+      $form.submit();
+    }
+});
     </script>
   <% end %>
 

@@ -18,6 +18,10 @@ module ApplicationHelper
     nil
   end
 
+  def is_active_params(params,key,value)
+    params[key] == value ? "active" : nil
+  end
+  
   def show_boolean_cn(obj)
   	(obj)? "是":"否" rescue "-"
   end

@@ -22,7 +22,7 @@ class SpiderTasksController < ApplicationController
 	  message = 	@spider_task.save_with_spilt_keywords
 	  flash[message.keys.first.to_sym] = message.values.first
 
-  	redirect_to spider_spider_tasks_path(@spider)
+  	redirect_back(fallback_location:tasks_path)
   end
 
 
@@ -30,7 +30,7 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.start!
 
-    redirect_to "/tasks"
+    redirect_back(fallback_location:tasks_path)
   end
 
 
@@ -38,7 +38,7 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.stop!
 
-    redirect_to "/tasks"
+    redirect_back(fallback_location:tasks_path)
   end
 
 
