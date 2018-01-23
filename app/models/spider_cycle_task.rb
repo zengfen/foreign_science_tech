@@ -32,7 +32,7 @@ class SpiderCycleTask < ApplicationRecord
   before_destroy :destroy_job!
 
   def status_cn
-    cn_hash = { 0 => '等待执行', 1 => '执行中', 2 => "已暂停"}
+    cn_hash = { 0 => "未启动",1 =>"周期运行中", 2 => "已停止"}
     cn_hash[status]
   end
 
@@ -40,18 +40,27 @@ class SpiderCycleTask < ApplicationRecord
   	self.task_job_run!
   end
 
+	def can_stop?
+		self.status == 1
+	end
+
+	def can_start?
+		self.status == 0 || self.status == 2
+	end
+
   def job_name
     "CycleTaskJob-#{self.id}"
   end
 
   def self.period_list
   	{
-  		"month"=>{:cron=>"* * * */1 *",:time=>1.month},
-      "week"=>{:cron=>"* * * * */1",:time=>1.week},
-      "day"=>{:cron=>"* * */1 * *",:time=> 1.day},
-      "hour"=>{:cron=>"* */1 * * *",:time=> 1.hour},
-      "30min"=>{:cron=>"*/30 * * * *",:time=>30.minutes},
-      "10min"=>{:cron=>"*/10 * * * *",:time=> 10.minutes},
+  		"1month"=>{:cron=>"0 0 1 * * Asia/Shanghai",:time=>1.month},
+      "1week"=>{:cron=>"0 0 * * 1 Asia/Shanghai",:time=>1.week},
+      "1day"=>{:cron=>"0 0 * * * Asia/Shanghai",:time=> 1.day},
+      "1hour"=>{:cron=>"0 * * * * Asia/Shanghai",:time=> 1.hour},
+      "30mins"=>{:cron=>"*/30 * * * * Asia/Shanghai",:time=>30.minutes},
+      "10mins"=>{:cron=>"*/10 * * * * Asia/Shanghai",:time=> 10.minutes},
+
     }
   end
 
@@ -60,29 +69,41 @@ class SpiderCycleTask < ApplicationRecord
   end
 
   def task_job_run!
+  	return if !self.can_start?
+
   	cron = Sidekiq::Cron::Job.find self.job_name
-  	Sidekiq::Cron::Job.create(name: self.job_name, cron: self.period_opts[:cron], class: 'CycleTaskJob', args:  { id: self.id }) if cron.blank?
+  	Sidekiq::Cron::Job.create(name: self.job_name, cron: self.period_opts[:cron], class: 'CycleTaskJob', args:  { id: self.id }) if cron.blank? 
+
+  	self.update_attributes({:status=>1})
   end
 
   def destroy_job!
   	cron = Sidekiq::Cron::Job.find self.job_name
   	Sidekiq::Cron::Job.destroy self.job_name if !cron.blank?
+  end
+
+  def stop_job!
+  	return if !self.can_stop?
+
+  	job = Sidekiq::Cron::Job.find self.job_name
+  	Sidekiq::Cron::Job.destroy self.job_name if !job.blank?
   	self.update_attributes({:status=>2})
   end
 
   def create_sub_task
-  	self.update_attributes({:status=>1})
   	st_params  = JSON.parse(self.dup.to_json).deep_symbolize_keys.merge!({:spider_cycle_task_id=>self.id,:task_type=>2})
   	st_params.delete(:period)
   	st_params.delete(:next_time)
   	st_params.delete(:status)
   	st = SpiderTask.new(st_params)
   	st.save
+  	#创建完成后自动运行
+  	st.start!
   	st
   end
 
   def update_next_time
-  	self.update_attributes(:next_time=>Time.now+(self.period_opts[:time]),:status=>0)
+  	self.update_attributes(:next_time=>Time.now+(self.period_opts[:time]))
   end
 
   def save_with_spilt_keywords

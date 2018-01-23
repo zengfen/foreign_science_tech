@@ -17,7 +17,7 @@
             <label class="col-sm-2 control-label">重试次数</label>
             <div class="col-sm-10">
               <div id="ionrange_4"></div>
-              <%= f.hidden_field :max_retry_count, :class=>"level_num"%>
+              <%= f.hidden_field :max_retry_count, :class=>"retry_num"%>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -66,13 +66,13 @@ $("#ionrange_3").ionRangeSlider({
 $("#ionrange_4").ionRangeSlider({
   min: 1,
   max: 10,
-  from: 1,
+  from: <%=raw @spider_task.max_retry_count.to_i%>,
   //postfix: "",
   grid: true,
   grid_num: 9,
   onFinish: function (data) {
   console.log(data)
-  $(".level_num").val(data.from);
+  $(".retry_num").val(data.from);
 }
 });
   </script>

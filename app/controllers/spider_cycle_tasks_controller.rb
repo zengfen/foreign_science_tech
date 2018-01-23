@@ -1,27 +1,17 @@
 class SpiderCycleTasksController < ApplicationController
+	before_action :logged_in_user
 	before_action :get_spider
-
-  def index
-		opts = {}
-    opts[:special_tag] = params[:keyword] if !params[:keyword].blank?
-		@spider_tasks = @spider.spider_tasks.where(opts).order("created_at desc").page(params[:page]).per(10)
-		@spider_cycle_task = SpiderCycleTask.new
-  end
-
-  def new
-  	@spider_cycle_task = SpiderCycleTask.new
-  end
 
   def show
 
   end
 
   def create
-  	@spider_cycle_task = SpiderCycleTask.new(spider_task_params)
+  	@spider_cycle_task = SpiderCycleTask.new(spider_cycle_task_params)
 	  message = 	@spider_cycle_task.save_with_spilt_keywords
 	  flash[message.keys.first.to_sym] = message.values.first
 
-  	redirect_to spider_spider_cycle_tasks_path(@spider)
+  	redirect_to "/tasks"
   end
 
 
@@ -35,7 +25,7 @@ class SpiderCycleTasksController < ApplicationController
 
   def stop
     @spider_cycle_task = SpiderCycleTask.find_by(id: params[:id])
-    @spider_cycle_task.destroy_job!
+    @spider_cycle_task.stop_job!
 
     redirect_to spider_spider_cycle_tasks_path(@spider)
   end
@@ -43,7 +33,7 @@ class SpiderCycleTasksController < ApplicationController
 
   private
   def spider_cycle_task_params
-  		params.require(:spider_cycle_task).permit(:spider_id,:special_tag, :level, :keyword,:period)
+  		params.require(:spider_cycle_task).permit(:spider_id,:special_tag, :level, :keyword,:period,:max_retry_count)
   end
 
   def get_spider
