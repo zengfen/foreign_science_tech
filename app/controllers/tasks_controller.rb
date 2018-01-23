@@ -41,7 +41,9 @@ class TasksController < ApplicationController
   def destroy_error_task
   	@spider_task = SpiderTask.find(params[:id])
   	$archon_redis.hdel("archon_task_errors_#{@spider_task.id}",params[:task_md5])
-    redirect_back(fallback_location:error_tasks_task_path(@spider_task))
+    
+    render json: {type: "success",message:"删除成功！"} 
+    #redirect_back(fallback_location:error_tasks_task_path(@spider_task))
   end
 
   def get_spider
