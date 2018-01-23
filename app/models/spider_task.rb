@@ -137,7 +137,7 @@ class SpiderTask < ApplicationRecord
 
 
   def current_total_count
-    $archon_redis.hlen("archon_tasks_#{self.id}")
+    $archon_redis.hlen("archon_task_details_#{self.id}")
   end
 
 
