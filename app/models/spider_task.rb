@@ -131,6 +131,9 @@ class SpiderTask < ApplicationRecord
     $archon_redis.scard("archon_discard_tasks_#{self.id}")
   end
 
+  def error_count
+    $archon_redis.hlen("archon_task_errors_#{self.id}")
+  end
 
   def warning_count
     $archon_redis.scard("archon_warning_tasks_#{self.id}")
@@ -163,7 +166,7 @@ class SpiderTask < ApplicationRecord
     redis_keys = []
     redis_keys << "archon_tasks_#{self.id}"
 
-    %w(task_details completed_tasks discard_tasks warning_tasks ).map{|x| redis_keys<< "archon_#{x}_#{self.id}" }
+    %w(task_details completed_tasks discard_tasks warning_tasks task_errors ).map{|x| redis_keys<< "archon_#{x}_#{self.id}" }
 
     redis_keys.map{|x| $archon_redis.del(x)}
   end

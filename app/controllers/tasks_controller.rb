@@ -23,15 +23,14 @@ class TasksController < ApplicationController
 
   def error_tasks
   	@task = SpiderTask.find(params[:id])
-  	@error_details = $archon_redis.hget("archon_tasks_errors_#{@task.id}")
-  end
+  	detail_data = $archon_redis.hgetall("archon_task_errors_#{@task.id}")
 
-  def new_spider_task
-  	@spider_task = SpiderTask.new
-  end
+  	return render json: {type: "error",message:"失败任务数为空"} if detail_data.blank?
+  	
+  	total_detail_keys = detail_data.keys 
+    @detail_keys =  Kaminari.paginate_array(total_detail_keys).page(params[:page]).per(10)
+    @error_tasks = detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@task.id}", x)) rescue {}}
 
-  def new_spider_cycle_task
-  	@spider_cycle_task = SpiderCycleTask.new
   end
 
   def get_spider

@@ -1,0 +1,20 @@
+<td><%= error_task["task_md5"]%></td>
+<td><%= error_task["url"]%></td>
+<td><%= error_task["retry_count"] %></td>
+<td><%= error_task["max_retry_count"] %></td>
+<td class="pos-r">
+  <a href="##">
+    <i class="icon_data_analysis icon-more"></i>
+  </a>
+  <ul class="more-ul dn">
+   <li class="bor-b">
+      <%= link_to('#',:title=>"重试",:remote=>true) do  %>
+        重试
+      <%end%>
+    </li>
+    <li>
+      <%=link_to("#",:class=>"remove-line") do%>删除<%end%>
+    </li>
+
+  </ul>
+</td>

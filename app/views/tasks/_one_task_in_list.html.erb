@@ -5,6 +5,7 @@
 <td><%= raw status_html(spider_task)%></td>
 <td><%= spider_task.success_count %></td>
 <td><%= spider_task.fail_count %></td>
+<td><%=link_to(spider_task.error_count,error_tasks_task_path(spider_task))%></td>
 <td><%= spider_task.warning_count %></td>
 <td><%= show_format_time(spider_task.created_at) %></td>
 <td class="pos-r">

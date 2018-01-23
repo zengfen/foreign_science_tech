@@ -64,9 +64,11 @@ Rails.application.routes.draw do
   resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors
 
   resources :tasks do
+    member do
+      get 'error_tasks'
+    end
     collection do
       get 'get_spider'
-      get 'error_tasks'
     end
   end
 
