@@ -15,6 +15,14 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
+      <div class="mail-box-header">
+        <div class="pull-right tooltip-demo">
+          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Search</a>
+        </div>
+        <h2>
+          Code
+        </h2>
+      </div>
       <div class="mail-box">
         <div class="mail-text h-200">
           <div class="summernote">
@@ -26,11 +34,6 @@
             <br />
           </div>
           <div class="clearfix"></div>
-        </div>
-        <div class="mail-body text-right tooltip-demo">
-          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> Send</a>
-          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> Discard</a>
-          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Draft</a>
         </div>
         <div class="clearfix"></div>
       </div>
@@ -386,6 +389,8 @@
     
         //$('.summernote').summernote();
         $('.summernote').summernote({
+          height: 400,
+          minHeight: 300,
           toolbar: [
           // [groupName, [list of button]]
           // ['style', ['bold', 'italic', 'underline', 'clear']],
