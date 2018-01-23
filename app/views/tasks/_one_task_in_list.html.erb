@@ -8,19 +8,31 @@
   <td><%= spider_task.fail_count %></td>
   <td><%= spider_task.warning_count %></td>
   <td><%= show_format_time(spider_task.created_at) %></td>
-  <td>
-    <% if spider_task.can_start? %>
-      <%= link_to(start_spider_spider_task_path(spider_task.spider, spider_task),:title=>"启动",:class=>"label label-info") do %>
-     <!--  <i class="fa fa-play"></i> -->
-      启动
-      <%end%>
-    <% end %>
+  <td class="pos-r">
+    <a href="##">
+      <i class="icon_data_analysis icon-more"></i>
+    </a>
+    <ul class="more-ul dn">
+		<% if spider_task.can_start? %>
+		 <li class="bor-b">
+		    <%= link_to(start_spider_spider_task_path(spider_task.spider, spider_task),:title=>"启动") do %>
+		     <!--  <i class="fa fa-play"></i> -->
+		      启动
+		    <%end%>
+		  </li>
+		<% end %>
+    <% if spider_task.can_stop?  %>
+		 <li class="bor-b">
+		    <%= link_to(stop_spider_spider_task_path(spider_task.spider, spider_task),:title=>"暂停") do %>
+		     <!--  <i class="fa fa-play"></i> -->
+		      暂停
+		    <%end%>
+		  </li>
+		<% end %>
+      <li>
+        <%=link_to(spider_spider_task_path(spider_task.spider, spider_task),:class=>"remove-line") do%>删除<%end%>
+      </li>
 
-    <% if spider_task.can_stop? %>
-      <%= link_to(stop_spider_spider_task_path(spider_task.spider, spider_task),:title=>"暂停",:class=>"label label-warning") do %>
-      <!-- 	<i class="fa fa-pause"></i> -->
-      暂停
-      <%end%>
-    <% end %>
+    </ul>
   </td>
 </tr>

@@ -41,6 +41,13 @@ class SpiderTasksController < ApplicationController
     redirect_back(fallback_location:tasks_path)
   end
 
+  def destroy
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.destroy
+
+   render json: {type: "success",message:"删除成功！"} 
+  end
+
 
   private
   def spider_task_params
