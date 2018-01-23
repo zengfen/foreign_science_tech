@@ -1,427 +1,241 @@
-<div class="wrapper wrapper-content animated fadeInRight">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-content text-center p-md">
-          <h2><span class="text-navy">INSPINIA - Responsive Admin Theme</span>
-            is provided with two main layouts <br>
-            three skins and separate configure options.</h2>
-          <p>
-            All config options you can trun on/off from the theme box configuration (green icon on the left side of page).
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="mail-box-header">
-        <div class="pull-right tooltip-demo">
-          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Search</a>
-        </div>
-        <h2>
-          Code
-        </h2>
-      </div>
-      <div class="mail-box">
-        <div class="mail-text h-200">
-          <div class="summernote">
-            GET /person_records/_search
-            {
-            "query": {
-            "bool": {
-            "must": [
-            {"term": {
-            "gender": {
-            "value": "Female"
-            }
-            }},
-            {"nested": {
-            "path": "relevance_pfa2_addresses",
-            "query": {
-            "bool": {
-            "must": [
-            {"match": {
-            "relevance_pfa2_addresses.address_country": "UK"
-            }}
-            ]
-            }
-            }
-            }}
-            ]
-            }
-            }
-            }
+<html class="no-js" lang="en"><head><meta charset="utf-8"><meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"><title>Elastic HD Dashboard</title><meta content="bibinbin" name="author"><meta content="elasticsearch go Edition head plugin" name="description"><meta content="ElasticHD" name="keywords"><link href="/static/css/app.ff12067c7a90148fbef795a571260723.css" rel="stylesheet">
+    <style type="text/css">
+      .tree-view-item[_v-31243933] {
+        font-family: monospace;
+        font-size: 14px;
+        margin-left: 18px;
+      }
+      
+      .tree-view-item-node[_v-31243933] {
+        cursor: pointer;
+        position: relative;
+        white-space: nowrap;
+      }
+      
+      .tree-view-item-leaf[_v-31243933] {
+        white-space: nowrap;
+      }
+      
+      .tree-view-item-key[_v-31243933] {
+        font-weight: bold;
+      }
+      
+      .tree-view-item-key-with-chevron[_v-31243933] {
+        padding-left: 14px;
+      }
+      
+      
+      .tree-view-item-key-with-chevron.opened[_v-31243933]::before {
+          top:4px;
+          transform: rotate(90deg);
+          -webkit-transform: rotate(90deg);
+      }
+      
+      .tree-view-item-key-with-chevron[_v-31243933]::before {
+          color: #444;
+          content: '\25B6';
+          font-size: 10px;
+          left: 1px;
+          position: absolute;
+          top: 3px;
+          transition: -webkit-transform .1s ease;
+          transition: transform .1s ease;
+          transition: transform .1s ease, -webkit-transform .1s ease;
+          -webkit-transition: -webkit-transform .1s ease;
+      }
+      
+      .tree-view-item-hint[_v-31243933] {
+        color: #ccc
+      }
+    </style><style type="text/css">
+      .tree-view-wrapper[_v-59eacf80] {
+        overflow: auto;
+      }
+      
+      /* Find the first nested node and override the indentation */
+      .tree-view-item-root > .tree-view-item-leaf > .tree-view-item[_v-59eacf80] {
+        margin-left: 0!important;
+      }
+      
+      /* Root node should not be indented */
+      .tree-view-item-root[_v-59eacf80] {
+        margin-left: 0!important;
+      }
+    </style><style type="text/css">
+      @keyframes resizeanim { from { opacity: 0; } to { opacity: 0; } }
+            .resize-triggers { animation: 1ms resizeanim; visibility: hidden; opacity: 0; }
+            .resize-triggers, .resize-triggers > div, .contract-trigger:before { content: " "; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; z-index: -1 }
+            .resize-triggers > div { background: #eee; overflow: auto; }
+            .contract-trigger:before { width: 200%; height: 200%; }
+    </style></head><body>
+    <div id="app">
+      <div id="home"><nav role="navigation" id="elastic-hd-header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0px;">
+          <div class="container-fluid">
+            <div class="navbar-header"><a id="elastic-logo-color" href="/" class="navbar-brand"><i class="fa fa-dashboard fa-x"></i> ElasticHD</a></div>
+            <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+              <form role="search" class="navbar-form navbar-left">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-sitemap fa-1x"></i></div>
+                    <input id="elastic-host" class="form-control"></div>
+                  <button class="btn btn-primary">Connect</button></div>
+              </form>
+              <p class="navbar-text">集群健康状态：<span id="elastic-status" style="color: rgb(0, 20, 34); background: rgb(255, 255, 255); text-align: center; border-radius: 4px; font-weight: 800;">未连接</span></p>
+              <ul class="nav navbar-nav pull-right">
+                <li><a href="https://github.com/farmerx" target="_blank"><i class="fa fa-github"></i> Star On GitHub</a></li>
+              </ul>
+            </div>
           </div>
-          <div class="clearfix"></div>
+        </nav>
+        <div id="wrapper" class="container-fluid" style="padding: 0px;">
+          <div id="sidebar-view">
+            <section id="sidebar"><i id="toggle" class="fa fa-reorder fa-2x"></i>
+              <ul id="dock">
+                <li class="launcher"><i class="fa fa-dashboard"></i> <a id="Dashboard">Dashboard</a></li>
+                <li class="launcher active"><i class="fa fa-search"></i> <a id="Query">Query</a></li>
+                <li class="launcher"><i class="fa fa-list"></i> <a id="Indices">Indices</a></li>
+                <li class="launcher"><i class="fa fa-table"></i> <a id="Mapping">Mapping</a></li>
+                <li class="launcher"><i class="fa fa-gears"></i> <a id="Tools">Tools</a></li>
+                <li class="launcher"><i class="fa fa-comments-o"></i> <a id="Help">Help</a></li>
+                <li class="launcher"><i class="fa fa-eye"></i> <a id="Monitor">Monitor</a></li>
+                <li class="launcher"><i class="fa fa-search-plus"></i> <a id="QueryUI">QueryUI</a></li>
+              </ul>
+              <div id="beaker" class="el-tooltip"></div>
+            </section>
+          </div>
+          <div id="toolsbar-view">
+            <section id="tools">
+              <ul id="breadcrumb" class="breadcrumb">
+                <li class="title"><i class="fa fa-search"></i> Search【数据搜索】</li>
+              </ul>
+              <div id="toolbar">
+                <div class="btn-group"><a class="btn"><i class="el-tooltip fa fa-info-circle"></i></a></div>
+              </div>
+            </section>
+            <div tabindex="-1" class="el-dialog__wrapper" style="display: none;">
+              <div class="el-dialog el-dialog--tiny" style="top: 15%;">
+                <div class="el-dialog__header"><span class="el-dialog__title">提示</span><button type="button" aria-label="Close" class="el-dialog__headerbtn"><i class="el-dialog__close el-icon el-icon-close"></i></button></div>
+                <!---->
+                <div class="el-dialog__footer"><span class="dialog-footer"><button type="button" class="el-button el-button--default"><!----><!----><span>取 消</span></button> <button type="button" class="el-button el-button--primary"><!----><!----><span>确 定</span></button></span></div>
+              </div>
+            </div>
+          </div>
+          <div id="content">
+            <div>
+              <div id="search">
+                <section>
+                  <div class="el-row" style="margin-left: -5px; margin-right: -5px;">
+                    <div class="el-col el-col-24 el-col-xs-24 el-col-sm-24 el-col-md-10 el-col-lg-7" style="padding-left: 5px; padding-right: 5px;">
+                      <div>
+                        <div class="el-card box-card">
+                          <div class="el-card__header">
+                            <div class="clearfix"><span><i class="fa fa-search"></i> 搜索</span> <span style="float: right;"><a><i class="fa fa-history"></i> 历史查询</a></span> <span style="float: right; padding-right: 10px;"><a><i class="fa fa-lightbulb-o"></i> 提示</a></span></div>
+                          </div>
+                          <div class="el-card__body">
+                            <div>
+                              <div class="el-row">
+                                <div class="el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-12 el-col-lg-12">
+                                  <div class="el-input"><!----><!----><input autocomplete="off" placeholder="请输入要查询的索引" type="text" rows="2" validateevent="true" class="el-input__inner"><!----><!----></div>
+                                </div>
+                                <div class="el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-12 el-col-lg-12">
+                                  <div class="el-input el-input-group el-input-group--prepend">
+                                    <div class="el-input-group__prepend">/</div>
+                                    <!----><input autocomplete="off" placeholder="请输入要查询的type" type="text" rows="2" validateevent="true" class="el-input__inner"><!----><!----></div>
+                                </div>
+                              </div>
+                              <div class="el-row">
+                                <div class="el-col el-col-24 el-col-xs-15 el-col-sm-15 el-col-md-15 el-col-lg-16">
+                                  <div class="el-input"><!----><!----><input autocomplete="off" placeholder="请输入搜索参数" type="text" rows="2" validateevent="true" class="el-input__inner"><!----><!----></div>
+                                </div>
+                                <div class="el-col el-col-24 el-col-xs-9 el-col-sm-9 el-col-md-9 el-col-lg-8">
+                                  <div class="el-select"><!---->
+                                    <div class="el-input"><!----><i class="el-input__icon el-icon-caret-top"></i><input autocomplete="off" placeholder="请选择" readonly="readonly" icon="caret-top" type="text" rows="2" class="el-input__inner"><!----><!----></div>
+                                    <div class="resize-triggers">
+                                      <div class="expand-trigger">
+                                        <div style="width: 112px; height: 37px;"></div>
+                                      </div>
+                                      <div class="contract-trigger"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="el-row">
+                                <div class="el-col el-col-24 el-col-xs-24 el-col-sm-24 el-col-md-24 el-col-lg-24">
+                                  <div class="el-textarea">
+                                    <textarea placeholder="请输入内容" type="textarea" rows="20" autocomplete="off" validateevent="true" class="el-textarea__inner"></textarea>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="el-row">
+                                <div class="el-col el-col-24 el-col-xs-24 el-col-sm-24 el-col-md-24 el-col-lg-24">
+                                  <div class="el-button-group"><button type="button" class="el-button el-button--primary el-button--small"><!----><i class="el-icon-search"></i><span>查询</span></button> <button type="button" class="el-button el-button--primary el-button--small"><!----><i class="el-icon-check"></i><span>验证JSON</span></button></div>
+                                </div>
+                              </div>
+                              <div class="el-row">
+                                <div class="el-col el-col-24 el-col-xs-24 el-col-sm-24 el-col-md-24 el-col-lg-24"><span style="color: red;"></span></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="el-col el-col-24 el-col-xs-24 el-col-sm-24 el-col-md-14 el-col-lg-17" style="padding-left: 5px; padding-right: 5px;">
+                      <div>
+                        <div class="el-card box-card">
+                          <div class="el-card__header">
+                            <div class="clearfix"><span><i class="fa fa-search"></i>查询结果</span></div>
+                          </div>
+                          <div class="el-card__body">
+                            <div><!---->
+                              <div id="jsonView">
+                                <div class="jsonview">{
+                                  <ul class="obj level0">
+                                    <li><span class="prop"><span class="q">"</span>info<span class="q">"</span></span>: <span class="string">"Get http://127.0.0.1:9200///_search: dial tcp 127.0.0.1:9200: getsockopt: connection refused"</span></li>
+                                  </ul>
+                                  }</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <div tabindex="-1" class="el-dialog__wrapper" style="display: none;">
+                  <div class="el-dialog el-dialog--small" style="top: 15%;">
+                    <div class="el-dialog__header"><span class="el-dialog__title">历史记录</span><button type="button" aria-label="Close" class="el-dialog__headerbtn"><i class="el-dialog__close el-icon el-icon-close"></i></button></div>
+                    <!----><!----></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="clearfix"></div>
       </div>
     </div>
-    <div class="col-lg-6" id="tree">
-    </div>
-  </div>
-</div>
-<% content_for :javascript do %>
-  <script>
-    function getTree() {
-        var data = {
-      "took": 1243,
-      "timed_out": false,
-      "_shards": {
-    "total": 10,
-    "successful": 10,
-    "failed": 0
-      },
-      "hits": {
-    "total": 1,
-    "max_score": 16.428444,
-    "hits": [
-      {
-        "_index": "person_records",
-        "_type": "person_record",
-        "_id": "3313285",
-        "_score": 16.428444,
-        "_source": {
-          "id": 3313285,
-          "full_name": "Tabatha  Hickman",
-          "normal_name": "Tabatha Hickman",
-          "gender": "Female",
-          "ob_record_id": "11009219",
-          "crunchbase_uid": null,
-          "linkedin_id": null,
-          "facebook_id": null,
-          "twitter_id": null,
-          "edus": null,
-          "birthday": null,
-          "relevance_pfa2_images": [],
-          "relevance_pfa2_deceaseds": [
-            {
-              "deceased": "No"
-            }
-          ],
-          "relevance_pfa2_addresses": [
-            {
-              "address_line": "Birmingham Road",
-              "address_city": "Stratford-upon-Avon;England",
-              "address_country": "UK",
-              "url": ""
-            }
-          ],
-          "relevance_pfa2_role_details": [],
-          "relevance_pfa2_date_details": [],
-          "relevance_pfa2_birth_places": [],
-          "relevance_pfa2_descriptions": [
-            {
-              "id": 2981313,
-              "pfa2_record_id": 11009219,
-              "code_pfa2_description1_list_id": 3,
-              "code_pfa2_description2_list_id": 9,
-              "code_pfa2_description3_list_id": null,
-              "created_at": "2017-11-08T15:44:30.177Z",
-              "updated_at": "2017-11-08T15:44:30.177Z",
-              "code_pfa2_description1_list": {
-                "record_type": "Person",
-                "name": "Special Interest Person (SIP)"
-              },
-              "code_pfa2_description2_list": {
-                "name": "Trafficking"
-              }
-            }
-          ],
-          "relevance_pfa2_name_details": [
-            {
-              "name_detail_type": "Surname",
-              "value": "Hickman",
-              "code_pfa2_name_type_list": {
-                "record_type": "Entity",
-                "name": "Primary Name"
-              }
-            },
-            {
-              "name_detail_type": "FirstName",
-              "value": "Tabatha",
-              "code_pfa2_name_type_list": {
-                "record_type": "Entity",
-                "name": "Primary Name"
-              }
-            }
-          ],
-          "relevance_pfa2_profile_notes": [
-            {
-              "profile_note": "Keywords: conspiracy, narcotics People mentioned: Tabatha Hickman Profile:Tabatha Hickman was sentenced to two years in prison, suspended for two years, at Warwick Crown Court on February 10, 2017, after pleading guilty to two counts of conspiracy to supply Class A drugs, namely crack cocaine and heroin worth GBP 300,000 between September 2013 and December 2014.The court heard that a total of 21 individuals were arrested as a result of an 18-month joint investigation by the Serious and Organised Crime Unit of Warwickshire Police and West Mercia Police codenamed Operation Southall, which targeted a Wolverhampton-based drug dealing ring that stretched to Warwickshire and Worcestershire. According to the prosecution, the defendants were arrested in June 2015 after the execution of warrants across Wolverhampton and Stratford-upon-Avon."
-            }
-          ],
-          "relevance_pfa2_vessel_details": [],
-          "relevance_pfa2_id_number_types": [],
-          "relevance_pfa2_active_statuses": [
-            {
-              "status": "Active"
-            }
-          ],
-          "relevance_pfa2_company_details": [],
-          "relevance_pfa2_country_details": [
-            {
-              "country_type": "Country of Reported Allegation",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            },
-            {
-              "country_type": "Resident of",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            },
-            {
-              "country_type": "Citizenship",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            }
-          ],
-          "relevance_pfa2_source_descriptions": [
-            {
-              "source_name": "Birmingham Mail, 14-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMAI0020170214ed2e0001d&cat=a&ep=ASE)"
-            },
-            {
-              "source_name": "coventrytelegraph.net, 10-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=COVENONL20170210ed2a0018h&cat=a&ep=ASE)"
-            },
-            {
-              "source_name": "birminghammail.co.uk, 11-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMONL020170211ed2b00108&cat=a&ep=ASE)"
-            }
-          ],
-          "analyzer_relevance_pfa2_country_details": [
-            {
-              "country_type": "Country of Reported Allegation",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            },
-            {
-              "country_type": "Resident of",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            },
-            {
-              "country_type": "Citizenship",
-              "code_pfa2_country_list": {
-                "name": "United Kingdom",
-                "is_territory": "False",
-                "profile_url": "united kingdom.doc"
-              }
-            }
-          ],
-          "relevance_pfa2_sanctions_references": [],
-          "pfa2_associations": [
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009210,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009211,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009212,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009213,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009214,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009215,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009216,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009217,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009218,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009220,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009221,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009222,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009223,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009230,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009231,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009232,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009233,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009234,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009235,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            },
-            {
-              "type": "Pfa2Associations::PublicFigure",
-              "children_id": 11009236,
-              "ex": "No",
-              "code_pfa2_relationship_list": {
-                "name": "Associated Special Interest Person"
-              }
-            }
-          ],
-          "created_at": "2018-01-15T15:07:05.303Z",
-          "updated_at": "2018-01-15T15:07:05.303Z",
-          "youtobe_id": null,
-          "instagram_id": null,
-          "baike_id": null,
-          "wiki_id": null,
-          "country_name": null,
-          "state_name": null,
-          "region": null,
-          "city": null,
-          "address": null,
-          "primary_organization_id": null,
-          "organization_category": null}}]}};
-        return eval(data);
-    
-    }
-    $("#tree").JSONView(getTree(), { collapsed: false });
-  </script>
-  <script type="text/javascript">
-    $(function() {
-    
-        //$('.summernote').summernote();
-        $('.summernote').summernote({
-          height: 1500,
-          minHeight: 1000,
-          toolbar: [
-          // [groupName, [list of button]]
-          // ['style', ['bold', 'italic', 'underline', 'clear']],
-          // ['font', ['strikethrough', 'superscript', 'subscript']],
-          // ['fontsize', ['fontsize']],
-          // ['color', ['color']],
-          // ['para', ['ul', 'ol', 'paragraph']],
-          // ['height', ['height']]
-          ]
-        });
-    
-    });
-  </script>
-<% end %>
+    <script type="text/javascript" src="/static/js/manifest.1c2c32b0b2549f55b943.js"></script><script type="text/javascript" src="/static/js/vendor.6f5cbf6a122d00b60da1.js"></script><script type="text/javascript" src="/static/js/app.5a400aa3e4ff3f9b1a12.js"></script>
+    <div class="el-select-dropdown" style="min-width: 110.797px; transform-origin: center top 0px; z-index: 2002; display: none;">
+      <div class="el-scrollbar" style="">
+        <div class="el-select-dropdown__wrap el-scrollbar__wrap el-scrollbar__wrap--hidden-default">
+          <ul class="el-scrollbar__view el-select-dropdown__list" style="position: relative;"><!---->
+            <li class="el-select-dropdown__item selected hover"><span>GET</span></li>
+            <li class="el-select-dropdown__item"><span>PUT</span></li>
+            <li class="el-select-dropdown__item"><span>DELETE</span></li>
+            <li class="el-select-dropdown__item"><span>POST</span></li>
+            <li class="el-select-dropdown__item"><span>HEAD</span></li>
+            <div class="resize-triggers">
+              <div class="expand-trigger">
+                <div style="width: 110px; height: 193px;"></div>
+              </div>
+              <div class="contract-trigger"></div>
+            </div>
+          </ul>
+        </div>
+        <div class="el-scrollbar__bar is-horizontal">
+          <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+        </div>
+        <div class="el-scrollbar__bar is-vertical">
+          <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+        </div>
+      </div>
+      <!----></div>
+  </body></html>
