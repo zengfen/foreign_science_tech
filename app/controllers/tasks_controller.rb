@@ -29,7 +29,7 @@ class TasksController < ApplicationController
   	
   	total_detail_keys = detail_data.keys 
     @detail_keys =  Kaminari.paginate_array(total_detail_keys).page(params[:page]).per(10)
-    @error_tasks = detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@task.id}", x)) rescue {}}
+    @error_tasks = @detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@task.id}", x)) rescue {}}
 
   end
 
