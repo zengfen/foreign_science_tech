@@ -11,7 +11,7 @@ class SpiderCycleTasksController < ApplicationController
 	  message = 	@spider_cycle_task.save_with_spilt_keywords
 	  flash[message.keys.first.to_sym] = message.values.first
 
-  	redirect_to "/tasks"
+  	redirect_back(fallback_location:tasks_path)
   end
 
 
@@ -19,7 +19,7 @@ class SpiderCycleTasksController < ApplicationController
     @spider_cycle_task = SpiderCycleTask.find_by(id: params[:id])
     @spider_cycle_task.task_job_run!
 
-    redirect_to spider_spider_cycle_tasks_path(@spider)
+    redirect_back(fallback_location:tasks_path,:taks_type=>0)
   end
 
 
@@ -27,7 +27,7 @@ class SpiderCycleTasksController < ApplicationController
     @spider_cycle_task = SpiderCycleTask.find_by(id: params[:id])
     @spider_cycle_task.stop_job!
 
-    redirect_to spider_spider_cycle_tasks_path(@spider)
+    redirect_back(fallback_location:tasks_path,:taks_type=>0)
   end
 
 

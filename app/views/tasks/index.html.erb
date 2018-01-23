@@ -47,13 +47,21 @@
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-            <li class="tab-li active">
-              <a href="#" data-target="all-page">列表信息</a>
+           <% url = params.permit(:controller, :action).clone
+            %>
+            <li class="tab-li <%= is_active_params(params, "task_type", nil) %>">
+              <a href="<%= url_for(url.merge(:task_type => nil))%>" data-target="all-page">任务列表</a>
             </li>
-              </ul>
+            <li class="tab-li <%= is_active_params(params, "task_type", "0") %>">
+              <a href="<%= url_for(url.merge(:task_type => 0))%>" data-target="cycle-page">周期规则</a>
+            </li>
+            </ul>
 
-            <div class="ibox-content p15-0 all-page table-content">
+            <div class="ibox-content p15-0 all-page table-content <%=params[:task_type].blank? ? '': 'dn' %>">
               <%= render "list_body" %>
+            </div>
+            <div class="ibox-content p15-0 cycle-page  table-content <%=params[:task_type]=="0" ? '': 'dn' %> ">
+              <%= render "cycle_list_body" %>
             </div>
 
         </div>
