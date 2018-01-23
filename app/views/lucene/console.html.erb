@@ -1,214 +1,427 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width"><title>Kibana</title><style>
-      @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 300;
-        src: local('Open Sans Light'), local('OpenSans-Light'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_300.woff2') format('woff2'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_300.woff') format('woff'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_300.ttf') format('truetype'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_300.svg#OpenSans') format('svg');
-      }
-      @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 400;
-        src: local('Open Sans'), local('OpenSans'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_regular.woff2') format('woff2'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_regular.woff') format('woff'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_regular.ttf') format('truetype'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_regular.svg#OpenSans') format('svg');
-      }
-      @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 700;
-        src: local('Open Sans Bold'), local('OpenSans-Bold'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_700.woff2') format('woff2'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_700.woff') format('woff'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_700.ttf') format('truetype'),
-             url('/ui/fonts/open_sans/open_sans_v13_latin_700.svg#OpenSans') format('svg');
-      }
-    </style><link rel="apple-touch-icon" sizes="180x180" href="/ui/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" href="/ui/favicons/favicon-32x32.png" sizes="32x32"><link rel="icon" type="image/png" href="/ui/favicons/favicon-16x16.png" sizes="16x16"><link rel="manifest" href="/ui/favicons/manifest.json"><link rel="mask-icon" href="/ui/favicons/safari-pinned-tab.svg" color="#e8488b"><link rel="shortcut icon" href="/ui/favicons/favicon.ico"><meta name="msapplication-config" content="/ui/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><style>
-      .kibanaWelcomeView {
-        height: 100%;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1 0 auto;
-            -ms-flex: 1 0 auto;
-                flex: 1 0 auto;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-                flex-direction: column;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-            -ms-flex-align: center;
-                align-items: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-            -ms-flex-pack: center;
-                justify-content: center;
-        background: #FFFFFF;
-      }
-      
-      .kibanaWelcomeLogo {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        /* SVG optimized according to http://codepen.io/tigt/post/optimizing-svgs-in-data-uris */
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 154.03 200.11'%3E%3Ctitle%3ELogo-KibanaIcon%3C/title%3E%3Cpath opacity='0.7' fill='%23fff' d='M479.29,273.54L557,179.94H403v75c1,0,1.92-.07,2.89-0.07A152.78,152.78,0,0,1,479.29,273.54Z' transform='translate(-402.99 -179.94)'/%3E%3Cpolygon opacity='0.7' fill='%23fff' points='0 185.5 0 185.5 76.31 93.6 0 185.5'/%3E%3Cpath opacity='0.7' fill='%23fff' d='M499.17,286.52l2.14,1.66C500.61,287.62,499.89,287.07,499.17,286.52Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.7' fill='%23fff' d='M493.27,282.19l1.22,0.87Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.7' fill='%23fff' d='M504.4,290.74l-74,89.32H556.81A153.4,153.4,0,0,0,504.4,290.74Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.5' fill='%23fff' d='M492.54,281.67c-5.34-3.8-13.25-8.13-13.25-8.13a153.77,153.77,0,0,1,14,8.64Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.5' fill='%23fff' d='M504.43,290.7s-1.16-1-3.11-2.51c1,0.83,2.06,1.69,3.08,2.55Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.5' fill='%23fff' d='M494.49,283.06c1.59,1.12,3.15,2.29,4.69,3.47C497.81,285.49,496.23,284.31,494.49,283.06Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath opacity='0.5' fill='%23fff' d='M501.32,288.19l-2.14-1.66c-1.54-1.18-3.1-2.34-4.69-3.47l-1.22-.87a153.77,153.77,0,0,0-14-8.64L403,365.44v14.62h27.39l74-89.32C503.38,289.88,502.36,289,501.32,288.19Z' transform='translate(-402.99 -179.94)'/%3E%3Cpath fill='%23fff' d='M405.87,254.85c-1,0-1.92.06-2.89,0.07V365.44l76.31-91.9A152.78,152.78,0,0,0,405.87,254.85Z' transform='translate(-402.99 -179.94)'/%3E%3C/svg%3E");
-      }
-    </style></head><body kbn-chrome id="kibana-body"><kbn-initial-state data="{&quot;app&quot;:{&quot;id&quot;:&quot;kibana&quot;,&quot;title&quot;:&quot;Kibana&quot;,&quot;description&quot;:&quot;the kibana you know and love&quot;,&quot;main&quot;:&quot;plugins/kibana/kibana&quot;,&quot;navLink&quot;:{&quot;id&quot;:&quot;kibana&quot;,&quot;title&quot;:&quot;Kibana&quot;,&quot;order&quot;:0,&quot;url&quot;:&quot;/app/kibana&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana&quot;,&quot;description&quot;:&quot;the kibana you know and love&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;}},&quot;nav&quot;:[{&quot;id&quot;:&quot;kibana:discover&quot;,&quot;title&quot;:&quot;Discover&quot;,&quot;order&quot;:-1003,&quot;url&quot;:&quot;/app/kibana#/discover&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana#/discover&quot;,&quot;description&quot;:&quot;interactively explore your data&quot;,&quot;icon&quot;:&quot;plugins/kibana/assets/discover.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;kibana:visualize&quot;,&quot;title&quot;:&quot;Visualize&quot;,&quot;order&quot;:-1002,&quot;url&quot;:&quot;/app/kibana#/visualize&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana#/visualize&quot;,&quot;description&quot;:&quot;design data visualizations&quot;,&quot;icon&quot;:&quot;plugins/kibana/assets/visualize.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;kibana:dashboard&quot;,&quot;title&quot;:&quot;Dashboard&quot;,&quot;order&quot;:-1001,&quot;url&quot;:&quot;/app/kibana#/dashboards&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana#/dashboard&quot;,&quot;description&quot;:&quot;compose visualizations for much win&quot;,&quot;icon&quot;:&quot;plugins/kibana/assets/dashboard.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;timelion&quot;,&quot;title&quot;:&quot;Timelion&quot;,&quot;order&quot;:-1000,&quot;url&quot;:&quot;/app/timelion&quot;,&quot;subUrlBase&quot;:&quot;/app/timelion&quot;,&quot;description&quot;:&quot;Time series expressions for everything&quot;,&quot;icon&quot;:&quot;plugins/timelion/icon.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;ml&quot;,&quot;title&quot;:&quot;Machine Learning&quot;,&quot;order&quot;:0,&quot;url&quot;:&quot;/app/ml&quot;,&quot;subUrlBase&quot;:&quot;/app/ml&quot;,&quot;description&quot;:&quot;Machine Learning for the Elastic Stack&quot;,&quot;icon&quot;:&quot;plugins/ml/ml.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;graph&quot;,&quot;title&quot;:&quot;Graph&quot;,&quot;order&quot;:9000,&quot;url&quot;:&quot;/app/graph&quot;,&quot;subUrlBase&quot;:&quot;/app/graph&quot;,&quot;description&quot;:&quot;Graph exploration&quot;,&quot;icon&quot;:&quot;plugins/graph/icon.png&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;kibana:dev_tools&quot;,&quot;title&quot;:&quot;Dev Tools&quot;,&quot;order&quot;:9001,&quot;url&quot;:&quot;/app/kibana#/dev_tools&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana#/dev_tools&quot;,&quot;description&quot;:&quot;development tools&quot;,&quot;icon&quot;:&quot;plugins/kibana/assets/wrench.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;monitoring&quot;,&quot;title&quot;:&quot;Monitoring&quot;,&quot;order&quot;:9002,&quot;url&quot;:&quot;/app/monitoring&quot;,&quot;subUrlBase&quot;:&quot;/app/monitoring&quot;,&quot;description&quot;:&quot;Monitoring for Elastic Stack&quot;,&quot;icon&quot;:&quot;plugins/monitoring/icons/monitoring.svg&quot;,&quot;linkToLastSubUrl&quot;:true,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;},{&quot;id&quot;:&quot;kibana:management&quot;,&quot;title&quot;:&quot;Management&quot;,&quot;order&quot;:9003,&quot;url&quot;:&quot;/app/kibana#/management&quot;,&quot;subUrlBase&quot;:&quot;/app/kibana#/management&quot;,&quot;description&quot;:&quot;define index patterns, change config, and more&quot;,&quot;icon&quot;:&quot;plugins/kibana/assets/settings.svg&quot;,&quot;linkToLastSubUrl&quot;:false,&quot;hidden&quot;:false,&quot;disabled&quot;:false,&quot;tooltip&quot;:&quot;&quot;}],&quot;version&quot;:&quot;5.4.0&quot;,&quot;buildNum&quot;:15063,&quot;buildSha&quot;:&quot;75afc9fbb024df55fa01acd1a4c2f76d44961746&quot;,&quot;basePath&quot;:&quot;&quot;,&quot;serverName&quot;:&quot;iZbp16donehwn89gsyaizpZ&quot;,&quot;devMode&quot;:false,&quot;translations&quot;:{&quot;UI-WELCOME_MESSAGE&quot;:&quot;Loading Kibana&quot;,&quot;UI-WELCOME_ERROR&quot;:&quot;Kibana did not load properly. Check the server output for more information.&quot;,&quot;KIBANA-CONFIGURE_INDEX_PATTERN&quot;:&quot;Configure an index pattern&quot;,&quot;KIBANA-MUST_CONFIGURE_INDEX_PATTERN&quot;:&quot;In order to use Kibana you must configure at least one index pattern. Index patterns are used to identify the Elasticsearch index to run search and analytics against. They are also used to configure fields.&quot;,&quot;KIBANA-CONTAINS_TIME_BASED_EVENTS&quot;:&quot;Index contains time-based events&quot;,&quot;KIBANA-INDEX_NAME_CREATED_BY_EVENT_TIMES&quot;:&quot;Use event times to create index names &quot;,&quot;KIBANA-DEPRECATED&quot;:&quot;[DEPRECATED]&quot;,&quot;KIBANA-ALERT_INDEX_PATTERN_DEPRECATED&quot;:&quot;Time-interval based index patterns are deprecated!&quot;,&quot;KIBANA-WE&quot;:&quot; We&quot;,&quot;KIBANA-STRONGLY_RECOMMEND&quot;:&quot; strongly recommend&quot;,&quot;KIBANA-WILD_CARD_PATTERN&quot;:&quot; using wildcard pattern names instead of time-interval based index patterns.&quot;,&quot;KIBANA-RECOMMEND_WILD_CARD_PATTERN_DETAILS&quot;:&quot;Kibana is now smart enough to automatically determine which indices to search against within the current time range for wildcard index patterns. This means that wildcard index patterns now get the same performance optimizations when searching within a time range as time-interval patterns.&quot;,&quot;KIBANA-INDEX_PATTERN_INTERVAL&quot;:&quot;Index pattern interval&quot;,&quot;KIBANA-INDEX_NAME_OR_PATTERN&quot;:&quot;Index name or pattern&quot;,&quot;KIBANA-WILDCARD_DYNAMIC_INDEX_PATTERNS&quot;:&quot;Patterns allow you to define dynamic index names using * as a wildcard. Example: logstash-*&quot;,&quot;KIBANA-STATIC_TEXT_IN_DYNAMIC_INDEX_PATTERNS&quot;:&quot;Patterns allow you to define dynamic index names. Static text in an index name is denoted using brackets. Example: [logstash-]YYYY.MM.DD. Please note that weeks are setup to use ISO weeks which start on Monday.&quot;,&quot;KIBANA-NOTE_COLON&quot;:&quot;Note:&quot;,&quot;KIBANA-WEEKLY_ISO_NOTICE&quot;:&quot;I noticed you are using weekly indices. Kibana requires ISO weeks be used in your index creation.&quot;,&quot;KIBANA-EXPAND_INDEX_PATTERN&quot;:&quot;Expand index pattern when searching&quot;,&quot;KIBANA-WILDCARD_DEFAULT_EXPANDED_TO_CURRENT_TIME_RANGE&quot;:&quot;With this option selected, searches against any time-based index pattern that contains a wildcard will automatically be expanded to query only the indices that contain data within the currently selected time range.&quot;,&quot;KIBANA-SEARCH_AGAINST_INDEX_PATTERN&quot;:&quot;Searching against the index pattern &quot;,&quot;KIBANA-LOGSTASH_WILDCARD&quot;:&quot;logstash-*&quot;,&quot;KIBANA-ACTUALLY_QUERY&quot;:&quot; will actually query Elasticsearch for the specific matching indices (e.g. &quot;,&quot;KIBANA-EXAMPLE_TIME_RANGE&quot;:&quot;logstash-2015.12.21&quot;,&quot;KIBANA-FALL_WITHIN_CURRENT_TIME_RANGE&quot;:&quot;) that fall within the current time range.&quot;,&quot;KIBANA-EXPAND_INDEX_PATTERN_DEPRECATION&quot;:&quot;With recent changes to Elasticsearch, this option should no longer be necessary and will likely be removed in future versions of Kibana.&quot;,&quot;KIBANA-SAMPLE_ALERT&quot;:&quot;Attempted to match the following indices and aliases:&quot;,&quot;KIBANA-EXPAND_SEARCH&quot;:&quot;Expand Search&quot;,&quot;KIBANA-EXISTING_MATCH_PERCENT&quot;:&quot;Pattern matches {{indexExistingMatchPercent}} of existing indices and aliases&quot;,&quot;KIBANA-NON_MATCHING_INDICES_AND_ALIASES&quot;:&quot;Indices and aliases that were found, but did not match the pattern:&quot;,&quot;KIBANA-MORE&quot;:&quot;more&quot;,&quot;KIBANA-TIME_FIELD_NAME&quot;:&quot;Time-field name&quot;,&quot;KIBANA-REFRESH_FIELDS&quot;:&quot;refresh fields&quot;,&quot;KIBANA-INVALID_INDEX_PATTERN&quot;:&quot;Invalid index name pattern.&quot;,&quot;KIBANA-DATE_FORMAT_DOCS&quot;:&quot;Date Format Documentation&quot;,&quot;KIBANA-WIKI_ISO_WEEK_DATE&quot;:&quot;Wikipedia: ISO Week Date&quot;,&quot;KIBANA-NO_INDICES_MATCHING_PATTERN&quot;:&quot;Could not locate any indices matching that pattern. Please add the index to Elasticsearch&quot;,&quot;KIBANA-PATTERN_DOES_NOT_MATCH_EXIST_INDICES&quot;:&quot;Pattern does not match any existing indices&quot;,&quot;KIBANA-INVALID_NON_UNIQUE_INDEX_NAME_CREATED&quot;:&quot;Invalid pattern, interval does not create unique index names&quot;,&quot;KIBANA-FIELD_FILTER_EVENTS_GLOBAL_TIME&quot;:&quot;This field will be used to filter events with the global time filter&quot;,&quot;KIBANA-INTERVAL_INDEX_NAMES_ROTATE&quot;:&quot;The interval at which index names rotate.&quot;,&quot;KIBANA-WARNING&quot;:&quot;Warning&quot;,&quot;KIBANA-NO_DEFAULT_INDEX_PATTERN&quot;:&quot;No default index pattern. You must select or create one to continue.&quot;,&quot;KIBANA-LOADING&quot;:&quot;Loading&quot;,&quot;KIBANA-SET_INDEX_NAME_FIRST&quot;:&quot;Set an index name first&quot;,&quot;KIBANA-INTERVAL_INDICES_POPULATED&quot;:&quot;Select the interval at which your indices are populated.&quot;,&quot;KIBANA-INDICES_MATCH_PATTERN&quot;:&quot;Unable to fetch mapping. Do you have indices matching the pattern?&quot;,&quot;KIBANA-ADD_NEW&quot;:&quot;Add New&quot;,&quot;KIBANA-SEE&quot;:&quot;See&quot;,&quot;KIBANA-CREATE&quot;:&quot;Create&quot;},&quot;uiSettings&quot;:{&quot;defaults&quot;:{&quot;buildNum&quot;:{&quot;readonly&quot;:true},&quot;query:queryString:options&quot;:{&quot;value&quot;:&quot;{ \&quot;analyze_wildcard\&quot;: true }&quot;,&quot;description&quot;:&quot;&lt;a href=\&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html\&quot; target=\&quot;_blank\&quot;&gt;Options&lt;/a&gt; for the lucene query string parser&quot;,&quot;type&quot;:&quot;json&quot;},&quot;sort:options&quot;:{&quot;value&quot;:&quot;{ \&quot;unmapped_type\&quot;: \&quot;boolean\&quot; }&quot;,&quot;description&quot;:&quot;&lt;a href=\&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html\&quot; target=\&quot;_blank\&quot;&gt;Options&lt;/a&gt; for the Elasticsearch sort parameter&quot;,&quot;type&quot;:&quot;json&quot;},&quot;dateFormat&quot;:{&quot;value&quot;:&quot;MMMM Do YYYY, HH:mm:ss.SSS&quot;,&quot;description&quot;:&quot;When displaying a pretty formatted date, use this &lt;a href=\&quot;http://momentjs.com/docs/#/displaying/format/\&quot; target=\&quot;_blank\&quot;&gt;format&lt;/a&gt;&quot;},&quot;dateFormat:tz&quot;:{&quot;value&quot;:&quot;Browser&quot;,&quot;description&quot;:&quot;Which timezone should be used.  \&quot;Browser\&quot; will use the timezone detected by your browser.&quot;,&quot;type&quot;:&quot;select&quot;,&quot;options&quot;:[&quot;Browser&quot;,&quot;Africa/Abidjan&quot;,&quot;Africa/Accra&quot;,&quot;Africa/Addis_Ababa&quot;,&quot;Africa/Algiers&quot;,&quot;Africa/Asmara&quot;,&quot;Africa/Asmera&quot;,&quot;Africa/Bamako&quot;,&quot;Africa/Bangui&quot;,&quot;Africa/Banjul&quot;,&quot;Africa/Bissau&quot;,&quot;Africa/Blantyre&quot;,&quot;Africa/Brazzaville&quot;,&quot;Africa/Bujumbura&quot;,&quot;Africa/Cairo&quot;,&quot;Africa/Casablanca&quot;,&quot;Africa/Ceuta&quot;,&quot;Africa/Conakry&quot;,&quot;Africa/Dakar&quot;,&quot;Africa/Dar_es_Salaam&quot;,&quot;Africa/Djibouti&quot;,&quot;Africa/Douala&quot;,&quot;Africa/El_Aaiun&quot;,&quot;Africa/Freetown&quot;,&quot;Africa/Gaborone&quot;,&quot;Africa/Harare&quot;,&quot;Africa/Johannesburg&quot;,&quot;Africa/Juba&quot;,&quot;Africa/Kampala&quot;,&quot;Africa/Khartoum&quot;,&quot;Africa/Kigali&quot;,&quot;Africa/Kinshasa&quot;,&quot;Africa/Lagos&quot;,&quot;Africa/Libreville&quot;,&quot;Africa/Lome&quot;,&quot;Africa/Luanda&quot;,&quot;Africa/Lubumbashi&quot;,&quot;Africa/Lusaka&quot;,&quot;Africa/Malabo&quot;,&quot;Africa/Maputo&quot;,&quot;Africa/Maseru&quot;,&quot;Africa/Mbabane&quot;,&quot;Africa/Mogadishu&quot;,&quot;Africa/Monrovia&quot;,&quot;Africa/Nairobi&quot;,&quot;Africa/Ndjamena&quot;,&quot;Africa/Niamey&quot;,&quot;Africa/Nouakchott&quot;,&quot;Africa/Ouagadougou&quot;,&quot;Africa/Porto-Novo&quot;,&quot;Africa/Sao_Tome&quot;,&quot;Africa/Timbuktu&quot;,&quot;Africa/Tripoli&quot;,&quot;Africa/Tunis&quot;,&quot;Africa/Windhoek&quot;,&quot;America/Adak&quot;,&quot;America/Anchorage&quot;,&quot;America/Anguilla&quot;,&quot;America/Antigua&quot;,&quot;America/Araguaina&quot;,&quot;America/Argentina/Buenos_Aires&quot;,&quot;America/Argentina/Catamarca&quot;,&quot;America/Argentina/ComodRivadavia&quot;,&quot;America/Argentina/Cordoba&quot;,&quot;America/Argentina/Jujuy&quot;,&quot;America/Argentina/La_Rioja&quot;,&quot;America/Argentina/Mendoza&quot;,&quot;America/Argentina/Rio_Gallegos&quot;,&quot;America/Argentina/Salta&quot;,&quot;America/Argentina/San_Juan&quot;,&quot;America/Argentina/San_Luis&quot;,&quot;America/Argentina/Tucuman&quot;,&quot;America/Argentina/Ushuaia&quot;,&quot;America/Aruba&quot;,&quot;America/Asuncion&quot;,&quot;America/Atikokan&quot;,&quot;America/Atka&quot;,&quot;America/Bahia&quot;,&quot;America/Bahia_Banderas&quot;,&quot;America/Barbados&quot;,&quot;America/Belem&quot;,&quot;America/Belize&quot;,&quot;America/Blanc-Sablon&quot;,&quot;America/Boa_Vista&quot;,&quot;America/Bogota&quot;,&quot;America/Boise&quot;,&quot;America/Buenos_Aires&quot;,&quot;America/Cambridge_Bay&quot;,&quot;America/Campo_Grande&quot;,&quot;America/Cancun&quot;,&quot;America/Caracas&quot;,&quot;America/Catamarca&quot;,&quot;America/Cayenne&quot;,&quot;America/Cayman&quot;,&quot;America/Chicago&quot;,&quot;America/Chihuahua&quot;,&quot;America/Coral_Harbour&quot;,&quot;America/Cordoba&quot;,&quot;America/Costa_Rica&quot;,&quot;America/Creston&quot;,&quot;America/Cuiaba&quot;,&quot;America/Curacao&quot;,&quot;America/Danmarkshavn&quot;,&quot;America/Dawson&quot;,&quot;America/Dawson_Creek&quot;,&quot;America/Denver&quot;,&quot;America/Detroit&quot;,&quot;America/Dominica&quot;,&quot;America/Edmonton&quot;,&quot;America/Eirunepe&quot;,&quot;America/El_Salvador&quot;,&quot;America/Ensenada&quot;,&quot;America/Fort_Nelson&quot;,&quot;America/Fort_Wayne&quot;,&quot;America/Fortaleza&quot;,&quot;America/Glace_Bay&quot;,&quot;America/Godthab&quot;,&quot;America/Goose_Bay&quot;,&quot;America/Grand_Turk&quot;,&quot;America/Grenada&quot;,&quot;America/Guadeloupe&quot;,&quot;America/Guatemala&quot;,&quot;America/Guayaquil&quot;,&quot;America/Guyana&quot;,&quot;America/Halifax&quot;,&quot;America/Havana&quot;,&quot;America/Hermosillo&quot;,&quot;America/Indiana/Indianapolis&quot;,&quot;America/Indiana/Knox&quot;,&quot;America/Indiana/Marengo&quot;,&quot;America/Indiana/Petersburg&quot;,&quot;America/Indiana/Tell_City&quot;,&quot;America/Indiana/Vevay&quot;,&quot;America/Indiana/Vincennes&quot;,&quot;America/Indiana/Winamac&quot;,&quot;America/Indianapolis&quot;,&quot;America/Inuvik&quot;,&quot;America/Iqaluit&quot;,&quot;America/Jamaica&quot;,&quot;America/Jujuy&quot;,&quot;America/Juneau&quot;,&quot;America/Kentucky/Louisville&quot;,&quot;America/Kentucky/Monticello&quot;,&quot;America/Knox_IN&quot;,&quot;America/Kralendijk&quot;,&quot;America/La_Paz&quot;,&quot;America/Lima&quot;,&quot;America/Los_Angeles&quot;,&quot;America/Louisville&quot;,&quot;America/Lower_Princes&quot;,&quot;America/Maceio&quot;,&quot;America/Managua&quot;,&quot;America/Manaus&quot;,&quot;America/Marigot&quot;,&quot;America/Martinique&quot;,&quot;America/Matamoros&quot;,&quot;America/Mazatlan&quot;,&quot;America/Mendoza&quot;,&quot;America/Menominee&quot;,&quot;America/Merida&quot;,&quot;America/Metlakatla&quot;,&quot;America/Mexico_City&quot;,&quot;America/Miquelon&quot;,&quot;America/Moncton&quot;,&quot;America/Monterrey&quot;,&quot;America/Montevideo&quot;,&quot;America/Montreal&quot;,&quot;America/Montserrat&quot;,&quot;America/Nassau&quot;,&quot;America/New_York&quot;,&quot;America/Nipigon&quot;,&quot;America/Nome&quot;,&quot;America/Noronha&quot;,&quot;America/North_Dakota/Beulah&quot;,&quot;America/North_Dakota/Center&quot;,&quot;America/North_Dakota/New_Salem&quot;,&quot;America/Ojinaga&quot;,&quot;America/Panama&quot;,&quot;America/Pangnirtung&quot;,&quot;America/Paramaribo&quot;,&quot;America/Phoenix&quot;,&quot;America/Port-au-Prince&quot;,&quot;America/Port_of_Spain&quot;,&quot;America/Porto_Acre&quot;,&quot;America/Porto_Velho&quot;,&quot;America/Puerto_Rico&quot;,&quot;America/Rainy_River&quot;,&quot;America/Rankin_Inlet&quot;,&quot;America/Recife&quot;,&quot;America/Regina&quot;,&quot;America/Resolute&quot;,&quot;America/Rio_Branco&quot;,&quot;America/Rosario&quot;,&quot;America/Santa_Isabel&quot;,&quot;America/Santarem&quot;,&quot;America/Santiago&quot;,&quot;America/Santo_Domingo&quot;,&quot;America/Sao_Paulo&quot;,&quot;America/Scoresbysund&quot;,&quot;America/Shiprock&quot;,&quot;America/Sitka&quot;,&quot;America/St_Barthelemy&quot;,&quot;America/St_Johns&quot;,&quot;America/St_Kitts&quot;,&quot;America/St_Lucia&quot;,&quot;America/St_Thomas&quot;,&quot;America/St_Vincent&quot;,&quot;America/Swift_Current&quot;,&quot;America/Tegucigalpa&quot;,&quot;America/Thule&quot;,&quot;America/Thunder_Bay&quot;,&quot;America/Tijuana&quot;,&quot;America/Toronto&quot;,&quot;America/Tortola&quot;,&quot;America/Vancouver&quot;,&quot;America/Virgin&quot;,&quot;America/Whitehorse&quot;,&quot;America/Winnipeg&quot;,&quot;America/Yakutat&quot;,&quot;America/Yellowknife&quot;,&quot;Antarctica/Casey&quot;,&quot;Antarctica/Davis&quot;,&quot;Antarctica/DumontDUrville&quot;,&quot;Antarctica/Macquarie&quot;,&quot;Antarctica/Mawson&quot;,&quot;Antarctica/McMurdo&quot;,&quot;Antarctica/Palmer&quot;,&quot;Antarctica/Rothera&quot;,&quot;Antarctica/South_Pole&quot;,&quot;Antarctica/Syowa&quot;,&quot;Antarctica/Troll&quot;,&quot;Antarctica/Vostok&quot;,&quot;Arctic/Longyearbyen&quot;,&quot;Asia/Aden&quot;,&quot;Asia/Almaty&quot;,&quot;Asia/Amman&quot;,&quot;Asia/Anadyr&quot;,&quot;Asia/Aqtau&quot;,&quot;Asia/Aqtobe&quot;,&quot;Asia/Ashgabat&quot;,&quot;Asia/Ashkhabad&quot;,&quot;Asia/Baghdad&quot;,&quot;Asia/Bahrain&quot;,&quot;Asia/Baku&quot;,&quot;Asia/Bangkok&quot;,&quot;Asia/Barnaul&quot;,&quot;Asia/Beirut&quot;,&quot;Asia/Bishkek&quot;,&quot;Asia/Brunei&quot;,&quot;Asia/Calcutta&quot;,&quot;Asia/Chita&quot;,&quot;Asia/Choibalsan&quot;,&quot;Asia/Chongqing&quot;,&quot;Asia/Chungking&quot;,&quot;Asia/Colombo&quot;,&quot;Asia/Dacca&quot;,&quot;Asia/Damascus&quot;,&quot;Asia/Dhaka&quot;,&quot;Asia/Dili&quot;,&quot;Asia/Dubai&quot;,&quot;Asia/Dushanbe&quot;,&quot;Asia/Gaza&quot;,&quot;Asia/Harbin&quot;,&quot;Asia/Hebron&quot;,&quot;Asia/Ho_Chi_Minh&quot;,&quot;Asia/Hong_Kong&quot;,&quot;Asia/Hovd&quot;,&quot;Asia/Irkutsk&quot;,&quot;Asia/Istanbul&quot;,&quot;Asia/Jakarta&quot;,&quot;Asia/Jayapura&quot;,&quot;Asia/Jerusalem&quot;,&quot;Asia/Kabul&quot;,&quot;Asia/Kamchatka&quot;,&quot;Asia/Karachi&quot;,&quot;Asia/Kashgar&quot;,&quot;Asia/Kathmandu&quot;,&quot;Asia/Katmandu&quot;,&quot;Asia/Khandyga&quot;,&quot;Asia/Kolkata&quot;,&quot;Asia/Krasnoyarsk&quot;,&quot;Asia/Kuala_Lumpur&quot;,&quot;Asia/Kuching&quot;,&quot;Asia/Kuwait&quot;,&quot;Asia/Macao&quot;,&quot;Asia/Macau&quot;,&quot;Asia/Magadan&quot;,&quot;Asia/Makassar&quot;,&quot;Asia/Manila&quot;,&quot;Asia/Muscat&quot;,&quot;Asia/Nicosia&quot;,&quot;Asia/Novokuznetsk&quot;,&quot;Asia/Novosibirsk&quot;,&quot;Asia/Omsk&quot;,&quot;Asia/Oral&quot;,&quot;Asia/Phnom_Penh&quot;,&quot;Asia/Pontianak&quot;,&quot;Asia/Pyongyang&quot;,&quot;Asia/Qatar&quot;,&quot;Asia/Qyzylorda&quot;,&quot;Asia/Rangoon&quot;,&quot;Asia/Riyadh&quot;,&quot;Asia/Saigon&quot;,&quot;Asia/Sakhalin&quot;,&quot;Asia/Samarkand&quot;,&quot;Asia/Seoul&quot;,&quot;Asia/Shanghai&quot;,&quot;Asia/Singapore&quot;,&quot;Asia/Srednekolymsk&quot;,&quot;Asia/Taipei&quot;,&quot;Asia/Tashkent&quot;,&quot;Asia/Tbilisi&quot;,&quot;Asia/Tehran&quot;,&quot;Asia/Tel_Aviv&quot;,&quot;Asia/Thimbu&quot;,&quot;Asia/Thimphu&quot;,&quot;Asia/Tokyo&quot;,&quot;Asia/Tomsk&quot;,&quot;Asia/Ujung_Pandang&quot;,&quot;Asia/Ulaanbaatar&quot;,&quot;Asia/Ulan_Bator&quot;,&quot;Asia/Urumqi&quot;,&quot;Asia/Ust-Nera&quot;,&quot;Asia/Vientiane&quot;,&quot;Asia/Vladivostok&quot;,&quot;Asia/Yakutsk&quot;,&quot;Asia/Yekaterinburg&quot;,&quot;Asia/Yerevan&quot;,&quot;Atlantic/Azores&quot;,&quot;Atlantic/Bermuda&quot;,&quot;Atlantic/Canary&quot;,&quot;Atlantic/Cape_Verde&quot;,&quot;Atlantic/Faeroe&quot;,&quot;Atlantic/Faroe&quot;,&quot;Atlantic/Jan_Mayen&quot;,&quot;Atlantic/Madeira&quot;,&quot;Atlantic/Reykjavik&quot;,&quot;Atlantic/South_Georgia&quot;,&quot;Atlantic/St_Helena&quot;,&quot;Atlantic/Stanley&quot;,&quot;Australia/ACT&quot;,&quot;Australia/Adelaide&quot;,&quot;Australia/Brisbane&quot;,&quot;Australia/Broken_Hill&quot;,&quot;Australia/Canberra&quot;,&quot;Australia/Currie&quot;,&quot;Australia/Darwin&quot;,&quot;Australia/Eucla&quot;,&quot;Australia/Hobart&quot;,&quot;Australia/LHI&quot;,&quot;Australia/Lindeman&quot;,&quot;Australia/Lord_Howe&quot;,&quot;Australia/Melbourne&quot;,&quot;Australia/NSW&quot;,&quot;Australia/North&quot;,&quot;Australia/Perth&quot;,&quot;Australia/Queensland&quot;,&quot;Australia/South&quot;,&quot;Australia/Sydney&quot;,&quot;Australia/Tasmania&quot;,&quot;Australia/Victoria&quot;,&quot;Australia/West&quot;,&quot;Australia/Yancowinna&quot;,&quot;Brazil/Acre&quot;,&quot;Brazil/DeNoronha&quot;,&quot;Brazil/East&quot;,&quot;Brazil/West&quot;,&quot;CET&quot;,&quot;CST6CDT&quot;,&quot;Canada/Atlantic&quot;,&quot;Canada/Central&quot;,&quot;Canada/East-Saskatchewan&quot;,&quot;Canada/Eastern&quot;,&quot;Canada/Mountain&quot;,&quot;Canada/Newfoundland&quot;,&quot;Canada/Pacific&quot;,&quot;Canada/Saskatchewan&quot;,&quot;Canada/Yukon&quot;,&quot;Chile/Continental&quot;,&quot;Chile/EasterIsland&quot;,&quot;Cuba&quot;,&quot;EET&quot;,&quot;EST&quot;,&quot;EST5EDT&quot;,&quot;Egypt&quot;,&quot;Eire&quot;,&quot;Etc/GMT&quot;,&quot;Etc/GMT+0&quot;,&quot;Etc/GMT+1&quot;,&quot;Etc/GMT+10&quot;,&quot;Etc/GMT+11&quot;,&quot;Etc/GMT+12&quot;,&quot;Etc/GMT+2&quot;,&quot;Etc/GMT+3&quot;,&quot;Etc/GMT+4&quot;,&quot;Etc/GMT+5&quot;,&quot;Etc/GMT+6&quot;,&quot;Etc/GMT+7&quot;,&quot;Etc/GMT+8&quot;,&quot;Etc/GMT+9&quot;,&quot;Etc/GMT-0&quot;,&quot;Etc/GMT-1&quot;,&quot;Etc/GMT-10&quot;,&quot;Etc/GMT-11&quot;,&quot;Etc/GMT-12&quot;,&quot;Etc/GMT-13&quot;,&quot;Etc/GMT-14&quot;,&quot;Etc/GMT-2&quot;,&quot;Etc/GMT-3&quot;,&quot;Etc/GMT-4&quot;,&quot;Etc/GMT-5&quot;,&quot;Etc/GMT-6&quot;,&quot;Etc/GMT-7&quot;,&quot;Etc/GMT-8&quot;,&quot;Etc/GMT-9&quot;,&quot;Etc/GMT0&quot;,&quot;Etc/Greenwich&quot;,&quot;Etc/UCT&quot;,&quot;Etc/UTC&quot;,&quot;Etc/Universal&quot;,&quot;Etc/Zulu&quot;,&quot;Europe/Amsterdam&quot;,&quot;Europe/Andorra&quot;,&quot;Europe/Astrakhan&quot;,&quot;Europe/Athens&quot;,&quot;Europe/Belfast&quot;,&quot;Europe/Belgrade&quot;,&quot;Europe/Berlin&quot;,&quot;Europe/Bratislava&quot;,&quot;Europe/Brussels&quot;,&quot;Europe/Bucharest&quot;,&quot;Europe/Budapest&quot;,&quot;Europe/Busingen&quot;,&quot;Europe/Chisinau&quot;,&quot;Europe/Copenhagen&quot;,&quot;Europe/Dublin&quot;,&quot;Europe/Gibraltar&quot;,&quot;Europe/Guernsey&quot;,&quot;Europe/Helsinki&quot;,&quot;Europe/Isle_of_Man&quot;,&quot;Europe/Istanbul&quot;,&quot;Europe/Jersey&quot;,&quot;Europe/Kaliningrad&quot;,&quot;Europe/Kiev&quot;,&quot;Europe/Kirov&quot;,&quot;Europe/Lisbon&quot;,&quot;Europe/Ljubljana&quot;,&quot;Europe/London&quot;,&quot;Europe/Luxembourg&quot;,&quot;Europe/Madrid&quot;,&quot;Europe/Malta&quot;,&quot;Europe/Mariehamn&quot;,&quot;Europe/Minsk&quot;,&quot;Europe/Monaco&quot;,&quot;Europe/Moscow&quot;,&quot;Europe/Nicosia&quot;,&quot;Europe/Oslo&quot;,&quot;Europe/Paris&quot;,&quot;Europe/Podgorica&quot;,&quot;Europe/Prague&quot;,&quot;Europe/Riga&quot;,&quot;Europe/Rome&quot;,&quot;Europe/Samara&quot;,&quot;Europe/San_Marino&quot;,&quot;Europe/Sarajevo&quot;,&quot;Europe/Simferopol&quot;,&quot;Europe/Skopje&quot;,&quot;Europe/Sofia&quot;,&quot;Europe/Stockholm&quot;,&quot;Europe/Tallinn&quot;,&quot;Europe/Tirane&quot;,&quot;Europe/Tiraspol&quot;,&quot;Europe/Ulyanovsk&quot;,&quot;Europe/Uzhgorod&quot;,&quot;Europe/Vaduz&quot;,&quot;Europe/Vatican&quot;,&quot;Europe/Vienna&quot;,&quot;Europe/Vilnius&quot;,&quot;Europe/Volgograd&quot;,&quot;Europe/Warsaw&quot;,&quot;Europe/Zagreb&quot;,&quot;Europe/Zaporozhye&quot;,&quot;Europe/Zurich&quot;,&quot;GB&quot;,&quot;GB-Eire&quot;,&quot;GMT&quot;,&quot;GMT+0&quot;,&quot;GMT-0&quot;,&quot;GMT0&quot;,&quot;Greenwich&quot;,&quot;HST&quot;,&quot;Hongkong&quot;,&quot;Iceland&quot;,&quot;Indian/Antananarivo&quot;,&quot;Indian/Chagos&quot;,&quot;Indian/Christmas&quot;,&quot;Indian/Cocos&quot;,&quot;Indian/Comoro&quot;,&quot;Indian/Kerguelen&quot;,&quot;Indian/Mahe&quot;,&quot;Indian/Maldives&quot;,&quot;Indian/Mauritius&quot;,&quot;Indian/Mayotte&quot;,&quot;Indian/Reunion&quot;,&quot;Iran&quot;,&quot;Israel&quot;,&quot;Jamaica&quot;,&quot;Japan&quot;,&quot;Kwajalein&quot;,&quot;Libya&quot;,&quot;MET&quot;,&quot;MST&quot;,&quot;MST7MDT&quot;,&quot;Mexico/BajaNorte&quot;,&quot;Mexico/BajaSur&quot;,&quot;Mexico/General&quot;,&quot;NZ&quot;,&quot;NZ-CHAT&quot;,&quot;Navajo&quot;,&quot;PRC&quot;,&quot;PST8PDT&quot;,&quot;Pacific/Apia&quot;,&quot;Pacific/Auckland&quot;,&quot;Pacific/Bougainville&quot;,&quot;Pacific/Chatham&quot;,&quot;Pacific/Chuuk&quot;,&quot;Pacific/Easter&quot;,&quot;Pacific/Efate&quot;,&quot;Pacific/Enderbury&quot;,&quot;Pacific/Fakaofo&quot;,&quot;Pacific/Fiji&quot;,&quot;Pacific/Funafuti&quot;,&quot;Pacific/Galapagos&quot;,&quot;Pacific/Gambier&quot;,&quot;Pacific/Guadalcanal&quot;,&quot;Pacific/Guam&quot;,&quot;Pacific/Honolulu&quot;,&quot;Pacific/Johnston&quot;,&quot;Pacific/Kiritimati&quot;,&quot;Pacific/Kosrae&quot;,&quot;Pacific/Kwajalein&quot;,&quot;Pacific/Majuro&quot;,&quot;Pacific/Marquesas&quot;,&quot;Pacific/Midway&quot;,&quot;Pacific/Nauru&quot;,&quot;Pacific/Niue&quot;,&quot;Pacific/Norfolk&quot;,&quot;Pacific/Noumea&quot;,&quot;Pacific/Pago_Pago&quot;,&quot;Pacific/Palau&quot;,&quot;Pacific/Pitcairn&quot;,&quot;Pacific/Pohnpei&quot;,&quot;Pacific/Ponape&quot;,&quot;Pacific/Port_Moresby&quot;,&quot;Pacific/Rarotonga&quot;,&quot;Pacific/Saipan&quot;,&quot;Pacific/Samoa&quot;,&quot;Pacific/Tahiti&quot;,&quot;Pacific/Tarawa&quot;,&quot;Pacific/Tongatapu&quot;,&quot;Pacific/Truk&quot;,&quot;Pacific/Wake&quot;,&quot;Pacific/Wallis&quot;,&quot;Pacific/Yap&quot;,&quot;Poland&quot;,&quot;Portugal&quot;,&quot;ROC&quot;,&quot;ROK&quot;,&quot;Singapore&quot;,&quot;Turkey&quot;,&quot;UCT&quot;,&quot;US/Alaska&quot;,&quot;US/Aleutian&quot;,&quot;US/Arizona&quot;,&quot;US/Central&quot;,&quot;US/East-Indiana&quot;,&quot;US/Eastern&quot;,&quot;US/Hawaii&quot;,&quot;US/Indiana-Starke&quot;,&quot;US/Michigan&quot;,&quot;US/Mountain&quot;,&quot;US/Pacific&quot;,&quot;US/Pacific-New&quot;,&quot;US/Samoa&quot;,&quot;UTC&quot;,&quot;Universal&quot;,&quot;W-SU&quot;,&quot;WET&quot;,&quot;Zulu&quot;]},&quot;dateFormat:scaled&quot;:{&quot;type&quot;:&quot;json&quot;,&quot;value&quot;:&quot;[\n  [\&quot;\&quot;, \&quot;HH:mm:ss.SSS\&quot;],\n  [\&quot;PT1S\&quot;, \&quot;HH:mm:ss\&quot;],\n  [\&quot;PT1M\&quot;, \&quot;HH:mm\&quot;],\n  [\&quot;PT1H\&quot;, \&quot;YYYY-MM-DD HH:mm\&quot;],\n  [\&quot;P1DT\&quot;, \&quot;YYYY-MM-DD\&quot;],\n  [\&quot;P1YT\&quot;, \&quot;YYYY\&quot;]\n]&quot;,&quot;description&quot;:&quot;Values that define the format used in situations where timebased data is rendered in order, and formatted timestamps should adapt to the interval between measurements. Keys are &lt;a href=\&quot;http://en.wikipedia.org/wiki/ISO_8601#Time_intervals\&quot; target=\&quot;_blank\&quot;&gt;ISO8601 intervals.&lt;/a&gt;&quot;},&quot;dateFormat:dow&quot;:{&quot;value&quot;:&quot;Sunday&quot;,&quot;description&quot;:&quot;What day should weeks start on?&quot;,&quot;type&quot;:&quot;select&quot;,&quot;options&quot;:[&quot;Sunday&quot;,&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;]},&quot;defaultIndex&quot;:{&quot;value&quot;:null,&quot;description&quot;:&quot;The index to access if no index is set&quot;},&quot;defaultColumns&quot;:{&quot;value&quot;:[&quot;_source&quot;],&quot;description&quot;:&quot;Columns displayed by default in the Discovery tab&quot;},&quot;metaFields&quot;:{&quot;value&quot;:[&quot;_source&quot;,&quot;_id&quot;,&quot;_type&quot;,&quot;_index&quot;,&quot;_score&quot;],&quot;description&quot;:&quot;Fields that exist outside of _source to merge into our document when displaying it&quot;},&quot;discover:sampleSize&quot;:{&quot;value&quot;:500,&quot;description&quot;:&quot;The number of rows to show in the table&quot;},&quot;doc_table:highlight&quot;:{&quot;value&quot;:true,&quot;description&quot;:&quot;Highlight results in Discover and Saved Searches Dashboard.Highlighting makes requests slow when working on big documents.&quot;},&quot;doc_table:highlight:all_fields&quot;:{&quot;value&quot;:true,&quot;description&quot;:&quot;Improves highlighting by using a separate \&quot;highlight_query\&quot; that uses \&quot;all_fields\&quot; mode on \&quot;query_string\&quot; queries. Set to false if you are using a \&quot;default_field\&quot; in your index.&quot;},&quot;courier:maxSegmentCount&quot;:{&quot;value&quot;:30,&quot;description&quot;:&quot;Requests in discover are split into segments to prevent massive requests from being sent to elasticsearch. This setting attempts to prevent the list of segments from getting too long, which might cause requests to take much longer to process&quot;},&quot;courier:ignoreFilterIfFieldNotInIndex&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;This configuration enhances support for dashboards containing visualizations accessing dissimilar indexes. When set to false, all filters are applied to all visualizations. When set to true, filter(s) will be ignored for a visualization when the visualization's index does not contain the filtering field.&quot;},&quot;fields:popularLimit&quot;:{&quot;value&quot;:10,&quot;description&quot;:&quot;The top N most popular fields to show&quot;},&quot;histogram:barTarget&quot;:{&quot;value&quot;:50,&quot;description&quot;:&quot;Attempt to generate around this many bars when using \&quot;auto\&quot; interval in date histograms&quot;},&quot;histogram:maxBars&quot;:{&quot;value&quot;:100,&quot;description&quot;:&quot;Never show more than this many bars in date histograms, scale values if needed&quot;},&quot;visualization:tileMap:maxPrecision&quot;:{&quot;value&quot;:7,&quot;description&quot;:&quot;The maximum geoHash precision displayed on tile maps: 7 is high, 10 is very high, 12 is the max. &lt;a href=\&quot;http://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-geohashgrid-aggregation.html#_cell_dimensions_at_the_equator\&quot; target=\&quot;_blank\&quot;&gt;Explanation of cell dimensions&lt;/a&gt;&quot;},&quot;visualization:tileMap:WMSdefaults&quot;:{&quot;value&quot;:&quot;{\n  \&quot;enabled\&quot;: false,\n  \&quot;url\&quot;: \&quot;https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer\&quot;,\n  \&quot;options\&quot;: {\n    \&quot;version\&quot;: \&quot;1.3.0\&quot;,\n    \&quot;layers\&quot;: \&quot;0\&quot;,\n    \&quot;format\&quot;: \&quot;image/png\&quot;,\n    \&quot;transparent\&quot;: true,\n    \&quot;attribution\&quot;: \&quot;Maps provided by USGS\&quot;,\n    \&quot;styles\&quot;: \&quot;\&quot;\n  }\n}&quot;,&quot;type&quot;:&quot;json&quot;,&quot;description&quot;:&quot;Default &lt;a href=\&quot;http://leafletjs.com/reference.html#tilelayer-wms\&quot; target=\&quot;_blank\&quot;&gt;properties&lt;/a&gt; for the WMS map server support in the tile map&quot;},&quot;visualization:colorMapping&quot;:{&quot;type&quot;:&quot;json&quot;,&quot;value&quot;:&quot;{\&quot;Count\&quot;:\&quot;#6eadc1\&quot;}&quot;,&quot;description&quot;:&quot;Maps values to specified colors within visualizations&quot;},&quot;visualization:loadingDelay&quot;:{&quot;value&quot;:&quot;2s&quot;,&quot;description&quot;:&quot;Time to wait before dimming visualizations during query&quot;},&quot;visualization:dimmingOpacity&quot;:{&quot;type&quot;:&quot;number&quot;,&quot;value&quot;:0.5,&quot;description&quot;:&quot;The opacity of the chart items that are dimmed when highlighting another element of the chart. The lower this number, the more the highlighted element will stand out.This must be a number between 0 and 1.&quot;},&quot;csv:separator&quot;:{&quot;value&quot;:&quot;,&quot;,&quot;description&quot;:&quot;Separate exported values with this string&quot;},&quot;csv:quoteValues&quot;:{&quot;value&quot;:true,&quot;description&quot;:&quot;Should values be quoted in csv exports?&quot;},&quot;history:limit&quot;:{&quot;value&quot;:10,&quot;description&quot;:&quot;In fields that have history (e.g. query inputs), show this many recent values&quot;},&quot;shortDots:enable&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;Shorten long fields, for example, instead of foo.bar.baz, show f.b.baz&quot;},&quot;truncate:maxHeight&quot;:{&quot;value&quot;:115,&quot;description&quot;:&quot;The maximum height that a cell in a table should occupy. Set to 0 to disable truncation&quot;},&quot;indexPattern:fieldMapping:lookBack&quot;:{&quot;value&quot;:5,&quot;description&quot;:&quot;For index patterns containing timestamps in their names, look for this many recent matching patterns from which to query the field mapping&quot;},&quot;format:defaultTypeMap&quot;:{&quot;type&quot;:&quot;json&quot;,&quot;value&quot;:&quot;{\n  \&quot;ip\&quot;: { \&quot;id\&quot;: \&quot;ip\&quot;, \&quot;params\&quot;: {} },\n  \&quot;date\&quot;: { \&quot;id\&quot;: \&quot;date\&quot;, \&quot;params\&quot;: {} },\n  \&quot;number\&quot;: { \&quot;id\&quot;: \&quot;number\&quot;, \&quot;params\&quot;: {} },\n  \&quot;boolean\&quot;: { \&quot;id\&quot;: \&quot;boolean\&quot;, \&quot;params\&quot;: {} },\n  \&quot;_source\&quot;: { \&quot;id\&quot;: \&quot;_source\&quot;, \&quot;params\&quot;: {} },\n  \&quot;_default_\&quot;: { \&quot;id\&quot;: \&quot;string\&quot;, \&quot;params\&quot;: {} }\n}&quot;,&quot;description&quot;:&quot;Map of the format name to use by default for each field type. \&quot;_default_\&quot; is used if the field type is not mentioned explicitly&quot;},&quot;format:number:defaultPattern&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;value&quot;:&quot;0,0.[000]&quot;,&quot;description&quot;:&quot;Default &lt;a href=\&quot;http://numeraljs.com/\&quot; target=\&quot;_blank\&quot;&gt;numeral format&lt;/a&gt; for the \&quot;number\&quot; format&quot;},&quot;format:bytes:defaultPattern&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;value&quot;:&quot;0,0.[000]b&quot;,&quot;description&quot;:&quot;Default &lt;a href=\&quot;http://numeraljs.com/\&quot; target=\&quot;_blank\&quot;&gt;numeral format&lt;/a&gt; for the \&quot;bytes\&quot; format&quot;},&quot;format:percent:defaultPattern&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;value&quot;:&quot;0,0.[000]%&quot;,&quot;description&quot;:&quot;Default &lt;a href=\&quot;http://numeraljs.com/\&quot; target=\&quot;_blank\&quot;&gt;numeral format&lt;/a&gt; for the \&quot;percent\&quot; format&quot;},&quot;format:currency:defaultPattern&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;value&quot;:&quot;($0,0.[00])&quot;,&quot;description&quot;:&quot;Default &lt;a href=\&quot;http://numeraljs.com/\&quot; target=\&quot;_blank\&quot;&gt;numeral format&lt;/a&gt; for the \&quot;currency\&quot; format&quot;},&quot;savedObjects:perPage&quot;:{&quot;type&quot;:&quot;number&quot;,&quot;value&quot;:5,&quot;description&quot;:&quot;Number of objects to show per page in the load dialog&quot;},&quot;timepicker:timeDefaults&quot;:{&quot;type&quot;:&quot;json&quot;,&quot;value&quot;:&quot;{\n  \&quot;from\&quot;: \&quot;now-15m\&quot;,\n  \&quot;to\&quot;: \&quot;now\&quot;,\n  \&quot;mode\&quot;: \&quot;quick\&quot;\n}&quot;,&quot;description&quot;:&quot;The timefilter selection to use when Kibana is started without one&quot;},&quot;timepicker:refreshIntervalDefaults&quot;:{&quot;type&quot;:&quot;json&quot;,&quot;value&quot;:&quot;{\n  \&quot;display\&quot;: \&quot;Off\&quot;,\n  \&quot;pause\&quot;: false,\n  \&quot;value\&quot;: 0\n}&quot;,&quot;description&quot;:&quot;The timefilter's default refresh interval&quot;},&quot;dashboard:defaultDarkTheme&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;New dashboards use dark theme by default&quot;},&quot;filters:pinnedByDefault&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;Whether the filters should have a global state (be pinned) by default&quot;},&quot;notifications:banner&quot;:{&quot;type&quot;:&quot;markdown&quot;,&quot;description&quot;:&quot;A custom banner intended for temporary notices to all users. &lt;a href=\&quot;https://help.github.com/articles/basic-writing-and-formatting-syntax/\&quot; target=\&quot;_blank\&quot;&gt;Markdown supported&lt;/a&gt;.&quot;,&quot;value&quot;:&quot;&quot;},&quot;notifications:lifetime:banner&quot;:{&quot;value&quot;:3000000,&quot;description&quot;:&quot;The time in milliseconds which a banner notification will be displayed on-screen for. Setting to Infinity will disable.&quot;},&quot;notifications:lifetime:error&quot;:{&quot;value&quot;:300000,&quot;description&quot;:&quot;The time in milliseconds which an error notification will be displayed on-screen for. Setting to Infinity will disable.&quot;},&quot;notifications:lifetime:warning&quot;:{&quot;value&quot;:10000,&quot;description&quot;:&quot;The time in milliseconds which a warning notification will be displayed on-screen for. Setting to Infinity will disable.&quot;},&quot;notifications:lifetime:info&quot;:{&quot;value&quot;:5000,&quot;description&quot;:&quot;The time in milliseconds which an information notification will be displayed on-screen for. Setting to Infinity will disable.&quot;},&quot;metrics:max_buckets&quot;:{&quot;value&quot;:2000,&quot;description&quot;:&quot;The maximum number of buckets a single datasource can return&quot;},&quot;timelion:showTutorial&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;Should I show the tutorial by default when entering the timelion app?&quot;},&quot;timelion:es.timefield&quot;:{&quot;value&quot;:&quot;@timestamp&quot;,&quot;description&quot;:&quot;Default field containing a timestamp when using .es()&quot;},&quot;timelion:es.default_index&quot;:{&quot;value&quot;:&quot;_all&quot;,&quot;description&quot;:&quot;Default elasticsearch index to search with .es()&quot;},&quot;timelion:target_buckets&quot;:{&quot;value&quot;:200,&quot;description&quot;:&quot;The number of buckets to shoot for when using auto intervals&quot;},&quot;timelion:max_buckets&quot;:{&quot;value&quot;:2000,&quot;description&quot;:&quot;The maximum number of buckets a single datasource can return&quot;},&quot;timelion:default_columns&quot;:{&quot;value&quot;:2,&quot;description&quot;:&quot;Number of columns on a timelion sheet by default&quot;},&quot;timelion:default_rows&quot;:{&quot;value&quot;:2,&quot;description&quot;:&quot;Number of rows on a timelion sheet by default&quot;},&quot;timelion:graphite.url&quot;:{&quot;value&quot;:&quot;https://www.hostedgraphite.com/UID/ACCESS_KEY/graphite&quot;,&quot;description&quot;:&quot;&lt;em&gt;[experimental]&lt;/em&gt; The URL of your graphite host&quot;},&quot;timelion:quandl.key&quot;:{&quot;value&quot;:&quot;someKeyHere&quot;,&quot;description&quot;:&quot;&lt;em&gt;[experimental]&lt;/em&gt; Your API key from www.quandl.com&quot;},&quot;state:storeInSessionStorage&quot;:{&quot;value&quot;:false,&quot;description&quot;:&quot;The URL can sometimes grow to be too large for some browsers to handle. To counter-act this we are testing if storing parts of the URL in sessions storage could help. Please let us know how it goes!&quot;},&quot;indexPattern:placeholder&quot;:{&quot;value&quot;:&quot;logstash-*&quot;,&quot;description&quot;:&quot;The placeholder for the field \&quot;Index name or pattern\&quot; in the \&quot;Settings &gt; Indices\&quot; tab.&quot;},&quot;context:defaultSize&quot;:{&quot;value&quot;:5,&quot;description&quot;:&quot;The number of surrounding entries to show in the context view&quot;},&quot;context:step&quot;:{&quot;value&quot;:5,&quot;description&quot;:&quot;The step size to increment or decrement the context size by&quot;}},&quot;user&quot;:{&quot;buildNum&quot;:{&quot;userValue&quot;:15063},&quot;defaultIndex&quot;:{&quot;userValue&quot;:&quot;logstash-*&quot;},&quot;discover:aggs:terms:size&quot;:{&quot;userValue&quot;:20},&quot;xPackMonitoring:allowReport&quot;:{&quot;userValue&quot;:true},&quot;xPackMonitoring:showBanner&quot;:{&quot;userValue&quot;:false}}},&quot;vars&quot;:{&quot;kbnDefaultAppId&quot;:&quot;discover&quot;,&quot;tilemapsConfig&quot;:{&quot;deprecated&quot;:{&quot;isOverridden&quot;:false,&quot;config&quot;:{&quot;manifestServiceUrl&quot;:&quot;https://tiles.elastic.co/v2/manifest&quot;,&quot;options&quot;:{&quot;minZoom&quot;:0,&quot;maxZoom&quot;:10}}},&quot;manifestServiceUrl&quot;:&quot;https://tiles.elastic.co/v2/manifest&quot;},&quot;kbnIndex&quot;:&quot;.kibana&quot;,&quot;kbnBaseUrl&quot;:&quot;/app/kibana&quot;,&quot;esRequestTimeout&quot;:30000,&quot;esShardTimeout&quot;:0,&quot;esApiVersion&quot;:&quot;5.x&quot;,&quot;esDataIsTribe&quot;:false,&quot;statsReportUrl&quot;:&quot;https://marvel-stats.elasticsearch.com/appdata/marvelOpts&quot;,&quot;reportStats&quot;:true,&quot;monitoringUiEnabled&quot;:true,&quot;secureCookies&quot;:false,&quot;sessionTimeout&quot;:null,&quot;enabled&quot;:true,&quot;proxyFilter&quot;:[&quot;.*&quot;],&quot;ssl&quot;:{},&quot;elasticsearchUrl&quot;:&quot;http://10.27.3.39:9200&quot;,&quot;xpackInitialInfo&quot;:{&quot;license&quot;:{&quot;type&quot;:&quot;platinum&quot;,&quot;isActive&quot;:true,&quot;expiryDateInMillis&quot;:1890143999999},&quot;features&quot;:{&quot;graph&quot;:{&quot;showAppLink&quot;:true,&quot;enableAppLink&quot;:true},&quot;reporting&quot;:{&quot;showLinks&quot;:true,&quot;enableLinks&quot;:true},&quot;security&quot;:{&quot;showLogin&quot;:false,&quot;allowLogin&quot;:null,&quot;showLinks&quot;:false,&quot;linksMessage&quot;:&quot;Access is denied because Security is disabled in Elasticsearch.&quot;,&quot;allowRoleDocumentLevelSecurity&quot;:false,&quot;allowRoleFieldLevelSecurity&quot;:false},&quot;searchprofiler&quot;:{&quot;showAppLink&quot;:true,&quot;enableAppLink&quot;:true},&quot;ml&quot;:{&quot;isAvailable&quot;:true,&quot;showLinks&quot;:true,&quot;enableLinks&quot;:true,&quot;hasExpired&quot;:false},&quot;tilemap&quot;:{&quot;license&quot;:{&quot;uid&quot;:&quot;26c8a782-58cb-415b-8f9d-0d7bdbefc9d6&quot;,&quot;active&quot;:true,&quot;valid&quot;:true}},&quot;watcher&quot;:{&quot;isAvailable&quot;:true,&quot;showLinks&quot;:true,&quot;enableLinks&quot;:true}}}}}"></kbn-initial-state><style>
-      * {
-        box-sizing: border-box;
-      }
-      
-      body, html {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
-      
-      .kibanaLoader {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        width: 620px;
-        height: 185px;
-        padding: 0;
-        text-align: center;
-        background: #3caed2;
-      }
-      
-      .kibanaLoader__logo {
-        width: 150px;
-        height: 100%;
-        padding: 20px;
-        background-color: #E8488B;
-        -webkit-animation: colorShift 3s infinite;
-                animation: colorShift 3s infinite;
-        box-shadow: inset -10px 0 20px -10px rgba(0, 0, 0, 0.5);
-      }
-      
-      .kibanaLoader__content {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-            -ms-flex-align: center;
-                align-items: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-            -ms-flex-pack: center;
-                justify-content: center;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1 1 auto;
-            -ms-flex: 1 1 auto;
-                flex: 1 1 auto;
-        color: white;
-        font-size: 38px;
-        font-weight: 300;
-        font-family: "Open Sans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        padding-bottom: 12px;
-      }
-      
-      @-webkit-keyframes colorShift {
-        0% {
-          background-color: #DD4484;
-        }
-        33% {
-          background-color: #E4BB51;
-        }
-        66% {
-          background-color: #8AC336;
-        }
-        100% {
-          background-color: #DD4484;
-        }
-      }
-      
-      @keyframes colorShift {
-        0% {
-          background-color: #DD4484;
-        }
-        33% {
-          background-color: #E4BB51;
-        }
-        66% {
-          background-color: #8AC336;
-        }
-        100% {
-          background-color: #DD4484;
-        }
-      }
-    </style>
-    <div class="kibanaWelcomeView">
-      <div class="kibanaLoader">
-        <div class="kibanaLoader__logo">
-          <div class="kibanaWelcomeLogo"></div>
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content text-center p-md">
+          <h2><span class="text-navy">INSPINIA - Responsive Admin Theme</span>
+            is provided with two main layouts <br>
+            three skins and separate configure options.</h2>
+          <p>
+            All config options you can trun on/off from the theme box configuration (green icon on the left side of page).
+          </p>
         </div>
-        <div class="kibanaLoader__content">Loading Kibana</div>
       </div>
     </div>
-    <script>
-      window.onload = function () {
-        var buildNum = 15063;
-        var cacheParam = buildNum ? '?v=' + buildNum : '';
-        function bundleFile(filename) {
-          var anchor = document.createElement('a');
-          anchor.setAttribute('href', "/bundles" + '/' + filename + cacheParam);
-          return anchor.href;
-        }
-        var files = [
-          bundleFile('commons.style.css'),
-          bundleFile('kibana.style.css'),
-          bundleFile('commons.bundle.js'),
-          bundleFile('kibana.bundle.js')
-        ];
-      
-        (function next() {
-          var file = files.shift();
-          if (!file) return;
-      
-          var failure = function () {
-            // make subsequent calls to failure() noop
-            failure = function () {};
-      
-            var err = document.createElement('h1');
-            err.style['color'] = 'white';
-            err.style['font-family'] = 'monospace';
-            err.style['text-align'] = 'center';
-            err.style['background'] = '#F44336';
-            err.style['padding'] = '25px';
-            err.innerText = 'Kibana did not load properly. Check the server output for more information.';
-      
-            document.body.innerHTML = err.outerHTML;
-          }
-      
-          var type = /\.js(\?.+)?$/.test(file) ? 'script' : 'link';
-          var dom = document.createElement(type);
-          dom.setAttribute('async', '');
-          dom.addEventListener('error', failure);
-      
-          if (type === 'script') {
-            dom.setAttribute('src', file);
-            dom.addEventListener('load', next);
-            document.head.appendChild(dom);
-          } else {
-            dom.setAttribute('rel', 'stylesheet');
-            dom.setAttribute('href', file);
-            document.head.appendChild(dom);
-            next();
-          }
-        }());
-      };
-    </script></body></html>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="mail-box-header">
+        <div class="pull-right tooltip-demo">
+          <a href="<%= url_for :controller => 'mailbox', :action => 'inbox' %>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Search</a>
+        </div>
+        <h2>
+          Code
+        </h2>
+      </div>
+      <div class="mail-box">
+        <div class="mail-text h-200">
+          <div class="summernote">
+            GET /person_records/_search
+            {
+            "query": {
+            "bool": {
+            "must": [
+            {"term": {
+            "gender": {
+            "value": "Female"
+            }
+            }},
+            {"nested": {
+            "path": "relevance_pfa2_addresses",
+            "query": {
+            "bool": {
+            "must": [
+            {"match": {
+            "relevance_pfa2_addresses.address_country": "UK"
+            }}
+            ]
+            }
+            }
+            }}
+            ]
+            }
+            }
+            }
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="col-lg-6" id="tree">
+    </div>
+  </div>
+</div>
+<% content_for :javascript do %>
+  <script>
+    function getTree() {
+        var data = {
+      "took": 1243,
+      "timed_out": false,
+      "_shards": {
+    "total": 10,
+    "successful": 10,
+    "failed": 0
+      },
+      "hits": {
+    "total": 1,
+    "max_score": 16.428444,
+    "hits": [
+      {
+        "_index": "person_records",
+        "_type": "person_record",
+        "_id": "3313285",
+        "_score": 16.428444,
+        "_source": {
+          "id": 3313285,
+          "full_name": "Tabatha  Hickman",
+          "normal_name": "Tabatha Hickman",
+          "gender": "Female",
+          "ob_record_id": "11009219",
+          "crunchbase_uid": null,
+          "linkedin_id": null,
+          "facebook_id": null,
+          "twitter_id": null,
+          "edus": null,
+          "birthday": null,
+          "relevance_pfa2_images": [],
+          "relevance_pfa2_deceaseds": [
+            {
+              "deceased": "No"
+            }
+          ],
+          "relevance_pfa2_addresses": [
+            {
+              "address_line": "Birmingham Road",
+              "address_city": "Stratford-upon-Avon;England",
+              "address_country": "UK",
+              "url": ""
+            }
+          ],
+          "relevance_pfa2_role_details": [],
+          "relevance_pfa2_date_details": [],
+          "relevance_pfa2_birth_places": [],
+          "relevance_pfa2_descriptions": [
+            {
+              "id": 2981313,
+              "pfa2_record_id": 11009219,
+              "code_pfa2_description1_list_id": 3,
+              "code_pfa2_description2_list_id": 9,
+              "code_pfa2_description3_list_id": null,
+              "created_at": "2017-11-08T15:44:30.177Z",
+              "updated_at": "2017-11-08T15:44:30.177Z",
+              "code_pfa2_description1_list": {
+                "record_type": "Person",
+                "name": "Special Interest Person (SIP)"
+              },
+              "code_pfa2_description2_list": {
+                "name": "Trafficking"
+              }
+            }
+          ],
+          "relevance_pfa2_name_details": [
+            {
+              "name_detail_type": "Surname",
+              "value": "Hickman",
+              "code_pfa2_name_type_list": {
+                "record_type": "Entity",
+                "name": "Primary Name"
+              }
+            },
+            {
+              "name_detail_type": "FirstName",
+              "value": "Tabatha",
+              "code_pfa2_name_type_list": {
+                "record_type": "Entity",
+                "name": "Primary Name"
+              }
+            }
+          ],
+          "relevance_pfa2_profile_notes": [
+            {
+              "profile_note": "Keywords: conspiracy, narcotics People mentioned: Tabatha Hickman Profile:Tabatha Hickman was sentenced to two years in prison, suspended for two years, at Warwick Crown Court on February 10, 2017, after pleading guilty to two counts of conspiracy to supply Class A drugs, namely crack cocaine and heroin worth GBP 300,000 between September 2013 and December 2014.The court heard that a total of 21 individuals were arrested as a result of an 18-month joint investigation by the Serious and Organised Crime Unit of Warwickshire Police and West Mercia Police codenamed Operation Southall, which targeted a Wolverhampton-based drug dealing ring that stretched to Warwickshire and Worcestershire. According to the prosecution, the defendants were arrested in June 2015 after the execution of warrants across Wolverhampton and Stratford-upon-Avon."
+            }
+          ],
+          "relevance_pfa2_vessel_details": [],
+          "relevance_pfa2_id_number_types": [],
+          "relevance_pfa2_active_statuses": [
+            {
+              "status": "Active"
+            }
+          ],
+          "relevance_pfa2_company_details": [],
+          "relevance_pfa2_country_details": [
+            {
+              "country_type": "Country of Reported Allegation",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Resident of",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Citizenship",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            }
+          ],
+          "relevance_pfa2_source_descriptions": [
+            {
+              "source_name": "Birmingham Mail, 14-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMAI0020170214ed2e0001d&cat=a&ep=ASE)"
+            },
+            {
+              "source_name": "coventrytelegraph.net, 10-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=COVENONL20170210ed2a0018h&cat=a&ep=ASE)"
+            },
+            {
+              "source_name": "birminghammail.co.uk, 11-Feb-2017, on Factiva.com (https://global.factiva.com/redir/default.aspx?P=sa&AN=EVEMONL020170211ed2b00108&cat=a&ep=ASE)"
+            }
+          ],
+          "analyzer_relevance_pfa2_country_details": [
+            {
+              "country_type": "Country of Reported Allegation",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Resident of",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            },
+            {
+              "country_type": "Citizenship",
+              "code_pfa2_country_list": {
+                "name": "United Kingdom",
+                "is_territory": "False",
+                "profile_url": "united kingdom.doc"
+              }
+            }
+          ],
+          "relevance_pfa2_sanctions_references": [],
+          "pfa2_associations": [
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009210,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009211,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009212,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009213,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009214,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009215,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009216,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009217,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009218,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009220,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009221,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009222,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009223,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009230,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009231,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009232,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009233,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009234,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009235,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            },
+            {
+              "type": "Pfa2Associations::PublicFigure",
+              "children_id": 11009236,
+              "ex": "No",
+              "code_pfa2_relationship_list": {
+                "name": "Associated Special Interest Person"
+              }
+            }
+          ],
+          "created_at": "2018-01-15T15:07:05.303Z",
+          "updated_at": "2018-01-15T15:07:05.303Z",
+          "youtobe_id": null,
+          "instagram_id": null,
+          "baike_id": null,
+          "wiki_id": null,
+          "country_name": null,
+          "state_name": null,
+          "region": null,
+          "city": null,
+          "address": null,
+          "primary_organization_id": null,
+          "organization_category": null}}]}};
+        return eval(data);
+    
+    }
+    $("#tree").JSONView(getTree(), { collapsed: false });
+  </script>
+  <script type="text/javascript">
+    $(function() {
+    
+        //$('.summernote').summernote();
+        $('.summernote').summernote({
+          height: 1500,
+          minHeight: 1000,
+          toolbar: [
+          // [groupName, [list of button]]
+          // ['style', ['bold', 'italic', 'underline', 'clear']],
+          // ['font', ['strikethrough', 'superscript', 'subscript']],
+          // ['fontsize', ['fontsize']],
+          // ['color', ['color']],
+          // ['para', ['ul', 'ol', 'paragraph']],
+          // ['height', ['height']]
+          ]
+        });
+    
+    });
+  </script>
+<% end %>
