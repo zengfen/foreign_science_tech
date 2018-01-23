@@ -31,6 +31,7 @@ class SpiderTask < ApplicationRecord
   scope :not_cycle, -> {where(task_type: 1)}
 
   after_create :enqueue
+  before_destroy :clear_related_datas!
 
   def status_cn
     cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '执行结束', 3 => "已暂停"}
@@ -130,6 +131,9 @@ class SpiderTask < ApplicationRecord
     $archon_redis.scard("archon_discard_tasks_#{self.id}")
   end
 
+  def error_count
+    $archon_redis.hlen("archon_task_errors_#{self.id}")
+  end
 
   def warning_count
     $archon_redis.scard("archon_warning_tasks_#{self.id}")
@@ -149,6 +153,22 @@ class SpiderTask < ApplicationRecord
   def maybe_finished?
     # current_running_count == 0
     current_total_count == success_count + fail_count
+  end
+
+
+  def clear_related_datas!
+    if self.spider.network_environment == 1
+      $archon_redis.zrem("archon_internal_tasks", self.id)
+    else
+      $archon_redis.zrem("archon_external_tasks", self.id)
+    end
+
+    redis_keys = []
+    redis_keys << "archon_tasks_#{self.id}"
+
+    %w(task_details completed_tasks discard_tasks warning_tasks task_errors ).map{|x| redis_keys<< "archon_#{x}_#{self.id}" }
+
+    redis_keys.map{|x| $archon_redis.del(x)}
   end
 
 end

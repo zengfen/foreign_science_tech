@@ -22,16 +22,28 @@ class TasksController < ApplicationController
   end
 
   def error_tasks
-  	@task = SpiderTask.find(params[:id])
-  	@error_details = $archon_redis.hget("archon_tasks_errors_#{@task.id}")
+  	@spider_task = SpiderTask.find(params[:id])
+  	detail_data = $archon_redis.hgetall("archon_task_errors_#{@spider_task.id}")
+ 
+  	if detail_data.blank?
+  		flash[:error] = "失败任务数为空"
+  		redirect_back(fallback_location:tasks_path)
+  		return 
+  	end
+  	
+  	total_detail_keys = detail_data.keys 
+    @detail_keys =  Kaminari.paginate_array(total_detail_keys).page(params[:page]).per(10)
+    @error_tasks = @detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@spider_task.id}", x)) rescue {}}
+
   end
 
-  def new_spider_task
-  	@spider_task = SpiderTask.new
-  end
 
-  def new_spider_cycle_task
-  	@spider_cycle_task = SpiderCycleTask.new
+  def destroy_error_task
+  	@spider_task = SpiderTask.find(params[:id])
+  	$archon_redis.hdel("archon_task_errors_#{@spider_task.id}",params[:task_md5])
+    
+    render json: {type: "success",message:"删除成功！"} 
+    #redirect_back(fallback_location:error_tasks_task_path(@spider_task))
   end
 
   def get_spider

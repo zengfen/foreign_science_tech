@@ -217,7 +217,20 @@ $('.add-spider-cycle-task').on('click', function (e) {
   var $modal = $('#modal-form-add-spider-cycle-task');
   $modal.modal("show");
 })
-
+$(".submit_btn").on('click', function (e) {
+    $this = $(this);
+    $form = $this.closest('form');
+    var str = $form.find('.spider').val();
+    if (str == ''){
+    swal({
+        title: "提示",
+        text: "请选择爬虫模版！",
+        type: "error",
+    })
+    }else{
+      $form.submit();
+    }
+});
     </script>
   <% end %>
 

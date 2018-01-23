@@ -25,4 +25,4 @@
 //= require codemirror/codemirror.js
 //= require codemirror/mode/javascript/javascript.js
 //= require bootstrap-datetimepicker/bootstrap-datetimepicker.min.js
-//= require bootstrap-treeview.min.js
+//= require jquery.jsonview.js

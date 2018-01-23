@@ -7,7 +7,7 @@
 	          <div class="form-group">
 						  <label class="col-sm-2 control-label">选择模版</label>
 						  <div class="col-sm-10">
-						    <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b ",:onchange=>"get_spider()"}) %>
+						    <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"get_spider()"}) %>
 						  </div>
 						</div>
 						<div class="hr-line-dashed"></div>
@@ -37,7 +37,7 @@
 						<div class="hr-line-dashed"></div>
 	          <div class="form-group">
 						  <div class="col-sm-2 col-sm-offset-10">
-						    <button class="btn btn-primary" type="submit">保存</button>
+						    <button class="btn btn-primary submit_btn" type="button">保存</button>
 						  </div>
 						</div>
 	        <%end%>

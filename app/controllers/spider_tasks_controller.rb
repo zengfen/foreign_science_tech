@@ -22,23 +22,32 @@ class SpiderTasksController < ApplicationController
 	  message = 	@spider_task.save_with_spilt_keywords
 	  flash[message.keys.first.to_sym] = message.values.first
 
-  	redirect_to spider_spider_tasks_path(@spider)
+  	redirect_back(fallback_location:tasks_path)
   end
 
 
   def start
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.start!
-
-    redirect_to "/tasks"
+    
+    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
+    #redirect_back(fallback_location:tasks_path)
   end
 
 
   def stop
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.stop!
+    
+    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
+    # redirect_back(fallback_location:tasks_path)
+  end
 
-    redirect_to "/tasks"
+  def destroy
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.destroy
+
+   render json: {type: "success",message:"删除成功！"} 
   end
 
 
