@@ -29,16 +29,18 @@ class SpiderTasksController < ApplicationController
   def start
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.start!
-
-    redirect_back(fallback_location:tasks_path)
+    
+    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
+    #redirect_back(fallback_location:tasks_path)
   end
 
 
   def stop
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.stop!
-
-    redirect_back(fallback_location:tasks_path)
+    
+    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
+    # redirect_back(fallback_location:tasks_path)
   end
 
   def destroy

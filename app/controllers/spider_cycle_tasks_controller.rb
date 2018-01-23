@@ -18,8 +18,9 @@ class SpiderCycleTasksController < ApplicationController
   def start
     @spider_cycle_task = SpiderCycleTask.find_by(id: params[:id])
     @spider_cycle_task.task_job_run!
-
-    redirect_back(fallback_location:tasks_path(:taks_type=>0))
+    
+    render :template => "/tasks/refresh_spider_cycle_task.js.erb", :layout => false
+    #redirect_back(fallback_location:tasks_path(:taks_type=>0))
   end
 
 
@@ -27,7 +28,8 @@ class SpiderCycleTasksController < ApplicationController
     @spider_cycle_task = SpiderCycleTask.find_by(id: params[:id])
     @spider_cycle_task.stop_job!
 
-    redirect_back(fallback_location:tasks_path(:taks_type=>0))
+    render :template => "/tasks/refresh_spider_cycle_task.js.erb", :layout => false
+    #redirect_back(fallback_location:tasks_path(:taks_type=>0))
   end
 
   def destroy
