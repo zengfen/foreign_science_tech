@@ -17,8 +17,11 @@
     <tbody class="text-center">
 
       <% @spider_tasks.each do |spider_task| %>
+      <tr id = "spider_task_<%=spider_task.id%>">
        <%=render :partial=>"one_task_in_list",:locals=>{:spider_task=>spider_task}%>
+      </tr>
       <% end %>
+
     </tbody>
   </table>
   <div class="text-center">

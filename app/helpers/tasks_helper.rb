@@ -3,15 +3,15 @@ module TasksHelper
 		span_class = ""
 		case obj.status
 		when 0
-			span_class = "label-info"
+			span_class = "text-muted"
 		when 1
-			span_class = "label-primary"
+			span_class = "text-info"
 		when 2
-			span_class = "label-success"
+			span_class = "text-success"
 		when 3
-			span_class = "label-warning"
+			span_class = "text-warning"
 		end
-		html = "<span class=\"label #{span_class}\">#{obj.status_cn}</span>"
+		html = "<span class=\"#{span_class}\">#{obj.status_cn}</span>"
 		return html
 	end
 end
