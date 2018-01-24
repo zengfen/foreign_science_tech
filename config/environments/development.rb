@@ -31,7 +31,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
 
   config.action_mailer.default_url_options = { host: Setting.domain}
-  
+
   if Setting.mailer_provider == 'postmark'
     config.action_mailer.postmark_settings = Setting.mailer_options.deep_symbolize_keys
   else
