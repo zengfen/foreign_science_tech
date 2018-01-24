@@ -231,6 +231,17 @@ $(".submit_btn").on('click', function (e) {
       $form.submit();
     }
 });
+
+window.setInterval(function(){
+  var current_url = $("#current_url").val();
+  var status = $(".task_status").find('span').text();
+  var bool1 = !$('.all-page').hasClass('dn');
+  if (bool1 && status.indexOf("执行中")!=-1){
+    $.get(current_url, function(data){
+      $(".all-page").html(data);
+    })
+  }
+}, 5000);
     </script>
   <% end %>
 
