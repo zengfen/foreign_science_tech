@@ -135,7 +135,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <%@spider_tasks.each do |spider_task|%>
+                    <tr>
+                      <td><span class="label label-primary"><%=raw status_html(spider_task)%></span> </td>
+                      <td><i class="fa fa-clock-o"></i> <%=show_format_time(spider_task.created_at)%></td>
+                      <td><%=spider_task.spider.category_cn%></td>
+                      <td class="text-navy"> <%=spider_task.spider.spider_name%></td>
+                    </tr>
+                  <%end%>
+                  <!--  <tr>
                     <td><span class="label label-primary">完成</span> </td>
                     <td><i class="fa fa-clock-o"></i> <%=Time.now.strftime("%H:%M")%></td>
                     <td>Social</td>
@@ -158,7 +166,7 @@
                     <td><i class="fa fa-clock-o"></i> <%=3.minutes.ago.strftime("%H:%M")%></td>
                     <td>Social</td>
                     <td class="text-navy"> TW搜索 </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>

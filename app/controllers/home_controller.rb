@@ -63,6 +63,9 @@ class HomeController < ApplicationController
     @completed_count += dis*Time.now.hour * 23
     @data_count += dis*Time.now.hour * 23
 
+
+    @spider_tasks = SpiderTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(5)
+
     # 求总的把所有的主机的加起来即可。
     # archon_host_discard_counter_101.37.18.174  member: 201812321 score: 459
     #
@@ -70,4 +73,8 @@ class HomeController < ApplicationController
     #
     # archon_host_task_counter_101.37.18.174  member: 201812321 score: 459
   end
+
+
+
+
 end
