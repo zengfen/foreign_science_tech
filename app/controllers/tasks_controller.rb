@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :logged_in_user
+  before_action :get_spider_task ,:only=>[:fail_tasks,:retry_fail_task,:destroy_fail_task]
 
   def index
   	@spider_task = SpiderTask.new
@@ -22,7 +23,6 @@ class TasksController < ApplicationController
   end
 
   def fail_tasks
-  	@spider_task = SpiderTask.find_by(:id=>params[:id])
   	total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{@spider_task.id}")
  
   	if total_detail_keys.blank?
@@ -38,7 +38,6 @@ class TasksController < ApplicationController
 
 
   def retry_fail_task
-  	@spider_task = SpiderTask.find_by(:id=>params[:id])
   	@spider_task.retry_fail_task(params[:task_md5])
 
   	flash[:success] = "操作成功！"
@@ -47,7 +46,6 @@ class TasksController < ApplicationController
 
 
   def destroy_fail_task
-  	@spider_task = SpiderTask.find_by(:id=>params[:id])
   	@spider_task.del_fail_task(params[:task_md5])
    
     render json: {type: "success",message:"删除成功！"} 
@@ -60,4 +58,10 @@ class TasksController < ApplicationController
     render plain: @spider.has_keyword
   end
 
+  private
+
+	def get_spider_task
+		@spider_task = SpiderTask.find_by(:id=>params[:id])
+  	redirect_back(fallback_location:root_path) if @spider_task.blank?
+	end
 end
