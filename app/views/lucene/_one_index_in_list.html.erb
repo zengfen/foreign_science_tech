@@ -1,7 +1,7 @@
 <tr>
   <td><%= inx["index"]%></td>
-  <td><%= inx["health"] %></td>
-  <td><%= raw es_index_status(inx["status"]) %></td>
+  <td><%= raw es_index_health(inx["health"]) %></td>
+  <td><%= inx["status"] %></td>
   <td><%= inx["pri"] %></td>
   <td><%= inx["rep"] %></td>
   <td><%= inx["docs.count"] %></td>

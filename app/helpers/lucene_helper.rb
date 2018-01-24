@@ -1,5 +1,5 @@
 module LuceneHelper
-	def es_index_status(status)
+	def es_index_health(status)
 	  span_class = ""
 		case status.downcase
 		when "red"
