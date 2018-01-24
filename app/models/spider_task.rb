@@ -29,6 +29,8 @@ class SpiderTask < ApplicationRecord
 
   scope :cycle, -> {where().not(task_type: 1)}
   scope :not_cycle, -> {where(task_type: 1)}
+  scope :unfinished, -> {where().not(status: 2)}
+  scope :finished, -> {where(status: 2)}
 
   after_create :enqueue
   before_destroy :clear_related_datas!
@@ -151,6 +153,23 @@ class SpiderTask < ApplicationRecord
     current_total_count == success_count + fail_count
   end
 
+  #重试失败任务
+  #删除fail_task 记录
+  #重新添加到执行队列
+  #任务运行
+  def retry_fail_task(task_md5)
+    return if !$archon_redis.sismember("archon_discard_tasks_#{self.id}",task_md5)
+    $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
+    $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task_md5)
+    self.start!
+  end
+
+  def del_fail_task(task_md5)
+    return if !$archon_redis.sismember("archon_discard_tasks_#{self.id}",task_md5)
+    $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
+    $archon_redis.hdel("archon_task_details_#{self.id}",task_md5)
+  end
+
 
   def clear_related_datas!
     if self.spider.network_environment == 1
@@ -165,6 +184,12 @@ class SpiderTask < ApplicationRecord
     %w(task_details completed_tasks discard_tasks warning_tasks task_errors ).map{|x| redis_keys<< "archon_#{x}_#{self.id}" }
 
     redis_keys.map{|x| $archon_redis.del(x)}
+  end
+
+  def self.refresh_task_status
+    SpiderTask.unfinished.find_each do |spider_task|
+      spider_task.update_attributes(:status=>2) if  spider_task.maybe_finished?
+    end
   end
 
 end
