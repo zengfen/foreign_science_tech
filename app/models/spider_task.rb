@@ -40,9 +40,13 @@ class SpiderTask < ApplicationRecord
     cn_hash[status]
   end
 
+  def finished?
+     self.status == 2
+  end
+
 
   def can_start?
-    self.status == 0 || self.status == 3
+    self.status == 0 || self.status == 3 
   end
 
   def start!
@@ -161,7 +165,16 @@ class SpiderTask < ApplicationRecord
     return if !$archon_redis.sismember("archon_discard_tasks_#{self.id}",task_md5)
     $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
     $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task_md5)
-    self.start!
+    if self.maybe_finished?||self.finished?
+      self.status = 1
+      self.save
+
+      if self.spider.network_environment == 1
+        $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
+      else
+        $archon_redis.zadd("archon_external_tasks", self.level, self.id)
+      end
+    end
   end
 
   def del_fail_task(task_md5)
@@ -187,7 +200,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def self.refresh_task_status
-    SpiderTask.unfinished.find_each do |spider_task|
+    SpiderTask.where(:status=>1).find_each do |spider_task|
       spider_task.update_attributes(:status=>2) if  spider_task.maybe_finished?
     end
   end
