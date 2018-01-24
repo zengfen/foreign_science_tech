@@ -419,16 +419,16 @@
         {
            sweetAlert("", "请输入索引名称！", "warning");
         }else{
-          alert(query_opts);
             $.ajax({
               url: '/lucene/search',
               type: 'GET',
               data:{index_name:index_name,query_opts:query_opts},
               success:function(data){
               if (data.type=="success"){
-                alert(data.results);
                 $("#tree").JSONView(eval(data.results), { collapsed: false });
                 
+              }else{
+                sweetAlert("", data.message, "warning");
               }
             }});
         }
