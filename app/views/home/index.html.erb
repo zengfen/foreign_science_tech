@@ -8,7 +8,7 @@
           <h5>今日任务数量</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@today_task_count%></h1>
+          <h1 class="no-margins"><%=@today_task_count.to_i%></h1>
           <!-- <div class="stat-percent font-bold text-success">99% <i class="fa fa-bolt"></i></div> -->
           <small></small>
         </div>
@@ -21,7 +21,7 @@
           <h5>今日成功任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@today_completed_count%></h1>
+          <h1 class="no-margins"><%=@today_completed_count.to_i%></h1>
           <!-- <div class="stat-percent font-bold text-info">1% <i class="fa fa-level-up"></i></div> -->
           <small></small>
         </div>
@@ -34,7 +34,7 @@
           <h5>执行中任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@runing_count%></h1>
+          <h1 class="no-margins"><%=@runing_count.to_i%></h1>
           <!--  <div class="stat-percent font-bold text-navy">100% </div> -->
           <small></small>
         </div>
@@ -47,7 +47,7 @@
           <h5>今日失败任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@today_discard_count%></h1>
+          <h1 class="no-margins"><%=@today_discard_count.to_i%></h1>
           <!--   <div class="stat-percent font-bold text-danger">4% <i class="fa fa-level-down"></i></div> -->
           <small></small>
         </div>
@@ -62,7 +62,7 @@
           <h5>历史全部任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@task_count%></h1>
+          <h1 class="no-margins"><%=@task_count.to_i%></h1>
           <div class="stat-percent font-bold text-success"></div>
           <small></small>
         </div>
@@ -75,7 +75,7 @@
           <h5>成功任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@completed_count%></h1>
+          <h1 class="no-margins"><%=@completed_count.to_i%></h1>
           <div class="stat-percent font-bold text-info"></div>
           <small></small>
         </div>
@@ -88,7 +88,7 @@
           <h5>获取数据量</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@data_count%></h1>
+          <h1 class="no-margins"><%=@data_count.to_i%></h1>
           <div class="stat-percent font-bold text-danger"></div>
           <small></small>
         </div>
@@ -101,7 +101,7 @@
           <h5>失败任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@discard_count%></h1>
+          <h1 class="no-margins"><%=@discard_count.to_i%></h1>
           <div class="stat-percent font-bold text-navy"></div>
           <small></small>
         </div>
