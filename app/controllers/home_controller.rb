@@ -15,11 +15,13 @@ class HomeController < ApplicationController
 
       #今日任务数量
       1.upto 24 do |t|
-        score = $archon_redis.zscore("archon_host_discard_counter_#{ip}","#{Time.now.strftime("%F")}#{t.size==1 ? "0#{t}" : t}")
+        r = "#{Time.now.strftime("%Y%m%d")}#{t.to_s.length==1 ? "0#{t}" : t}"
+
+        score = $archon_redis.zscore("archon_host_discard_counter_#{ip}",r)
         score = 0 if score.blank?
         @today_discard_count += score
 
-        score = $archon_redis.zscore("archon_host_completed_counter_#{ip}","#{Time.now.strftime("%F")}#{t.size==1 ? "0#{t}" : t}")
+        score = $archon_redis.zscore("archon_host_completed_counter_#{ip}",r)
         score = 0 if score.blank?
         @today_completed_count += score
 
