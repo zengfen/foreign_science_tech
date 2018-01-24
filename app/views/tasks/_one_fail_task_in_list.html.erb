@@ -7,13 +7,12 @@
   </a>
   <ul class="more-ul dn">
    <li class="bor-b">
-      <%= link_to('#',:title=>"重试",:remote=>true) do  %>
-        重试
-      <%end%>
+    <%=link_to(retry_fail_task_task_path(@spider_task,:task_md5=>fail_task["task_md5"]),:title=>"重试") do%>重试<%end%>
     </li>
-    <li>
-      <%=link_to(destroy_fail_task_task_path(@spider_task,:task_md5=>fail_task["task_md5"]),:class=>"remove-line") do%>删除<%end%>
-    </li>
-
+    <%if false%>
+      <li>
+        <%=link_to(destroy_fail_task_task_path(@spider_task,:task_md5=>fail_task["task_md5"]),:class=>"remove-line") do%>删除<%end%>
+      </li>
+    <%end%>
   </ul>
 </td>

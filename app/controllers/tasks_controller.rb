@@ -22,7 +22,7 @@ class TasksController < ApplicationController
   end
 
   def fail_tasks
-  	@spider_task = SpiderTask.find(params[:id])
+  	@spider_task = SpiderTask.find_by(:id=>params[:id])
   	total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{@spider_task.id}")
  
   	if total_detail_keys.blank?
@@ -37,10 +37,19 @@ class TasksController < ApplicationController
   end
 
 
+  def retry_fail_task
+  	@spider_task = SpiderTask.find_by(:id=>params[:id])
+  	@spider_task.retry_fail_task(params[:task_md5])
+
+  	flash[:success] = "操作成功！"
+    redirect_back(fallback_location:error_tasks_task_path(@spider_task))  
+  end
+
+
   def destroy_fail_task
-  	@spider_task = SpiderTask.find(params[:id])
-  	$archon_redis.srem("archon_discard_tasks_#{@spider_task.id}",params[:task_md5])
-    
+  	@spider_task = SpiderTask.find_by(:id=>params[:id])
+  	@spider_task.del_fail_task(params[:task_md5])
+   
     render json: {type: "success",message:"删除成功！"} 
     #redirect_back(fallback_location:error_tasks_task_path(@spider_task))
   end
