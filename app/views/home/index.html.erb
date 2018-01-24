@@ -137,7 +137,7 @@
                 <tbody>
                   <%@spider_tasks.each do |spider_task|%>
                     <tr>
-                      <td><span class="label label-primary"><%=raw status_html(spider_task)%></span> </td>
+                      <td><span class="label label-primary"><%=raw status_text(spider_task)%></span> </td>
                       <td><i class="fa fa-clock-o"></i> <%=show_format_time(spider_task.created_at)%></td>
                       <td><%=spider_task.spider.category_cn%></td>
                       <td class="text-navy"> <%=spider_task.spider.spider_name%></td>
