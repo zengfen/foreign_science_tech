@@ -40,8 +40,12 @@ class SpiderTask < ApplicationRecord
     cn_hash[status]
   end
 
-  def finished?
+  def is_finished?
      self.status == 2
+  end
+
+  def is_running?
+     self.status == 1
   end
 
 
@@ -165,7 +169,7 @@ class SpiderTask < ApplicationRecord
     return if !$archon_redis.sismember("archon_discard_tasks_#{self.id}",task_md5)
     $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
     $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task_md5)
-    if self.maybe_finished?||self.finished?
+    if self.maybe_finished?||self.is_finished?
       self.status = 1
       self.save
 
@@ -201,8 +205,13 @@ class SpiderTask < ApplicationRecord
 
   def self.refresh_task_status
     SpiderTask.where(:status=>1).find_each do |spider_task|
-      spider_task.update_attributes(:status=>2) if  spider_task.maybe_finished?
+      spider_task.update_finished_status!
     end
+  end
+
+  def update_finished_status!
+    return if !self.is_running?
+    self.update_attributes(:status=>2) if self.maybe_finished?
   end
 
 end
