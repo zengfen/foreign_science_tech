@@ -41,4 +41,13 @@ class LuceneController < ApplicationController
     render json: {type: "success",message:"操作成功！"}
   end
 
+  def search
+    return render json: {type: "error",message:"请输入索引名称！"} if params[:index_name].blank?
+    query_opts = params[:query_opts].blank? ? {} : JSON.parse(params[:query_opts])
+    logger.info query_opts
+    response = $elastic.search index: params[:index_name], body: query_opts
+    
+    render json:  {type: "success",results:response}
+  end 
+
 end
