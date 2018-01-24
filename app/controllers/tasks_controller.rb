@@ -41,7 +41,7 @@ class TasksController < ApplicationController
   	@spider_task.retry_fail_task(params[:task_md5])
 
   	flash[:success] = "操作成功！"
-    redirect_back(fallback_location:error_tasks_task_path(@spider_task))  
+    redirect_back(fallback_location:fail_tasks_task_path(@spider_task))  
   end
 
 
@@ -49,7 +49,7 @@ class TasksController < ApplicationController
   	@spider_task.del_fail_task(params[:task_md5])
    
     render json: {type: "success",message:"删除成功！"} 
-    #redirect_back(fallback_location:error_tasks_task_path(@spider_task))
+    #redirect_back(fallback_location:fail_tasks_task_path(@spider_task))
   end
 
   def get_spider
