@@ -63,7 +63,7 @@ class HomeController < ApplicationController
     @completed_count += dis*Time.now.hour * 23
     @data_count += dis*Time.now.hour * 23
 
-
+    opts = {}
     @spider_tasks = SpiderTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(5)
 
     # 求总的把所有的主机的加起来即可。
