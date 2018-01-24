@@ -1,6 +1,6 @@
-<td><%= error_task["url"]%></td>
-<td><%= error_task["retry_count"] %></td>
-<td><%= error_task["max_retry_count"] %></td>
+<td><%= fail_task["url"]%></td>
+<td><%= fail_task["retry_count"] %></td>
+<td><%= fail_task["max_retry_count"] %></td>
 <td class="pos-r">
   <a href="##">
     <i class="icon_data_analysis icon-more"></i>
@@ -12,7 +12,7 @@
       <%end%>
     </li>
     <li>
-      <%=link_to(destroy_error_task_task_path(@spider_task,:task_md5=>error_task["task_md5"]),:class=>"remove-line") do%>删除<%end%>
+      <%=link_to(destroy_fail_task_task_path(@spider_task,:task_md5=>fail_task["task_md5"]),:class=>"remove-line") do%>删除<%end%>
     </li>
 
   </ul>

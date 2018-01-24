@@ -131,10 +131,6 @@ class SpiderTask < ApplicationRecord
     $archon_redis.scard("archon_discard_tasks_#{self.id}")
   end
 
-  def error_count
-    $archon_redis.hlen("archon_task_errors_#{self.id}")
-  end
-
   def warning_count
     $archon_redis.scard("archon_warning_tasks_#{self.id}")
   end

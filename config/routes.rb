@@ -65,8 +65,8 @@ Rails.application.routes.draw do
 
   resources :tasks do
     member do
-      get 'error_tasks'
-      get 'destroy_error_task'
+      get 'fail_tasks'
+      get 'destroy_fail_task'
     end
     collection do
       get 'get_spider'
