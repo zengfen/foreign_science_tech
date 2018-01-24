@@ -42,6 +42,8 @@ class LuceneController < ApplicationController
   end
 
   def search
+    $elastic = Elasticsearch::Client.new hosts:[{ host: "10.46.226.135",port: "9200",user: "elastic",password: "changeme"},{ host: "10.27.3.39",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.145",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.192",port: "9200",user: "elastic",password: "changeme"}],randomize_hosts: true, log: false,send_get_body_as: "post"
+    
     return render json: {type: "error",message:"请输入索引名称！"} if params[:index_name].blank?
     query_opts = params[:query_opts].blank? ? {} : JSON.parse(params[:query_opts])
     logger.info query_opts
