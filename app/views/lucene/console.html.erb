@@ -13,42 +13,35 @@
       </div>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-lg-6">
-      <div class="mail-box-header">
-        <input type="text" name="index_name" id="index_name">
-        <div class="pull-right tooltip-demo">
-          <button class="btn btn-white btn-sm" id="submit_btn"><i class="fa fa-pencil"></i> Search</button>
+  <div class="col-md-4 codeEditor">
+    <div class="jsoneditor">
+      <div class="jsoneditor-menu">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" placeholder="index name" id="index_name" class="form-control">
         </div>
       </div>
-      <div class="mail-box">
-        <div class="mail-text h-200">
-          <div class="summernote">
-            {}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="clearfix"></div>
+      <div class="jsoneditor-outer">
+        <textarea rows="3" id="query_opts"></textarea>
       </div>
     </div>
-    <div class="col-lg-6" id="tree">
+    <p class="text-center"><button type="button" class="btn btn-w-m btn-primary" id="submit_btn">搜索</button></p>
+  </div>
+  <div class="col-md-8 treeEditor">
+    <div class="jsoneditor">
+      <div class="jsoneditor-outer"></div>
     </div>
   </div>
 </div>
+
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-    
-        //$('.summernote').summernote();
-        $('.summernote').summernote({
-          height: 1500,
-          minHeight: 1000,
-          toolbar: [
-          ]
-        });
 
     $("#submit_btn").on('click',function(e){
-      var query_opts = $('.summernote').summernote('code');
+      var query_opts = $('#query_opts').val();
       var index_name = $("#index_name").val();
      if (index_name.length<1)
         {
@@ -60,7 +53,7 @@
               data:{index_name:index_name,query_opts:query_opts},
               success:function(data){
               if (data.type=="success"){
-                $("#tree").JSONView(eval(data.results), { collapsed: false });
+                $(".jsoneditor-outer").JSONView(eval(data.results), { collapsed: false });
                 
               }else{
                 sweetAlert("", data.message, "warning");
