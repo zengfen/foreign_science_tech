@@ -44,6 +44,7 @@
     $("#submit_btn").on('click',function(e){
       var query_opts = $('#query_opts').val();
       var index_name = $("#index_name").val();
+      $("#index_name").JSONView(eval(index_name), { collapsed: false });
      if (index_name.length<1)
         {
            sweetAlert("", "请输入索引名称！", "warning");
