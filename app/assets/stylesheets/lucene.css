@@ -14,9 +14,6 @@
 	background-color: #fff;
 	position: relative;
 }
-.json-placeholder:hover{
-	cursor: pointer;
-}
 
 .treeEditor .jsoneditor{
 	background-color: #f8f8f8;
@@ -29,8 +26,12 @@
 .json-placeholder{
 	position: absolute;
 	top: 10px;
-	left: 10px;
+	left: 0px;
 	color: #999;
+	padding-left: 10px;
+}
+.json-placeholder:hover{
+	cursor: pointer;
 }
 
 .hljs {
