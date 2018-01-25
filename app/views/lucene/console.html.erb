@@ -77,6 +77,11 @@
     $('.json-placeholder').click(function(){
       $(this).hide();
       $('#query_opts').focus();
+    });
+    $('#query_opts').blur(function(){
+      if(!$.trim($(this).text())){
+        $('.json-placeholder').show();
+      }
     })
     
     });
