@@ -29,7 +29,7 @@ class LuceneController < ApplicationController
     key = params[:id].gsub(/_\d+/,"").to_s
     date = params[:id].match(/_(\d+)/)[1].to_s
     if Spider.index_categories.values.include?(key) || !date.blank?
-      key.classify.constantize.create_index(date)
+      key.classify.constantize.recreate_index(date)
     else
       render :json=>"invalid index"
       return
@@ -48,13 +48,17 @@ class LuceneController < ApplicationController
     return render json: {type: "error",message:"请输入索引名称！"} if params[:index_name].blank?
     query_opts = params[:query_opts].blank? ? {} : JSON.parse(params[:query_opts])
     logger.info query_opts
-    response = $elastic.search index: params[:index_name], body: query_opts
-    
-    render json:  {type: "success",results:response}
-  end 
+    begin
+      response = $elastic.search index: params[:index_name], body: query_opts
+      render json:  {type: "success",results:response}
+    rescue Exception => e  
+      render json:  {type: "error",message: e.message}
+    end
+
+  end
 
   def test
-    
+
   end
 
 end
