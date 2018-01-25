@@ -13,6 +13,12 @@
 	.jsoneditor-menu .form_control{
 		border:none;
 	}
+	.jsoneditor-menu .form_control:focus{
+		outline: none;
+	}
+	.jsoneditor-menu .btn-submit{
+		border-radius: 0px;
+	}
 	.jsoneditor-outer{
 		background-color: #fff;
 	}
@@ -23,6 +29,9 @@
 		display: inline-block;
 		padding: 15px;
 	}
+	.jsoneditor-outer textarea:focus{
+		outline: none;
+	}
 </style>
 
 <div class="row jsonContents">
@@ -30,7 +39,7 @@
 		<div class="jsoneditor">
 			<div class="form-inline jsoneditor-menu">
 				<input type="text" class="form_control input-xs">
-				<button type="button" class="btn btn-xs">确定</button>
+				<button type="button" class="btn btn-xs btn-submit">确定</button>
 			</div>
 			<div class="jsoneditor-outer">
 				<textarea rows="3"></textarea>
