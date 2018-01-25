@@ -47,11 +47,11 @@
 
     $("#submit_btn").on('click',function(e){
       var query_opts = $('#query_opts').text();
-      $("#query_opts").text(JSON.stringify($.parseJSON( query_opts ),null,2));
-
-      var snippet = document.querySelector('#query_opts');
-      
-      hljs.highlightBlock(snippet);
+      if (query_opts.length>0){
+        $("#query_opts").text(JSON.stringify($.parseJSON( query_opts ),null,2));
+        var snippet = document.querySelector('#query_opts');
+        hljs.highlightBlock(snippet);
+      }
       var index_name = $("#index_name").val();
      if (index_name.length<1)
         {
