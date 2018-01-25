@@ -2,12 +2,14 @@
 	.jsoneditor{
 		border: 1px solid #1ab394;
 		box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
+		margin-top: 15px;
+		margin-bottom: 15px;
 	}
 	.jsoneditor-menu{
 		height: 35px;
 		color: #fff;
 		background-color: #1ab394;
-		padding: 0 20px;
+		padding: 0 10px;
 	}
 	.jsoneditor-outer{
 		background-color: #fff;
@@ -18,9 +20,9 @@
 <div class="row jsonContents">
 	<div class="col-md-4 codeEditor">
 		<div class="jsoneditor">
-			<div class="jsoneditor-menu">
-				<input type="text" class="form-control">
-				<button type="button" class="btn btn-outline btn-default">确定</button>
+			<div class="form-inline jsoneditor-menu">
+				<input type="text" class="form-control input-sm">
+				<button type="button" class="btn btn-w-m btn-info btn-sm">确定</button>
 			</div>
 			<div class="jsoneditor-outer">code</div>
 		</div>
