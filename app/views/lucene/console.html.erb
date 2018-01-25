@@ -25,18 +25,10 @@
         </div>
       </div>
       <div class="jsoneditor-outer">
-        <div class="json-placeholder">请输入检索条件,例如:
-          <br>{
-                "query": {
-                  "bool": {
-                    "filter": {
-                      "term": {
-                        "foo": "bar"
-                      }
-                    }
-                  }
-                }
-              }
+        <div class="json-placeholder">
+        <p>请输入检索条件,例如:</p>
+        <span class="tip_json"></span>
+
         </div>
         <pre>
           <code class="json" id="query_opts" contenteditable="true"></code>
@@ -57,7 +49,18 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-
+      var json_text = {
+                "query": {
+                  "bool": {
+                    "filter": {
+                      "term": {
+                        "foo": "bar"
+                      }
+                    }
+                  }
+                }
+              }
+    $(".tip_json").text(JSON.stringify($.parseJSON( json_text ),null,2));
     $("#submit_btn").on('click',function(e){
       var query_opts = $('#query_opts').text();
       if (query_opts.length>0){
