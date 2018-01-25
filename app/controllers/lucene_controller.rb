@@ -29,7 +29,7 @@ class LuceneController < ApplicationController
     key = params[:id].gsub(/_\d+/,"").to_s
     date = params[:id].match(/_(\d+)/)[1].to_s
     if Spider.index_categories.values.include?(key) || !date.blank?
-      key.classify.constantize.create_index(date)
+      key.classify.constantize.recreate_index(date)
     else
       render :json=>"invalid index"
       return
@@ -54,11 +54,11 @@ class LuceneController < ApplicationController
     rescue Exception => e  
       render json:  {type: "error",message: e.message}
     end
-    
-  end 
+
+  end
 
   def test
-    
+
   end
 
 end
