@@ -27,7 +27,7 @@
 	position: absolute;
 	top: 10px;
 	left: 0px;
-	color: inherit;
+	color: #999;
 	padding: 0 10px;
 	width: 100%;
 }
@@ -53,5 +53,5 @@ pre{
 	white-space: pre-wrap !important;
 	margin-bottom: 0px !important;
 	line-height: 25px;
-	color: inherit;
+	color: inherit !important;
 }
