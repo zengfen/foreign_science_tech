@@ -1,1 +1,33 @@
-	<p>test.html.erb</p>
+<style type="text/css">
+	.jsoneditor{
+		border: 1px solid #1ab394;
+		box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
+	}
+	.jsoneditor-menu{
+		height: 35px;
+		color: #fff;
+		background-color: #1ab394;
+		padding: 0 20px;
+	}
+	.jsoneditor-outer{
+		background-color: #fff;
+		padding: 20px;
+	}
+</style>
+
+<div class="row jsonContents">
+	<div class="col-md-4 codeEditor">
+		<div class="jsoneditor">
+			<div class="jsoneditor-menu">
+				<input type="text" class="form-control">
+				<button type="button" class="btn btn-outline btn-default">确定</button>
+			</div>
+			<div class="jsoneditor-outer">code</div>
+		</div>
+	</div>
+  <div class="col-md-8 treeEditor">
+  	<div class="jsoneditor">
+  		<div class="jsoneditor-outer">tree</div>
+  	</div>
+  </div>
+</div>
