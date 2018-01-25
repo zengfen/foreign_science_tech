@@ -1,0 +1,34 @@
+//= require highlight/atelier-dune-dark.css
+.jsoneditor{
+	border: 1px solid #eee;
+	box-shadow: 0 0 4px 2px rgba(0, 0, 0, .1);
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.jsoneditor-menu{
+	background-color: #eee;
+	padding: 4px 10px;
+	overflow: hidden;
+}
+.jsoneditor-outer{
+	background-color: #fff;
+}
+
+.treeEditor .jsoneditor{
+	background-color: #f8f8f8;
+	padding: 10px;
+	min-height: 441px;
+}
+.treeEditor .jsoneditor-outer{
+	background-color: transparent;
+}
+
+.hljs {
+  background: none !important;
+}
+.json{
+	border:1px solid #ccc;
+	min-height: 100px;
+	display: inline-block;
+	width: 300px;
+}

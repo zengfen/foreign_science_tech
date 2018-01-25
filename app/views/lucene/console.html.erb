@@ -25,7 +25,9 @@
         </div>
       </div>
       <div class="jsoneditor-outer">
-        <textarea rows="3" id="query_opts" placeholder="请输入检索条件"></textarea>
+        <pre>
+          <code class="json" id="query_opts" contenteditable="true"></code>
+        </pre>
       </div>
     </div>
     <p class="text-center"><button type="button" class="btn btn-w-m btn-primary" id="submit_btn">搜索</button></p>
@@ -38,12 +40,18 @@
 </div>
 </div>
 
+
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
 
     $("#submit_btn").on('click',function(e){
-      var query_opts = $('#query_opts').val();
+      var query_opts = $('#query_opts').text();
+      $("#query_opts").text(JSON.stringify($.parseJSON( query_opts ),null,2));
+
+      var snippet = document.querySelector('#query_opts');
+      
+      hljs.highlightBlock(snippet);
       var index_name = $("#index_name").val();
      if (index_name.length<1)
         {
