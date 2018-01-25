@@ -31,7 +31,7 @@
 	padding-left: 10px;
 }
 .json-placeholder:hover{
-	cursor: pointer;
+	cursor: text;
 }
 
 .hljs {
