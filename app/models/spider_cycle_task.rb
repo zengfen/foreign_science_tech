@@ -75,6 +75,7 @@ class SpiderCycleTask < ApplicationRecord
   	Sidekiq::Cron::Job.create(name: self.job_name, cron: self.period_opts[:cron], class: 'CycleTaskJob', args:  { id: self.id }) if cron.blank? 
 
   	self.update_attributes({:status=>1})
+  	self.update_next_time
   end
 
   def destroy_job!
@@ -88,6 +89,7 @@ class SpiderCycleTask < ApplicationRecord
   	job = Sidekiq::Cron::Job.find self.job_name
   	Sidekiq::Cron::Job.destroy self.job_name if !job.blank?
   	self.update_attributes({:status=>2})
+  	self.update_attributes(:next_time=>nil)
   end
 
   def create_sub_task
@@ -103,7 +105,9 @@ class SpiderCycleTask < ApplicationRecord
   end
 
   def update_next_time
-  	self.update_attributes(:next_time=>Time.now+(self.period_opts[:time]))
+  	cron = Rufus::Scheduler::CronLine.new(Sidekiq::Cron::Job.find(self.job_name).cron)
+    next_time = cron.next_time(Time.now.utc).utc
+  	self.update_attributes(:next_time=>next_time)
   end
 
   def save_with_spilt_keywords

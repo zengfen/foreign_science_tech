@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def show_format_time(time)
-    time.strftime("%Y-%m-%d %H:%M:%S") rescue nil
+    time.strftime("%Y-%m-%d %H:%M:%S") rescue "-"
   end
 
   def truncate_utf(text, length = 15, truncate_string = "")
