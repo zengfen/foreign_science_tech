@@ -17,7 +17,7 @@
 .treeEditor .jsoneditor{
 	background-color: #f8f8f8;
 	padding: 10px;
-	min-height: 441px;
+	min-height: 504px;
 }
 .treeEditor .jsoneditor-outer{
 	background-color: transparent;
@@ -39,4 +39,6 @@ pre{
 	background-color: #fff !important;
 	border:none !important;
 	white-space: pre-wrap !important;
+	margin-bottom: 0px !important;
+	line-height: 25px;
 }
