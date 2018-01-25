@@ -14,6 +14,9 @@
 	background-color: #fff;
 	position: relative;
 }
+.json-placeholder:hover{
+	cursor: pointer;
+}
 
 .treeEditor .jsoneditor{
 	background-color: #f8f8f8;
