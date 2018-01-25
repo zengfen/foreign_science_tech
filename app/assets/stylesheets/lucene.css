@@ -27,8 +27,12 @@
   background: none !important;
 }
 .json{
-	border:1px solid #ccc;
-	min-height: 100px;
 	display: inline-block;
-	width: 300px;
+	width: 100%;
+	min-height: 400px;
+}
+
+pre{
+	background-color: #fff;
+	border:none;
 }
