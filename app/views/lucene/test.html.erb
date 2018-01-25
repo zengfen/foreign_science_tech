@@ -6,14 +6,22 @@
 		margin-bottom: 15px;
 	}
 	.jsoneditor-menu{
-		height: 35px;
-		color: #fff;
+		//height: 35px;
 		background-color: #1ab394;
-		padding: 0 10px;
+		padding: 7px 10px;
+	}
+	.jsoneditor-menu .form_control{
+		border:none;
 	}
 	.jsoneditor-outer{
 		background-color: #fff;
-		padding: 20px;
+	}
+	.jsoneditor-outer textarea{
+		border:none;
+		width: 100%;
+		height: 100%;
+		display: inline-block;
+		padding: 15px;
 	}
 </style>
 
@@ -21,10 +29,12 @@
 	<div class="col-md-4 codeEditor">
 		<div class="jsoneditor">
 			<div class="form-inline jsoneditor-menu">
-				<input type="text" class="form-control input-sm">
-				<button type="button" class="btn btn-w-m btn-info btn-sm">确定</button>
+				<input type="text" class="form_control input-xs">
+				<button type="button" class="btn btn-xs">确定</button>
 			</div>
-			<div class="jsoneditor-outer">code</div>
+			<div class="jsoneditor-outer">
+				<textarea rows="3"></textarea>
+			</div>
 		</div>
 	</div>
   <div class="col-md-8 treeEditor">
