@@ -31,8 +31,14 @@
 	width: 100%;
 	min-height: 400px;
 }
+.json:focus {
+    outline: none;
+}
 
 pre{
-	background-color: #fff;
-	border:none;
+	background-color: #fff !important;
+	border:none !important;
+	padding: 0px !important;
+	margin: 0px !important;
+	white-space: pre-wrap !important;
 }
