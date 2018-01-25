@@ -3,6 +3,7 @@
 <td><%= spider_cycle_task.level %></td>
 <td><%= spider_cycle_task.keyword %></td>
 <td><%= spider_cycle_task.period %></td>
+<td><%= show_format_time(spider_cycle_task.next_time) %></td>
 <td><%= raw status_html(spider_cycle_task)%></td>
 <td><%= show_format_time(spider_cycle_task.created_at) %></td>
 <td class="pos-r">
