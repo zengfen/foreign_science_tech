@@ -51,8 +51,8 @@ class LuceneController < ApplicationController
     begin
       response = $elastic.search index: params[:index_name], body: query_opts
       render json:  {type: "success",results:response}
-    rescue Exception => e
-      render json:  {type: "error",message:e.message}
+    rescue Exception => e  
+      render json:  {type: "error",message: e.message}
     end
 
   end
