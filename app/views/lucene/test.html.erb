@@ -6,7 +6,7 @@
 		margin-bottom: 15px;
 	}
 	.jsoneditor-menu{
-		height: 35px;
+		//height: 35px;
 		background-color: #5b6671;
 		padding: 4px 10px;
 		overflow: hidden;
@@ -54,8 +54,11 @@
 	<div class="col-md-4 codeEditor">
 		<div class="jsoneditor">
 			<div class="form-inline jsoneditor-menu">
-				<input type="text" class="form_control input-xs">
-				<button type="button" class="btn btn-xs btn-submit">确定</button>
+				<div class="input-group">
+					<span class="input-group-addon">@</span>
+					<input type="text" placeholder="Username" class="form-control">
+					<span class="input-group-btn"><button type="button" class="btn btn-primary">Go!</button></span>
+        </div>
 			</div>
 			<div class="jsoneditor-outer">
 				<textarea rows="3"></textarea>
