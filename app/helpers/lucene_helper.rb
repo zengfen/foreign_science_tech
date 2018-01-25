@@ -7,7 +7,7 @@ module LuceneHelper
 		when "yellow"
 			span_class = "text-warning"
 		when "green"
-			span_class = "text-info"
+			span_class = "text-green"
 		end
 		html = "<i class=\"fa fa-circle #{span_class}\"></i><span class=\"#{span_class}  p-xxs\">#{status}</span>"
 		return html
