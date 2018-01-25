@@ -78,6 +78,9 @@
       $(this).hide();
       $('#query_opts').focus();
     });
+    $('#query_opts').focus(function(){
+      $('.json-placeholder').hide();
+    });
     $('#query_opts').blur(function(){
       if(!$.trim($(this).text())){
         $('.json-placeholder').show();

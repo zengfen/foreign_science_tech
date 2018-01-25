@@ -29,6 +29,7 @@
 	left: 0px;
 	color: #999;
 	padding-left: 10px;
+	width: 100%;
 }
 .json-placeholder:hover{
 	cursor: text;
