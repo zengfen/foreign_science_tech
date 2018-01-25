@@ -53,4 +53,8 @@ class LuceneController < ApplicationController
     render json:  {type: "success",results:response}
   end 
 
+  def test
+    
+  end
+
 end

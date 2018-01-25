@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       get 'reset'
       get 'remove'
       get 'console'
+      get 'test'
       get 'search'
     end
   end
