@@ -31,7 +31,7 @@
   </div>
   <div class="col-md-8 treeEditor">
     <div class="jsoneditor">
-      <div class="jsoneditor-outer"></div>
+      <div class="jsoneditor-outer" id="results"></div>
     </div>
   </div>
 </div>
@@ -53,7 +53,7 @@
               data:{index_name:index_name,query_opts:query_opts},
               success:function(data){
               if (data.type=="success"){
-                $(".jsoneditor-outer").JSONView(eval(data.results), { collapsed: false });
+                $("#results").JSONView(eval(data.results), { collapsed: false });
                 
               }else{
                 sweetAlert("", data.message, "warning");
