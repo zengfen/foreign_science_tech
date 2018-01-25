@@ -25,7 +25,19 @@
         </div>
       </div>
       <div class="jsoneditor-outer">
-        <div class="json-placeholder">请输入json</div>
+        <div class="json-placeholder">请输入检索条件,例如:
+          <br>{
+                "query": {
+                  "bool": {
+                    "filter": {
+                      "term": {
+                        "foo": "bar"
+                      }
+                    }
+                  }
+                }
+              }
+        </div>
         <pre>
           <code class="json" id="query_opts" contenteditable="true"></code>
         </pre>
