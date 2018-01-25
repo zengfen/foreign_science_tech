@@ -12,6 +12,7 @@
 }
 .jsoneditor-outer{
 	background-color: #fff;
+	position: relative;
 }
 
 .treeEditor .jsoneditor{
@@ -21,6 +22,12 @@
 }
 .treeEditor .jsoneditor-outer{
 	background-color: transparent;
+}
+.json-placeholder{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	color: #999;
 }
 
 .hljs {
