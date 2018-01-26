@@ -1,5 +1,7 @@
 <tr>
-  <td><%= inx["index"]%></td>
+  <td>
+    <%=link_to(inx["index"],console_lucene_index_path(:index_name=>inx["index"])) %>
+  </td>
   <td><%= raw es_index_health(inx["health"]) %></td>
   <td><%= inx["status"] %></td>
   <td><%= inx["pri"] %></td>
