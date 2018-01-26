@@ -51,8 +51,6 @@
 	display: inline-block;
 	width: 100%;
 	height: 551px;
-	position: relative;
-	overflow: hidden;
 }
 .json:focus {
     outline: none;
