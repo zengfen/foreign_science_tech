@@ -5,33 +5,41 @@
         <!-- 添加form -->
         <%= form_for(@template, url: "",:html=>{:class=>"form-horizontal spider-task-form"}) do |f| %>
           <div class="form-group">
+            <label class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+              <%= f.text_field :name, :placeholder=>"名称",:class=>"form-control"%>
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">绑定IP</label>
+            <div class="col-sm-10">
+              <div class="i-checks inline">
+                <label class="control-label">
+                  <%= f.radio_button(:is_bind_ip, false, :checked=> true)%>
+                  <i></i> 否
+                </label>
+              </div>
+              <div class="i-checks inline">
+                <label class="control-label">
+                  <%= f.radio_button(:is_bind_ip, true, :checked=> true)%>
+                  <i></i> 是
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-sm-2 control-label">选择模版</label>
             <div class="col-sm-10">
-              <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"get_spider()"}) %>
-            </div>
-          </div>
-          <div class="hr-line-dashed"></div>
-          <div class="keywords_inputs"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">优先级</label>
-            <div class="col-sm-10">
-              <div id="iconrange_spider_task_level_num"></div>
-              <%= f.hidden_field :level,:class=>"level_num"%>
-            </div>
-          </div>
-          <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">重试次数</label>
-            <div class="col-sm-10">
-              <div id="iconrange_spider_task_retry_num"></div>
-              <%= f.hidden_field :max_retry_count, :class=>"retry_num"%>
-            </div>
-          </div>
-          <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">特殊标签</label>
-            <div class="col-sm-10">
-              <%= f.text_field :special_tag,:placeholder=>"特殊标签",:class=>"form-control"%>
+              <%= f.text_field :window_size, :placeholder=>"窗口大小", :class=>"form-control"%>
+              <% ControlTemplate.window_types.each do |k, v|  %>
+                <div class="i-checks inline">
+                  <label class="control-label">
+                    <%= f.radio_button(:window_type, k , :checked=> true)%>
+                    <i></i> <%= v %>
+                  </label>
+                </div>
+              <% end %>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -79,7 +87,7 @@ function get_spider () {
 }
   $("#iconrange_spider_task_level_num").ionRangeSlider({
   min: 1,
-    max: 10,
+    max: 24,
     from: <%=raw @spider_task.level.to_i%>,
     //postfix: "",
     grid: true,
