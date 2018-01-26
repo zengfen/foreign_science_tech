@@ -27,7 +27,7 @@ class TasksController < ApplicationController
  
   	if total_detail_keys.blank?
   		flash[:error] = "失败任务数为空"
-  		redirect_back(fallback_location:tasks_path)
+  		redirect_to tasks_path
   		return 
   	end
  
