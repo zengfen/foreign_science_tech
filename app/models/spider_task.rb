@@ -183,8 +183,8 @@ class SpiderTask < ApplicationRecord
 
   def retry_all_fail_task
     return if self.fail_count==0
-    total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{@spider_task.id}")
-    
+    total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{self.id}")
+
     total_detail_keys.each do |task_md5|
       $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
       $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task_md5)
