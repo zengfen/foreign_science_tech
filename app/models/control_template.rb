@@ -1,0 +1,2 @@
+class ControlTemplate < ApplicationRecord
+end
