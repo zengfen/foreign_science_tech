@@ -39,6 +39,7 @@
 	color: #999;
 	padding: 0 10px;
 	width: 100%;
+	z-index: 99;
 }
 .json-placeholder:hover{
 	cursor: text;
@@ -50,7 +51,7 @@
 .json{
 	display: inline-block;
 	width: 100%;
-	min-height: 551px;
+	height: 551px;
 }
 .json:focus {
     outline: none;

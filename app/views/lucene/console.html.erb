@@ -36,7 +36,7 @@
         <pre class="tip_json" style="color: #999"></pre>
 
         </div>
-        <pre>
+        <pre class="jsonScroll">
           <code class="json" id="query_opts" contenteditable="true"></code>
         </pre>
       </div>
@@ -55,7 +55,6 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-      
       var json_text = 
       {
         "query": {
@@ -106,12 +105,20 @@
     });
     $('#query_opts').focus(function(){
       $('.json-placeholder').hide();
+      updateJsonScroll();
     });
     $('#query_opts').blur(function(){
       if(!$.trim($(this).text())){
         $('.json-placeholder').show();
-      }
+      };
     })
+    function updateJsonScroll(){
+      $('.jsonScroll').slimScroll({
+        height: '606px',
+        railOpacity: 0.9
+      })
+    }
+
     
     });
   </script>
