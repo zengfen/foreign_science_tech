@@ -23,11 +23,13 @@
 .treeEditor .jsoneditor{
 	background-color: #fff;
 	padding: 10px;
-	min-height: 650px;
+	//height: 650px;
+	//overflow: hidden;
 }
 .treeEditor .jsoneditor-outer{
 	background-color: transparent;
 	position: relative;
+	height: 650px;
 	overflow: hidden;
 }
 .json-placeholder{

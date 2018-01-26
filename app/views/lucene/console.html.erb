@@ -55,10 +55,7 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-      $('#results').slimScroll({
-          height: '100%',
-          railOpacity: 0.9
-      });
+      
       var json_text = 
       {
         "query": {
@@ -91,7 +88,10 @@
               success:function(data){
               if (data.type=="success"){
                 $("#results").JSONView(eval(data.results), { collapsed: false });
-                
+                $('#results').slimScroll({
+                  height: '100%',
+                  railOpacity: 0.9
+                });
               }else{
                 sweetAlert("", data.message, "warning");
               }
