@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     member do
       get 'fail_tasks'
       get 'retry_fail_task'
+      get 'retry_all_fail_task'
       get 'destroy_fail_task'
     end
     collection do

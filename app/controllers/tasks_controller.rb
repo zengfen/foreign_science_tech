@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :logged_in_user
-  before_action :get_spider_task ,:only=>[:fail_tasks,:retry_fail_task,:destroy_fail_task]
+  before_action :get_spider_task ,:only=>[:fail_tasks,:retry_fail_task,:destroy_fail_task,:retry_all_fail_task]
 
   def index
   	@spider_task = SpiderTask.new
@@ -42,6 +42,13 @@ class TasksController < ApplicationController
 
   	flash[:success] = "操作成功！"
     redirect_back(fallback_location:fail_tasks_task_path(@spider_task))  
+  end
+
+
+  def retry_all_fail_task
+  	@spider_task.retry_all_fail_task
+  	flash[:success] = "操作成功！"
+  	redirect_back(fallback_location:fail_tasks_task_path(@spider_task))  
   end
 
 

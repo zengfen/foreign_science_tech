@@ -27,13 +27,11 @@
                   <!-- <a class="btn btn-primary btn-warning w70 mb0">
                     搜索</a> -->
                 </div>
-<!--                 <div class="ibox-tools fr">
-                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加</a>
-                    
-                    <a class="btn btn-primary " href="#" >
-                    按钮2</a>
-                </div> -->
+                <div class="ibox-tools fr">
+                  <%=link_to(retry_all_fail_task_task_path(@spider_task),:class=>"btn btn-primary mb0 pull-left") do %>
+                  <i class="fa fa-plus"></i>全部重试
+                  <%end%>
+                </div>
               </div>
 
           <%end%>

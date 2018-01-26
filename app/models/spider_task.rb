@@ -181,6 +181,27 @@ class SpiderTask < ApplicationRecord
     end
   end
 
+  def retry_all_fail_task
+    return if self.fail_count==0
+    total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{@spider_task.id}")
+    
+    total_detail_keys.each do |task_md5|
+      $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
+      $archon_redis.zadd("archon_tasks_#{self.id}", Time.now.to_i, task_md5)
+    end
+
+    if self.maybe_finished?||self.is_finished?
+      self.status = 1
+      self.save
+
+      if self.spider.network_environment == 1
+        $archon_redis.zadd("archon_internal_tasks", self.level, self.id)
+      else
+        $archon_redis.zadd("archon_external_tasks", self.level, self.id)
+      end
+    end
+  end
+
   def del_fail_task(task_md5)
     return if !$archon_redis.sismember("archon_discard_tasks_#{self.id}",task_md5)
     $archon_redis.srem("archon_discard_tasks_#{self.id}",task_md5)
