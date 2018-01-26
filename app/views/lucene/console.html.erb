@@ -55,7 +55,6 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-      
       var json_text = 
       {
         "query": {
@@ -111,6 +110,12 @@
       if(!$.trim($(this).text())){
         $('.json-placeholder').show();
       }
+    })
+    $('#query_opts').change(function(){
+      $(this).slimScroll({
+        height: '551px',
+        railOpacity: 0.9
+      })
     })
     
     });
