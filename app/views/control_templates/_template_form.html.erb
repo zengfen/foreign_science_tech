@@ -38,7 +38,7 @@
               <% ControlTemplate.window_types.each do |k, v|  %>
                 <div class="i-checks inline">
                   <label class="control-label">
-                    <%= f.radio_button(:window_type, k , :checked=> true)%>
+                    <%= f.radio_button(:window_type, k , :checked=> (k == 1))%>
                     <i></i> <%= v %>
                   </label>
                 </div>
