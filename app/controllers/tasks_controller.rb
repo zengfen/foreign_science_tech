@@ -48,7 +48,7 @@ class TasksController < ApplicationController
   def retry_all_fail_task
   	@spider_task.retry_all_fail_task
   	flash[:success] = "操作成功！"
-  	redirect_back(fallback_location:fail_tasks_task_path(@spider_task))  
+  	redirect_to tasks_path
   end
 
 
