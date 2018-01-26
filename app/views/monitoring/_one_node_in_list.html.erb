@@ -3,8 +3,13 @@
   <td><%= v["host"] %></td>
   <td><%= v["roles"].join(",") %></td>
   <td><%= v["process"]["cpu"]["percent"] %> %</td>
-  <td><span class="pie"><%= "#{pick_up_number(v["jvm"]["mem"]["heap_used"])}/#{(pick_up_number(v["jvm"]["mem"]["heap_committed"]))}"%></span><%= v["jvm"]["mem"]["heap_used"] %> / <%= v["jvm"]["mem"]["heap_committed"] %></td>
-  <td><%= (v["fs"]["total"]["total_in_bytes"]-v["fs"]["total"]["available_in_bytes"])/1024.to_f/1024.to_f/1024.to_f %>gb / <%= v["fs"]["total"]["total"] %></td>
+  <td>
+  	<span class="pie"><%= "#{pick_up_number(v["jvm"]["mem"]["heap_used"])}/#{(pick_up_number(v["jvm"]["mem"]["heap_committed"]))}" rescue "0"%></span>
+  	<%= v["jvm"]["mem"]["heap_used"] %>/<%= v["jvm"]["mem"]["heap_committed"] %></td>
+  <td>
+  	<%use_mem = ((v["fs"]["total"]["total_in_bytes"]-v["fs"]["total"]["available_in_bytes"])/1024.to_f/1024.to_f/1024.to_f).round(2)%>
+    <span class="pie"><%= "#{use_mem}/#{(v["fs"]["total"]["total"])}" rescue "0"%></span>
+  	<%= use_mem %>gb/<%= v["fs"]["total"]["total"] %></td>
   <td><%= v["jvm"]["threads"]["count"] %></td>
   <td><%= v["http"]["current_open"] %></td>
 </tr>
