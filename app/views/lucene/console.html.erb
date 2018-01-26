@@ -103,19 +103,16 @@
       $(this).hide();
       $('#query_opts').focus();
     });
-    var t;
     $('#query_opts').focus(function(){
       $('.json-placeholder').hide();
-      t = setInterval(updateJsonScroll(),500)
+      updateJsonScroll();
     });
     $('#query_opts').blur(function(){
       if(!$.trim($(this).text())){
         $('.json-placeholder').show();
       };
-      clearInterval(t);
     })
     function updateJsonScroll(){
-      console.log('scroll');
       $('.jsonScroll').slimScroll({
         height: '606px',
         railOpacity: 0.9
