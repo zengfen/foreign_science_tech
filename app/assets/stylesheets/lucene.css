@@ -15,15 +15,15 @@
 	position: relative;
 }
 .codeEditor{
-	padding-right: 0px;
+	padding-right: 0px !important;
 }
 .treeEditor{
-	padding-left: 0px;
+	padding-left: 0px !important;
 }
 .treeEditor .jsoneditor{
 	background-color: #fff;
 	padding: 10px;
-	min-height: 498px;
+	min-height: 650px;
 }
 .treeEditor .jsoneditor-outer{
 	background-color: transparent;
@@ -46,7 +46,7 @@
 .json{
 	display: inline-block;
 	width: 100%;
-	min-height: 400px;
+	min-height: 551px;
 }
 .json:focus {
     outline: none;
