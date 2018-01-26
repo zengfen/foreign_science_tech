@@ -14,4 +14,11 @@
 #
 
 class ControlTemplate < ApplicationRecord
+  def self.window_types
+    {
+      0 => "分钟",
+      1 => "小时",
+      2 => "天",
+    }
+  end
 end
