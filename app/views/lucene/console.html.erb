@@ -103,21 +103,25 @@
       $(this).hide();
       $('#query_opts').focus();
     });
+    var t;
     $('#query_opts').focus(function(){
       $('.json-placeholder').hide();
+      t = setInterval(updateJsonScroll(),500)
     });
     $('#query_opts').blur(function(){
       if(!$.trim($(this).text())){
         $('.json-placeholder').show();
-      }
+      };
+      clearInterval(t);
     })
-    $('#query_opts').change(function(){
-      console.log('update')
-      $(this).slimScroll({
+    function updateJsonScroll(){
+      console.log('scroll');
+      $('#query_opts').slimScroll({
         height: '551px',
         railOpacity: 0.9
       })
-    })
+    }
+
     
     });
   </script>
