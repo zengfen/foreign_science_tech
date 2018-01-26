@@ -55,6 +55,10 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
+      $('#results').slimScroll({
+          height: '100%',
+          railOpacity: 0.9
+      });
       var json_text = 
       {
         "query": {

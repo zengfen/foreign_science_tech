@@ -27,6 +27,8 @@
 }
 .treeEditor .jsoneditor-outer{
 	background-color: transparent;
+	position: relative;
+	overflow: hidden;
 }
 .json-placeholder{
 	position: absolute;
