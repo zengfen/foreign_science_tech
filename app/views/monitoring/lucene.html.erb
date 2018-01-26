@@ -159,4 +159,15 @@
   </div>
 </div>
 <% content_for :javascript do %>
+
+<script type="text/javascript">
+
+
+$(function() {
+
+    $("span.pie").peity("pie", {
+        fill: ['#1ab394', '#d7d7d7', '#ffffff']
+    })
+  })
+</script>
 <% end %>
