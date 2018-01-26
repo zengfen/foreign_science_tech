@@ -14,9 +14,14 @@
 	background-color: #fff;
 	position: relative;
 }
-
+.codeEditor{
+	padding-right: 0px;
+}
+.treeEditor{
+	padding-left: 0px;
+}
 .treeEditor .jsoneditor{
-	background-color: #f8f8f8;
+	background-color: #fff;
 	padding: 10px;
 	min-height: 498px;
 }
