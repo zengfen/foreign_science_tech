@@ -82,7 +82,7 @@
         </ul>
       </li>
       <li class="<%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers,agents,supervisors') %>">
-        <a href=""><i class="fa fa-monitor"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,controllers,dispatchers,loaders,receivers,agents,supervisors') %>">
           <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
           <li class="<%= is_active_action(nil, "supervisors") %>"><%= link_to "主机监视器", supervisors_path %></li>
