@@ -27,7 +27,7 @@
       <div class="jsoneditor-outer">
         <div class="json-placeholder">
         <p>请输入检索条件,例如:</p>
-        <pre class="tip_json"></pre>
+        <pre class="tip_json" style="color: #999"></pre>
 
         </div>
         <pre>
@@ -49,18 +49,19 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(function() {
-      var json_text = {
-                "query": {
-                  "bool": {
-                    "filter": {
-                      "term": {
-                        "foo": "bar"
-                      }
-                    }
-                  }
-                }
+      var json_text = 
+      {
+        "query": {
+          "bool": {
+            "filter": {
+              "term": {
+                "foo": "bar"
               }
-    $(".tip_json").text(JSON.stringify($.parseJSON( json_text ),null,2));
+            }
+          }
+        }
+      }
+    $(".tip_json").text(JSON.stringify( json_text ,null,2));
     $("#submit_btn").on('click',function(e){
       var query_opts = $('#query_opts').text();
       if (query_opts.length>0){

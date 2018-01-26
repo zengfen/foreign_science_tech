@@ -53,4 +53,5 @@ pre{
 	white-space: pre-wrap !important;
 	margin-bottom: 0px !important;
 	line-height: 25px;
+	color: inherit !important;
 }
