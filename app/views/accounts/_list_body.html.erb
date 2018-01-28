@@ -15,10 +15,10 @@
       <% @accounts.each do |account| %>
         <tr>
           <td class="text-center"><%= account.content%></td>
-          <td class="text-center"><%= account.accoun_type_cn%></td>
+          <td class="text-center"><%= account.account_type_cn%></td>
           <td class="text-center"><%= account.control_template.name%></td>
           <td class="text-center"><%= account.valid_time%></td>
-          <td class="text-center"><%= account.is_valid%></td>
+          <td class="text-center"><%= account.is_valid?%></td>
           <td class="text-center"><%= account.created_at%></td>
           <td class="pos-r">
             <a href="##">

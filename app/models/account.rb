@@ -14,6 +14,8 @@
 class Account < ApplicationRecord
   attr_accessor :contents
 
+  validates :content, presence: true, uniqueness: { case_sensitive: false }
+
   def self.account_types
     {
       0 => '账号',
