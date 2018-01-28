@@ -14,7 +14,7 @@
     <tbody class="text-center">
       <% @accounts.each do |account| %>
         <tr>
-          <td class="text-center"><%= truncate(account.content, :length => 20, :omission => "..." , :escape => false)%></td>
+          <td class="text-center"><%= truncate(account.content, :length => 40, :omission => "..." , :escape => false)%></td>
           <td class="text-center"><%= account.account_type_cn%></td>
           <td class="text-center"><%= account.control_template.name%></td>
           <td class="text-center"><%= account.valid_time%></td>
