@@ -12,4 +12,5 @@
 #
 
 class Account < ApplicationRecord
+  attr_accessor :contents
 end

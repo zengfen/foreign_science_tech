@@ -25,9 +25,8 @@ class ControlTemplate < ApplicationRecord
     }
   end
 
-
   def window_type_cn
-    self.class.window_types[self.window_type]
+    self.class.window_types[window_type]
   end
 
   def self.window_durations
@@ -45,17 +44,16 @@ class ControlTemplate < ApplicationRecord
   def save_with_calculate!
     self.window_type ||= 1
     self.window_size ||= 1
-
     self.max_count ||= -1
 
-    if self.max_count == -1
-      self.interval_in_ms = 1
-    else
-      self.interval_in_ms = self.window_to_duration
-    end
+    self.interval_in_ms = if self.max_count == -1
+                            1
+                          else
+                            window_to_duration / self.max_count
+                          end
 
-    return {'success' => '保存成功！'} if self.save
+    return { 'success' => '保存成功！' } if save
 
-    {'error' => self.errors.full_messages.join('\n')}
+    { 'error' => errors.full_messages.join('\n') }
   end
 end
