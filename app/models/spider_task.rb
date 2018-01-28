@@ -50,7 +50,7 @@ class SpiderTask < ApplicationRecord
 
 
   def can_start?
-    self.status == 0 || self.status == 3 
+    self.status == 0 || self.status == 3
   end
 
   def start!
@@ -116,10 +116,8 @@ class SpiderTask < ApplicationRecord
       'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}"),
       'params' => {},
       'url' => keyword, # keyword or url
-      'rate_limit_url' => '',
-      'priority' => level,
-      'site' => '',
-      'archon_template_id' => spider.template_name,
+      'template_id' => spider.template_name,
+      'account' => '',
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
