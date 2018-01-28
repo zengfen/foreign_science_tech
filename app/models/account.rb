@@ -17,6 +17,7 @@ class Account < ApplicationRecord
   validates :content, presence: true, uniqueness: { case_sensitive: false }
 
   belongs_to :control_template
+  after_create :setup_redis
 
   def self.account_types
     {
@@ -48,5 +49,19 @@ class Account < ApplicationRecord
     end
 
     { 'success' => '保存成功！' }
+  end
+
+
+  #  发现新的host之后，要同步所有的账号信息过去
+  #  如果一个账号的有效期过了，要清除要对应的account/token
+  #  account删除之后也要清楚，都要通过定时任务来完成
+  def setup_redis
+    if self.control_template.is_bind_ip
+      $archon_redis.hgetall("archon_hosts").each do |ip, _|
+        $archon_redis.zadd("archon_template_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, self.content)
+      end
+    else
+      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, self.content)
+    end
   end
 end

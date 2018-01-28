@@ -18,6 +18,8 @@ class ControlTemplate < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   has_many :accounts
 
+  after_create :setup_redis
+
   def self.window_types
     {
       0 => '分钟',
@@ -56,5 +58,15 @@ class ControlTemplate < ApplicationRecord
     return { 'success' => '保存成功！' } if save
 
     { 'error' => errors.full_messages.join('\n') }
+  end
+
+  def control_key
+    return "#{id},1" if is_bind_ip
+
+    "#{id},0"
+  end
+
+  def setup_redis
+    $archon_redis.hset('archon_template_intervals', id, interval_in_ms)
   end
 end
