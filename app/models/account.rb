@@ -51,17 +51,16 @@ class Account < ApplicationRecord
     { 'success' => '保存成功！' }
   end
 
-
-  #  发现新的host之后，要同步所有的账号信息过去
+  #  发现新的host之后，要同步所有的账号信息过去, 如果账号需要绑定到ip上的话
   #  如果一个账号的有效期过了，要清除要对应的account/token
-  #  account删除之后也要清楚，都要通过定时任务来完成
+  #  account删除之后也要清除，都要通过定时任务来完成
   def setup_redis
-    if self.control_template.is_bind_ip
-      $archon_redis.hgetall("archon_hosts").each do |ip, _|
-        $archon_redis.zadd("archon_template_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, self.content)
+    if control_template.is_bind_ip
+      $archon_redis.hgetall('archon_hosts').each do |ip, _|
+        $archon_redis.zadd("archon_template_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, content)
       end
     else
-      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, self.content)
+      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, content)
     end
   end
 end
