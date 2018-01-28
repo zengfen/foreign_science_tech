@@ -37,7 +37,8 @@
             <div class="col-sm-10">
               <div id="ionrange_3"></div>
               <div class="input-group date" id="end_date">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span> <input class="form-control" value="2018-01-01 00:00" type="text" name="valid_time" id="index_valid_time">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <%= f.text_field(:valid_time, :value => "2018-01-01 00:00", :class=>"form-control") %>
               </div>
             </div>
           </div>
