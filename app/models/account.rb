@@ -57,7 +57,7 @@ class Account < ApplicationRecord
   def setup_redis
     if control_template.is_bind_ip
       $archon_redis.hgetall('archon_hosts').each do |ip, _|
-        $archon_redis.zadd("archon_template_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, content)
+        $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, content)
       end
     else
       $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, content)
