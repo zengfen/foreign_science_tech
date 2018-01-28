@@ -9,5 +9,7 @@ class ControlTemplatesController < ApplicationController
 
 
   def create
+    @control_template = ControlTemplate.new(params[:control_template])
+    @control_template.save_with_calculate!
   end
 end
