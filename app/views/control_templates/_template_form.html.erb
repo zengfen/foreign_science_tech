@@ -32,7 +32,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">窗口设置</label>
             <div class="col-sm-3">
-              <%= f.text_field :window_size, 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
+              <%= f.text_field :window_size, :value => 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
             </div>
             <div class="col-sm-5">
               <% ControlTemplate.window_types.each do |k, v|  %>
