@@ -39,7 +39,7 @@ class Account < ApplicationRecord
       account = Account.new(content: line.strip,
                             account_type: account_type,
                             valid_time: valid_time,
-                            control_template_id: params[:control_template_id])
+                            control_template_id: control_template_id)
       account.save
     end
 
