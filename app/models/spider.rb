@@ -19,6 +19,7 @@
 class Spider < ApplicationRecord
   has_many :spider_cycle_tasks,dependent: :destroy
   has_many :spider_tasks, dependent: :destroy
+  belongs_to :control_template
 
   validates :spider_name, presence: true, length: { maximum: 50 },
     uniqueness: { case_sensitive: false }
