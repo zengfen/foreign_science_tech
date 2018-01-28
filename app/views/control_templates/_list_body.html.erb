@@ -7,7 +7,6 @@
         <th class="text-center">窗口类型</th>
         <th class="text-center">窗口大小</th>
         <th class="text-center">访问次数</th>
-        <th class="text-center">绝对时间</th>
         <th class="text-center">创建时间</th>
         <th class="text-center">操作</th>
       </tr>
@@ -16,11 +15,10 @@
       <% @templates.each do |template| %>
         <tr>
           <td class="text-center"><%= template.name %></td>
-          <td class="text-center"><%= template.is_bind_ip%></td>
+          <td class="text-center"><%= template.is_bind_ip ? "是" : "否"%></td>
           <td class="text-center"><%= template.window_type%></td>
           <td class="text-center"><%= template.window_size%></td>
           <td class="text-center"><%= template.max_count%></td>
-          <td class="text-center"><%= template.is_absolute_time%></td>
           <td class="text-center"><%= template.created_at%></td>
           <td class="pos-r">
             <a href="##">
