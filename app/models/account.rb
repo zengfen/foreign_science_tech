@@ -16,6 +16,8 @@ class Account < ApplicationRecord
 
   validates :content, presence: true, uniqueness: { case_sensitive: false }
 
+  belongs_to :control_template
+
   def self.account_types
     {
       0 => '账号',
