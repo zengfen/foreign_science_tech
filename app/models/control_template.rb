@@ -25,6 +25,11 @@ class ControlTemplate < ApplicationRecord
     }
   end
 
+
+  def window_type_cn
+    self.class.window_types[self.window_type]
+  end
+
   def self.window_durations
     {
       0 => 1.minute,
