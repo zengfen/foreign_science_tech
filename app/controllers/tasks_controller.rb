@@ -61,6 +61,8 @@ class TasksController < ApplicationController
 
   def get_spider
     @spider = Spider.find_by(:id=>params[:id])
+    str = render_to_string(templatate: "/tasks/additional_function",:locals=>{:additional_function=>@spider.additional_function})
+    render json: {:type=>"true",:add_funs=>str}
     #render plain: @spider.has_keyword
   end
 

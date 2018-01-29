@@ -66,13 +66,19 @@
                          url:"/tasks/get_spider",
                          data:{id:spider_id},
                          type:"get",
-                         //dataType:"json",
+                         dataType:"json",
                          success:function(result){
-                          // if (result.type=="true"){
-                          //    $(".keywords_inputs").html($('.keywords').html());
-                          // }else{
-                          //    $(".keywords_inputs").html('');
-                          // }
+                          if (result.type=="true"){
+                             $(".keywords_inputs").html($('.keywords').html());
+                          }else{
+                             $(".keywords_inputs").html('');
+                          }
+                          if (result.add_funs.length>0)
+                            {
+                              $(".tags_inputs").html(add_funs);
+                            }else{
+                              $(".tags_inputs").html("");
+                            }
     
                           }
                     });
