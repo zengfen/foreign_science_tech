@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label class="col-sm-2 control-label">附加项</label>
+  <div class="col-sm-10">
+    <%additional_function.each do |n|%>
+      <%n.each do |k,v|%>
+        <%=k%>: <%=select_tag("cate_#{k}",options_for_select(v,params["category"]),include_blank: "",:class=>"form-control m-b")%>
+      <%end%>
+    <%end %>
+  </div>
+</div>
+<div class="hr-line-dashed"></div>

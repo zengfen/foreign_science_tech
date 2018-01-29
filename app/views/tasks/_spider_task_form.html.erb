@@ -35,13 +35,7 @@
             </div>
           </div>
           <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">特殊标签</label>
-            <div class="col-sm-10">
-              <%= f.text_field :special_tag,:placeholder=>"特殊标签",:class=>"form-control"%>
-            </div>
-          </div>
-          <div class="hr-line-dashed"></div>
+          <div class="tags_inputs"></div>
           <div class="form-group">
             <div class="col-sm-2 col-sm-offset-10">
               <button class="btn btn-primary submit_btn" type="button">保存</button>
@@ -64,24 +58,24 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     function get_spider () {
-    	   var spider_id = $('#spider_task_spider_id').val();
-    	   if (spider_id!=""){
-    	  	   url  = '/spiders/'+ spider_id +'/spider_tasks'
-    	       $('.spider-task-form').attr('action',url);
-    	       $.ajax({
-    	                   url:"/tasks/get_spider",
-    	                   data:{id:spider_id},
-    	                   type:"get",
-    	                   dataType:"text",
-    	                   success:function(result){
-    	                    if (result=="true"){
-    	                       $(".keywords_inputs").html($('.keywords').html());
-    	                    }else{
-    	                       $(".keywords_inputs").html('');
-    	                    }
+         var spider_id = $('#spider_task_spider_id').val();
+         if (spider_id!=""){
+             url  = '/spiders/'+ spider_id +'/spider_tasks'
+             $('.spider-task-form').attr('action',url);
+             $.ajax({
+                         url:"/tasks/get_spider",
+                         data:{id:spider_id},
+                         type:"get",
+                         dataType:"text",
+                         success:function(result){
+                          // if (result=="true"){
+                          //    $(".keywords_inputs").html($('.keywords').html());
+                          // }else{
+                          //    $(".keywords_inputs").html('');
+                          // }
     
-    	                    }
-    	              });
+                          }
+                    });
          }
       }
     $("#iconrange_spider_task_level_num").ionRangeSlider({
