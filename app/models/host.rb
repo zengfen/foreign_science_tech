@@ -16,6 +16,17 @@
 #
 
 class Host < ApplicationRecord
+	VALID_IP_REGEX = /\A(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\z/
+  validates :extranet_ip,format: { with: VALID_IP_REGEX }
+
+  before_create :init_network_environment!
+
+	
+	def init_network_environment!
+		return if extranet_ip.blank?		
+		c = $geo_ip.country(extranet_ip.to_s)
+    self.network_environment = c.country_code2 == 'CN' ? 1 : 2
+	end
 
 	def self.network_environments
 		{"境内"=>1, "境外"=>2}
@@ -50,4 +61,5 @@ class Host < ApplicationRecord
   def self.get_service_name(service)
     services[service]
   end
+
 end
