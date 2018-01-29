@@ -1,9 +1,11 @@
 <%if @spider.has_keyword%>
-$(".keywords_inputs2").html($('.keywords').html());
+$(".keywords_inputs").html($('.keywords').html());
 <%else%>
-$(".keywords_inputs2").html('');
+$(".keywords_inputs").html('');
 <%end%>
 
 <%if @spider.additional_function %>
-$(".tags_inputs2").html("<%= j(render :partial=>'/tasks/additional_function',:locals=>{:additional_function=>@spider.additional_function})%>");
+$(".tags_inputs").html("<%= j(render :partial=>'/tasks/additional_function',:locals=>{:additional_function=>@spider.additional_function})%>");
+<%else%>
+$(".tags_inputs").html("");
 <%end%>
