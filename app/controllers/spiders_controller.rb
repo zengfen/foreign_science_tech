@@ -24,7 +24,9 @@ class SpidersController < ApplicationController
     redirect_to spiders_path
   end
 
-  def load_edit_form; end
+  def load_edit_form 
+    @templates = ControlTemplate.select('id, name').collect { |x| [x.name, x.id] }.to_a
+  end
 
   def update
     update_params = spider_params.clone
