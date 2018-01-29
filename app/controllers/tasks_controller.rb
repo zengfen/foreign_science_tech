@@ -61,8 +61,6 @@ class TasksController < ApplicationController
 
   def get_spider
     @spider = Spider.find_by(:id=>params[:id])
-    res = "#{j(render :partial=>'/tasks/additional_function',:locals=>{:additional_function=>@spider.additional_function})}"
-    render json: {type: @spider.has_keyword.to_s,additional_function:res.to_s}
     #render plain: @spider.has_keyword
   end
 
