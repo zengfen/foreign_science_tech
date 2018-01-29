@@ -26,8 +26,8 @@ class SpiderTasksController < ApplicationController
       end
     end
     @spider_task.additional_function = add_funs
-    message = @spider_task.save_with_spilt_keywords
-    flash[message.keys.first.to_sym] = message.values.first
+    #message = @spider_task.save_with_spilt_keywords
+    #flash[message.keys.first.to_sym] = message.values.first
 
     redirect_back(fallback_location:tasks_path)
   end
