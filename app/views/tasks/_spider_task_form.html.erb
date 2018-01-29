@@ -68,7 +68,7 @@
                          type:"get",
                          dataType:"text",
                          success:function(result){
-                          if (result=="true"){
+                          if (result.type=="true"){
                              $(".keywords_inputs").html($('.keywords').html());
                           }else{
                              $(".keywords_inputs").html('');
