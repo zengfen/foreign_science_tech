@@ -67,14 +67,14 @@
                          data:{id:spider_id},
                          type:"get",
                          dataType:"text"
-                         // success:function(result){
-                         //  if (result=="true"){
-                         //     $(".keywords_inputs").html($('.keywords').html());
-                         //  }else{
-                         //     $(".keywords_inputs").html('');
-                         //  }
+                         success:function(result){
+                          if (result=="true"){
+                             $(".keywords_inputs").html($('.keywords').html());
+                          }else{
+                             $(".keywords_inputs").html('');
+                          }
     
-                         //  }
+                          }
                     });
          }
       }
