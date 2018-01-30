@@ -68,14 +68,17 @@ class Host < ApplicationRecord
   		h = Host.new(:extranet_ip=>k) if h.blank?
   		if h.recording_time.blank? || h.recording_time < Time.at(v)
 
+  			#更新服务器用途
+        host_services_hash = $archon_redis.hgetall("archon_host_services_#{k}") 
+        host_services = host_services_hash.keys
+        h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services)
+
         data = $archon_redis.lindex("archon_host_metrics_#{k}",-1)
         next if data.blank?
         data = JSON.parse(data) 
-        host_services_hash = $archon_redis.hgetall("archon_host_services_#{k}") 
-        host_services = host_services_hash.keys
+        
 
-        #更新服务器用途
-        h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services)
+        
 
         while v.to_i >= data["ts"].to_i
           
