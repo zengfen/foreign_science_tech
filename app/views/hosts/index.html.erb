@@ -68,8 +68,8 @@
                       <td><%= h.extranet_ip.to_s %></td>
                       <td><%= h.network_environment_cn %></td>
                       <td><%= time_ago_in_words(h.recording_time) %>前</td>
-                      <td title = "<%=h.service_cn.join(',')%>"><%= h.host_service.count%></td>
-                      <td title = "<%=h.online_services_cn.join(',')%>"><%= h.online_services_cn.count%></td>
+                      <td data-toggle="tooltip" data-placement="bottom" title="<%=h.service_cn.join(',')%>"><%= h.host_service.count%></td>
+                      <td data-toggle="tooltip" data-placement="bottom" title="<%=h.online_services_cn.join(',')%>"><%= h.online_services_cn.count%></td>
                       <td><a href="#" >查看</a></td>
                     </tr>
                   <% end %>
