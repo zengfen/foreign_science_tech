@@ -9,17 +9,21 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-            <%=form_tag url_for(action: :search),:class=>"-form-horizontal",:method=>:post do%>
+            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
                 <div class="col-md-8">
                   <div class="form-group mb0">
 
-                    <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
+                    <input type="text" placeholder="IP" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" style=></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
-
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <%=select_tag(:services,options_for_select(Spider.categories.to_a,params["services"]),include_blank: "服务",:class=>"form-control chosen-select",multiple: true)%>
+                  </div>
+                </div>
 
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
@@ -61,12 +65,12 @@
                 <tbody class="text-center">
                   <% @hosts.each do |h| %>
                     <tr>
-                      <td><%= h[0] %></td>
-                      <td><%= h[1] %></td>
-                      <td><%= time_ago_in_words(h[2]) %>前</td>
-                      <td><%= h[3] %></td>
-                      <td><%= h[4] %></td>
-                      <td><a href="/hosts/show?ip=<%= h[0] %>" >查看</a></td>
+                      <td><%= h.extranet_ip.to_s %></td>
+                      <td><%= h.network_environment_cn %></td>
+                      <td><%= time_ago_in_words(h.recording_time) %>前</td>
+                      <td><%= 0%></td>
+                      <td><%= 0 %></td>
+                      <td><a href="#" >查看</a></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -80,4 +84,86 @@
     </div>
   </div>
 </div>
+  <% content_for :javascript do %>
+    <script>
 
+$(document)
+.on("click",".tab-li a",function(e){
+  e.preventDefault();
+  var $this = $(this);
+  if ($this.find('.icon-result').length > 0) return;
+  var targetClass = $this.data('target');
+  var $thisP = $this.closest('.ibox-content');
+  $this.closest('li').addClass('active').siblings('li').removeClass('active');
+  $thisP.children('.ibox-content').addClass('dn');
+  $thisP.children('.' + targetClass).removeClass('dn');
+  $('.more-ul').addClass('dn');
+
+  if (targetClass) {
+    var url = $this.attr("href");
+    if (url != "##") {
+      $("#current_url").val(url);
+      $.get(url, function (data) {
+        $("." + targetClass).html(data);
+      })
+      return false;
+    }
+  }
+})
+.on("click",'.icon-more',function(e){
+   e.preventDefault();
+    var $this = $(this), $thisMoreUl = $this.closest('td').find('.more-ul');
+    var isDn = $thisMoreUl.hasClass('dn');
+    $('.more-ul').addClass('dn');
+    if (isDn) {
+      $thisMoreUl.removeClass('dn');
+    }
+    //点击其他的地方关闭更多
+    $(document).on('click', function moreShow(e) {
+      var $target = $(e.target)
+        if ($target.closest('.pos-r').length == 0) {
+          $('.more-ul').addClass('dn');
+          $(document).off('click', moreShow);
+        }
+    })
+})
+.on("click",".remove-line",function(e){
+  
+    e.preventDefault();
+
+    //删除本行数据
+    //var _$this = $(this);
+    var $this = $(this),html = $this.closest('tr').find('td').first().html();
+    var $modal = $('#modal-form-remove');
+    $modal.find('.remove-html').html(html);
+    $modal.modal("show");
+
+    $('.sure-remove').off().on('click', function (e) {
+       e.preventDefault();
+      var _this=$(this);
+      //需要传到数据库中，需要后台传输数据，局部刷新页面
+      var url = $this.attr("href");
+      if (url != "##") {
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          success:function(data){
+          if (data.type=="success"){
+            _this.closest('.modal').modal("hide");
+            $this.closest('tr').remove();
+          }
+        }});
+      }
+     
+    });
+  
+}).on("click",'.cancel-remove',function(e){
+   var $modal = $('#modal-form-remove');
+      $modal.modal("hide");
+});
+
+ $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000});
+
+ 
+    </script>
+  <% end %>

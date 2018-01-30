@@ -26,7 +26,7 @@ class Host < ApplicationRecord
 
   scope :service,->(service) {where("'#{service.to_s}' = ANY (host_service)")}
   #Host.service(:agent)
-  scope :multi_services,->(services) {where("host_service @> ARRAY[?]::varchar[]", services)}#Host.multi_services(["agent","supervisor"])
+  scope :multi_services,->(services) {where("host_service @> ARRAY[?]::varchar[]", services) if multi_services.present? }#Host.multi_services(["agent","supervisor"])
  
 	## Hosts with 3 or more services
 	# Host.where("array_length(host_service, 1) >= 3")
