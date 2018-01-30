@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:services,options_for_select(Host.services.invert.to_a,params["services"]),include_blank: "服务",:class=>"form-control chosen-select",multiple: true,placeholder:"选择已安装服务")%>
+                    <%=select_tag(:services,options_for_select(Host.services.invert.to_a,params["services"]),:class=>"form-control chosen-select",multiple: true)%>
                   </div>
                 </div>
 
@@ -162,7 +162,7 @@ $(document)
       $modal.modal("hide");
 });
 
- $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000});
+ $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,placeholder_text_multiple:"选择已安装服务"});
 
  
     </script>
