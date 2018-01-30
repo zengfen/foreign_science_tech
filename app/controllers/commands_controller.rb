@@ -1,87 +1,76 @@
 class CommandsController < ApplicationController
-
   def index
-    current_command = $archon_redis.get("controller_command")
-    if !current_command.blank?
-      @current_command = JSON.parse(current_command)
-    end
+    current_command = $archon_redis.get('controller_command')
+    @current_command = JSON.parse(current_command) unless current_command.blank?
   end
 
-
-  def new
-  end
+  def new; end
 
   def create
     command = params[:command]
 
-    if !$archon_redis.exists("controller_command")
-      $archon_redis.set("controller_command", {"command" => command, "command_magic" => Time.now.to_i.to_s }.to_json)
-      $archon_redis.expire("controller_command", 60) # 1分钟过期
+    unless $archon_redis.exists('controller_command')
+      $archon_redis.set('controller_command', { 'command' => command, 'command_magic' => Time.now.to_i.to_s }.to_json)
+      $archon_redis.expire('controller_command', 60) # 1分钟过期
     end
 
     redirect_to action: :index
   end
 
-
   def new_supervisor
     @commands = {
-      "supervisor_stop" => "重启"
+      'supervisor_stop' => '重启'
     }
 
-    @current_command = $archon_redis.get("archon_current_command")
+    @current_command = $archon_redis.get('archon_current_command')
 
     @statuses = {}
-    if !@current_command.blank?
-      @statuses = $archon_redis.hgetall("archon_host_command_statuses")
+    unless @current_command.blank?
+      @statuses = $archon_redis.hgetall('archon_host_command_statuses')
     end
   end
-
 
   def create_supervisor
     command = params[:command]
 
-    if !$archon_redis.setnx("archon_current_command", command)
+    unless $archon_redis.setnx('archon_current_command', command)
       return redirect_to action: :new_supervisor
     end
 
-    $archon_redis.hgetall("archon_hosts").each do |k, v|
-      $archon_redis.hset("archon_host_commands", k, command)
-      $archon_redis.hset("archon_host_command_statuses", k, "")
+    $archon_redis.hgetall('archon_hosts').each do |k, _v|
+      $archon_redis.hset('archon_host_commands', k, command)
+      $archon_redis.hset('archon_host_command_statuses', k, '')
     end
 
     redirect_to action: :new_supervisor
   end
 
-
   def new_agent
     @commands = {
-      "agent_restart" => "重启",
-      "agent_stop" => "停止"
+      'agent_restart' => '重启',
+      'agent_stop' => '停止'
     }
 
-    @current_command = $archon_redis.get("archon_current_command")
+    @current_command = $archon_redis.get('archon_current_command')
 
     @statuses = {}
-    if !@current_command.blank?
-      @statuses = $archon_redis.hgetall("archon_host_command_statuses")
+    unless @current_command.blank?
+      @statuses = $archon_redis.hgetall('archon_host_command_statuses')
     end
   end
-
 
   def create_agent
     command = params[:command]
 
-    if !$archon_redis.setnx("archon_current_command", command)
+    unless $archon_redis.setnx('archon_current_command', command)
       return redirect_to action: :new_agent
     end
 
-    $archon_redis.hgetall("archon_hosts").each do |k, v|
-      $archon_redis.hset("archon_host_commands", k, command)
-      $archon_redis.hset("archon_host_command_statuses", k, "")
+    $archon_redis.hgetall('archon_hosts').each do |k, _v|
+      $archon_redis.hset('archon_host_commands', k, command)
+      $archon_redis.hset('archon_host_command_statuses', k, '')
     end
 
     redirect_to action: :new_agent
   end
-
-
 end

@@ -116,7 +116,7 @@ class SpiderTask < ApplicationRecord
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
-      'extra_config' => { special_tag: special_tag }
+      'extra_config' => { special_tag: special_tag ,additional_function: additional_function}
     }
 
     $archon_redis.hset("archon_task_details_#{id}", task['task_md5'], task.to_json)
