@@ -62,6 +62,11 @@ class Host < ApplicationRecord
     }
   end
 
+
+  def service_cn
+  	host_service.collect{|x| Host.services[x]} unless host_service.blank?
+  end
+
   def self.get_service_name(service)
     services[service]
   end
@@ -78,7 +83,7 @@ class Host < ApplicationRecord
   			#更新服务器用途
         host_services_hash = $archon_redis.hgetall("archon_host_services_#{k}") 
         host_services = host_services_hash.keys
-        h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services)
+        h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services,:recording_time=>Time.at(v.to_i))
 
         data = $archon_redis.lindex("archon_host_metrics_#{k}",-1)
         next if data.blank?
@@ -101,6 +106,7 @@ class Host < ApplicationRecord
         end
         
   		end
+
   	end
   end
 
