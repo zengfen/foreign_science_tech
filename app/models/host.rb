@@ -23,9 +23,9 @@ class Host < ApplicationRecord
 
 	has_many :host_monitors,dependent: :destroy
   before_create :init_network_environment!
-  
-  scope :services,->(service) {where("'#{service.to_s}' = ANY (host_service)")}
-  #Host.services(:agent)
+
+  scope :service,->(service) {where("'#{service.to_s}' = ANY (host_service)")}
+  #Host.service(:agent)
   scope :multi_services,->(services) {where("host_service @> ARRAY[?]::varchar[]", services)}#Host.multi_services(["agent","supervisor"])
  
 	## Hosts with 3 or more services
