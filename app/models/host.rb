@@ -75,7 +75,7 @@ class Host < ApplicationRecord
         host_services = host_services_hash.keys
 
         #更新服务器用途
-        h.update_attributes(:host_service_info=> host_services_hash, :host_services=>host_services)
+        h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services)
 
         while v >= data["ts"].to_i
           
