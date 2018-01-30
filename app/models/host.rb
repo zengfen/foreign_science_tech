@@ -42,7 +42,7 @@ class Host < ApplicationRecord
   end
 
   def network_environment_cn
-    Host.network_environments.invert[network_environment]
+    self.class.network_environments.invert[network_environment]
   end
 
   def self.get_status(heartbeat_at, status)
@@ -64,11 +64,11 @@ class Host < ApplicationRecord
 
 
   def service_cn
-  	host_service.collect{|x| Host.services[x]} unless host_service.blank?
+  	host_service.collect{|x| self.class.services[x]} unless host_service.blank?
   end
 
   def online_services_cn
-  	host_service_info.select{|k,v|  v=="true"}.keys.collect{|x| Host.services[x]} rescue ""
+  	host_service_info.select{|k,v|  v=="true"}.keys.collect{|x| self.class.services[x]} rescue ""
   end
 
 
