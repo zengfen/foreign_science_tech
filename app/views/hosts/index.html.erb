@@ -12,14 +12,14 @@
             <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-8">
+                <div class="col-md-7">
                   <div class="form-group mb0">
 
                     <input type="text" placeholder="IP" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" style=></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <div class="form-group mb0">
                     <%=select_tag(:services,options_for_select(Host.services.invert.to_a,params["services"]),:class=>"form-control chosen-select",multiple: true)%>
                   </div>
@@ -162,7 +162,7 @@ $(document)
       $modal.modal("hide");
 });
 
- $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,placeholder_text_multiple:"选择已安装服务"});
+ $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,placeholder_text_multiple:"选择已安装服务",disable_search:true});
 
  
     </script>
