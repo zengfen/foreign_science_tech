@@ -58,6 +58,7 @@
                     <th class="text-center">国家</th>
                     <th class="text-center">心跳时间</th>
                     <th class="text-center">安装服务</th>
+                    <th class="text-center">在线服务</th>
                     <th class="text-center">操作</th>
                   </tr>
                 </thead>
@@ -67,7 +68,8 @@
                       <td><%= h.extranet_ip.to_s %></td>
                       <td><%= h.network_environment_cn %></td>
                       <td><%= time_ago_in_words(h.recording_time) %>前</td>
-                      <td title = "<%=h.host_service.join(',')%>"><%= h.host_service.count%></td>
+                      <td title = "<%=h.host_service_cn.join(',')%>"><%= h.host_service.count%></td>
+                      <td title = "<%=h.online_services_cn.join(',')%>"><%= h.online_services_cn.count%></td>
                       <td><a href="#" >查看</a></td>
                     </tr>
                   <% end %>

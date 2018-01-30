@@ -67,6 +67,11 @@ class Host < ApplicationRecord
   	host_service.collect{|x| Host.services[x]} unless host_service.blank?
   end
 
+  def online_services_cn
+  	host_service_info.select{|k,v|  v=="true"}.keys.collect{|x| Host.services[x]} rescue ""
+  end
+
+
   def self.get_service_name(service)
     services[service]
   end
