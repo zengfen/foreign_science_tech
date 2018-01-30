@@ -13,6 +13,7 @@
 #  additional_function :json             is an Array
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  control_template_id :integer
 #
 
 require 'test_helper'

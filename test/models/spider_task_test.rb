@@ -17,6 +17,7 @@
 #  warning_count        :integer          default("0")
 #  spider_cycle_task_id :integer
 #  task_type            :integer          default("1")
+#  additional_function  :json
 #
 
 require 'test_helper'
