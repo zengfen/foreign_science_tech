@@ -66,7 +66,7 @@ class Host < ApplicationRecord
   	hosts_hash.each do |k,v|
   		h = Host.where(:extranet_ip=>k).first
   		h = Host.new(:extranet_ip=>k) if h.blank?
-  		if h.recording_time.blank? || h.recording_time < Time.at(v)
+  		if h.recording_time.blank? || h.recording_time < Time.at(v.to_i)
 
   			#更新服务器用途
         host_services_hash = $archon_redis.hgetall("archon_host_services_#{k}") 
@@ -76,9 +76,6 @@ class Host < ApplicationRecord
         data = $archon_redis.lindex("archon_host_metrics_#{k}",-1)
         next if data.blank?
         data = JSON.parse(data) 
-        
-
-        
 
         while v.to_i >= data["ts"].to_i
           
