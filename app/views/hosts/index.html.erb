@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:services,options_for_select(Spider.categories.to_a,params["services"]),include_blank: "服务",:class=>"form-control chosen-select",multiple: true)%>
+                    <%=select_tag(:services,options_for_select(Host.services.invert.to_a,params["services"]),include_blank: "服务",:class=>"form-control chosen-select",multiple: true,placeholder:"选择已安装服务")%>
                   </div>
                 </div>
 
