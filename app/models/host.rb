@@ -77,7 +77,7 @@ class Host < ApplicationRecord
         #更新服务器用途
         h.update_attributes(:host_service_info=> host_services_hash, :host_service=>host_services)
 
-        while v >= data["ts"].to_i
+        while v.to_i >= data["ts"].to_i
           
           #更新host最新信息  
           h.update_attributes(:machine_info=> data, :recording_time=>Time.at(data["ts"].to_i))  
