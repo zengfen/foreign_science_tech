@@ -58,7 +58,6 @@
                     <th class="text-center">国家</th>
                     <th class="text-center">心跳时间</th>
                     <th class="text-center">安装服务</th>
-                    <th class="text-center">运行服务</th>
                     <th class="text-center">操作</th>
                   </tr>
                 </thead>
@@ -68,8 +67,7 @@
                       <td><%= h.extranet_ip.to_s %></td>
                       <td><%= h.network_environment_cn %></td>
                       <td><%= time_ago_in_words(h.recording_time) %>前</td>
-                      <td><%= 0%></td>
-                      <td><%= 0 %></td>
+                      <td title = "<%=h.host_service.join(',')%>"><%= h.host_service.count%></td>
                       <td><a href="#" >查看</a></td>
                     </tr>
                   <% end %>
@@ -127,40 +125,7 @@ $(document)
         }
     })
 })
-.on("click",".remove-line",function(e){
-  
-    e.preventDefault();
 
-    //删除本行数据
-    //var _$this = $(this);
-    var $this = $(this),html = $this.closest('tr').find('td').first().html();
-    var $modal = $('#modal-form-remove');
-    $modal.find('.remove-html').html(html);
-    $modal.modal("show");
-
-    $('.sure-remove').off().on('click', function (e) {
-       e.preventDefault();
-      var _this=$(this);
-      //需要传到数据库中，需要后台传输数据，局部刷新页面
-      var url = $this.attr("href");
-      if (url != "##") {
-        $.ajax({
-          url: url,
-          type: 'DELETE',
-          success:function(data){
-          if (data.type=="success"){
-            _this.closest('.modal').modal("hide");
-            $this.closest('tr').remove();
-          }
-        }});
-      }
-     
-    });
-  
-}).on("click",'.cancel-remove',function(e){
-   var $modal = $('#modal-form-remove');
-      $modal.modal("hide");
-});
 
  $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,placeholder_text_multiple:"选择已安装服务",disable_search:true});
 
