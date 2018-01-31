@@ -85,16 +85,29 @@ class SpiderTask < ApplicationRecord
   end
 
   def save_with_spilt_keywords
-    if spider.has_keyword && !spider.blank?
-      keywords = keyword.split(',')
-      keywords.each do |keyword|
-        spider_task = dup
-        spider_task.keyword = keyword
-        return { 'error' => spider_task.errors.full_messages.join('\n') } unless spider_task.save
+    return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
+
+    if spider.has_keyword
+      keywords = keyword.split(',').collect(&:strip).uniq
+      keywords.delete(nil)
+      keywords.delete('')
+      return { 'error' => '设置关键词!' } if keywords.blank?
+
+      if is_split
+        keywords.each do |keyword|
+          spider_task = dup
+          spider_task.keyword = keyword
+          return { 'error' => spider_task.errors.full_messages.join('\n') } unless spider_task.save
+        end
+      else
+        self.keyword = keywords.join(',')
+        return { 'error' => errors.full_messages.join('\n') } unless save
       end
     else
-      return { 'error' => spider_task.errors.full_messages.join('\n') } unless save
+      self.keyword = nil
+      return { 'error' => errors.full_messages.join('\n') } unless save
     end
+
     { 'success' => '保存成功！' }
   end
 
@@ -107,7 +120,8 @@ class SpiderTask < ApplicationRecord
 
     # // ArchonTaskDetailHashKeyFormat  md5 -> task
     # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
-    task = {
+
+    task_template = {
       'task_id' => id,
       'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}"),
       'params' => {},
@@ -120,8 +134,26 @@ class SpiderTask < ApplicationRecord
       'extra_config' => { special_tag: special_tag, additional_function: additional_function }
     }
 
-    $archon_redis.hset("archon_task_details_#{id}", task['task_md5'], task.to_json)
-    $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task['task_md5'])
+    if spider.has_keyword
+      if is_split
+        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
+        task_template['url'] = keyword
+        $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+      else
+        keyword.split(',').each do |k|
+          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}")
+          task_template['url'] = k
+          $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+          $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+        end
+      end
+    else
+      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
+      task_template['url'] = keyword
+      $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+    end
 
     unless spider.control_template_id.blank?
       $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
