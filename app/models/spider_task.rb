@@ -191,6 +191,13 @@ class SpiderTask < ApplicationRecord
   # 任务运行
   def retry_fail_task(task_md5)
     return unless $archon_redis.sismember("archon_discard_tasks_#{id}", task_md5)
+
+    task_json = $archon_redis.hget("archon_task_details_#{id}", task_md5)
+    task = JSON.parse(task_json)
+    task['retry_count'] = 0
+
+    $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
+
     $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
     $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_md5)
     if maybe_finished? || is_finished?
