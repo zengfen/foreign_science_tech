@@ -65,6 +65,7 @@ class Account < ApplicationRecord
     end
   end
 
+  #  过期之后要执行这个来删除对应的数据
   def clear_redis
     $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
       $archon_redis.zrem(k, content)
