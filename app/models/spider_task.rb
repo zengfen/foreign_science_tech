@@ -263,7 +263,7 @@ class SpiderTask < ApplicationRecord
 
   def update_finished_status!
     return unless is_running?
-     if maybe_finished?
+    if maybe_finished?
         update_attributes(status: 2)
         dequeue_task
     end
