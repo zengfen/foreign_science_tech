@@ -18,6 +18,7 @@ class Account < ApplicationRecord
 
   belongs_to :control_template
   after_create :setup_redis
+  before_destroy :clear_redis
 
   def self.account_types
     {
@@ -61,6 +62,16 @@ class Account < ApplicationRecord
       end
     else
       $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, content)
+    end
+  end
+
+  def clear_redis
+    $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
+      $archon_redis.zrem(k, content)
+    end
+
+    $archon_redis.keys("archon_template_accounts_#{control_template_id}_*").each do |k|
+      $archon_redis.zrem(k, content)
     end
   end
 end
