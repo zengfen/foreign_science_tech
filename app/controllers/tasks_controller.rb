@@ -33,8 +33,8 @@ class TasksController < ApplicationController
 
     @detail_keys =  Kaminari.paginate_array(total_detail_keys).page(params[:page]).per(10)
     @fail_tasks = @detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@spider_task.id}", x)) rescue {}}
-    @fail_task_errors = $archon_redis.hmget("archon_task_errors_#{@spider_task.id}", *@detail_keys)
-    Rails.logger.info(@fail_task_errors)
+    task_error = $archon_redis.hmget("archon_task_errors_#{@spider_task.id}", *@detail_keys)
+    @fail_task_errors = @detail_keys.each_with_index.collect{|x, i| [x, task_error[i]]}.to_h
   end
 
 
