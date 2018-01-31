@@ -6,7 +6,8 @@
   <td><%= show_boolean_cn(spider.proxy_support) %></td>
   <td><%= show_boolean_cn(spider.has_keyword) %></td>
   <td><%= spider.template_name %></td>
-  <td><%= truncate_utf(format_additional_function(spider.additional_function))%></td>
+  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=format_additional_function(spider.additional_function)%>"><%= truncate_utf(format_additional_function(spider.additional_function))%></td>
+  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=spider.instruction%>"><%= truncate_utf(spider.instruction)%></td>
   <td><%= show_format_time(spider.created_at) %></td>
   <td class="pos-r">
     <a href="##">
