@@ -217,6 +217,11 @@ class SpiderTask < ApplicationRecord
     total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{id}")
 
     total_detail_keys.each do |task_md5|
+      task_json = $archon_redis.hget("archon_task_details_#{id}", task_md5)
+      task = JSON.parse(task_json)
+      task['retry_count'] = 0
+      $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
+
       $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
       $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_md5)
     end
