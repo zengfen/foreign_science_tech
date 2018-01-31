@@ -35,8 +35,8 @@ class HostMonitor < ApplicationRecord
   def self.create_index(time_is)
   	#{"CPU"=>[{"count"=>1}], "Disk"=>[{"free"=>30114562048, "path"=>"/", "total"=>42139451392, "used"=>9860739072, "used_percent"=>23.400254977861483}], "Load"=>[{"load1"=>0}, {"load5"=>0.03}, {"load15"=>0}], "Memory"=>[{"cached"=>761057280, "free"=>852967424, "total"=>2097446912, "used"=>388317184, "used_percent"=>18.513802746488775}], "ts"=>"1517225350"} 
     es_index_name = get_es_index(Time.at(time_is.to_i).to_s)
-    if !($elastic.indices.exists? index: "#{es_index_name}")
-      $elastic.indices.create index: "#{es_index_name}", body: {
+    if !($elastic.indices.exists? index: es_index_name)
+      $elastic.indices.create index: es_index_name, body: {
         settings: {
             index: {
             number_of_shards: 10,

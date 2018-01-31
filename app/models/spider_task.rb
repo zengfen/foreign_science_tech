@@ -53,17 +53,29 @@ class SpiderTask < ApplicationRecord
     status == 0 || status == 3
   end
 
+  def enqueue_level_task
+    if spider.network_environment == 1
+      $archon_redis.zadd('archon_internal_tasks', level, id)
+    else
+      $archon_redis.zadd('archon_external_tasks', level, id)
+    end
+  end
+
+  def dequeue_level_task
+    if spider.network_environment == 1
+      $archon_redis.zrem('archon_internal_tasks', id)
+    else
+      $archon_redis.zrem('archon_external_tasks', id)
+    end
+  end
+
   def start!
     return unless can_start?
 
     self.status = 1
     save
 
-    if spider.network_environment == 1
-      $archon_redis.zadd('archon_internal_tasks', level, id)
-    else
-      $archon_redis.zadd('archon_external_tasks', level, id)
-    end
+    enqueue_level_task
   end
 
   def can_stop?
@@ -76,11 +88,7 @@ class SpiderTask < ApplicationRecord
     self.status = 3
     save
 
-    if spider.network_environment == 1
-      $archon_redis.zrem('archon_internal_tasks', id)
-    else
-      $archon_redis.zrem('archon_external_tasks', id)
-    end
+    dequeue_task
   end
 
   def save_with_spilt_keywords
@@ -164,11 +172,7 @@ class SpiderTask < ApplicationRecord
       self.status = 1
       save
 
-      if spider.network_environment == 1
-        $archon_redis.zadd('archon_internal_tasks', level, id)
-      else
-        $archon_redis.zadd('archon_external_tasks', level, id)
-      end
+      enqueue_level_task
     end
   end
 
@@ -185,11 +189,7 @@ class SpiderTask < ApplicationRecord
       self.status = 1
       save
 
-      if spider.network_environment == 1
-        $archon_redis.zadd('archon_internal_tasks', level, id)
-      else
-        $archon_redis.zadd('archon_external_tasks', level, id)
-      end
+      enqueue_level_task
     end
   end
 
@@ -200,11 +200,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def clear_related_datas!
-    if spider.network_environment == 1
-      $archon_redis.zrem('archon_internal_tasks', id)
-    else
-      $archon_redis.zrem('archon_external_tasks', id)
-    end
+    dequeue_task
 
     redis_keys = []
     redis_keys << "archon_tasks_#{id}"
@@ -222,6 +218,9 @@ class SpiderTask < ApplicationRecord
 
   def update_finished_status!
     return unless is_running?
-    update_attributes(status: 2) if maybe_finished?
+     if maybe_finished?
+        update_attributes(status: 2)
+        dequeue_task
+    end
   end
 end

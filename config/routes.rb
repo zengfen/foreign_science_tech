@@ -34,7 +34,11 @@ Rails.application.routes.draw do
       end
     end
   end
-
+  resources :settings do
+    collection do
+      get 'load_edit_form'
+    end
+  end
 
   resources :lucene do
     collection do
