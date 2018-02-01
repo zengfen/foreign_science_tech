@@ -68,7 +68,7 @@ class TasksController < ApplicationController
     else
       str = ""
     end
-    render json: {:type=>@spider.has_keyword,:instruction=>@spider.instruction.to_s,:add_funs=>str}
+    render json: {:type=>"#{@spider.has_keyword}",:instruction=>@spider.instruction.to_s,:add_funs=>str}
     #render plain: @spider.has_keyword
   end
 
