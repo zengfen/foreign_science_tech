@@ -22,7 +22,7 @@ class Spider < ApplicationRecord
   belongs_to :control_template
 
   validates :spider_name, presence: true, length: { maximum: 50 },
-                          uniqueness: { case_sensitive: false }
+    uniqueness: { case_sensitive: false }
 
   def self.index_categories
     {
@@ -38,7 +38,8 @@ class Spider < ApplicationRecord
       '招聘' => 'archon_hiring',
       '新闻评论' => 'archon_news_comment',
       '酒店评论' => 'archon_hotel_comments',
-      "Facebook" => "archon_facebook_post"
+      "Facebook" => "archon_facebook_post",
+      "Twitter" => "archon_twitter_post"
     }
   end
 
@@ -57,6 +58,7 @@ class Spider < ApplicationRecord
       '新闻评论' => 'news_comment',
       '酒店评论' => 'hotel_comments',
       'Facebook' => "facebook_post",
+      'Twitter' => "twitter_post",
     }
   end
 
