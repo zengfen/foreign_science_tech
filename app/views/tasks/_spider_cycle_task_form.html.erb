@@ -10,9 +10,7 @@
               <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"cycle_task_get_spider()"}) %>
             </div>
             <div class="col-sm-1">
-              <button class="btn btn-default btn-circle" type="button" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="cycle_btn_ins">
-                <i class="fa fa-info"></i>
-              </button>
+               <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="cycle_btn_ins"></i>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
