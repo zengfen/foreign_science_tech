@@ -6,8 +6,13 @@
         <%= form_for(@spider_task,url: "",:html=>{:class=>"form-horizontal spider-task-form"}) do |f| %>
           <div class="form-group">
             <label class="col-sm-2 control-label">选择模版</label>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
               <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"get_spider()"}) %>
+            </div>
+            <div class="col-sm-1">
+              <button class="btn btn-default btn-circle" type="button" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="btn_ins">
+                <i class="fa fa-info"></i>
+              </button>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -86,18 +91,22 @@ function get_spider () {
     type:"get",
     dataType:"json",
     success:function(result){
-  if (result.type=="true"){
-  $(".keywords_inputs").html($('.keywords').html());
-}else{
-  $(".keywords_inputs").html('');
-}
+          if (result.type=="true"){
+             $(".keywords_inputs").html($('.keywords').html());
+          }else{
+            $(".keywords_inputs").html('');
+          }
+ 
+          $(".tags_inputs").html(result.add_funs);
+          $("#btn_ins").attr("title",result.instruction).tooltip('fixTitle').tooltip('show');
+      }
+    });
+  }else{
+    $(".keywords_inputs").html('');
+    $(".tags_inputs").html('');
+    $("#btn_ins").attr("title","请先选择模板").tooltip('fixTitle').tooltip('show');
+  }
 
-  $(".tags_inputs").html(result.add_funs);
-
-
-}
-});
-}
 }
   $("#iconrange_spider_task_level_num").ionRangeSlider({
   min: 1,
