@@ -6,10 +6,10 @@
         <%= form_for(@spider_task,url: "",:html=>{:class=>"form-horizontal spider-task-form"}) do |f| %>
           <div class="form-group">
             <label class="col-sm-2 control-label">选择模版</label>
-            <div class="col-sm-7">
+            <div class="col-sm-8">
               <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"get_spider()"}) %>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="btn_ins"></i>
             </div>
           </div>
