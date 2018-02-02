@@ -139,7 +139,7 @@ class SpiderTask < ApplicationRecord
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
-      'extra_config' => { special_tag: special_tag, additional_function: additional_function }
+      'extra_config' => { special_tag: special_tag, additional_function: additional_function ,begin_time: begin_time ,end_time: end_time}
     }
 
     if spider.has_keyword
@@ -264,8 +264,8 @@ class SpiderTask < ApplicationRecord
   def update_finished_status!
     return unless is_running?
     if maybe_finished?
-        update_attributes(status: 2)
-        dequeue_task
+      update_attributes(status: 2)
+      dequeue_task
     end
   end
 end
