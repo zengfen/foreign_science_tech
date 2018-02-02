@@ -150,6 +150,7 @@ $(document)
       $("#current_url").val(url);
       $.get(url, function (data) {
         $("." + targetClass).html(data);
+        $("[data-toggle='tooltip']").tooltip();
       })
       return false;
     }
