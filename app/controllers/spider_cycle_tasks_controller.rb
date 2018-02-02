@@ -14,6 +14,8 @@ class SpiderCycleTasksController < ApplicationController
         add_funs << {"#{key.gsub("cate_","")}"=>params[key.to_sym]}
       end
     end
+    @spider_cycle_task.begin_time = params[:begin_time] unless params[:begin_time].blank?
+    @spider_cycle_task.end_time = params[:end_time] unless params[:end_time].blank?
     @spider_cycle_task.additional_function = add_funs
     message =   @spider_cycle_task.save_with_spilt_keywords
     flash[message.keys.first.to_sym] = message.values.first

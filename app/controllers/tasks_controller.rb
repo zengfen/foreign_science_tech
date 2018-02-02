@@ -68,7 +68,9 @@ class TasksController < ApplicationController
     else
       str = ""
     end
-    render json: {:type=>"#{@spider.has_keyword}",:instruction=>@spider.instruction.to_s,:add_funs=>str}
+
+    time_limits =  render_to_string(template: "/tasks/_time_limit.html.erb",:layout=>false)
+    render json: {:type=>"#{@spider.has_keyword}",:instruction=>@spider.instruction.to_s,:add_funs=>str,:time_limits=>time_limits}
     #render plain: @spider.has_keyword
   end
 
