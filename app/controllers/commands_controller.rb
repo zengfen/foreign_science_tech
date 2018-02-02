@@ -63,7 +63,7 @@ class CommandsController < ApplicationController
     command = params[:command]
 
     unless $archon_redis.setnx('archon_current_command', command)
-      return redirect_to action: :new_agent
+      return redirect_to action: :new
     end
 
     $archon_redis.hgetall('archon_hosts').each do |k, _v|
@@ -71,6 +71,14 @@ class CommandsController < ApplicationController
       $archon_redis.hset('archon_host_command_statuses', k, '')
     end
 
-    redirect_to action: :new_agent
+    redirect_to action: :new
+  end
+
+  def clear
+    $archon_redis.del('archon_current_command')
+    $archon_redis.del('archon_host_commands')
+    $archon_redis.del('archon_host_command_statuses')
+
+    redirect_to action: :new
   end
 end
