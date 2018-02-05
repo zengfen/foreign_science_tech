@@ -89,7 +89,7 @@ class SpiderTask < ApplicationRecord
     self.status = 3
     save
 
-    dequeue_task
+    dequeue_level_task
   end
 
   def save_with_spilt_keywords
@@ -271,7 +271,8 @@ class SpiderTask < ApplicationRecord
     return unless is_running?
     if maybe_finished?
       update_attributes(status: 2)
-      dequeue_task
+
+      dequeue_level_task
     end
   end
 end
