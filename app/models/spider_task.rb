@@ -247,7 +247,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def clear_related_datas!
-    dequeue_task
+    dequeue_level_task # fix me
 
     redis_keys = []
     redis_keys << "archon_tasks_#{id}"
