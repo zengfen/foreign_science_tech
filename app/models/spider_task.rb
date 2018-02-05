@@ -139,7 +139,7 @@ class SpiderTask < ApplicationRecord
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
-      'extra_config' => { special_tag: special_tag, additional_function: additional_function ,begin_time: begin_time ,end_time: end_time}
+      'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: begin_time, end_time: end_time }
     }
 
     if spider.has_keyword
@@ -166,6 +166,8 @@ class SpiderTask < ApplicationRecord
     unless spider.control_template_id.blank?
       $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
     end
+
+    $archon_redis.sadd('archon_available_tasks', id)
   end
 
   def success_count
@@ -255,6 +257,8 @@ class SpiderTask < ApplicationRecord
     redis_keys.map { |x| $archon_redis.del(x) }
 
     $archon_redis.hdel('archon_task_account_controls', id)
+
+    $archon_redis.srem('archon_available_tasks', id)
   end
 
   def self.refresh_task_status
