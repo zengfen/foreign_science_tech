@@ -18,8 +18,8 @@ class Setting < RailsSettings::Base
 end
 
 
-class EsConnect
-	def initialize(es_hosts = Setting["es_hosts"])
+module EsConnect
+	def EsConnect.new(es_hosts = Setting["es_hosts"])
 		  Elasticsearch::Client.new hosts:es_hosts ,randomize_hosts: true, log: false,send_get_body_as: "post"
 	end
 end
