@@ -5,7 +5,7 @@ class SocialAccountMonitorsController < ApplicationController
   end
 
   def create
-    Account.create_or_update!(params)
+    SocialAccountMonitor.create_or_update!(params)
     flash['success'] = '设置成功'
 
     redirect_back(action: :index)
