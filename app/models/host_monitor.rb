@@ -111,7 +111,7 @@ class HostMonitor < ApplicationRecord
     end_time =  end_record.recording_time
     batch_create_index(start_time,end_time)
 
-  	HostMonitor.where("id > ? and id <= ? ",start_id,end_id).order("id asc").find_in_batches do |datas|
+  	HostMonitor.where("id > ? and id <= ? ",start_record.id,end_record.id).order("id asc").find_in_batches do |datas|
 
       body = []
       datas.each do |r|
