@@ -17,6 +17,8 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  additional_function :json
+#  begin_time          :datetime
+#  end_time            :datetime
 #
 
 class SpiderCycleTask < ApplicationRecord

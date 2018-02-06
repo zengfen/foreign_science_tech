@@ -19,6 +19,8 @@
 #  task_type            :integer          default(1)
 #  additional_function  :json
 #  is_split             :boolean          default(FALSE)
+#  begin_time           :datetime
+#  end_time             :datetime
 #
 
 class SpiderTask < ApplicationRecord

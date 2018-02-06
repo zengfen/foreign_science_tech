@@ -14,6 +14,8 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  control_template_id :integer
+#  instruction         :string
+#  has_time_limit      :boolean          default(FALSE)
 #
 
 class Spider < ApplicationRecord
