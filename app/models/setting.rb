@@ -16,3 +16,10 @@ class Setting < RailsSettings::Base
   source Rails.root.join("config/app.yml")
   namespace Rails.env
 end
+
+
+class EsConnect
+	def initialize(es_hosts = Setting["es_hosts"])
+		  Elasticsearch::Client.new hosts:es_hosts ,randomize_hosts: true, log: false,send_get_body_as: "post"
+	end
+end

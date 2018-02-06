@@ -30,7 +30,6 @@ end
 begin
   $archon_redis = Redis.new(Rails.application.config_for(:redis))
   $geo_ip = GeoIP.new('config/GeoIP.dat')
-  $elastic = Elasticsearch::Client.new hosts:Setting["es_hosts"] ,randomize_hosts: true, log: false,send_get_body_as: "post"
 rescue Exception => e
   puts e
 end

@@ -1,6 +1,6 @@
 <tr>
   <td><%= k%></td>
-  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=v.class.to_s=="String"? v : v.to_json.to_s%>"><%= truncate_utf((v.class.to_s=="String"? v : v.to_json),50,"...")%></td>
+  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=v%>"><%= truncate_utf((v.class.to_s=="String"? v : v.to_json),50,"...")%></td>
 
   <td class="pos-r">
     <a href="##">

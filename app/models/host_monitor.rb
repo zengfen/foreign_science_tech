@@ -46,6 +46,7 @@ class HostMonitor < ApplicationRecord
 
   def self.create_index(es_index_name)
   	#{"CPU"=>[{"count"=>1}], "Disk"=>[{"free"=>30114562048, "path"=>"/", "total"=>42139451392, "used"=>9860739072, "used_percent"=>23.400254977861483}], "Load"=>[{"load1"=>0}, {"load5"=>0.03}, {"load15"=>0}], "Memory"=>[{"cached"=>761057280, "free"=>852967424, "total"=>2097446912, "used"=>388317184, "used_percent"=>18.513802746488775}], "ts"=>"1517225350"} 
+    $elastic = EsConnect.new
     if !($elastic.indices.exists? index: es_index_name)
       $elastic.indices.create index: es_index_name, body: {
         settings: {
@@ -99,6 +100,7 @@ class HostMonitor < ApplicationRecord
   end
 
   def self.load_data_to_es
+    $elastic = EsConnect.new
   	start_record = find_latest_sync_record || HostMonitor.order("id asc").first
   	
   	return if start_record.blank?
@@ -166,6 +168,7 @@ class HostMonitor < ApplicationRecord
   end
 
   def self.find_latest_sync_record
+     $elastic = EsConnect.new
      index = HostMonitor.es_index_name
      res = $elastic.search index: index, body:{query:{},size:1,from:0,sort:[{_id:{order:'asc'}}]}
      id = res["hits"]["hits"].first["_source"]["id"] rescue nil
