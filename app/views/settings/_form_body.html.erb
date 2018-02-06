@@ -14,7 +14,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">配置详情(value)</label>
             <div class="col-sm-10">
-             <%= text_area_tag :setting_value,(@setting.blank?? "":@setting.values.first),{:class=>"form-control"} %>
+             <%= text_area_tag :setting_value,(@setting.blank?? "":(@setting.values.first.class=="String"? @setting.values.first : @setting.values.first.to_json )),{:class=>"form-control"} %>
             </div>
           </div>
 
