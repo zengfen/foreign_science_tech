@@ -11,6 +11,8 @@
 #
 
 class SocialAccountMonitor < ApplicationRecord
+  belongs_to :spider
+
   def self.account_types
     %w[twitter facebook youtube linkedin]
   end
