@@ -33,7 +33,8 @@ class SettingsController < ApplicationController
 			redirect_back(fallback_location:settings_path)
 			return
 		end
-		value = JSON.parse(params[:setting_value]) #rescue params[:setting_value]
+		value = JSON.parse(params[:setting_value]) rescue params[:setting_value]
+		Setting[params[:setting_key]] = value
 		redirect_back(fallback_location:settings_path)
 	end
 
