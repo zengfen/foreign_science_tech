@@ -1,0 +1,2 @@
+class SocialAccountMonitor < ApplicationRecord
+end
