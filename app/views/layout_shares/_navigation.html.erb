@@ -59,8 +59,9 @@
       </li> -->
       <li class="<%= is_active_controller('social_accounts') %>">
         <a href=""><i class="fa fa-users"></i> <span class="nav-label">社交账号库</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "社交账号库", social_accounts_path %></li>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts,social_account_monitors') %>">
+          <li class="<%= is_active_action(nil, 'social_accounts') %>"><%= link_to "社交账号库", social_accounts_path %></li>
+          <li class="<%= is_active_action(nil, 'social_account_monitors') %>"><%= link_to "监控设置", social_account_monitors_path %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('media_accounts') %>">

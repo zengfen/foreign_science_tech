@@ -11,4 +11,19 @@
 #
 
 class SocialAccountMonitor < ApplicationRecord
+  def self.account_types
+    %w[twitter facebook youtube linkedin]
+  end
+
+  def self.cycle_types
+    {
+      'day' => '天',
+      'week' => '周',
+      'month' => '月'
+    }
+  end
+
+  def cycle_type_cn
+    self.class.cycle_types[cycle_type]
+  end
 end
