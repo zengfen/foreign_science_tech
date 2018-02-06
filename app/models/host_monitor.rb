@@ -94,7 +94,7 @@ class HostMonitor < ApplicationRecord
     end
   end
 
-  def batch_create_index(start_time,end_time)
+  def self.batch_create_index(start_time,end_time)
   	indices = Date.parse(start_time.to_s)..Date.parse(end_time.to_s).collect{|x|  "hosts_datas_#{x.strftime('%Y%m')}"}.uniq
   	indices.collect{|x| create_index(x)} unless indices.blank?
   end
