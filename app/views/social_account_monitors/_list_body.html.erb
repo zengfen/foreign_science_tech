@@ -13,7 +13,7 @@
       <% @monitors.each do |monitor| %>
         <tr>
           <td class="text-center"><%= monitor.account_type%></td>
-          <td class="text-center"><%= monitor.spider.name%></td>
+          <td class="text-center"><%= monitor.spider.spider_name%></td>
           <td class="text-center"><%= monitor.cycle_type_cn%></td>
           <td class="text-center"><%= account.created_at%></td>
           <td class="pos-r">
