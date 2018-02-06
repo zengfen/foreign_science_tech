@@ -31,9 +31,10 @@ class SocialAccountMonitor < ApplicationRecord
 
 
   def self.create_or_update!(params)
-    monitor = where(account_type: params[:social_account_monitor][:account_type]).first
+    monitor = where(account_type: params[:social_account_monitor][:accout_type]).first
     if monitor.blank?
       monitor = self.new
+      monitor.account_type = params[:social_account_monitor][:account_type]
     end
 
     monitor.spider_id = params[:social_account_monitor][:spider_id]
