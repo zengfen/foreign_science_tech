@@ -26,4 +26,16 @@ class SocialAccountMonitor < ApplicationRecord
   def cycle_type_cn
     self.class.cycle_types[cycle_type]
   end
+
+
+  def self.create_or_update!(params)
+    monitor = where(account_type: params[:social_account_monitor][:account_type]).first
+    if monitor.blank?
+      monitor = self.new
+    end
+
+    monitor.spider_id = params[:social_account_monitor][:spider_id]
+    monitor.cycle_type = params[:social_account_monitor][:cycle_type]
+    monitor.save
+  end
 end
