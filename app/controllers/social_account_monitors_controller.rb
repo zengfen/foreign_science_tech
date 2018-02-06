@@ -8,6 +8,6 @@ class SocialAccountMonitorsController < ApplicationController
     SocialAccountMonitor.create_or_update!(params)
     flash['success'] = '设置成功'
 
-    redirect_back(action: :index)
+    redirect_to(action: :index)
   end
 end
