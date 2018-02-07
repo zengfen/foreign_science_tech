@@ -29,16 +29,29 @@ class SocialAccountMonitor < ApplicationRecord
     self.class.cycle_types[cycle_type]
   end
 
-
   def self.create_or_update!(params)
     monitor = where(account_type: params[:social_account_monitor][:account_type]).first
     if monitor.blank?
-      monitor = self.new
+      monitor = new
       monitor.account_type = params[:social_account_monitor][:account_type]
     end
 
     monitor.spider_id = params[:social_account_monitor][:spider_id]
     monitor.cycle_type = params[:social_account_monitor][:cycle_type]
     monitor.save
+  end
+
+
+  def monitor_accounts(accounts)
+    key = "archon_monitor_#{self.account_type}"
+    accounts.each do |account|
+      $archon_redis.hsetnx(key, account, "")
+    end
+  end
+
+  def create_spider_task
+    key = "archon_monitor_#{self.account_type}"
+
+    current_ts  = Time.now.to_i
   end
 end
