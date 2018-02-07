@@ -62,6 +62,7 @@ class HostMonitor < ApplicationRecord
               search_analyzer: "ik_max_word",
             },
             properties: {
+              data_id:{type: 'integer',index:'not_analyzed'},#db id
               extranet_ip:{type: 'keyword',index:'not_analyzed'}, #外网IP
               intranet_ip:{type: 'keyword',index:'not_analyzed'}, #内网IP
               network_environment:{type: 'integer',index:'not_analyzed'}, #国内外
@@ -134,6 +135,7 @@ class HostMonitor < ApplicationRecord
           memory_used_percent = machine_info["Memory"].first.fetch("used_percent") rescue ""
 
   	  	  tmp = { index: { _index:"#{get_es_index(r.recording_time.to_s)}", _type: "hosts_datas", _id: r.id, data: {
+                  data_id: r.id,
   	              extranet_ip:r.extranet_ip.to_s, #外网IP
   	              intranet_ip:r.intranet_ip.to_s, #内网IP
   	              network_environment:r.network_environment, #国内外
@@ -160,10 +162,9 @@ class HostMonitor < ApplicationRecord
       end
 	    return nil if body.blank?
 	    begin
-	       puts $elastic.bulk body: body
+	       $elastic.bulk body: body
 	    rescue Exception=>e
 	       puts e
-         puts r.inspect
          break
 	    end   
     end
@@ -172,8 +173,8 @@ class HostMonitor < ApplicationRecord
   def self.find_latest_sync_record
      $elastic = EsConnect.new
      index = HostMonitor.es_index_name
-     res = $elastic.search index: index, body:{query:{},size:1,from:0,sort:[{_uid:{order:'asc'}}]}
-     id = res["hits"]["hits"].first["_source"]["id"] rescue nil
+     res = $elastic.search index: index, body:{query:{},size:1,from:0,sort:[{data_id:{order:'desc'}}]}
+     id = res["hits"]["hits"].first["_source"]["data_id"] rescue nil
      record  = HostMonitor.find_by(:id=>id)
      return record
   end
