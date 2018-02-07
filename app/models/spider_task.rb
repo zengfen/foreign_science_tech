@@ -36,7 +36,7 @@ class SpiderTask < ApplicationRecord
   scope :unfinished, -> { where.not(status: 2) }
   scope :finished, -> { where(status: 2) }
 
-  after_create :enqueue
+  # after_create :enqueue
   before_destroy :clear_related_datas!
 
   def status_cn
@@ -117,6 +117,8 @@ class SpiderTask < ApplicationRecord
       self.keyword = nil
       return { 'error' => errors.full_messages.join('\n') } unless save
     end
+
+    enqueue
 
     { 'success' => '保存成功！' }
   end
