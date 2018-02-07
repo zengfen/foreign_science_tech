@@ -56,7 +56,7 @@ class HostMonitor < ApplicationRecord
           }
         },
         mappings: {
-          new_network_data: {
+          hosts_datas: {
             _all: {
               analyzer: "ik_max_word",
               search_analyzer: "ik_max_word",
@@ -160,7 +160,7 @@ class HostMonitor < ApplicationRecord
       end
 	    return nil if body.blank?
 	    begin
-	      puts  $elastic.bulk body: body
+	       puts $elastic.bulk body: body
 	    rescue Exception=>e
 	       puts e
          puts r.inspect
