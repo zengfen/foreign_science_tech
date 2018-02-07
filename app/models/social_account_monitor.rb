@@ -2,12 +2,15 @@
 #
 # Table name: social_account_monitors
 #
-#  id           :integer          not null, primary key
-#  account_type :string
-#  spider_id    :integer
-#  cycle_type   :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id              :integer          not null, primary key
+#  account_type    :string
+#  spider_id       :integer
+#  cycle_type      :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  max_retry_count :integer          default(1)
+#  level           :integer          default(1)
+#  special_tag     :string
 #
 
 class SocialAccountMonitor < ApplicationRecord
