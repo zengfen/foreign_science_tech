@@ -4,6 +4,9 @@
       <tr>
         <th class="text-center">类型</th>
         <th class="text-center">绑定模板</th>
+        <th class="text-center">优先级</th>
+        <th class="text-center">重试次数</th>
+        <th class="text-center">特殊标签</th>
         <th class="text-center">周期</th>
         <th class="text-center">创建时间</th>
         <th class="text-center">操作</th>
@@ -14,6 +17,9 @@
         <tr>
           <td class="text-center"><%= monitor.account_type%></td>
           <td class="text-center"><%= monitor.spider.spider_name%></td>
+          <td class="text-center"><%= monitor.level %></td>
+          <td class="text-center"><%= monitor.max_retry_count%></td>
+          <td class="text-center"><%= monitor.special_tag%></td>
           <td class="text-center"><%= monitor.cycle_type_cn%></td>
           <td class="text-center"><%= monitor.created_at%></td>
           <td class="pos-r">
