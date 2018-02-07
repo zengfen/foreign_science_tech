@@ -160,10 +160,11 @@ class HostMonitor < ApplicationRecord
       end
 	    return nil if body.blank?
 	    begin
-        puts body
-	      #$elastic.bulk body: body
-	    rescue
-	      retry
+	      $elastic.bulk body: body
+	    rescue Exception=>e
+	       puts e
+         puts r.inspect
+         break
 	    end   
     end
   end
