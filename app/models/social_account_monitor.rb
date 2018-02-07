@@ -41,20 +41,22 @@ class SocialAccountMonitor < ApplicationRecord
 
     monitor.spider_id = params[:social_account_monitor][:spider_id]
     monitor.cycle_type = params[:social_account_monitor][:cycle_type]
+    monitor.level = params[:social_account_monitor][:level]
+    monitor.max_retry_count = params[:social_account_monitor][:max_retry_count]
+    monitor.special_tag = params[:social_account_monitor][:special_tag]
     monitor.save
   end
 
-
   def monitor_accounts(accounts)
-    key = "archon_monitor_#{self.account_type}"
+    key = "archon_monitor_#{account_type}"
     accounts.each do |account|
-      $archon_redis.hsetnx(key, account, "")
+      $archon_redis.hsetnx(key, account, '')
     end
   end
 
   def create_spider_task
-    key = "archon_monitor_#{self.account_type}"
+    key = "archon_monitor_#{account_type}"
 
-    current_ts  = Time.now.to_i
+    current_ts = Time.now.to_i
   end
 end
