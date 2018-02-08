@@ -265,6 +265,14 @@ class SpiderTask < ApplicationRecord
     $archon_redis.srem('archon_available_tasks', id)
 
     $archon_redis.del("archon_task_hosts_#{id}")
+
+    $archon_redis.keys("archon_host_tasks_*").each do |k|
+      $archon_redis.hkeys(k).each do |kk|
+        if kk.start_with?("#{id},")
+          $archon_redis.hdel(k, kk)
+        end
+      end
+    end
   end
 
   def self.refresh_task_status
