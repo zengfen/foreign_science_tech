@@ -28,4 +28,6 @@ class SocialAccountMonitorsController < ApplicationController
 
     redirect_to(action: :index)
   end
+
+  def create_account; end
 end
