@@ -29,5 +29,10 @@ class SocialAccountMonitorsController < ApplicationController
     redirect_to(action: :index)
   end
 
-  def create_accounts; end
+  def create_accounts
+    monitor = SocialAccountMonitor.find(params[:id])
+    monitor.monitor_accounts(params.split("\n"))
+
+    render json: { type: 'success', message: '成功！' }
+  end
 end

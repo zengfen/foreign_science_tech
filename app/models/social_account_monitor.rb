@@ -50,6 +50,9 @@ class SocialAccountMonitor < ApplicationRecord
   def monitor_accounts(accounts)
     key = "archon_monitor_#{account_type}"
     accounts.each do |account|
+      next if account.blank?
+
+      account = account.strip
       $archon_redis.hsetnx(key, account, '')
     end
   end
