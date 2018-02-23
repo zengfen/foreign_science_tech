@@ -9,38 +9,38 @@
 #  status     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  sc         :string
-#  slg        :string
-#  fmt        :string
-#  sn         :string
-#  asn        :string
-#  dn         :string
-#  std        :string
-#  dsd        :string
-#  lva        :string
-#  lvs        :string
-#  od         :string
-#  fio        :string
-#  de         :string
-#  dea        :string
-#  frp        :string
-#  lag        :string
-#  upn        :string
-#  ntx        :string
-#  pip        :string
-#  url        :string
-#  pbc        :string
-#  pub        :string
-#  lgo        :string
-#  cir        :string
-#  cis        :string
-#  csn        :string
-#  rst        :string
-#  pst        :string
-#  psd        :string
-#  sfg        :string
-#  roo        :string
-#  mri        :string
+#  sc         :string           源代码
+#  slg        :string           语言
+#  fmt        :string           源类型
+#  sn         :string           源名称
+#  asn        :string           源名称-当地语言
+#  dn         :string           目录名称
+#  std        :string           数据状态
+#  dsd        :string           停止日期
+#  lva        :string           覆盖类型-文章级别
+#  lvs        :string           覆盖类型-源级别
+#  od         :string           上线日期
+#  fio        :string           线上首次发布日期
+#  de         :string           描述 - 英语
+#  dea        :string           描述 - 当地语言
+#  frp        :string           发布频率
+#  lag        :string           线上可获取目标
+#  upn        :string           更新计划
+#  ntx        :string           外部日记
+#  pip        :string           伪IP
+#  url        :string           源网页地址 
+#  pbc        :string           发行商代码
+#  pub        :string           发行商
+#  lgo        :string           媒体标志
+#  cir        :string           发行量 
+#  cis        :string           发行量源代码
+#  csn        :string           发行源名称
+#  rst        :string           RST价值 (源组)
+#  pst        :string           一级源类型代码
+#  psd        :string           一级源类型
+#  sfg        :string           源父组代码
+#  roo        :string           原产地组代码
+#  mri        :string           线上最新发布日期
 #
 
 class MediaAccount < ApplicationRecord
