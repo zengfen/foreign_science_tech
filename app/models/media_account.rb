@@ -9,6 +9,38 @@
 #  status     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  sc         :string
+#  slg        :string
+#  fmt        :string
+#  sn         :string
+#  asn        :string
+#  dn         :string
+#  std        :string
+#  dsd        :string
+#  lva        :string
+#  lvs        :string
+#  od         :string
+#  fio        :string
+#  de         :string
+#  dea        :string
+#  frp        :string
+#  lag        :string
+#  upn        :string
+#  ntx        :string
+#  pip        :string
+#  url        :string
+#  pbc        :string
+#  pub        :string
+#  lgo        :string
+#  cir        :string
+#  cis        :string
+#  csn        :string
+#  rst        :string
+#  pst        :string
+#  psd        :string
+#  sfg        :string
+#  roo        :string
+#  mri        :string
 #
 
 class MediaAccount < ApplicationRecord
