@@ -36,7 +36,7 @@ class SpiderTask < ApplicationRecord
   scope :unfinished, -> { where.not(status: 2) }
   scope :finished, -> { where(status: 2) }
 
-  after_create :enqueue
+  # after_create :enqueue
   before_destroy :clear_related_datas!
 
   def status_cn
@@ -117,6 +117,8 @@ class SpiderTask < ApplicationRecord
       self.keyword = nil
       return { 'error' => errors.full_messages.join('\n') } unless save
     end
+
+    enqueue
 
     { 'success' => '保存成功！' }
   end
@@ -263,6 +265,14 @@ class SpiderTask < ApplicationRecord
     $archon_redis.srem('archon_available_tasks', id)
 
     $archon_redis.del("archon_task_hosts_#{id}")
+
+    $archon_redis.keys("archon_host_tasks_*").each do |k|
+      $archon_redis.hkeys(k).each do |kk|
+        if kk.start_with?("#{id},")
+          $archon_redis.hdel(k, kk)
+        end
+      end
+    end
   end
 
   def self.refresh_task_status

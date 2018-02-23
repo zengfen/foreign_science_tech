@@ -11,4 +11,28 @@ class SocialAccountMonitorsController < ApplicationController
 
     redirect_to(action: :index)
   end
+
+  def show
+    monitor = SocialAccountMonitor.find(params[:id])
+
+    key = "archon_monitor_#{monitor.account_type}"
+    @accounts = $archon_redis.hgetall(key)
+  end
+
+  def delete_account
+    monitor = SocialAccountMonitor.find(params[:id])
+
+    key = "archon_monitor_#{monitor.account_type}"
+
+    $archon_redis.hdel(key, params[:account])
+
+    redirect_to(action: :index)
+  end
+
+  def create_accounts
+    monitor = SocialAccountMonitor.find(params[:id])
+    monitor.monitor_accounts(params.split("\n"))
+
+    render json: { type: 'success', message: '成功！' }
+  end
 end
