@@ -85,4 +85,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rest-client'
 gem 'geoip'
-gem 'roo'
+gem 'roo', :git => 'https://github.com/roo-rb/roo.git'
+gem 'roo-xls'

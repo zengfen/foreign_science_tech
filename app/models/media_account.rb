@@ -55,5 +55,40 @@ class MediaAccount < ApplicationRecord
 		MediaAccount.statuses[self.status]
 	end
 
+  def self.check_files(root_path="/Users/li/Desktop/sourcelist")
+    datas = []
+    Find.find(root_path) do |path|  
+      next unless %(xlsx xls csv).include?(path.split(".").last.downcase)
+      puts path
+      load_one_file(path) 
+    end 
+    return datas
+  end
+
+  def self.load_one_file(path)
+    type = path.split(".").last.downcase
+    begin
+      case type
+      when "xlsx" then
+        ss = Roo::Excelx.new(path)
+      when "xls" then
+        ss = Roo::Excel.new(path)
+      when "csv" then
+        ss = Roo::CSV.new(path)
+      end
+    rescue Exception=>e
+      return false
+    end
+   # ss.row(1).first.match(/rst=(.+?)\)/)[1]
+      ss.sheets.each do |s|
+      ss.default_sheet = s
+      header = ss.row(2)
+      for i in (ss.first_row+2)..ss.last_row
+        row = Hash[[header, ss.row(i)].transpose]
+
+      end
+    end 
+  end
+
 
 end
