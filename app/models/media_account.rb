@@ -44,6 +44,7 @@
 #
 
 class MediaAccount < ApplicationRecord
+
 	def self.init_data(path)
 	  type = path.split(".").last
     begin
