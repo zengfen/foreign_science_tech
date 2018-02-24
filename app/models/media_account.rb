@@ -220,7 +220,7 @@ class MediaAccount < ApplicationRecord
   end
   def self.load_data_to_es
     $elastic = EsConnect.new
-    MediaAccount.order("id asc").find_in_batches do |datas|
+    MediaAccount.find_in_batches do |datas|
       body = []
       datas.each do |r|
         begin
@@ -272,7 +272,7 @@ class MediaAccount < ApplicationRecord
       end
       return nil if body.blank?
       begin
-         $elastic.bulk body: body
+        puts $elastic.bulk body: body
       rescue Exception=>e
          puts e
          break
