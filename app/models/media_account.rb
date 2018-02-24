@@ -281,7 +281,7 @@ class MediaAccount < ApplicationRecord
   end
 
   def self.get_aggs_opts
-    $elastic = EsConnect.new
+    $elastic = ::EsConnect.new
     hash = {}
      res = $elastic.search index:"media_accounts",body:{size:0,query:{},
      aggs:{
