@@ -87,14 +87,11 @@ class MediaAccount < ApplicationRecord
 		MediaAccount.statuses[self.status]
 	end
 
-  def self.check_files(root_path="/Users/li/Desktop/sourcelist")
-    datas = []
+  def self.load_files(root_path)
     Find.find(root_path) do |path|  
       next unless %(xlsx xls csv).include?(path.split(".").last.downcase)
-      puts path
       load_one_file(path) 
     end 
-    return datas
   end
 
   def self.load_one_file(path)
@@ -111,15 +108,54 @@ class MediaAccount < ApplicationRecord
     rescue Exception=>e
       return false
     end
-   # ss.row(1).first.match(/rst=(.+?)\)/)[1]
+      count = 0
       ss.sheets.each do |s|
       ss.default_sheet = s
-      header = ss.row(2)
+      header = ss.row(2).collect{|x| (x.is_a?String)?x.gsub(' ',''):""}
       for i in (ss.first_row+2)..ss.last_row
         row = Hash[[header, ss.row(i)].transpose]
-
+        hash = {}
+        hash[:sc] = row["SourceCode(sc)"].to_s.strip
+        hash[:slg] = row["Language(slg)"].to_s.strip
+        hash[:fmt] = row["SourceType(fmt)"].to_s.strip
+        hash[:sn] = row["SourceName(sn)"].to_s.strip
+        hash[:asn] = row["SourceName-NativeLanguage(asn)"].to_s.strip
+        hash[:dn] = row["DirectoryName(dn)"].to_s.strip
+        hash[:std] = row["StatusName(std)"].to_s.strip
+        hash[:dsd] = row["DiscontinuedDate(dsd)"].to_s.strip
+        hash[:lva] = row["TypeofCoverage-ArticleLevel(lva)"].to_s.strip
+        hash[:lvs] = row["TypeofCoverage-SourceLevel(lvs)"].to_s.strip
+        hash[:od] = row["OnlineDate(od)"].to_s.strip
+        hash[:fio] = row["FirstIssueOnline(fio)"].to_s.strip
+        hash[:de] = row["Description-EnglishLanguage(de)"].to_s.strip
+        hash[:dea] = row["Description-NativeLanguage(dea)"].to_s.strip
+        hash[:frp] = row["Frequency(frp)"].to_s.strip
+        hash[:lag] = row["OnlineAvailabilityTarget(lag)"].to_s.strip
+        hash[:upn] = row["UpdateSchedule(upn)"].to_s.strip
+        hash[:ntx] = row["ExternalNotes(ntx)"].to_s.strip
+        hash[:pip] = row["Pseudo-IP(pip)"].to_s.strip
+        hash[:url] = row["SourceWebSiteAddress(url)"].to_s.strip
+        hash[:pbc] = row["PublisherCode(pbc)"].to_s.strip
+        hash[:pub] = row["Publisher(pub)"].to_s.strip
+        hash[:lgo] = row["Logo(lgo)"].to_s.strip
+        hash[:cir] = row["Circulation(cir)"].to_s.strip
+        hash[:cis] = row["CirculationSourceCode(cis)"].to_s.strip
+        hash[:csn] = row["CirculationSourceName(csn)"].to_s.strip
+        hash[:rst] = row["RSTValues(SourceGroup)(rst)"].to_s.strip
+        hash[:pst] = row["PrimarySourceTypeCode(pst)"].to_s.strip
+        hash[:psd] = row["PrimarySourceType(psd)"].to_s.strip
+        hash[:sfg] = row["SourceFamilyGroupCode(sfg)"].to_s.strip
+        hash[:roo] = row["RegionofOriginGroupCode(roo)"].to_s.strip
+        hash[:mri] = row["MostRecentIssueOnline(mri)"].to_s.strip.to_i.to_s
+        next if hash[:sc].blank?
+        ma = MediaAccount.find_by(:sc=>hash[:sc])
+        next if ma.present?
+        hash[:name] = hash[:sn]
+        hash[:short_name] = hash[:sn]
+        count +=1 if MediaAccount.create(hash)
       end
     end 
+    puts "path: #{path} count:#{count} row:#{ss.last_row-2}"
   end
 
 
