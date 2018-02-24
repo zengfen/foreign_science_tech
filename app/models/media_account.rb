@@ -237,11 +237,11 @@ class MediaAccount < ApplicationRecord
               asn:r.asn, #源名称-当地语言
               dn:r.dn, #目录名称
               std:r.std, #数据状态
-              dsd:r.dsd, #停止日期
+              dsd:r.dsd.blank? ? nil : r.dsd, #停止日期
               lva:r.lva, #覆盖类型-文章级别
               lvs:r.lvs, #覆盖类型-源级别
-              od:r.od, #上线日期
-              fio:r.fio, #线上首次发布日期
+              od:r.od.blank? ? nil : r.od, #上线日期
+              fio:r.fio.blank? ? nil : r.fio, #线上首次发布日期
               de:r.de, #描述 - 英语
               dea:r.dea, #描述 - 当地语言
               frp:r.frp, #发布频率
@@ -261,7 +261,7 @@ class MediaAccount < ApplicationRecord
               psd:r.psd, #一级源类型
               sfg:r.sfg, #源父组代码
               roo:r.roo, #原产地组代码
-              mri:r.mri #线上最新发布日期
+              mri:r.mri.blank? ? nil : r.mri #线上最新发布日期
             } } }
           body << tmp
         rescue Exception => e
