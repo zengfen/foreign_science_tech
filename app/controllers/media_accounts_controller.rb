@@ -2,13 +2,9 @@ class MediaAccountsController < ApplicationController
   before_action :logged_in_user
 
   def index
-    opts,opts1 = {},{}
-    if !params[:keyword].blank?
-	    opts[:name] = params[:keyword] 
-	    opts1[:short_name] = params[:keyword]
-    end
-
-    @media_accounts = MediaAccount.where(opts).or(MediaAccount.where(opts1)).order("created_at asc").page(params[:page]).per(20)
+  	client = EsConnect.client
+  	@options = MediaAccount.get_aggs_opts
+  	@media_accounts = MediaAccount.order("created_at asc").page(params[:page]).per(20)
   end
 
   def test
@@ -29,12 +25,12 @@ class MediaAccountsController < ApplicationController
   		  	 size: 20,
            from: page - 1,
            query:{ bool:{must:must_opts}},                                       
-           sort: {_uid: {order: "asc" }}
+           sort: {data_id: {order: "asc" }}
         }
     total_count = res["hits"]["total"]
   	datas = res["hits"]["hits"].collect{|x| Hashie::Mash.new(x["_source"])} rescue []
   	@media_accounts = Kaminari.paginate_array(datas, total_count: total_count).page(params[:page]).per(20)
-  	render :test
+  	render :index
   end
 
 end

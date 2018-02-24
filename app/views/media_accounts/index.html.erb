@@ -1,18 +1,96 @@
+<style type="text/css">
+@charset "utf-8";
+/* CSS Document */
+.relative {
+    position: relative;
+}
+
+.floatLeft {
+  float: left;
+}
+.floatRight {
+  float: right;
+}
+.search-by{
+  padding: 0 20px;
+  width: 100%;
+}
+.search-by dl{
+  width: 100%;
+  padding: 10px 0;
+  line-height: 30px;
+  border-bottom: 1px dotted #CCC;
+    overflow: hidden;
+}
+.search-by dl dt a{
+  font-weight: inherit;
+  color: #666;
+  line-height: 30px;
+}
+.search-by dl dt{
+  width: 82px;
+  text-align: left;
+  margin: 0;
+  font-size: 14px;
+}
+.search-by dl dd a{
+  color: #676a6c;
+  font-size: 14px;
+  line-height: 30px;
+  margin-left: 20px;
+  display: inline-block;
+}
+.search-by dl dd a.active{
+  color: #1ea681;
+}
+.search-by dl dd{
+  width: 90%;
+  font-size: 14px;
+  height: 30px;
+  overflow: hidden;
+}
+.search-by dl dd.show-more{
+  width: 70px;
+  padding: 0;
+  text-align: right;
+  cursor: pointer;
+}
+.search-by dl dd.show-more h3{
+  background: none;
+  border: none;
+  font-size: 14px;
+  line-height: 14px;
+  height: 30px;
+  line-height: 30px;
+}
+.search-by dl dd.show-more h3 i{
+  background: none;
+  float: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+
+
+</style>
 <% provide(:title, "Media Account") %>
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>境外媒体列表</h5>
+          <h5>媒体列表</h5>
         </div>
         <div class="ibox-content pl15">
           <div class="bg-search">
-            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+            <%=form_tag url_for(action: :search),:class=>"-form-horizontal",:method=>:get do%>
+              <input type="hidden" name="fmt" value="<%=params[:fmt]%>">
+              <input type="hidden" name="slg" value="<%=params[:slg]%>">
               <div id="rcontent" class="clear-p">
-                <div class="col-md-8">
+                <div class="col-md-10">
                   <div class="form-group mb0">
-                    <input type="text" placeholder="媒体名称或简称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
+                    <input type="text" placeholder="媒体名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" style=></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
@@ -32,11 +110,33 @@
             <%end%>
           </div>
         </div>
+        <div id="page-search-store" class="sxcon ibox-content" style="display: block;">
+        <div class="search-by by-category relative">
+            <dl class="relative clearfix">
+                <dt class="floatLeft">语言:</dt>
+                <dd class="floatLeft show-con" style="height: auto;">
+                  <%=link_to "不限","/media_accounts/search?keyword=#{params[:keyword]}&fmt=#{params[:fmt]}",class: params[:slg].blank? ? 'active':''%>
+                  <%@options["slg"].each do |x|%>
+                  <%=link_to x,"/media_accounts/search?keyword=#{params[:keyword]}&slg=#{x}&fmt=#{params[:fmt]}",class: params[:slg]==x ? 'active':''%>
+                    <%end%>
+                </dd>
+            </dl>
+            <dl class="relative clearfix" style="border-bottom:0">
+                <dt class="floatLeft">类型:</dt>
+                <dd class="floatLeft show-con">
+                  <%=link_to "不限","/media_accounts/search?keyword=#{params[:keyword]}&slg=#{params[:slg]}",class: params[:fmt].blank? ? 'active':''%>
+                    <%@options["fmt"].each do |x|%>
+                    <%=link_to x,"/media_accounts/search?keyword=#{params[:keyword]}&fmt=#{x}&slg=#{params[:slg]}",class: params[:fmt]==x ? 'active':''%>
+                    <%end%>
+                </dd>
+            </dl>
+        </div>
+    </div>
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
               <li class="tab-li active">
-                <a href="#" data-target="all-page">境外媒体列表</a>
+                <a href="#" data-target="all-page">媒体列表</a>
               </li>
             </ul>
             <div class="ibox-content p15-0 all-page table-content">
