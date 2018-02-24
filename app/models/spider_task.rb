@@ -194,6 +194,10 @@ class SpiderTask < ApplicationRecord
     current_total_count - success_count - fail_count
   end
 
+  def result_count
+    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0
+  end
+
   def maybe_finished?
     # current_running_count == 0
     current_total_count == success_count + fail_count
@@ -266,11 +270,11 @@ class SpiderTask < ApplicationRecord
 
     $archon_redis.del("archon_task_hosts_#{id}")
 
-    $archon_redis.keys("archon_host_tasks_*").each do |k|
+    $archon_redis.del("archon_task_total_results_#{id}")
+
+    $archon_redis.keys('archon_host_tasks_*').each do |k|
       $archon_redis.hkeys(k).each do |kk|
-        if kk.start_with?("#{id},")
-          $archon_redis.hdel(k, kk)
-        end
+        $archon_redis.hdel(k, kk) if kk.start_with?("#{id},")
       end
     end
   end

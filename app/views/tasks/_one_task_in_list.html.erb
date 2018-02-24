@@ -7,6 +7,7 @@
 <td class="task_status"><%= raw status_html(spider_task)%></td>
 <td><%= spider_task.current_total_count %></td>
 <td><%= spider_task.success_count %></td>
+<td><%= spider_task.result_count %></td>
 <td>
 <%=
    link_to_if(spider_task.fail_count != 0, spider_task.fail_count, fail_tasks_task_path(spider_task)) do
