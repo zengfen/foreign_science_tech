@@ -158,5 +158,126 @@ class MediaAccount < ApplicationRecord
     puts "path: #{path} count:#{count} row:#{ss.last_row-2}"
   end
 
+  def self.create_index
+    $elastic = EsConnect.new
+    if !($elastic.indices.exists? index: "media_accounts")
+      $elastic.indices.create index: "media_accounts", body: {
+        settings: {
+            index: {
+            number_of_shards: 10,
+            number_of_replicas: 1
+          }
+        },
+        mappings: {
+          media_accounts: {
+            _all: {
+              analyzer: "ik_max_word",
+              search_analyzer: "ik_max_word",
+            },
+            properties: {
+              data_id:{type: 'integer',index:'not_analyzed'},#db id
+              name:{type: 'text',index:'ik_max_word'}, #名称
+              short_name:{type: 'text',index:'ik_max_word'}, #简称
+              account:{type: 'text',index:'ik_max_word'}, #账号
+              status:{type: 'integer',index:'not_analyzed'}, #状态
+              sc:{type: 'text',index:'ik_max_word'}, #源代码
+              slg:{type: 'keyword',index:'not_analyzed'}, #语言
+              fmt:{type: 'keyword',index:'not_analyzed'}, #源类型
+              sn:{type: 'text',index:'ik_max_word'}, #源名称
+              asn:{type: 'text',index:'ik_max_word'}, #源名称-当地语言
+              dn:{type: 'text',index:'ik_max_word'}, #目录名称
+              std:{type: 'keyword',index:'not_analyzed'}, #数据状态
+              dsd:{type: 'date',index:'not_analyzed'}, #停止日期
+              lva:{type: 'keyword',index:'not_analyzed'}, #覆盖类型-文章级别
+              lvs:{type: 'keyword',index:'not_analyzed'}, #覆盖类型-源级别
+              od:{type: 'date',index:'not_analyzed'}, #上线日期
+              fio:{type: 'date',index:'not_analyzed'}, #线上首次发布日期
+              de:{type: 'text',index:'ik_max_word'}, #描述 - 英语
+              dea:{type: 'text',index:'ik_max_word'}, #描述 - 当地语言
+              frp:{type: 'keyword',index:'not_analyzed'}, #发布频率
+              lag:{type: 'keyword',index:'not_analyzed'}, #线上可获取目标
+              upn:{type: 'keyword',index:'not_analyzed'}, #更新计划
+              ntx:{type: 'keyword',index:'not_analyzed'}, #外部日记
+              pip:{type: 'keyword',index:'not_analyzed'}, #伪IP
+              url:{type: 'text',index:'ik_max_word'}, #源网页地址
+              pbc:{type: 'keyword',index:'not_analyzed'}, #发行商代码
+              pub:{type: 'text',index:'ik_max_word'}, #发行商
+              lgo:{type: 'keyword',index:'not_analyzed'}, #媒体标志
+              cir:{type: 'integer',index:'not_analyzed'}, #发行量
+              cis:{type: 'keyword',index:'not_analyzed'}, #发行量源代码
+              csn:{type: 'text',index:'ik_max_word'}, #发行源名称
+              rst:{type: 'keyword',index:'not_analyzed'}, #RST价值 (源组)
+              pst:{type: 'keyword',index:'not_analyzed'}, #一级源类型代码
+              psd:{type: 'keyword',index:'not_analyzed'}, #一级源类型
+              sfg:{type: 'keyword',index:'not_analyzed'}, #源父组代码
+              roo:{type: 'keyword',index:'not_analyzed'}, #原产地组代码
+              mri:{type: 'date',index:'not_analyzed'} #线上最新发布日期
+            }
+          }
+        }
+      }
+    end
+  end
+  def self.load_data_to_es
+    $elastic = EsConnect.new
+    MediaAccount.order("id asc").find_in_batches do |datas|
+      body = []
+      datas.each do |r|
+        begin
+          tmp = { index: { _index:"media_accounts", _type: "media_accounts", _id: r.id, data: {
+              data_id: r.id,#db id
+              name:r.name, #名称
+              short_name:r.short_name, #简称
+              account:r.account, #账号
+              status:r.status, #状态
+              sc:r.sc, #源代码
+              slg:r.slg, #语言
+              fmt:r.fmt, #源类型
+              sn:r.sn, #源名称
+              asn:r.asn, #源名称-当地语言
+              dn:r.dn, #目录名称
+              std:r.std, #数据状态
+              dsd:r.dsd, #停止日期
+              lva:r.lva, #覆盖类型-文章级别
+              lvs:r.lvs, #覆盖类型-源级别
+              od:r.od, #上线日期
+              fio:r.fio, #线上首次发布日期
+              de:r.de, #描述 - 英语
+              dea:r.dea, #描述 - 当地语言
+              frp:r.frp, #发布频率
+              lag:r.lag, #线上可获取目标
+              upn:r.upn, #更新计划
+              ntx:r.ntx, #外部日记
+              pip:r.pip, #伪IP
+              url:r.url, #源网页地址
+              pbc:r.pbc, #发行商代码
+              pub:r.pub, #发行商
+              lgo:r.lgo, #媒体标志
+              cir:r.cir.to_i, #发行量
+              cis:r.cis, #发行量源代码
+              csn:r.csn, #发行源名称
+              rst:r.rst, #RST价值 (源组)
+              pst:r.pst, #一级源类型代码
+              psd:r.psd, #一级源类型
+              sfg:r.sfg, #源父组代码
+              roo:r.roo, #原产地组代码
+              mri:r.mri #线上最新发布日期
+            } } }
+          body << tmp
+        rescue Exception => e
+          puts e
+          puts r.inspect
+          break
+        end
+      end
+      return nil if body.blank?
+      begin
+         $elastic.bulk body: body
+      rescue Exception=>e
+         puts e
+         break
+      end   
+    end
+  end
 
 end
