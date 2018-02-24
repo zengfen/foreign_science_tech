@@ -195,7 +195,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def result_count
-    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum
+    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0
   end
 
   def maybe_finished?
