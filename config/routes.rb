@@ -67,8 +67,15 @@ Rails.application.routes.draw do
       get 'load_edit_form'
     end
   end
-  resources :user_avatars, :hosts, :media_accounts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :accounts, :control_templates, :proxies, :social_account_monitors
+  resources :user_avatars, :hosts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :accounts, :control_templates, :proxies, :social_account_monitors
 
+  resources :media_accounts do 
+    collection do
+      get 'test'
+      get 'search'
+    end
+  end
+  
   resources :tasks do
     member do
       get 'fail_tasks'

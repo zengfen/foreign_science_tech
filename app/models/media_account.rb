@@ -122,11 +122,11 @@ class MediaAccount < ApplicationRecord
         hash[:asn] = row["SourceName-NativeLanguage(asn)"].to_s.strip
         hash[:dn] = row["DirectoryName(dn)"].to_s.strip
         hash[:std] = row["StatusName(std)"].to_s.strip
-        hash[:dsd] = row["DiscontinuedDate(dsd)"].to_s.strip
+        hash[:dsd] = row["DiscontinuedDate(dsd)"].to_s.strip.to_i.to_s
         hash[:lva] = row["TypeofCoverage-ArticleLevel(lva)"].to_s.strip
         hash[:lvs] = row["TypeofCoverage-SourceLevel(lvs)"].to_s.strip
-        hash[:od] = row["OnlineDate(od)"].to_s.strip
-        hash[:fio] = row["FirstIssueOnline(fio)"].to_s.strip
+        hash[:od] = row["OnlineDate(od)"].to_s.strip.to_i.to_s
+        hash[:fio] = row["FirstIssueOnline(fio)"].to_s.strip.to_i.to_s
         hash[:de] = row["Description-EnglishLanguage(de)"].to_s.strip
         hash[:dea] = row["Description-NativeLanguage(dea)"].to_s.strip
         hash[:frp] = row["Frequency(frp)"].to_s.strip
@@ -278,6 +278,24 @@ class MediaAccount < ApplicationRecord
          break
       end   
     end
+  end
+
+  def self.get_aggs_opts
+    $elastic = EsConnect.new
+    hash = {}
+     res = $elastic.search index:"media_accounts",body:{size:0,query:{},
+     aggs:{
+      slg:{terms:{field:'slg',size:100}},
+      fmt:{terms:{field:'fmt',size:100}},
+          }
+        }
+    res["aggregations"].each do |k,v|
+      values = v["buckets"].collect{|x| x["key"]} rescue []
+      hash[k] =  values.sort unless values.blank?
+    end
+
+    return hash
+
   end
 
 end
