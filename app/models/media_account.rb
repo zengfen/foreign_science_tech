@@ -176,36 +176,36 @@ class MediaAccount < ApplicationRecord
             },
             properties: {
               data_id:{type: 'integer',index:'not_analyzed'},#db id
-              name:{type: 'text',index:'ik_max_word'}, #名称
-              short_name:{type: 'text',index:'ik_max_word'}, #简称
-              account:{type: 'text',index:'ik_max_word'}, #账号
+              name:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #名称
+              short_name:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #简称
+              account:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #账号
               status:{type: 'integer',index:'not_analyzed'}, #状态
-              sc:{type: 'text',index:'ik_max_word'}, #源代码
+              sc:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #源代码
               slg:{type: 'keyword',index:'not_analyzed'}, #语言
               fmt:{type: 'keyword',index:'not_analyzed'}, #源类型
-              sn:{type: 'text',index:'ik_max_word'}, #源名称
-              asn:{type: 'text',index:'ik_max_word'}, #源名称-当地语言
-              dn:{type: 'text',index:'ik_max_word'}, #目录名称
+              sn:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #源名称
+              asn:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #源名称-当地语言
+              dn:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #目录名称
               std:{type: 'keyword',index:'not_analyzed'}, #数据状态
               dsd:{type: 'date',index:'not_analyzed'}, #停止日期
               lva:{type: 'keyword',index:'not_analyzed'}, #覆盖类型-文章级别
               lvs:{type: 'keyword',index:'not_analyzed'}, #覆盖类型-源级别
               od:{type: 'date',index:'not_analyzed'}, #上线日期
               fio:{type: 'date',index:'not_analyzed'}, #线上首次发布日期
-              de:{type: 'text',index:'ik_max_word'}, #描述 - 英语
-              dea:{type: 'text',index:'ik_max_word'}, #描述 - 当地语言
+              de:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #描述 - 英语
+              dea:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #描述 - 当地语言
               frp:{type: 'keyword',index:'not_analyzed'}, #发布频率
               lag:{type: 'keyword',index:'not_analyzed'}, #线上可获取目标
               upn:{type: 'keyword',index:'not_analyzed'}, #更新计划
               ntx:{type: 'keyword',index:'not_analyzed'}, #外部日记
               pip:{type: 'keyword',index:'not_analyzed'}, #伪IP
-              url:{type: 'text',index:'ik_max_word'}, #源网页地址
+              url:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #源网页地址
               pbc:{type: 'keyword',index:'not_analyzed'}, #发行商代码
-              pub:{type: 'text',index:'ik_max_word'}, #发行商
+              pub:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #发行商
               lgo:{type: 'keyword',index:'not_analyzed'}, #媒体标志
               cir:{type: 'integer',index:'not_analyzed'}, #发行量
               cis:{type: 'keyword',index:'not_analyzed'}, #发行量源代码
-              csn:{type: 'text',index:'ik_max_word'}, #发行源名称
+              csn:{type: 'text', analyzer: 'ik_max_word',search_analyzer: "ik_max_word" }, #发行源名称
               rst:{type: 'keyword',index:'not_analyzed'}, #RST价值 (源组)
               pst:{type: 'keyword',index:'not_analyzed'}, #一级源类型代码
               psd:{type: 'keyword',index:'not_analyzed'}, #一级源类型
