@@ -1,5 +1,8 @@
 <tr>
   <td><%= media_account.name%></td>
-  <td><%= media_account.short_name %></td>
-  <td><%= raw status_html(media_account) %></td>
+  <td><%= media_account.slg %></td>
+  <td><%= media_account.fmt %></td>
+  <td><%= media_account.cir %></td>
+  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=media_account.de%>"><%= truncate_utf(media_account.de) %></td>
+  <td><%= media_account.mri %></td>
 </tr>
