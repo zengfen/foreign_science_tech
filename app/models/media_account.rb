@@ -237,11 +237,11 @@ class MediaAccount < ApplicationRecord
               asn:r.asn, #源名称-当地语言
               dn:r.dn, #目录名称
               std:r.std, #数据状态
-              dsd:r.dsd.blank? ? nil : r.dsd, #停止日期
+              dsd:r.dsd.blank? ? nil : r.dsd.to_i.to_s, #停止日期
               lva:r.lva, #覆盖类型-文章级别
               lvs:r.lvs, #覆盖类型-源级别
-              od:r.od.blank? ? nil : r.od, #上线日期
-              fio:r.fio.blank? ? nil : r.fio, #线上首次发布日期
+              od:r.od.blank? ? nil : r.od.to_i.to_s, #上线日期
+              fio:r.fio.blank? ? nil : r.fio.to_i.to_s, #线上首次发布日期
               de:r.de, #描述 - 英语
               dea:r.dea, #描述 - 当地语言
               frp:r.frp, #发布频率
