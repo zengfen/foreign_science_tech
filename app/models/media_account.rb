@@ -159,7 +159,7 @@ class MediaAccount < ApplicationRecord
   end
 
   def self.create_index
-    $elastic = EsConnect.new
+    $elastic = EsConnect.client
     if !($elastic.indices.exists? index: "media_accounts")
       $elastic.indices.create index: "media_accounts", body: {
         settings: {
@@ -219,7 +219,7 @@ class MediaAccount < ApplicationRecord
     end
   end
   def self.load_data_to_es
-    $elastic = EsConnect.new
+    $elastic = EsConnect.client
     MediaAccount.find_in_batches do |datas|
       body = []
       datas.each do |r|
