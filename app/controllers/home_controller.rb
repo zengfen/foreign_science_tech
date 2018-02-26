@@ -54,8 +54,7 @@ class HomeController < ApplicationController
     #   end
     # end
 
-
-    all_hours = (0..23).to_a.map{|x| "#{current_date}%02d" % x}
+    all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
 
     $archon_redis.keys('archon_host_services_*').each do |key|
       status = $archon_redis.hget(key, service_name)
@@ -103,14 +102,38 @@ class HomeController < ApplicationController
     # archon_host_task_counter_101.37.18.174  member: 201812321 score: 459
   end
 
-
   def results_trend
     current_date = Time.now.strftime('%Y%m%d')
-    all_hours = (0..23).to_a.map{|x| "#{current_date}%02d" % x}
-
+    all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
 
     @results = {}
-    $archon_redis.keys("archon_host_total_results_*").each do |key|
+    $archon_redis.keys('archon_host_total_results_*').each do |key|
+      all_hours.each do |x|
+        @results[x] ||= 0
+        @results[x] += ($archon_redis.zscore(key, x) || 0)
+      end
+    end
+  end
+
+  def total_completed_trend
+    current_date = Time.now.strftime('%Y%m%d')
+    all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
+
+    @results = {}
+    $archon_redis.keys('archon_host_completed_counter_*').each do |key|
+      all_hours.each do |x|
+        @results[x] ||= 0
+        @results[x] += ($archon_redis.zscore(key, x) || 0)
+      end
+    end
+  end
+
+  def total_error_trend
+    current_date = Time.now.strftime('%Y%m%d')
+    all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
+
+    @results = {}
+    $archon_redis.keys('archon_host_discard_counter_*').each do |key|
       all_hours.each do |x|
         @results[x] ||= 0
         @results[x] += ($archon_redis.zscore(key, x) || 0)

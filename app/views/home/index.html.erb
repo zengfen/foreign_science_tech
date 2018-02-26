@@ -21,7 +21,7 @@
           <h5>今日成功任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@today_completed_count.to_i%></h1>
+          <h1 class="no-margins"><a href="/home/today_completed_trend"><%=@today_completed_count.to_i%></a></h1>
           <!-- <div class="stat-percent font-bold text-info">1% <i class="fa fa-level-up"></i></div> -->
           <small></small>
         </div>
@@ -47,7 +47,7 @@
           <h5>今日失败任务</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"><%=@today_discard_count.to_i%></h1>
+          <h1 class="no-margins"><a href="/home/today_error_trend"><%=@today_discard_count.to_i%></a></h1>
           <!--   <div class="stat-percent font-bold text-danger">4% <i class="fa fa-level-down"></i></div> -->
           <small></small>
         </div>
