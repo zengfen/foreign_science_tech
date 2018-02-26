@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       get 'retry_fail_task'
       get 'retry_all_fail_task'
       get 'destroy_fail_task'
+      get 'results_trend'
     end
     collection do
       get 'get_spider'
