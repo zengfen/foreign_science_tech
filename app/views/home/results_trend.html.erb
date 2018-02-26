@@ -38,13 +38,13 @@
 var option = {
     xAxis: {
         type: 'category',
-        data: <%= raw @result.keys %>
+        data: <%= raw @results.keys %>
     },
     yAxis: {
         type: 'value'
     },
     series: [{
-        data: <%= raw @result.values %>,
+        data: <%= raw @results.values %>,
         type: 'line'
     }]
 };
