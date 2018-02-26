@@ -65,8 +65,8 @@ class HomeController < ApplicationController
       # 今日任务数量
 
       all_hours.each do |x|
-        @today_discard_count += $archon_redis.zscore("archon_host_discard_counter_#{ip}", x)
-        @today_completed_count += $archon_redis.zscore("archon_host_completed_counter_#{ip}", x)
+        @today_discard_count += ($archon_redis.zscore("archon_host_discard_counter_#{ip}", x) || 0)
+        @today_completed_count += ($archon_redis.zscore("archon_host_completed_counter_#{ip}", x) || 0)
       end
 
       # 今日任务数量
