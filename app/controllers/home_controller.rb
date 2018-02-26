@@ -69,7 +69,6 @@ class HomeController < ApplicationController
         @today_completed_count += ($archon_redis.zscore("archon_host_completed_counter_#{ip}", x) || 0)
       end
 
-      # 今日任务数量
       @data_count += $archon_redis.zrange("archon_host_total_results_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
 
       @runing_count += $archon_redis.hlen("archon_host_tasks_#{ip}")
@@ -102,5 +101,20 @@ class HomeController < ApplicationController
     # archon_host_completed_counter_101.37.18.174  member: 201812321 score: 459
     #
     # archon_host_task_counter_101.37.18.174  member: 201812321 score: 459
+  end
+
+
+  def results_trend
+    current_date = Time.now.strftime('%Y%m%d')
+    all_hours = (0..23).to_a.map{|x| "#{current_date}%02d" % x}
+
+
+    @results = {}
+    $archon_redis.hkeys("archon_host_total_results_*").each do |key|
+      all_hours.each do |x|
+        @results[x] ||= 0
+        @results[x] += ($archon_redis.zscore(key, x) || 0)
+      end
+    end
   end
 end

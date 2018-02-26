@@ -69,13 +69,13 @@ Rails.application.routes.draw do
   end
   resources :user_avatars, :hosts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :accounts, :control_templates, :proxies, :social_account_monitors
 
-  resources :media_accounts do 
+  resources :media_accounts do
     collection do
       get 'test'
       get 'search'
     end
   end
-  
+
   resources :tasks do
     member do
       get 'fail_tasks'
