@@ -69,15 +69,15 @@ class HomeController < ApplicationController
       @today_completed_count += res[1].map { |x| x[1] }.sum
 
       # 今日任务数量
-      @data_count = $archon_redis.zrange("archon_host_total_results_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
+      @data_count += $archon_redis.zrange("archon_host_total_results_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
 
       @runing_count += $archon_redis.hlen("archon_host_tasks_#{ip}")
 
       # 历史任务数量
       #
-      @discard_count = $archon_redis.zrange("archon_host_discard_counter_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
+      @discard_count += $archon_redis.zrange("archon_host_discard_counter_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
 
-      @completed_count = $archon_redis.zrange("archon_host_completed_counter_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
+      @completed_count += $archon_redis.zrange("archon_host_completed_counter_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
     end
     @task_count = @completed_count + @discard_count
 
