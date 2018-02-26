@@ -110,7 +110,7 @@ class HomeController < ApplicationController
 
 
     @results = {}
-    $archon_redis.hkeys("archon_host_total_results_*").each do |key|
+    $archon_redis.keys("archon_host_total_results_*").each do |key|
       all_hours.each do |x|
         @results[x] ||= 0
         @results[x] += ($archon_redis.zscore(key, x) || 0)
