@@ -16,4 +16,5 @@
 //= require forms
 //= require sweetalert/sweetalert.min.js
 //= require echarts.common.min.js
+//= require macarons.js
 
