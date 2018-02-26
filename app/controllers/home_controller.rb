@@ -54,19 +54,20 @@ class HomeController < ApplicationController
     #   end
     # end
 
+
+    all_hours = (0..23).to_a.map{|x| "#{current_date}%02d" % x}
+
     $archon_redis.keys('archon_host_services_*').each do |key|
       status = $archon_redis.hget(key, service_name)
       next if status.blank?
       ip = key.gsub('archon_host_services_', '')
 
       # 今日任务数量
-      res = $archon_redis.zscan "archon_host_discard_counter_#{ip}", '0', match: "#{current_date}*"
 
-      @today_discard_count += res[1].map { |x| x[1] }.sum
-
-      res = $archon_redis.zscan "archon_host_completed_counter_#{ip}", '0', match: "#{current_date}*"
-
-      @today_completed_count += res[1].map { |x| x[1] }.sum
+      all_hours.each do |x|
+        @today_discard_count += $archon_redis.zscore("archon_host_discard_counter_#{ip}", x)
+        @today_completed_count += $archon_redis.zscore("archon_host_completed_counter_#{ip}", x)
+      end
 
       # 今日任务数量
       @data_count += $archon_redis.zrange("archon_host_total_results_#{ip}", 0, -1, withscores: true).map { |x| x[1] }.sum
