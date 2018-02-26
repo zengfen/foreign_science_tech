@@ -115,7 +115,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def total_completed_trend
+  def today_completed_trend
     current_date = Time.now.strftime('%Y%m%d')
     all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
 
@@ -128,7 +128,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def total_error_trend
+  def today_error_trend
     current_date = Time.now.strftime('%Y%m%d')
     all_hours = (0..23).to_a.map { |x| format("#{current_date}%02d", x) }
 
