@@ -32,10 +32,32 @@ class HostsController < ApplicationController
   end
 
   def service_errors
-    @receiver_errors = $archon_redis.hgetall("archon_reciver_errors")
-    @comsume_errors = $archon_redis.hgetall("archon_reciver_errors")
-    @load_errors =  $archon_redis.hgetall("archon_loader_load_errors")
+    @receiver_errors = $archon_redis.hgetall('archon_reciver_errors')
+    @comsume_errors = $archon_redis.hgetall('archon_loader_consume_errors')
+    @load_errors =  $archon_redis.hgetall('archon_loader_load_errors')
   end
 
-  def service_counters; end
+  def service_counters
+    receiver_ips =  $archon_redis.hkeys('archon_reciver_errors')
+    loader_ips = $archon_redis.hgetall('archon_loader_consume_errors')
+
+    @receiver_data = {}
+
+    receiver_ips.each do |ip|
+      key = "archon_reciver_#{ip}_count"
+      @receiver_data[ip] = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @receiver_data[ip] ||= 0
+    end
+
+
+    @loader_data = {}
+
+    loader_ips.each do |ip|
+      key = "archon_loader_#{ip}_consumer_count"
+      @loader_data[ip] = []
+      @loader_data[ip] << $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      key = "archon_loader_#{ip}_load_count"
+      @loader_data[ip] << $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+    end
+  end
 end
