@@ -2,7 +2,7 @@
 namespace :media_accounts  do
 
 	namespace :refresh_job do 
-	  desc "This is for start media account data"
+	  desc "This is for start refresh media account data"
 	  task :start => :environment do
 	    job = Sidekiq::Cron::Job.find "RefreshMediaAccountsJob"
 			if job.blank?
