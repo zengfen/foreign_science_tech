@@ -311,12 +311,12 @@ class MediaAccount < ApplicationRecord
 
     elastic = EsConnect.client
 
-    index_name  = (Time.now - 1.day).strftime("%Y%m")
+    index_name  = "information_records_" + (Time.now - 1.day).strftime("%Y%m")
 
     gte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 00:00:00"))
     lte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 23:59:59"))
 
-    res = elastic.search index:"information_records_#{index_name}",body:{
+    results = elastic.search index:"#{index_name}",body:{
       size:0,
       query:{bool:{must:[
                      {range:{created_time:{gte:gte_time,lte:lte_time}}},
@@ -325,7 +325,27 @@ class MediaAccount < ApplicationRecord
       aggregations:{sns_uid:{terms:{field:"sns_uid",size:100000}
                              }}
     }
-    puts res.inspect
+
+    results["aggregations"]["sns_uid"]["buckets"].each_with_index do |record,index|
+      puts "-----------------------------#{index}"
+      if source_codes.include?(record["key"])
+        update_one_record(elastic,index_name,record["key"])
+        break
+      end
+    end
+  end
+
+  def self.update_one_record(elastic,index_name,key)
+    results = elastic.search index: index_name, body: {
+      size:1,
+      sort:{created_time:'desc'},
+      query:{
+        bool:{
+          must:[
+            {term:{sns_uid:key}}
+      ]}}
+    }
+    puts results.inspect
   end
 
 end
