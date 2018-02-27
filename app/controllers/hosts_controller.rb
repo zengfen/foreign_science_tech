@@ -45,19 +45,41 @@ class HostsController < ApplicationController
 
     receiver_ips.each do |ip|
       key = "archon_reciver_#{ip}_count"
-      @receiver_data[ip] = ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
 
+      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @receiver_data[ip] = v.blank? ? 0 : v.to_i
     end
-
 
     @loader_data = {}
 
     loader_ips.each do |ip|
       key = "archon_loader_#{ip}_consumer_count"
       @loader_data[ip] = []
-      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
+
+      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @loader_data[ip] << v.blank? ? 0 : v.to_i
       key = "archon_loader_#{ip}_load_count"
-      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
+
+      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @loader_data[ip] << v.blank? ? 0 : v.to_i
     end
+  end
+
+  def receiver_trend
+    ip = params[:ip]
+    key = "archon_reciver_#{ip}_count"
+    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+  end
+
+  def loader_kafka_trend
+    ip = params[:ip]
+    key = "archon_loader_#{ip}_consumer_count"
+    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+  end
+
+  def loader_es_trend
+    ip = params[:ip]
+    key = "archon_loader_#{ip}_load_count"
+    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
   end
 end
