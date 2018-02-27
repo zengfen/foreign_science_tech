@@ -347,7 +347,7 @@ class MediaAccount < ApplicationRecord
     }
     #puts result.inspect
     time = result["hits"]["hits"][0]["_source"]["created_time"] if result["hits"]["hits"].count > 0
-    date = time.strftime("%Y%m%d")
+    date = Time.parse(time).strftime("%Y%m%d")
     ma = MediaAccount.find_by_sc(key)
     ma.mri = date
     ma.save
