@@ -82,13 +82,10 @@
         <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,monitoring') %>">
           <li class="<%= is_active_action(nil, "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
+           <li class="<%= is_active_action("service_errors", "hosts") %>"><%= link_to "错误信息", "/hosts/service_errors" %></li>
+          <li class="<%= is_active_action("service_counters", "agents") %>"><%= link_to "数据量监控", "/hosts/service_counters" %></li>
+
          <li class="<%= is_active_action('lucene') %>"><%= link_to "存储资源监控", "/monitoring/lucene" %></li>
-<!--           <li class="<%= is_active_action(nil, "supervisors") %>"><%= link_to "主机监视器", supervisors_path %></li>
-          <li class="<%= is_active_action(nil, "agents") %>"><%= link_to "爬虫节点", agents_path %></li>
-          <li class="<%= is_active_action(nil, "controllers") %>"><%= link_to "主机控制器", controllers_path %></li>
-          <li class="<%= is_active_action(nil, "dispatchers") %>"><%= link_to "任务分发器", dispatchers_path %></li>
-          <li class="<%= is_active_action(nil, "loaders") %>"><%= link_to "数据Loaders", loaders_path %></li>
-          <li class="<%= is_active_action(nil, "receivers") %>"><%= link_to "数据接收器", receivers_path %></li> -->
         </ul>
       </li>
     </ul>
