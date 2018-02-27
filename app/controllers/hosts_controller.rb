@@ -1,11 +1,10 @@
 class HostsController < ApplicationController
   before_action :logged_in_user
   def index
-   opts = {}
-   opts[:extranet_ip] = params[:keyword] unless params[:keyword].blank?
-   @hosts =  Host.multi_services(params[:services]).where(opts).order("created_at desc").page(params[:page]).per(10)
+    opts = {}
+    opts[:extranet_ip] = params[:keyword] unless params[:keyword].blank?
+    @hosts = Host.multi_services(params[:services]).where(opts).order('created_at desc').page(params[:page]).per(10)
   end
-
 
   def index_bak
     hosts = $archon_redis.hgetall('archon_hosts')
@@ -31,4 +30,12 @@ class HostsController < ApplicationController
     @country = c.country_code2 == 'CN' ? '国内' : '国外'
     @services = $archon_redis.hgetall("archon_host_services_#{@ip}")
   end
+
+  def service_errors
+    @receiver_errors = $archon_redis.hgetall("archon_reciver_errors")
+    @comsume_errors = $archon_redis.hgetall("archon_reciver_errors")
+    @load_errors =  $archon_redis.hgetall("archon_loader_load_errors")
+  end
+
+  def service_counters; end
 end
