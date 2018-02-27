@@ -302,8 +302,9 @@ class MediaAccount < ApplicationRecord
   def load_to_es
     doc = JSON.parse(self.to_json)
     doc.merge!({"data_id":self.id}).delete_if{|key,value| ["id","created_at","updated_at"].include?key}
+    
     elastic = EsConnect.client
-    elastic.update index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
+    elastic.index index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
   end
 
   def self.daily_update
