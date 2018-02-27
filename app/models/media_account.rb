@@ -44,7 +44,7 @@
 #
 
 class MediaAccount < ApplicationRecord
-  #after_save :load_to_es
+  after_save :load_to_es
 
   def self.init_data(path)
     type = path.split(".").last
@@ -302,7 +302,10 @@ class MediaAccount < ApplicationRecord
   def load_to_es
     doc = JSON.parse(self.to_json)
     doc.merge!({"data_id":self.id}).delete_if{|key,value| ["id","created_at","updated_at"].include?key}
-    
+    doc["dsd"] = nil  if self.dsd.blank?||self.dsd.to_i==0
+    doc["od"] = nil   if self.od.blank?||self.od.to_i==0
+    doc["fio"] = nil  if self.fio.blank?||self.fio.to_i==0
+    doc["cir"] = self.cir.to_i
     elastic = EsConnect.client
     elastic.index index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
   end
