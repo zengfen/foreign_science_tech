@@ -57,7 +57,7 @@ class HostsController < ApplicationController
       @loader_data[ip] = []
       @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
       key = "archon_loader_#{ip}_load_count"
-      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum rescue 0)
+      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
     end
   end
 end
