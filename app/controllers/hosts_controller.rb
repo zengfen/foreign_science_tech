@@ -57,11 +57,11 @@ class HostsController < ApplicationController
       @loader_data[ip] = []
 
       v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @loader_data[ip] << v.blank? ? 0 : v.to_i
-      key = "archon_loader_#{ip}_load_count"
+      @loader_data[ip] << (v.blank? ? 0 : v.to_i)
 
+      key = "archon_loader_#{ip}_load_count"
       v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @loader_data[ip] << v.blank? ? 0 : v.to_i
+      @loader_data[ip] << (v.blank? ? 0 : v.to_i)
     end
   end
 
