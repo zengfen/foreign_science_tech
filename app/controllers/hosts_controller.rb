@@ -39,7 +39,7 @@ class HostsController < ApplicationController
 
   def service_counters
     receiver_ips =  $archon_redis.hkeys('archon_reciver_errors')
-    loader_ips = $archon_redis.hgetall('archon_loader_consume_errors')
+    loader_ips = $archon_redis.hkeys('archon_loader_consume_errors')
 
     @receiver_data = {}
 
