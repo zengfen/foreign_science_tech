@@ -44,7 +44,7 @@
 #
 
 class MediaAccount < ApplicationRecord
-  after_save :load_to_es
+  #after_save :load_to_es
 
   def self.init_data(path)
     type = path.split(".").last
