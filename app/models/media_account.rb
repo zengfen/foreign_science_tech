@@ -299,7 +299,7 @@ class MediaAccount < ApplicationRecord
   end
 
   def self.daily_update
-    source_codes = AccessPoint.pluck(:sc).uniq
+    source_codes = self.pluck(:sc).uniq
 
     elastic = EsConnect.client
 
