@@ -355,6 +355,7 @@ class MediaAccount < ApplicationRecord
     ma = MediaAccount.find_by_sc(key)
     ma.mri = date
     ma.save
+    ma.load_to_es
   end
 
 end
