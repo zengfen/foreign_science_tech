@@ -20,7 +20,8 @@ class MediaAccountsController < ApplicationController
   	must_opts = []
   	must_opts<< {term:{fmt: params[:fmt]}} unless params[:fmt].blank?
   	must_opts<< {term:{slg: params[:slg]}} unless params[:slg].blank?
-  	must_opts<< {query_string:{fields:["name"],query:params[:keyword]}} unless params[:keyword].blank?
+  	must_opts<< {match_phrase:{name:params[:keyword]}} unless params[:keyword].blank?
+  	#must_opts<< {query_string:{fields:["name"],query:params[:keyword]}} unless params[:keyword].blank?
   	res = client.search index:"media_accounts",body:{
   		  	 size: 20,
            from: page - 1,
