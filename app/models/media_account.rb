@@ -44,6 +44,7 @@
 #
 
 class MediaAccount < ApplicationRecord
+  after_save :load_to_es
 
 	def self.init_data(path)
 	  type = path.split(".").last
@@ -296,6 +297,14 @@ class MediaAccount < ApplicationRecord
 
     return hash
 
+  end
+
+
+  def load_to_es
+    doc = JSON.parse(self.to_json)
+    doc.merge!({"data_id":self.id}).delete_if{|key,value| ["id","created_at","updated_at"].include?key}
+
+     $elastic.update index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
   end
 
 end
