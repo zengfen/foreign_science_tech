@@ -331,7 +331,7 @@ class MediaAccount < ApplicationRecord
                              }}
     }
 
-    total_count = results["aggregations"]["sns_uid"]["buckets"]
+    total_count = results["aggregations"]["sns_uid"]["buckets"].count
 
     results["aggregations"]["sns_uid"]["buckets"].each_with_index do |record,index|
       puts "-----------------------------index:#{index},total_count:#{total_count}"
