@@ -314,6 +314,7 @@ class MediaAccount < ApplicationRecord
     index_name  = "information_records_" + (Time.now - 1.day).strftime("%Y%m")
 
     gte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 00:00:00"))
+
     lte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 23:59:59"))
 
     results = elastic.search index:"#{index_name}",body:{
@@ -326,11 +327,12 @@ class MediaAccount < ApplicationRecord
                              }}
     }
 
+    total_count = results["aggregations"]["sns_uid"]["buckets"]
+
     results["aggregations"]["sns_uid"]["buckets"].each_with_index do |record,index|
-      puts "-----------------------------#{index}"
+      puts "-----------------------------index:#{index},total_count:#{total_count}"
       if source_codes.include?(record["key"])
         update_one_record(elastic,index_name,record["key"])
-        #break
       end
     end
   end
@@ -345,7 +347,6 @@ class MediaAccount < ApplicationRecord
             {term:{sns_uid:key}}
       ]}}
     }
-    #puts result.inspect
     time = result["hits"]["hits"][0]["_source"]["created_time"] if result["hits"]["hits"].count > 0
     date = Time.parse(time).strftime("%Y%m%d")
     ma = MediaAccount.find_by_sc(key)
