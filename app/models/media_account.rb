@@ -285,11 +285,11 @@ class MediaAccount < ApplicationRecord
     elastic = EsConnect.client
     hash = {}
     res = elastic.search index:"media_accounts",body:{size:0,query:{},
-                                                       aggs:{
-                                                         slg:{terms:{field:'slg',size:100}},
-                                                         fmt:{terms:{field:'fmt',size:100}},
-                                                       }
-                                                       }
+                                                      aggs:{
+                                                        slg:{terms:{field:'slg',size:100}},
+                                                        fmt:{terms:{field:'fmt',size:100}},
+                                                      }
+                                                      }
     res["aggregations"].each do |k,v|
       values = v["buckets"].collect{|x| x["key"]} rescue []
       hash[k] =  values.sort unless values.blank?
@@ -331,13 +331,13 @@ class MediaAccount < ApplicationRecord
       puts "-----------------------------#{index}"
       if source_codes.include?(record["key"])
         update_one_record(elastic,index_name,record["key"])
-        break
+        #break
       end
     end
   end
 
   def self.update_one_record(elastic,index_name,key)
-    results = elastic.search index: index_name, body: {
+    result = elastic.search index: index_name, body: {
       size:1,
       sort:{created_time:'desc'},
       query:{
@@ -346,7 +346,12 @@ class MediaAccount < ApplicationRecord
             {term:{sns_uid:key}}
       ]}}
     }
-    puts results.inspect
+    #puts result.inspect
+    time = result["hits"]["hits"][0]["_source"]["created_time"] if result["hits"]["hits"].count > 0
+    date = Time.parse(time).strftime("%Y%m%d")
+    ma = MediaAccount.find_by_sc(key)
+    ma.mri = date
+    ma.save
   end
 
 end
