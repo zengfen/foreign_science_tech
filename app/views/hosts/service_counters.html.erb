@@ -32,7 +32,7 @@
                   <% @receiver_data.each do |k,v| %>
                     <tr>
                       <td><%= k %></td>
-                      <td><%= v %></td>
+                      <td><a href="/hosts/receiver_trend?ip=<%= k %>"><%= v %></a></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -63,8 +63,8 @@
                   <% @loader_data.each do |k,v| %>
                     <tr>
                       <td><%= k %></td>
-                      <td><%= v[0] %></td>
-                      <td><%= v[1] %></td>
+                      <td><a href="/hosts/loader_kafka_trend?ip=<%= k %>"><%= v[0] %></a></td>
+                      <td><a href="/hosts/loader_es_trend?ip=<%= k %>"><%= v[1] %></a></td>
                     </tr>
                   <% end %>
                 </tbody>
