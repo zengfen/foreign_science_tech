@@ -45,8 +45,8 @@ class HostsController < ApplicationController
 
     receiver_ips.each do |ip|
       key = "archon_reciver_#{ip}_count"
-      @receiver_data[ip] = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @receiver_data[ip] ||= 0
+      @receiver_data[ip] = ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
+
     end
 
 
@@ -55,9 +55,9 @@ class HostsController < ApplicationController
     loader_ips.each do |ip|
       key = "archon_loader_#{ip}_consumer_count"
       @loader_data[ip] = []
-      @loader_data[ip] << $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0)
       key = "archon_loader_#{ip}_load_count"
-      @loader_data[ip] << $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+      @loader_data[ip] << ($archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum rescue 0)
     end
   end
 end
