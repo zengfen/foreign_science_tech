@@ -312,7 +312,7 @@ class MediaAccount < ApplicationRecord
       size:0,
       query:{bool:{must:[
                      {range:{created_time:{gte:gte_time,lte:lte_time}}},
-                     {terms:{sns_uid:source_codes}}
+                     #{terms:{sns_uid:source_codes}}
       ]}},
       aggregations:{sns_uid:{terms:{field:"sns_uid",size:100000}
                              }}
