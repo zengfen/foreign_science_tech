@@ -78,11 +78,9 @@
                           </a>
                           <ul class="more-ul dn">
                             <li class="bor-b">
-                             <%= link_to("#{}",:class=>"",:remote=>true) do%>...<%end%>
+                              <a href="/hosts/show?ip=<%= h.extranet_ip.to_s  %>" target="_blank">详情</a>
                             </li>
-                            <li>
-                             <%= link_to("#{}",:class=>"",:remote=>true) do%>...<%end%>
-                            </li>
+
 
                           </ul>
                         </td>
