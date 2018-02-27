@@ -117,7 +117,7 @@
                 <dd class="floatLeft show-con" style="height: auto;">
                   <%=link_to "不限","/media_accounts/search?keyword=#{params[:keyword]}&fmt=#{params[:fmt]}",class: params[:slg].blank? ? 'active':''%>
                   <%@options["slg"].each do |x|%>
-                  <%=link_to x,"/media_accounts/search?keyword=#{params[:keyword]}&slg=#{x}&fmt=#{params[:fmt]}",class: params[:slg]==x ? 'active':''%>
+                  <%=link_to try_translate_language_cn(x),"/media_accounts/search?keyword=#{params[:keyword]}&slg=#{x}&fmt=#{params[:fmt]}",class: params[:slg]==x ? 'active':''%>
                     <%end%>
                 </dd>
             </dl>
@@ -126,7 +126,7 @@
                 <dd class="floatLeft show-con">
                   <%=link_to "不限","/media_accounts/search?keyword=#{params[:keyword]}&slg=#{params[:slg]}",class: params[:fmt].blank? ? 'active':''%>
                     <%@options["fmt"].each do |x|%>
-                    <%=link_to x,"/media_accounts/search?keyword=#{params[:keyword]}&fmt=#{x}&slg=#{params[:slg]}",class: params[:fmt]==x ? 'active':''%>
+                    <%=link_to try_translate_type_cn(x),"/media_accounts/search?keyword=#{params[:keyword]}&fmt=#{x}&slg=#{params[:slg]}",class: params[:fmt]==x ? 'active':''%>
                     <%end%>
                 </dd>
             </dl>
@@ -136,7 +136,7 @@
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
               <li class="tab-li active">
-                <a href="#" data-target="all-page">媒体列表</a>
+                <a href="#" data-target="all-page">媒体列表(<%=@media_accounts.total_count%>)</a>
               </li>
             </ul>
             <div class="ibox-content p15-0 all-page table-content">
