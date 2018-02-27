@@ -44,7 +44,6 @@
 #
 
 class MediaAccount < ApplicationRecord
-  after_save :load_to_es
 
   def self.init_data(path)
     type = path.split(".").last
@@ -307,7 +306,7 @@ class MediaAccount < ApplicationRecord
     doc["fio"] = nil  if self.fio.blank?||self.fio.to_i==0
     doc["cir"] = self.cir.to_i
     elastic = EsConnect.client
-    elastic.index index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
+    elastic.update index: "media_accounts", type: "media_accounts",id:self.id,body: {doc:doc}
   end
 
   def self.daily_update
