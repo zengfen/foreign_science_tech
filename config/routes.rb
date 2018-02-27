@@ -73,6 +73,9 @@ Rails.application.routes.draw do
     collection do
       get 'service_errors'
       get 'service_counters'
+      get 'receiver_trend'
+      get 'loader_kafka_trend'
+      get 'loader_es_trend'
     end
   end
 
