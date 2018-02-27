@@ -28,11 +28,11 @@
 #  upn        :string           更新计划
 #  ntx        :string           外部日记
 #  pip        :string           伪IP
-#  url        :string           源网页地址 
+#  url        :string           源网页地址
 #  pbc        :string           发行商代码
 #  pub        :string           发行商
 #  lgo        :string           媒体标志
-#  cir        :string           发行量 
+#  cir        :string           发行量
 #  cis        :string           发行量源代码
 #  csn        :string           发行源名称
 #  rst        :string           RST价值 (源组)
@@ -45,8 +45,8 @@
 
 class MediaAccount < ApplicationRecord
 
-	def self.init_data(path)
-	  type = path.split(".").last
+  def self.init_data(path)
+    type = path.split(".").last
     begin
       case type
       when "xlsx" then
@@ -75,23 +75,23 @@ class MediaAccount < ApplicationRecord
         ma.status = 1
         ma.save
       end
-    end 
-	end
+    end
+  end
 
 
-	def self.statuses
-		{0=>"停止",1=>"采集中"}
-	end
+  def self.statuses
+    {0=>"停止",1=>"采集中"}
+  end
 
-	def status_cn
-		MediaAccount.statuses[self.status]
-	end
+  def status_cn
+    MediaAccount.statuses[self.status]
+  end
 
   def self.load_files(root_path)
-    Find.find(root_path) do |path|  
+    Find.find(root_path) do |path|
       next unless %(xlsx xls csv).include?(path.split(".").last.downcase)
-      load_one_file(path) 
-    end 
+      load_one_file(path)
+    end
   end
 
   def self.load_one_file(path)
@@ -108,8 +108,8 @@ class MediaAccount < ApplicationRecord
     rescue Exception=>e
       return false
     end
-      count = 0
-      ss.sheets.each do |s|
+    count = 0
+    ss.sheets.each do |s|
       ss.default_sheet = s
       header = ss.row(2).collect{|x| (x.is_a?String)?x.gsub(' ',''):""}
       for i in (ss.first_row+2)..ss.last_row
@@ -154,7 +154,7 @@ class MediaAccount < ApplicationRecord
         hash[:short_name] = hash[:sn]
         count +=1 if MediaAccount.create(hash)
       end
-    end 
+    end
     puts "path: #{path} count:#{count} row:#{ss.last_row-2}"
   end
 
@@ -163,7 +163,7 @@ class MediaAccount < ApplicationRecord
     if !($elastic.indices.exists? index: "media_accounts")
       $elastic.indices.create index: "media_accounts", body: {
         settings: {
-            index: {
+          index: {
             number_of_shards: 10,
             number_of_replicas: 1
           }
@@ -225,44 +225,44 @@ class MediaAccount < ApplicationRecord
       datas.each do |r|
         begin
           tmp = { index: { _index:"media_accounts", _type: "media_accounts", _id: r.id, data: {
-              data_id: r.id,#db id
-              name:r.name, #名称
-              short_name:r.short_name, #简称
-              account:r.account, #账号
-              status:r.status, #状态
-              sc:r.sc, #源代码
-              slg:r.slg, #语言
-              fmt:r.fmt, #源类型
-              sn:r.sn, #源名称
-              asn:r.asn, #源名称-当地语言
-              dn:r.dn, #目录名称
-              std:r.std, #数据状态
-              dsd:r.dsd.blank? ? nil : r.dsd.to_i.to_s, #停止日期
-              lva:r.lva, #覆盖类型-文章级别
-              lvs:r.lvs, #覆盖类型-源级别
-              od:r.od.blank? ? nil : r.od.to_i.to_s, #上线日期
-              fio:r.fio.blank? ? nil : r.fio.to_i.to_s, #线上首次发布日期
-              de:r.de, #描述 - 英语
-              dea:r.dea, #描述 - 当地语言
-              frp:r.frp, #发布频率
-              lag:r.lag, #线上可获取目标
-              upn:r.upn, #更新计划
-              ntx:r.ntx, #外部日记
-              pip:r.pip, #伪IP
-              url:r.url, #源网页地址
-              pbc:r.pbc, #发行商代码
-              pub:r.pub, #发行商
-              lgo:r.lgo, #媒体标志
-              cir:r.cir.to_i, #发行量
-              cis:r.cis, #发行量源代码
-              csn:r.csn, #发行源名称
-              rst:r.rst, #RST价值 (源组)
-              pst:r.pst, #一级源类型代码
-              psd:r.psd, #一级源类型
-              sfg:r.sfg, #源父组代码
-              roo:r.roo, #原产地组代码
-              mri:r.mri.blank? ? nil : r.mri #线上最新发布日期
-            } } }
+                             data_id: r.id,#db id
+                             name:r.name, #名称
+                             short_name:r.short_name, #简称
+                             account:r.account, #账号
+                             status:r.status, #状态
+                             sc:r.sc, #源代码
+                             slg:r.slg, #语言
+                             fmt:r.fmt, #源类型
+                             sn:r.sn, #源名称
+                             asn:r.asn, #源名称-当地语言
+                             dn:r.dn, #目录名称
+                             std:r.std, #数据状态
+                             dsd:r.dsd.blank? ? nil : r.dsd.to_i.to_s, #停止日期
+                             lva:r.lva, #覆盖类型-文章级别
+                             lvs:r.lvs, #覆盖类型-源级别
+                             od:r.od.blank? ? nil : r.od.to_i.to_s, #上线日期
+                             fio:r.fio.blank? ? nil : r.fio.to_i.to_s, #线上首次发布日期
+                             de:r.de, #描述 - 英语
+                             dea:r.dea, #描述 - 当地语言
+                             frp:r.frp, #发布频率
+                             lag:r.lag, #线上可获取目标
+                             upn:r.upn, #更新计划
+                             ntx:r.ntx, #外部日记
+                             pip:r.pip, #伪IP
+                             url:r.url, #源网页地址
+                             pbc:r.pbc, #发行商代码
+                             pub:r.pub, #发行商
+                             lgo:r.lgo, #媒体标志
+                             cir:r.cir.to_i, #发行量
+                             cis:r.cis, #发行量源代码
+                             csn:r.csn, #发行源名称
+                             rst:r.rst, #RST价值 (源组)
+                             pst:r.pst, #一级源类型代码
+                             psd:r.psd, #一级源类型
+                             sfg:r.sfg, #源父组代码
+                             roo:r.roo, #原产地组代码
+                             mri:r.mri.blank? ? nil : r.mri #线上最新发布日期
+          } } }
           body << tmp
         rescue Exception => e
           puts e
@@ -274,21 +274,21 @@ class MediaAccount < ApplicationRecord
       begin
         puts $elastic.bulk body: body
       rescue Exception=>e
-         puts e
-         break
-      end   
+        puts e
+        break
+      end
     end
   end
 
   def self.get_aggs_opts
     $elastic = EsConnect.client
     hash = {}
-     res = $elastic.search index:"media_accounts",body:{size:0,query:{},
-     aggs:{
-      slg:{terms:{field:'slg',size:100}},
-      fmt:{terms:{field:'fmt',size:100}},
-          }
-        }
+    res = $elastic.search index:"media_accounts",body:{size:0,query:{},
+                                                       aggs:{
+                                                         slg:{terms:{field:'slg',size:100}},
+                                                         fmt:{terms:{field:'fmt',size:100}},
+                                                       }
+                                                       }
     res["aggregations"].each do |k,v|
       values = v["buckets"].collect{|x| x["key"]} rescue []
       hash[k] =  values.sort unless values.blank?
@@ -296,6 +296,28 @@ class MediaAccount < ApplicationRecord
 
     return hash
 
+  end
+
+  def self.daily_update
+    source_codes = AccessPoint.pluck(:sc).uniq
+
+    elastic = EsConnect.client
+
+    index_name  = (Time.now - 1.day).strftime("%Y%m")
+
+    gte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 00:00:00"))
+    lte_time = Time.parse((Time.now-1.day).strftime("%Y-%m-%d 23:59:59"))
+
+    res = elastic.search index:"information_records_#{index_name}",body:{
+      size:0,
+      query:{bool:{must:[
+                     {range:{created_time:{gte:gte_time,lte:lte_time}}},
+                     {terms:{sns_uid:source_codes}}
+      ]}},
+      aggregations:{sns_uid:{terms:{field:"sns_uid",size:100000}
+                             }}
+    }
+    puts res.inspect
   end
 
 end
