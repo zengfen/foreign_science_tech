@@ -32,19 +32,19 @@ class HostsController < ApplicationController
   end
 
   def service_errors
-    @receiver_errors = $archon_redis.hgetall('archon_reciver_errors')
+    @receiver_errors = $archon_redis.hgetall('archon_receiver_errors')
     @comsume_errors = $archon_redis.hgetall('archon_loader_consume_errors')
     @load_errors =  $archon_redis.hgetall('archon_loader_load_errors')
   end
 
   def service_counters
-    receiver_ips =  $archon_redis.hkeys('archon_reciver_errors')
+    receiver_ips =  $archon_redis.hkeys('archon_receiver_errors')
     loader_ips = $archon_redis.hkeys('archon_loader_consume_errors')
 
     @receiver_data = {}
 
     receiver_ips.each do |ip|
-      key = "archon_reciver_#{ip}_count"
+      key = "archon_receiver_#{ip}_count"
 
       v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
       @receiver_data[ip] = v.blank? ? 0 : v.to_i
@@ -67,7 +67,7 @@ class HostsController < ApplicationController
 
   def receiver_trend
     ip = params[:ip]
-    key = "archon_reciver_#{ip}_count"
+    key = "archon_receiver_#{ip}_count"
     @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
   end
 
