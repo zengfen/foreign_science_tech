@@ -74,6 +74,13 @@ class TasksController < ApplicationController
     #render plain: @spider.has_keyword
   end
 
+
+  def results_trend
+    key = "archon_task_total_results_#{params[:id]}"
+
+    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).sort_by{|x| x[0]}.to_h
+  end
+
   private
 
   def get_spider_task

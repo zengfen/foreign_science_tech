@@ -67,21 +67,32 @@ Rails.application.routes.draw do
       get 'load_edit_form'
     end
   end
-  resources :user_avatars, :hosts, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :accounts, :control_templates, :proxies, :social_account_monitors
+  resources :user_avatars,  :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :accounts, :control_templates, :proxies, :social_account_monitors
 
-  resources :media_accounts do 
+  resources :hosts  do
+    collection do
+      get 'service_errors'
+      get 'service_counters'
+      get 'receiver_trend'
+      get 'loader_kafka_trend'
+      get 'loader_es_trend'
+    end
+  end
+
+  resources :media_accounts do
     collection do
       get 'test'
       get 'search'
     end
   end
-  
+
   resources :tasks do
     member do
       get 'fail_tasks'
       get 'retry_fail_task'
       get 'retry_all_fail_task'
       get 'destroy_fail_task'
+      get 'results_trend'
     end
     collection do
       get 'get_spider'
