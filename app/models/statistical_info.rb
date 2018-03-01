@@ -66,7 +66,7 @@ class StatisticalInfo < ApplicationRecord
 		data = {}
 		data["discard_count"] = $archon_redis.zscore("archon_host_discard_counter_#{ip}", hour_info) || 0
     data["completed_count"] = $archon_redis.zscore("archon_host_completed_counter_#{ip}", hour_info) || 0
-    data["data_count"] = $archon_redis.zrange("archon_host_total_results_#{ip}", hour_info) || 0
+    data["data_count"] = $archon_redis.zscore("archon_host_total_results_#{ip}", hour_info) || 0
     data["runing_count"] = $archon_redis.hlen("archon_host_tasks_#{ip}")
 
     StatisticalInfo.transaction do
