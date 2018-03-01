@@ -96,9 +96,8 @@ class StatisticalInfo < ApplicationRecord
   end
 
   def self.get_day_count(time)
-    hour_info = time.strftime('%Y%m%d%H')
     infos = {}
-    datas = StatisticalInfo.where(:hour_field=>hour_info)
+    datas = StatisticalInfo.where(:recording_time=>time.beginning_of_day..time.end_of_day)
     
     StatisticalInfo.info_types.each do |info_type,value|
       infos[value] = datas.collect{|x| (x.info_type == info_type) ? x.count : 0}.sum||0
