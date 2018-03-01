@@ -95,7 +95,7 @@ class StatisticalInfo < ApplicationRecord
     end 
   end
 
-  def self.get_day_count(time)
+  def self.get_daily_count(time)
     infos = {}
     datas = StatisticalInfo.where(:recording_time=>time.beginning_of_day..time.end_of_day)
     
