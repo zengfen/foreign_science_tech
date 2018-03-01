@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: statistical_infos
+#
+#  id             :integer          not null, primary key
+#  host_ip        :string
+#  info_type      :integer
+#  count          :integer
+#  recording_time :datetime
+#  hour_field     :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
 class StatisticalInfo < ApplicationRecord
   scope :discard_tasks, -> { where(info_type: 1) }
   scope :completed_tasks, -> { where(info_type: 2) }
