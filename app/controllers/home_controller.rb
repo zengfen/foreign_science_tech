@@ -72,7 +72,6 @@ class HomeController < ApplicationController
     dis = 1034
      
     @today_completed_count += dis * Time.now.hour
-    @today_discard_count += dis * Time.now.hour 
     @today_already_runing_count = @today_completed_count + @today_discard_count
 
     
