@@ -70,6 +70,8 @@ class SocialAccountMonitor < ApplicationRecord
       end_time: current_time
     )
 
+    need_account = !spider.control_template_id.blank?
+
     task_template = {
       'task_id' => spider_task.id,
       'task_md5' => Digest::MD5.hexdigest(''),
@@ -77,6 +79,7 @@ class SocialAccountMonitor < ApplicationRecord
       'url' => '', # keyword or url
       'template_id' => spider.template_name,
       'account' => '',
+      'ignore_account' => false,
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
@@ -117,7 +120,12 @@ class SocialAccountMonitor < ApplicationRecord
 
       $archon_redis.hmset(key, *time_array)
       $archon_redis.hmset("archon_task_details_#{spider_task.id}", *details_array)
-      $archon_redis.zadd("archon_tasks_#{id}", urls_array)
+
+      if need_account
+        $archon_redis.zadd("archon_tasks_#{id}_1", urls_array)
+      else
+        $archon_redis.zadd("archon_tasks_#{id}_0", urls_array)
+      end
 
       break if cursor == '0'
 

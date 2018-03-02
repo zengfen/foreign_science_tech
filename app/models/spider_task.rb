@@ -140,31 +140,46 @@ class SpiderTask < ApplicationRecord
       'url' => keyword, # keyword or url
       'template_id' => spider.template_name,
       'account' => '',
+      'ignore_account' => false,
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
       'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: begin_time, end_time: end_time }
     }
 
+    need_account = !spider.control_template_id.blank?
+
     if spider.has_keyword
       if is_split
         task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
         task_template['url'] = keyword
         $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+        if need_account
+          $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
+        else
+          $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_template['task_md5'])
+        end
       else
         keyword.split(',').each do |k|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}")
           task_template['url'] = k
           $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-          $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+          if need_account
+            $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
+          else
+            $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_template['task_md5'])
+          end
         end
       end
     else
       task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
       task_template['url'] = keyword
       $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_template['task_md5'])
+      if need_account
+        $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
+      else
+        $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_template['task_md5'])
+      end
     end
 
     unless spider.control_template_id.blank?
@@ -195,7 +210,9 @@ class SpiderTask < ApplicationRecord
   end
 
   def result_count
-    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i rescue 0
+    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i
+  rescue StandardError
+    0
   end
 
   def maybe_finished?
@@ -217,7 +234,15 @@ class SpiderTask < ApplicationRecord
     $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
 
     $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
-    $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_md5)
+
+    need_account = !spider.control_template_id.blank?
+
+    if need_account && (task['ignore_account'].blank? || !task['ignore_account'])
+      $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_md5)
+    else
+      $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_md5)
+    end
+
     if maybe_finished? || is_finished?
       self.status = 1
       save
@@ -230,6 +255,8 @@ class SpiderTask < ApplicationRecord
     return if fail_count == 0
     total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{id}")
 
+    need_account = !spider.control_template_id.blank?
+
     total_detail_keys.each do |task_md5|
       task_json = $archon_redis.hget("archon_task_details_#{id}", task_md5)
       task = JSON.parse(task_json)
@@ -237,7 +264,12 @@ class SpiderTask < ApplicationRecord
       $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
 
       $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
-      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i, task_md5)
+
+      if need_account && (task['ignore_account'].blank? || !task['ignore_account'])
+        $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_md5)
+      else
+        $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_md5)
+      end
     end
 
     if maybe_finished? || is_finished?
@@ -258,7 +290,8 @@ class SpiderTask < ApplicationRecord
     dequeue_level_task # fix me
 
     redis_keys = []
-    redis_keys << "archon_tasks_#{id}"
+    redis_keys << "archon_tasks_#{id}_0"
+    redis_keys << "archon_tasks_#{id}_1"
 
     %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
 
