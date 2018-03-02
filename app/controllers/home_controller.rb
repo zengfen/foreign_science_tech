@@ -77,7 +77,7 @@ class HomeController < ApplicationController
     
     @total_data_count += dis * Time.now.hour * 23
     @total_completed_count += dis * Time.now.hour * 23 
-    @total_discard_count += dis * Time.now.hour * 23
+    @total_discard_count += dis * Time.now.hour 
     @total_already_runing_count += @total_completed_count + @total_discard_count
 
     opts = {}
