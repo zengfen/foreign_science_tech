@@ -83,20 +83,20 @@ class HostsController < ApplicationController
     ip = params[:ip]
     # key = "archon_receiver_#{ip}_count"
     # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
-    @results = StatisticalInfo.receiver_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
+    @results = StatisticalInfo.receiver_datas.where(:host_ip=>ip).order("hour_field asc").collect{|x| [x.hour_field,x.count]}.to_h
   end
 
   def loader_kafka_trend
     ip = params[:ip]
     # key = "archon_loader_#{ip}_consumer_count"
     # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
-    @results = StatisticalInfo.loader_consumer_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
+    @results = StatisticalInfo.loader_consumer_datas.where(:host_ip=>ip).order("hour_field asc").collect{|x| [x.hour_field,x.count]}.to_h
   end
 
   def loader_es_trend
     ip = params[:ip]
     # key = "archon_loader_#{ip}_load_count"
     # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
-    @results = StatisticalInfo.loader_load_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
+    @results = StatisticalInfo.loader_load_datas.where(:host_ip=>ip).order("hour_field asc").collect{|x| [x.hour_field,x.count]}.to_h
   end
 end

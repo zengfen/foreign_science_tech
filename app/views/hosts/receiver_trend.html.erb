@@ -33,6 +33,14 @@ var option = {
     yAxis: {
         type: 'value'
     },
+    dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                start:0,
+                end:'10%'
+            }
+        ],
     series: [{
         data: <%= raw @results.values %>,
         name: "总量",
