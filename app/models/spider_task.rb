@@ -135,7 +135,7 @@ class SpiderTask < ApplicationRecord
 
     task_template = {
       'task_id' => id,
-      'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}"),
+      'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}"),
       'params' => {},
       'url' => keyword, # keyword or url
       'template_id' => spider.template_name,
@@ -151,7 +151,7 @@ class SpiderTask < ApplicationRecord
 
     if spider.has_keyword
       if is_split
-        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
+        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
         task_template['url'] = keyword
         $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
@@ -161,7 +161,7 @@ class SpiderTask < ApplicationRecord
         end
       else
         keyword.split(',').each do |k|
-          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}")
+          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
           task_template['url'] = k
           $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
@@ -172,7 +172,7 @@ class SpiderTask < ApplicationRecord
         end
       end
     else
-      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}")
+      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
       task_template['url'] = keyword
       $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
       if need_account
