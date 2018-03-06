@@ -38,48 +38,65 @@ class HostsController < ApplicationController
   end
 
   def service_counters
-    receiver_ips =  $archon_redis.hkeys('archon_receiver_errors')
-    loader_ips = $archon_redis.hkeys('archon_loader_consume_errors')
+    # receiver_ips =  $archon_redis.hkeys('archon_receiver_errors')
+    # loader_ips = $archon_redis.hkeys('archon_loader_consume_errors')
 
+    # @receiver_data = {}
+
+    # receiver_ips.each do |ip|
+    #   key = "archon_receiver_#{ip}_count"
+
+    #   v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+    #   @receiver_data[ip] = v.blank? ? 0 : v.to_i
+    # end
+
+    # @loader_data = {}
+
+    # loader_ips.each do |ip|
+    #   key = "archon_loader_#{ip}_consumer_count"
+    #   @loader_data[ip] = []
+
+    #   v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+    #   @loader_data[ip] << (v.blank? ? 0 : v.to_i)
+
+    #   key = "archon_loader_#{ip}_load_count"
+    #   v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
+    #   @loader_data[ip] << (v.blank? ? 0 : v.to_i)
+    # end
     @receiver_data = {}
-
-    receiver_ips.each do |ip|
-      key = "archon_receiver_#{ip}_count"
-
-      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @receiver_data[ip] = v.blank? ? 0 : v.to_i
+    receiver_datas = StatisticalInfo.receiver_datas.group_by(&:host_ip)
+    receiver_datas.each do |k,v|
+      @receiver_data[k] = v.collect{|x| x.count}.sum rescue 0
     end
 
     @loader_data = {}
-
-    loader_ips.each do |ip|
-      key = "archon_loader_#{ip}_consumer_count"
-      @loader_data[ip] = []
-
-      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @loader_data[ip] << (v.blank? ? 0 : v.to_i)
-
-      key = "archon_loader_#{ip}_load_count"
-      v = $archon_redis.zrange(key, 0, -1, withscores: true).map { |x| x[1] }.sum
-      @loader_data[ip] << (v.blank? ? 0 : v.to_i)
+    loader_datas = StatisticalInfo.where(:info_type=>[6,7]).group_by(&:host_ip)
+    loader_datas.each do |k,v|
+      @loader_data[k] = []
+      @loader_data[k] << v.collect{|x| x.info_type==6? x.count : 0}.sum rescue 0
+      @loader_data[k] << v.collect{|x| x.info_type==7? x.count : 0}.sum rescue 0
     end
+
   end
 
   def receiver_trend
     ip = params[:ip]
-    key = "archon_receiver_#{ip}_count"
-    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    # key = "archon_receiver_#{ip}_count"
+    # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    @results = StatisticalInfo.receiver_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
   end
 
   def loader_kafka_trend
     ip = params[:ip]
-    key = "archon_loader_#{ip}_consumer_count"
-    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    # key = "archon_loader_#{ip}_consumer_count"
+    # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    @results = StatisticalInfo.loader_consumer_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
   end
 
   def loader_es_trend
     ip = params[:ip]
-    key = "archon_loader_#{ip}_load_count"
-    @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    # key = "archon_loader_#{ip}_load_count"
+    # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
+    @results = StatisticalInfo.loader_load_datas.where(:host_ip=>ip).collect{|x| [x.hour_field,x.count]}.to_h
   end
 end

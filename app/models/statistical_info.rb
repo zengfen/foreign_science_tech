@@ -17,6 +17,9 @@ class StatisticalInfo < ApplicationRecord
   scope :completed_tasks, -> { where(info_type: 2) }
   scope :runing_tasks, -> { where(info_type: 3) }
   scope :data_infos, -> { where(info_type: 4) }
+  scope :receiver_datas, -> { where(info_type: 5) }
+  scope :loader_consumer_datas, -> { where(info_type: 6) }
+  scope :loader_load_datas, -> { where(info_type: 7) }
 
   def self.info_types
     {
@@ -53,7 +56,7 @@ class StatisticalInfo < ApplicationRecord
      ips.each do |ip|
         refresh_one_data(ip,time)
       end
-      
+
       #更新写入kafka数据量
       receiver_ips =  $archon_redis.hkeys('archon_receiver_errors')
       receiver_ips.each do |ip|
