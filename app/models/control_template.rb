@@ -47,6 +47,7 @@ class ControlTemplate < ApplicationRecord
     window_size * self.class.window_durations[window_type].to_i * 1000
   end
 
+
   def save_with_calculate!
     self.window_type ||= 1
     self.window_size ||= 1

@@ -9,7 +9,10 @@ class ControlTemplatesController < ApplicationController
   def create
     control_template_params = params
                               .require(:control_template)
-                              .permit(:name, :is_bind_ip, :window_size, :window_type, :max_count)
+                              .permit(:name, :is_bind_ip,
+                                      :window_size, :window_type,
+                                      :has_account, :start_delay,
+                                      :end_delay, :max_count)
 
     @control_template = ControlTemplate.new(control_template_params)
     message = @control_template.save_with_calculate!
