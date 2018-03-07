@@ -47,7 +47,6 @@ class ControlTemplate < ApplicationRecord
     window_size * self.class.window_durations[window_type].to_i * 1000
   end
 
-
   def save_with_calculate!
     self.window_type ||= 1
     self.window_size ||= 1
@@ -59,7 +58,12 @@ class ControlTemplate < ApplicationRecord
                             window_to_duration / self.max_count
                           end
 
-    return { 'success' => '保存成功！' } if save
+    if save
+      unless has_account
+        Account.create_default_account!(self.id)
+      end
+      return { 'success' => '保存成功！' }
+    end
 
     { 'error' => errors.full_messages.join('\n') }
   end

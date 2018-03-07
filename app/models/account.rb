@@ -52,6 +52,13 @@ class Account < ApplicationRecord
     { 'success' => '保存成功！' }
   end
 
+  def self.create_default_account!(template_id)
+    Account.create(content: '-',
+                   account_type: 0,
+                   valid_time: (Time.now + 10.years),
+                   control_template_id: template_id)
+  end
+
   #  发现新的host之后，要同步所有的账号信息过去, 如果账号需要绑定到ip上的话
   #  如果一个账号的有效期过了，要清除要对应的account/token
   #  account删除之后也要清除，都要通过定时任务来完成

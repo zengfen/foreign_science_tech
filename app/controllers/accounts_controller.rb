@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   def index
-    @templates = ControlTemplate.select('id, name').collect { |x| [x.name, x.id] }.to_a
-    @accounts = Account.order('created_at desc').page(params[:page]).per(10)
+    @templates = ControlTemplate.select('id, name').where(has_account: true).collect { |x| [x.name, x.id] }.to_a
+    @accounts = Account.where(control_template_id: @templates.collect{|x| x[1]}).order('created_at desc').page(params[:page]).per(10)
     @account = Account.new
   end
 
