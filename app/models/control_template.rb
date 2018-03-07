@@ -12,6 +12,9 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  interval_in_ms   :integer
+#  has_account      :boolean          default(TRUE), not null
+#  start_delay      :float
+#  end_delay        :float
 #
 
 class ControlTemplate < ApplicationRecord
