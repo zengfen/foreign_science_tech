@@ -225,10 +225,11 @@ $(function() {
         radioClass: 'iradio_square-green',
     });
 
+  $('input').on('ifChanged', function (event) { $(event.target).trigger('change'); });
 
 
 });
-  $('#control_template_has_account_false').on('change', function() {
+  $('input[name="control_template[has_account]"]').on('change', function() {
   alert("111");
      switch($(this).val()) {
          case 'false':
