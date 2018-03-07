@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th class="text-center">名称</th>
+        <th class="text-center">需要账号</th>
         <th class="text-center">绑定ip</th>
         <th class="text-center">窗口大小</th>
         <th class="text-center">窗口类型</th>
@@ -15,6 +16,7 @@
       <% @templates.each do |template| %>
         <tr>
           <td class="text-center"><%= template.name %></td>
+          <td class="text-center"><%= template.has_account ? "是" : "否" %></td>
           <td class="text-center"><%= template.is_bind_ip ? "是" : "否"%></td>
           <td class="text-center"><%= template.window_size%></td>
           <td class="text-center"><%= template.window_type_cn%></td>
