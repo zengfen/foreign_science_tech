@@ -46,30 +46,47 @@
               </div>
             </div>
           </div>
-          <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">窗口设置</label>
-            <div class="col-sm-3">
-              <%= f.text_field :window_size, :value => 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
+          <div id="has_account">
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">窗口设置</label>
+              <div class="col-sm-3">
+                <%= f.text_field :window_size, :value => 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
+              </div>
+              <div class="col-sm-5">
+                <% ControlTemplate.window_types.each do |k, v|  %>
+                  <div class="i-checks inline">
+                    <label class="control-label">
+                      <%= f.radio_button(:window_type, k , :checked=> (k == 1))%>
+                      <i></i> <%= v %>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
             </div>
-            <div class="col-sm-5">
-              <% ControlTemplate.window_types.each do |k, v|  %>
-                <div class="i-checks inline">
-                  <label class="control-label">
-                    <%= f.radio_button(:window_type, k , :checked=> (k == 1))%>
-                    <i></i> <%= v %>
-                  </label>
-                </div>
-              <% end %>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">窗口请求次数</label>
+              <div class="col-sm-10">
+                <%= f.text_field :max_count, :placeholder=>"-1为不限制",:class=>"form-control"%>
+              </div>
             </div>
           </div>
-          <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">窗口请求次数</label>
-            <div class="col-sm-10">
-              <%= f.text_field :max_count, :placeholder=>"-1为不限制",:class=>"form-control"%>
+
+          <div id="without_account" style="display:none">
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">休眠设置</label>
+              <div class="col-sm-3">
+                <%= f.text_field :window_size, :value => 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
+              </div>
+              <label class="col-sm-2 control-label">到</label>
+              <div class="col-sm-3">
+                <%= f.text_field :window_size, :value => 1,  :placeholder=>"窗口大小", :class=>"form-control"%>
+              </div>
             </div>
           </div>
+
           <div class="hr-line-dashed"></div>
           <div class="form-group">
             <div class="col-sm-2 col-sm-offset-10">
