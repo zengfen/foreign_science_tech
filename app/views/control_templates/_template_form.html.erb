@@ -46,7 +46,7 @@
               </div>
             </div>
           </div>
-          <div id="has_account">
+          <div id="with_account">
             <div class="hr-line-dashed"></div>
             <div class="form-group">
               <label class="col-sm-2 control-label">窗口设置</label>
@@ -98,3 +98,19 @@
     </div>
   </div>
 </div>
+
+
+<script charset="utf-8">
+  $('input[type=radio][name=control_template[has_account]]').on('change', function() {
+     switch($(this).val()) {
+         case 'false':
+             $("#with_account").hide();
+             $("#without_account").show();
+             break;
+         case 'false':
+             $("#with_account").show();
+             $("#without_account").hide();
+             break;
+     }
+});
+</script>
