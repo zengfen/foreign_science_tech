@@ -230,15 +230,12 @@ $(function() {
 
 });
   $('input[name="control_template[has_account]"]').on('change', function() {
-  alert("111");
      switch($(this).val()) {
          case 'false':
-         alert("11");
              $("#with_account").hide();
              $("#without_account").show();
              break;
          case 'true':
-         alert("22");
              $("#with_account").show();
              $("#without_account").hide();
              break;
