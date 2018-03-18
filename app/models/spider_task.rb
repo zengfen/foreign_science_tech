@@ -149,6 +149,8 @@ class SpiderTask < ApplicationRecord
 
     need_account = !spider.control_template_id.blank?
 
+    Rails.logger.info(need_account)
+
     if spider.has_keyword
       if is_split
         task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
