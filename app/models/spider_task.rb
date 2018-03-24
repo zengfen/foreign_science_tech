@@ -326,4 +326,5 @@ class SpiderTask < ApplicationRecord
       dequeue_level_task
     end
   end
+
 end
