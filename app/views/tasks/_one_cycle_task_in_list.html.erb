@@ -2,7 +2,7 @@
 <td><%= spider_cycle_task.spider.spider_name%></td>
 <td><%= spider_cycle_task.level %></td>
 <td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title="
-  <div style='word-wrap:break-word'> <%=spider_cycle_task.keyword%></div>"><%= truncate_utf(spider_cycle_task.keyword,10,"...") %></td>
+   <%=spider_cycle_task.keyword%>"><%= truncate_utf(spider_cycle_task.keyword,10,"...") %></td>
 <td><%= spider_cycle_task.period %></td>
 <td><%= show_format_time(spider_cycle_task.next_time) %></td>
 <td><%= raw status_html(spider_cycle_task)%></td>
