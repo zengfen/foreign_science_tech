@@ -238,12 +238,12 @@ window.setInterval(function(){
   var current_url = $("#current_url").val();
   var status = $(".task_status").find('span').text();
   var bool1 = !$('.all-page').hasClass('dn');
-  if (bool1 && status.indexOf("执行中")!=-1){
-    $.get(current_url, function(data){
-      $(".all-page").html(data);
-      $("[data-toggle='tooltip']").tooltip();
-    })
-  }
+  // if (bool1 && status.indexOf("执行中")!=-1){
+  //   $.get(current_url, function(data){
+  //     $(".all-page").html(data);
+  //     $("[data-toggle='tooltip']").tooltip();
+  //   })
+  // }
 }, 5000);
 $("[data-toggle='tooltip']").tooltip();
     </script>
