@@ -240,8 +240,8 @@ window.setInterval(function(){
   var bool1 = !$('.all-page').hasClass('dn');
   if (bool1 && status.indexOf("执行中")!=-1){
     $.get(current_url, function(data){
-      $(".all-page").html(data);
       $("[data-toggle='tooltip']").tooltip('destroy');
+      $(".all-page").html(data);
       $("[data-toggle='tooltip']").tooltip();
     })
   }
