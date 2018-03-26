@@ -19,4 +19,10 @@ class AccountsController < ApplicationController
 
     redirect_back(fallback_location: accounts_path)
   end
+
+  def destroy
+    @account = Account.find_by(id: params[:id])
+    redirect_to root_path if @account.blank?
+    render json: { type: 'success', message: '操作成功！' } if @account.destroy
+  end
 end
