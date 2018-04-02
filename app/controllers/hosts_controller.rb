@@ -107,7 +107,7 @@ class HostsController < ApplicationController
 
     start_hour = (Time.now - 2.days).at_beginning_of_day
     end_hour = Time.now.at_beginning_of_hour
-    @hours = (start_hour.to_i .. end_hour.to_datetime.to_i).step(1.hour).to_a.map{|x| x.strftime("%Y%m%d%H")}
+    @hours = (start_hour.to_i .. end_hour.to_datetime.to_i).step(1.hour).to_a.map{|x| Time.at(x).strftime("%Y%m%d%H")}
     @results = {}
     keys.each do |k|
       start = start_hour.strftime("%Y%m%d%H")
