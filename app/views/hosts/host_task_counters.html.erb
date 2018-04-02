@@ -44,7 +44,7 @@ var option = {
     <% @results.each do |k, v| %>
           {
         data: <%= raw v %>,
-        name: <%= k %>,
+        name: '<%= k %>',
         type: 'line'
     },
     <% end %>
