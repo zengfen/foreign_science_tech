@@ -14,7 +14,7 @@
 class Account < ApplicationRecord
   attr_accessor :contents
 
-  validates :content, presence: true, uniqueness: { case_sensitive: false }
+  #validates :content, presence: true, uniqueness: { case_sensitive: false }
 
   belongs_to :control_template
   after_create :setup_redis
