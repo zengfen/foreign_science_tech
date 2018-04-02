@@ -105,8 +105,8 @@ class HostsController < ApplicationController
     keys = $archon_redis.keys("archon_host_task_counter_*")
 
 
-    start_hour = (time.now - 2.days).at_beginning_of_day
-    end_hour = time.now.at_beginning_of_hour
+    start_hour = (Time.now - 2.days).at_beginning_of_day
+    end_hour = Time.now.at_beginning_of_hour
     @hours = (start_hour.to_i .. end_hour.to_datetime.to_i).step(1.hour).to_a.map{|x| x.strftime("%Y%m%d%H")}
     @results = {}
     keys.each do |k|
