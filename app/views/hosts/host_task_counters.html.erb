@@ -32,6 +32,9 @@ var option = {
     yAxis: {
         type: 'value'
     },
+    legend: {
+        data: <%= raw @results.keys %>
+    },
     dataZoom: [
             {
                 type: 'slider',
@@ -45,6 +48,7 @@ var option = {
           {
         data: <%= raw v %>,
         name: '<%= k %>',
+        stack: '总量',
         type: 'line'
     },
     <% end %>
