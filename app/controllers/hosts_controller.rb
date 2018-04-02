@@ -99,4 +99,26 @@ class HostsController < ApplicationController
     # @results = $archon_redis.zrange(key, 0, -1, :withscores => true).to_h
     @results = StatisticalInfo.loader_load_datas.where(:host_ip=>ip).order("hour_field asc").collect{|x| [x.hour_field,x.count]}.to_h
   end
+
+
+  def host_task_counters
+    keys = $archon_redis.keys("archon_host_task_counter_*")
+
+
+    start_hour = (time.now - 2.days).at_beginning_of_day
+    end_hour = time.now.at_beginning_of_hour
+    @hours = (start_hour.to_i .. end_hour.to_datetime.to_i).step(1.hour).to_a.map{|x| x.strftime("%Y%m%d%H")}
+    @results = {}
+    keys.each do |k|
+      start = start_hour.strftime("%Y%m%d%H")
+      ip = k.gsub("archon_host_task_counter_", "")
+      res = $archon_redis.zrange(k, 0, -1, withscores: true).select{|x| x[0] >= start}.to_h
+
+
+      @results[ip] = []
+      @hours.each do |x|
+        @results[ip] << (res[x] || 0)
+      end
+    end
+  end
 end
