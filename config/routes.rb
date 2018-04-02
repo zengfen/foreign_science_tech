@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       get 'receiver_trend'
       get 'loader_kafka_trend'
       get 'loader_es_trend'
+      get 'host_task_counters'
     end
   end
 
