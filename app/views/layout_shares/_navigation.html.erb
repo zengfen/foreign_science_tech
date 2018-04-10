@@ -57,38 +57,37 @@
         <li class="<%= is_active_action('index') %>"><%= link_to "Agent监控", social_accounts_path %></li>
         </ul>
         </li> -->
-        <li class="<%= is_active_controller('social_accounts,social_account_monitors') %>">
-          <a href=""><i class="fa fa-users"></i> <span class="nav-label">社交账号库</span> <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts,social_account_monitors') %>">
-            <li class="<%= is_active_action(nil, 'social_accounts') %>"><%= link_to "社交账号库", social_accounts_path %></li>
-            <li class="<%= is_active_action(nil, 'social_account_monitors') %>"><%= link_to "监控设置", social_account_monitors_path %></li>
-          </ul>
-        </li>
-        <li class="<%= is_active_controller('media_accounts') %>">
-          <a href=""><i class="fa fa-inbox"></i> <span class="nav-label">媒体库</span> <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level collapse <%= is_active_controller('media_accounts') %>">
-            <li class="<%= is_active_action('index') %>"><%= link_to "媒体库", media_accounts_path %></li>
-          </ul>
-        </li>
-        <li class="<%= is_active_controller('control_templates,accounts,proxies') %>">
-          <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span> <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level collapse <%= is_active_controller('control_templates,accounts,proxies') %>">
-            <li class="<%= is_active_action(nil, "control_templates") %>"><%= link_to "访问控制", control_templates_path %></li>
-            <li class="<%= is_active_action(nil, "accounts") %>"><%= link_to "账号管理", accounts_path%></li>
-            <li class="<%= is_active_action(nil, "proxies") %>"><%= link_to "代理管理", proxies_path%></li>
-          </ul>
-        </li>
-        <li class="<%= is_active_controller('hosts,monitoring') %>">
-          <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
-          <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,monitoring') %>">
-            <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
-            <li class="<%= is_active_action("service_errors", "hosts") %>"><%= link_to "错误信息", "/hosts/service_errors" %></li>
-            <li class="<%= is_active_action("service_counters", "hosts") %>"><%= link_to "数据量监控", "/hosts/service_counters" %></li>
-            <li class="<%= is_active_action("host_task_counters", "hosts") %>"><%= link_to "主机任务量监控", "/hosts/host_task_counters" %></li>
-
-            <li class="<%= is_active_action('lucene') %>"><%= link_to "存储资源监控", "/monitoring/lucene" %></li>
-          </ul>
-        </li>
+      <li class="<%= is_active_controller('social_accounts,social_account_monitors') %>">
+        <a href=""><i class="fa fa-users"></i> <span class="nav-label">社交账号库</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts,social_account_monitors') %>">
+          <li class="<%= is_active_action(nil, 'social_accounts') %>"><%= link_to "社交账号库", social_accounts_path %></li>
+          <li class="<%= is_active_action(nil, 'social_account_monitors') %>"><%= link_to "监控设置", social_account_monitors_path %></li>
+        </ul>
+      </li>
+      <li class="<%= is_active_controller('media_accounts') %>">
+        <a href=""><i class="fa fa-inbox"></i> <span class="nav-label">媒体库</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('media_accounts') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "媒体库", media_accounts_path %></li>
+        </ul>
+      </li>
+      <li class="<%= is_active_controller('control_templates,accounts,proxies') %>">
+        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('control_templates,accounts,proxies') %>">
+          <li class="<%= is_active_action(nil, "control_templates") %>"><%= link_to "访问控制", control_templates_path %></li>
+          <li class="<%= is_active_action(nil, "accounts") %>"><%= link_to "账号管理", accounts_path%></li>
+          <li class="<%= is_active_action(nil, "proxies") %>"><%= link_to "代理管理", proxies_path%></li>
+        </ul>
+      </li>
+      <li class="<%= is_active_controller('hosts,monitoring') %>">
+        <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,monitoring') %>">
+          <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
+          <li class="<%= is_active_action("service_errors", "hosts") %>"><%= link_to "错误信息", "/hosts/service_errors" %></li>
+          <li class="<%= is_active_action("service_counters", "hosts") %>"><%= link_to "数据量监控", "/hosts/service_counters" %></li>
+          <li class="<%= is_active_action("host_task_counters", "hosts") %>"><%= link_to "主机任务量监控", "/hosts/host_task_counters" %></li>
+          <!--  <li class="<%= is_active_action('lucene') %>"><%= link_to "存储资源监控", "/monitoring/lucene" %></li> -->
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>
