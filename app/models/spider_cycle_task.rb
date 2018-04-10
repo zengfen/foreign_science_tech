@@ -107,6 +107,15 @@ class SpiderCycleTask < ApplicationRecord
     st
   end
 
+  def special_tag_names
+    tag_names = []
+    self.special_tag.split(",").each do |x|
+      st = SpecialTag.find(x) rescue nil
+      tag_names << st.tag if st
+    end
+    tag_names
+  end
+
   def update_next_time
     cron = Rufus::Scheduler::CronLine.new(Sidekiq::Cron::Job.find(self.job_name).cron)
     next_time = cron.next_time(Time.now.utc).utc
