@@ -22,13 +22,13 @@
 #
 
 class SpiderCycleTask < ApplicationRecord
-	validates :spider_id, presence: true
+  validates :spider_id, presence: true
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
   validates :max_retry_count, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
   validates :period, presence: true
 
-	has_many :spider_tasks
-	belongs_to :spider
+  has_many :spider_tasks
+  belongs_to :spider
 
   after_create :init_task_job
 
@@ -40,24 +40,24 @@ class SpiderCycleTask < ApplicationRecord
   end
 
   def init_task_job
-  	self.task_job_run!
+    self.task_job_run!
   end
 
-	def can_stop?
-		self.status == 1
-	end
+  def can_stop?
+    self.status == 1
+  end
 
-	def can_start?
-		self.status == 0 || self.status == 2
-	end
+  def can_start?
+    self.status == 0 || self.status == 2
+  end
 
   def job_name
     "CycleTaskJob-#{self.id}"
   end
 
   def self.period_list
-  	{
-  		"1month"=>{:cron=>"0 0 1 * * Asia/Shanghai",:time=>1.month},
+    {
+      "1month"=>{:cron=>"0 0 1 * * Asia/Shanghai",:time=>1.month},
       "1week"=>{:cron=>"0 0 * * 1 Asia/Shanghai",:time=>1.week},
       "1day"=>{:cron=>"0 0 * * * Asia/Shanghai",:time=> 1.day},
       "1hour"=>{:cron=>"0 * * * * Asia/Shanghai",:time=> 1.hour},
@@ -68,49 +68,54 @@ class SpiderCycleTask < ApplicationRecord
   end
 
   def period_opts
-  	SpiderCycleTask.period_list[self.period]
+    SpiderCycleTask.period_list[self.period]
   end
 
   def task_job_run!
-  	return if !self.can_start?
+    return if !self.can_start?
 
-  	cron = Sidekiq::Cron::Job.find self.job_name
-  	Sidekiq::Cron::Job.create(name: self.job_name, cron: self.period_opts[:cron], class: 'CycleTaskJob', args:  { id: self.id }) if cron.blank? 
+    cron = Sidekiq::Cron::Job.find self.job_name
+    Sidekiq::Cron::Job.create(name: self.job_name, cron: self.period_opts[:cron], class: 'CycleTaskJob', args:  { id: self.id }) if cron.blank?
 
-  	self.update_attributes({:status=>1})
-  	self.update_next_time
+    self.update_attributes({:status=>1})
+    self.update_next_time
   end
 
   def destroy_job!
-  	cron = Sidekiq::Cron::Job.find self.job_name
-  	Sidekiq::Cron::Job.destroy self.job_name if !cron.blank?
+    cron = Sidekiq::Cron::Job.find self.job_name
+    Sidekiq::Cron::Job.destroy self.job_name if !cron.blank?
   end
 
   def stop_job!
-  	return if !self.can_stop?
+    return if !self.can_stop?
 
-  	job = Sidekiq::Cron::Job.find self.job_name
-  	Sidekiq::Cron::Job.destroy self.job_name if !job.blank?
-  	self.update_attributes({:status=>2})
-  	self.update_attributes(:next_time=>nil)
+    job = Sidekiq::Cron::Job.find self.job_name
+    Sidekiq::Cron::Job.destroy self.job_name if !job.blank?
+    self.update_attributes({:status=>2})
+    self.update_attributes(:next_time=>nil)
   end
 
   def create_sub_task
-  	st_params  = JSON.parse(self.dup.to_json).deep_symbolize_keys.merge!({:spider_cycle_task_id=>self.id,:task_type=>2})
-  	st_params.delete(:period)
-  	st_params.delete(:next_time)
-  	st_params.delete(:status)
-  	st = SpiderTask.new(st_params)
-  	st.save
-  	#创建完成后自动运行
-  	st.start!
-  	st
+    st_params  = JSON.parse(self.dup.to_json).deep_symbolize_keys.merge!({:spider_cycle_task_id=>self.id,:task_type=>2})
+    st_params.delete(:period)
+    st_params.delete(:next_time)
+    st_params.delete(:status)
+    st = SpiderTask.new(st_params)
+    st.save
+    #创建完成后自动运行
+    st.start!
+    st
   end
 
   def update_next_time
-  	cron = Rufus::Scheduler::CronLine.new(Sidekiq::Cron::Job.find(self.job_name).cron)
+    cron = Rufus::Scheduler::CronLine.new(Sidekiq::Cron::Job.find(self.job_name).cron)
     next_time = cron.next_time(Time.now.utc).utc
-  	self.update_attributes(:next_time=>next_time)
+    self.update_attributes(:next_time=>next_time)
+  end
+
+  def special_tag_transfor_id
+    specital_tags_ids = self.special_tag.split(",").collect{|tag| SpecialTag.create_with({:tag=>tag,:created_at=>Time.now,:updated_at=>Time.now}).find_or_create_by(:tag=>tag).id }.join(",")
+    self.special_tag = specital_tags_ids
   end
 
   def save_with_spilt_keywords

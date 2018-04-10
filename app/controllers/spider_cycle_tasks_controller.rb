@@ -8,6 +8,7 @@ class SpiderCycleTasksController < ApplicationController
 
   def create
     @spider_cycle_task = SpiderCycleTask.new(spider_cycle_task_params)
+    @spider_cycle_task.special_tag_transfor_id
     add_funs = []
     params.keys.each do |key|
       if key.to_s.match(/cate_/)
