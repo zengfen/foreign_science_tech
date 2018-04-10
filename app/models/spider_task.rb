@@ -94,6 +94,15 @@ class SpiderTask < ApplicationRecord
     dequeue_level_task
   end
 
+  def special_tag_names
+    tag_names = []
+    self.special_tag.split(",").each do |x|
+      st = SpecialTag.find(x)
+      tag_names << st.tag if st
+    end
+    tag_names
+  end
+
   def special_tag_transfor_id
     specital_tags_ids = self.special_tag.split(",").collect{|tag| SpecialTag.create_with({:tag=>tag,:created_at=>Time.now,:updated_at=>Time.now}).find_or_create_by(:tag=>tag).id }.join(",")
     self.special_tag = specital_tags_ids

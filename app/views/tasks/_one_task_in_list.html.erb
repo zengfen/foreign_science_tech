@@ -1,15 +1,15 @@
 <%spider_task.update_finished_status!%>
-
+<td><%= spider_task.special_tag_names.join(",")%></td>
 <td><%= spider_task.special_tag%></td>
 <td><%= spider_task.spider.spider_name%></td>
 <td><%= spider_task.level %></td>
-	<td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title='<%=spider_task.keyword%>'><%= truncate_utf(spider_task.keyword,10,"...")%></td>
+<td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title='<%=spider_task.keyword%>'><%= truncate_utf(spider_task.keyword,10,"...")%></td>
 <td class="task_status"><%= raw status_html(spider_task)%></td>
 <td><%= spider_task.current_total_count %></td>
 <td><%= spider_task.success_count %></td>
 <td><a href="/tasks/results_trend/<%= spider_task.id %>" ><%= spider_task.result_count %></a></td>
 <td>
-<%=
+  <%=
    link_to_if(spider_task.fail_count != 0, spider_task.fail_count, fail_tasks_task_path(spider_task)) do
      "#{spider_task.fail_count}"
    end
@@ -22,25 +22,24 @@
     <i class="icon_data_analysis icon-more"></i>
   </a>
   <ul class="more-ul dn">
-	<% if spider_task.can_start? %>
-	 <li class="bor-b">
-	    <%= link_to(start_spider_spider_task_path(spider_task.spider, spider_task),:title=>"启动",:remote=>true) do %>
-	     <!--  <i class="fa fa-play"></i> -->
-	      启动
-	    <%end%>
-	  </li>
-	<% end %>
-  <% if spider_task.can_stop?  %>
-	 <li class="bor-b">
-	    <%= link_to(stop_spider_spider_task_path(spider_task.spider, spider_task),:title=>"暂停",:remote=>true) do %>
-	     <!--  <i class="fa fa-play"></i> -->
-	      暂停
-	    <%end%>
-	  </li>
-	<% end %>
+    <% if spider_task.can_start? %>
+      <li class="bor-b">
+        <%= link_to(start_spider_spider_task_path(spider_task.spider, spider_task),:title=>"启动",:remote=>true) do %>
+          <!--  <i class="fa fa-play"></i> -->
+          启动
+        <%end%>
+      </li>
+    <% end %>
+    <% if spider_task.can_stop?  %>
+      <li class="bor-b">
+        <%= link_to(stop_spider_spider_task_path(spider_task.spider, spider_task),:title=>"暂停",:remote=>true) do %>
+          <!--  <i class="fa fa-play"></i> -->
+          暂停
+        <%end%>
+      </li>
+    <% end %>
     <li>
       <%=link_to(spider_spider_task_path(spider_task.spider, spider_task),:class=>"remove-line") do%>删除<%end%>
     </li>
-
   </ul>
 </td>
