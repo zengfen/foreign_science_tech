@@ -1,0 +1,3 @@
+class SpiderTask < ApplicationRecord
+
+end

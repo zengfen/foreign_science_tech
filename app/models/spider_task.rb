@@ -94,6 +94,11 @@ class SpiderTask < ApplicationRecord
     dequeue_level_task
   end
 
+  def special_tag_transfor_id
+    specital_tags_ids = self.special_tag.split(",").collect{|tag| SpecialTag.create_with({:tag=>tag,:created_at=>Time.now,:updated_at=>Time.now}).find_or_create_by(:tag=>tag).id }.join(",")
+    self.special_tag = specital_tags_ids
+  end
+
   def save_with_spilt_keywords
     return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
 
