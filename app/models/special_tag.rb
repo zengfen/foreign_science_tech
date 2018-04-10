@@ -1,3 +1,3 @@
-class SpiderTask < ApplicationRecord
+class SpecialTag < ApplicationRecord
 
 end
