@@ -59,6 +59,7 @@ class HostsRefreshTask
       begin
         Host.load_host_datas
       rescue Exception =>e
+        ActiveRecord::Base.connection.reconnect!  if e.message.to_s.include?('no connection to the server')
         write_exception(e)
       end
 
