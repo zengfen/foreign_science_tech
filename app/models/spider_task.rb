@@ -97,7 +97,7 @@ class SpiderTask < ApplicationRecord
   def special_tag_names
     tag_names = []
     self.special_tag.split(",").each do |x|
-      st = SpecialTag.find(x)
+      st = SpecialTag.find(x) rescue nil
       tag_names << st.tag if st
     end
     tag_names
