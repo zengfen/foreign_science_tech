@@ -41,7 +41,8 @@ class Spider < ApplicationRecord
       '新闻评论' => 'archon_news_comment',
       '酒店评论' => 'archon_hotel_comments',
       "Facebook" => "archon_facebook_post",
-      "Twitter" => "archon_twitter_post"
+      "Twitter" => "archon_twitter_post",
+      "Linkedin" => "archon_linkedin",
     }
   end
 
@@ -61,6 +62,7 @@ class Spider < ApplicationRecord
       '酒店评论' => 'hotel_comments',
       'Facebook' => "facebook_post",
       'Twitter' => "twitter_post",
+      "Linkedin" => "linkedin_post"
     }
   end
 
