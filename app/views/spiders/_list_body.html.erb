@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th class="text-center">爬虫名</th>
-        <th class="text-center">爬虫类型</th>
+        <!-- <th class="text-center">爬虫类型</th> -->
         <th class="text-center">爬虫分类</th>
         <th class="text-center">境外抓取(是/否)</th>
         <th class="text-center">代理(是/否)</th>
@@ -11,14 +11,13 @@
         <th class="text-center">模板名称</th>
         <th class="text-center">附加条件</th>
         <th class="text-center">说明</th>
-        <th class="text-center">创建时间</th>
+        <!-- <th class="text-center">创建时间</th> -->
         <th colspan="5" class="text-center">操作</th>
       </tr>
     </thead>
     <tbody class="text-center">
-
       <% @spiders.each do |spider| %>
-       <%=render :partial=>"one_spider_in_list",:locals=>{:spider=>spider}%>
+        <%=render :partial=>"one_spider_in_list",:locals=>{:spider=>spider}%>
       <% end %>
     </tbody>
   </table>
@@ -26,6 +25,5 @@
     <%= paginate @spiders%>
   </div>
 <%else%>
-   <%= render "shared/no_data" %>
+  <%= render "shared/no_data" %>
 <%end%>
-
