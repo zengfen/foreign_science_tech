@@ -30,9 +30,9 @@ environment ENV.fetch("RAILS_ENV") { "production" }
 rails_env = ENV.fetch("RAILS_ENV") || "production" 
 #	计算机核数
 if rails_env == "production"
-  workers ENV.fetch("WEB_CONCURRENCY") { 3 }
+  workers ENV.fetch("WEB_CONCURRENCY") { 4 }
 else
-  workers 1
+  workers 2
 end
 
 # Use the `preload_app!` method when specifying a `workers` number.
