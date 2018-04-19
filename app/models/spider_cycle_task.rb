@@ -102,6 +102,7 @@ class SpiderCycleTask < ApplicationRecord
     st_params.delete(:status)
     st = SpiderTask.new(st_params)
     st.save
+    st.enqueue
     #创建完成后自动运行
     st.start!
     st
