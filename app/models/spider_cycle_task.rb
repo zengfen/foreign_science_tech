@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  spider_id           :integer
 #  level               :integer          default(1)
-#  keyword             :string
+#  keyword             :text
 #  special_tag         :string
 #  status              :integer          default(0)
 #  success_count       :integer          default(0)
@@ -19,6 +19,7 @@
 #  additional_function :json
 #  begin_time          :datetime
 #  end_time            :datetime
+#  is_split            :boolean          default(FALSE)
 #
 
 class SpiderCycleTask < ApplicationRecord
