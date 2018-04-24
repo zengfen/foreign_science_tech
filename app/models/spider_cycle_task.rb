@@ -130,11 +130,18 @@ class SpiderCycleTask < ApplicationRecord
 
   def save_with_spilt_keywords
     if spider.has_keyword && !spider.blank?
-      keywords = keyword.split(',')
-      keywords.each do |keyword|
-        spider_cycle_task = self.dup
-        spider_cycle_task.keyword = keyword
-        return { 'error' => spider_cycle_task.errors.full_messages.join('\n') } unless spider_cycle_task.save
+      keywords = keyword.split(',').collect(&:strip).uniq
+      keywords.delete(nil)
+      keywords.delete('')
+      if is_split
+        keywords.each do |keyword|
+          spider_cycle_task = dup
+          spider_cycle_task.keyword = keyword
+          return { 'error' => spider_cycle_task.errors.full_messages.join('\n') } unless spider_cycle_task.save
+        end
+      else
+        self.keyword = keywords.join(',')
+        return { 'error' => errors.full_messages.join('\n') } unless save
       end
     else
       return { 'error' => spider_cycle_task.errors.full_messages.join('\n') } unless save
