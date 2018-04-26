@@ -179,4 +179,11 @@ class HostMonitor < ApplicationRecord
      return record
   end
 
+
+  def self.daily_delete
+    time = Time.now
+    #只保留一个月信息，调用destroy_all 方法 方便后期关联ES同步删除
+    HostMonitor.where("recording_time < '#{(time - 1.month).beginning_of_day.to_s}'").destroy_all
+  end
+
 end
