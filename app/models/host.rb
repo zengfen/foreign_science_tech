@@ -21,7 +21,7 @@ class Host < ApplicationRecord
   validates :extranet_ip, format: { with: VALID_IP_REGEX }
 
 
-	has_many :host_monitors,dependent: :destroy
+	has_many :host_monitors,dependent: :delete_all
   before_create :init_network_environment!
 
   scope :service,->(service) {where("'#{service.to_s}' = ANY (host_service)")}
