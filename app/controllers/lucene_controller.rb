@@ -2,10 +2,12 @@ class LuceneController < ApplicationController
   before_action :logged_in_user
   def index
 
-    link = "http://10.27.3.39:9200/_cat/indices/#{Spider.index_categories.values.collect{|x| "*#{x}*"}.join(",")}?format=json&pretty&s=docs.count:desc"
+    es_url = "http://#{Setting['es_hosts'].first[:host]}:#{Setting['es_hosts'].first[:port]}" rescue ""
+
+    link = "#{es_url}/_cat/indices/#{Spider.index_categories.values.collect{|x| "*#{x}*"}.join(",")}?format=json&pretty&s=docs.count:desc"
     if !params[:category].blank? || !params[:keyword].blank?
       key = params[:category].blank? ? params[:keyword] : params[:category]
-      link = "http://10.27.3.39:9200/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
+      link = "#{es_url}/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
     end
     Rails.logger.info(link)
     body = RestClient.get(link).body
@@ -38,18 +40,19 @@ class LuceneController < ApplicationController
   end
 
   def remove
-    $elastic.indices.delete index:"#{params[:id]}"
+    elastic = EsConnect.client
+    elastic.indices.delete index:"#{params[:id]}"
     render json: {type: "success",message:"操作成功！"}
   end
 
   def search
-    $elastic = Elasticsearch::Client.new hosts:[{ host: "10.46.226.135",port: "9200",user: "elastic",password: "changeme"},{ host: "10.27.3.39",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.145",port: "9200",user: "elastic",password: "changeme"},{ host: "10.28.46.192",port: "9200",user: "elastic",password: "changeme"}],randomize_hosts: true, log: false,send_get_body_as: "post"
+    elastic = EsConnect.client
 
     return render json: {type: "error",message:"请输入索引名称！"} if params[:index_name].blank?
     query_opts = params[:query_opts].blank? ? {} : JSON.parse(params[:query_opts])
     logger.info query_opts
     begin
-      response = $elastic.search index: params[:index_name], body: query_opts
+      response = elastic.search index: params[:index_name], body: query_opts
       render json:  {type: "success",results:response}
     rescue Exception => e  
       render json:  {type: "error",message: e.message}
