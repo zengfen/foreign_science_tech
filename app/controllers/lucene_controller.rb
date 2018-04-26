@@ -2,16 +2,15 @@ class LuceneController < ApplicationController
   before_action :logged_in_user
   def index
 
-    es_url = "http://#{Setting['es_hosts'].first[:host]}:#{Setting['es_hosts'].first[:port]}" rescue ""
-
-    link = "#{es_url}/_cat/indices/#{Spider.index_categories.values.collect{|x| "*#{x}*"}.join(",")}?format=json&pretty&s=docs.count:desc"
+    # es_url = "http://#{Setting['es_hosts'].first[:host]}:#{Setting['es_hosts'].first[:port]}" rescue ""
+   indices = Spider.index_categories.values.collect{|x| "*#{x}*"}.join(",")
+    # link = "#{es_url}/_cat/indices/#{Spider.index_categories.values.collect{|x| "*#{x}*"}.join(",")}?format=json&pretty&s=docs.count:desc"
     if !params[:category].blank? || !params[:keyword].blank?
       key = params[:category].blank? ? params[:keyword] : params[:category]
-      link = "#{es_url}/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
+      indices = "*#{key}*"
+      # link = "#{es_url}/_cat/indices/*#{key}*?format=json&pretty&s=docs.count:desc"
     end
-    Rails.logger.info(link)
-    body = RestClient.get(link).body
-    indices = JSON.parse(body)
+    indices = $elastic.cat.indices index:indices,format:'json',s:'docs.count:desc'
     @indices = Kaminari.paginate_array(indices, total_count: indices.count).page(params[:page]).per(100)
 
   end
