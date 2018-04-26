@@ -15,6 +15,10 @@ class LuceneController < ApplicationController
 
   end
 
+  def destroy
+    
+  end
+
   def create_index
     yms = (Date.parse(params[:begin_time]+"-01")..Date.parse(params[:end_time]+"-01")).map{|d| "#{d.year}#{d.month.to_s.length==1 ? "0"+d.month.to_s : d.month.to_s}"}.uniq
     if params[:category].blank?

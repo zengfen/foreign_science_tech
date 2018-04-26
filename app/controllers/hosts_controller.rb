@@ -6,6 +6,13 @@ class HostsController < ApplicationController
     @hosts = Host.multi_services(params[:services]).where(opts).order('created_at desc').page(params[:page]).per(10)
   end
 
+  def destroy
+    @host = Host.find_by(id: params[:id])
+    @host.destroy
+
+    render json: {type: "success",message:"删除成功！"}
+  end
+
   def index_bak
     hosts = $archon_redis.hgetall('archon_hosts')
     @hosts = []
