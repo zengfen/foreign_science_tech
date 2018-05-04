@@ -48,7 +48,8 @@ class CommandsController < ApplicationController
   def new
     @commands = {
       'agent_restart' => '重启',
-      'agent_stop' => '停止'
+      'agent_stop' => '停止',
+      "supervisor_stop" => "升级supervisor",
     }
 
     @current_command = $archon_redis.get('archon_current_command')
