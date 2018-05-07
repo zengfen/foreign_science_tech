@@ -321,23 +321,23 @@ class SpiderTask < ApplicationRecord
     redis_keys << "archon_tasks_#{id}_0"
     redis_keys << "archon_tasks_#{id}_1"
 
-    %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
+    # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
 
-    redis_keys.map { |x| $archon_redis.del(x) }
+    # redis_keys.map { |x| $archon_redis.del(x) }
 
     $archon_redis.hdel('archon_task_account_controls', id)
 
     $archon_redis.hdel('archon_available_tasks', id)
 
-    $archon_redis.del("archon_task_hosts_#{id}")
+    # $archon_redis.del("archon_task_hosts_#{id}")
 
-    $archon_redis.del("archon_task_total_results_#{id}")
+    # $archon_redis.del("archon_task_total_results_#{id}")
 
-    $archon_redis.keys('archon_host_tasks_*').each do |k|
-      $archon_redis.hkeys(k).each do |kk|
-        $archon_redis.hdel(k, kk) if kk.start_with?("#{id},")
-      end
-    end
+    # $archon_redis.keys('archon_host_tasks_*').each do |k|
+    #   $archon_redis.hkeys(k).each do |kk|
+    #     $archon_redis.hdel(k, kk) if kk.start_with?("#{id},")
+    #   end
+    # end
 
     DispatcherSubtask.where(task_id: self.id).delete_all
     DispatcherSubtaskStatus.where(task_id: self.id).delete_all
