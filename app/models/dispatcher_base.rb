@@ -26,7 +26,7 @@ class DispatcherBase < ActiveRecord::Base
       '47.96.68.127' => true,
       '47.89.234.131' => true
     }.each do |k, v|
-      DispatcherHost.create(:ip => k, is_internal => v)
+      DispatcherHost.create(:ip => k, :is_internal => v)
     end
   end
 end
