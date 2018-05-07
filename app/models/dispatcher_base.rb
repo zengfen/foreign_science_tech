@@ -30,6 +30,7 @@ class DispatcherBase < ActiveRecord::Base
     # end
 
     $archon_redis.keys("archon_task_details_*").each do |k|
+      puts k
       id = k.gsub("archon_task_details_", "")
       spider_task = SpiderTask.find_by_id(id)
       next if spider_task.blank?
