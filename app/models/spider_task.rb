@@ -96,15 +96,19 @@ class SpiderTask < ApplicationRecord
 
   def special_tag_names
     tag_names = []
-    self.special_tag.split(",").each do |x|
-      st = SpecialTag.find(x) rescue nil
+    special_tag.split(',').each do |x|
+      st = begin
+             SpecialTag.find(x)
+           rescue StandardError
+             nil
+           end
       tag_names << st.tag if st
     end
     tag_names
   end
 
   def special_tag_transfor_id
-    specital_tags_ids = self.special_tag.split(",").collect{|tag| SpecialTag.create_with({:tag=>tag,:created_at=>Time.now,:updated_at=>Time.now}).find_or_create_by(:tag=>tag).id }.join(",")
+    specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
     self.special_tag = specital_tags_ids
   end
 
@@ -169,7 +173,8 @@ class SpiderTask < ApplicationRecord
       if is_split
         task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
         task_template['url'] = keyword
-        $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+        # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
           $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
         else
@@ -179,7 +184,8 @@ class SpiderTask < ApplicationRecord
         keyword.split(',').each do |k|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
           task_template['url'] = k
-          $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+          DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+          # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
             $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
           else
@@ -190,7 +196,8 @@ class SpiderTask < ApplicationRecord
     else
       task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
       task_template['url'] = keyword
-      $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+      # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
+      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       if need_account
         $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_template['task_md5'])
       else
@@ -202,23 +209,27 @@ class SpiderTask < ApplicationRecord
       $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
     end
 
-    $archon_redis.hset('archon_available_tasks', self.max_retry_count)
+    $archon_redis.hset('archon_available_tasks', max_retry_count)
   end
 
   def success_count
-    $archon_redis.scard("archon_completed_tasks_#{id}")
+    DispatcherSubtask.where(task_id: self.id).where("status = 1 or status = 2").count
+    # $archon_redis.scard("archon_completed_tasks_#{id}")
   end
 
   def fail_count
-    $archon_redis.scard("archon_discard_tasks_#{id}")
+    DispatcherSubtask.where(task_id: self.id).where("status = 3").count
+    # $archon_redis.scard("archon_discard_tasks_#{id}")
   end
 
   def warning_count
-    $archon_redis.scard("archon_warning_tasks_#{id}")
+    DispatcherSubtask.where(task_id: self.id).where("status = 3").count
+    # $archon_redis.scard("archon_warning_tasks_#{id}")
   end
 
   def current_total_count
-    $archon_redis.hlen("archon_task_details_#{id}")
+    DispatcherSubtask.where(task_id: self.id).count
+    # $archon_redis.hlen("archon_task_details_#{id}")
   end
 
   def current_running_count
@@ -226,9 +237,10 @@ class SpiderTask < ApplicationRecord
   end
 
   def result_count
-    $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i
-  rescue StandardError
-    0
+    DispatcherTaskResultCounter.where(task_id: self.id).sum(&:result_count)
+    # $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i
+  # rescue StandardError
+    # 0
   end
 
   def maybe_finished?
@@ -340,5 +352,4 @@ class SpiderTask < ApplicationRecord
       dequeue_level_task
     end
   end
-
 end

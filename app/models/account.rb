@@ -76,6 +76,7 @@ class Account < ApplicationRecord
   end
 
   #  过期之后要执行这个来删除对应的数据
+  #  FIXME  加入周期任务中
   def clear_redis
     return if self.valid_time > Time.now + 10.minutes
 
