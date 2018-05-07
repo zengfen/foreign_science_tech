@@ -77,12 +77,14 @@ class Account < ApplicationRecord
 
   #  过期之后要执行这个来删除对应的数据
   def clear_redis
+    return if self.valid_time > Time.now + 10.minutes
+
     $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
-      $archon_redis.zrem(k, content)
+      $archon_redis.zrem(k, self.id)
     end
 
     $archon_redis.keys("archon_template_ip_accounts_#{control_template_id}_*").each do |k|
-      $archon_redis.zrem(k, content)
+      $archon_redis.zrem(k, self.id)
     end
   end
 end
