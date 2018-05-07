@@ -83,3 +83,9 @@ production:
   database: archon_center_production
   username: archon_center
   password: <%= ENV['ARCHON_CENTER_DATABASE_PASSWORD'] %>
+
+dispatcher:
+  adapter: 'mysql2'
+  database: 'archon_dispatcher'
+  username: 'root'
+  password: '123456'
