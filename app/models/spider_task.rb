@@ -213,17 +213,17 @@ class SpiderTask < ApplicationRecord
   end
 
   def success_count
-    DispatcherSubtask.where(task_id: self.id).where("status = 1 or status = 2").count
+    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 1 or status = 2").count
     # $archon_redis.scard("archon_completed_tasks_#{id}")
   end
 
   def fail_count
-    DispatcherSubtask.where(task_id: self.id).where("status = 3").count
+    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 3").count
     # $archon_redis.scard("archon_discard_tasks_#{id}")
   end
 
   def warning_count
-    DispatcherSubtask.where(task_id: self.id).where("status = 3").count
+    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 3").count
     # $archon_redis.scard("archon_warning_tasks_#{id}")
   end
 
