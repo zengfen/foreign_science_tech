@@ -38,7 +38,7 @@ class DispatcherBase < ActiveRecord::Base
       $archon_redis.hgetall(k).each do |kk, vv|
         content = JSON.parse(vv)
         DispatcherSubtask.create(id: kk, task_id: content["task_id"], content: content, retry_count: 0)
-        DispatcherSubtask.create(id: kk, task_id: content["task_id"], status: 1, created_at: Time.now.to_i)
+        DispatcherSubtaskStatus.create(id: kk, task_id: content["task_id"], status: 1, created_at: Time.now.to_i)
       end
     end
   end
