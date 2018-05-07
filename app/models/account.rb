@@ -71,7 +71,7 @@ class Account < ApplicationRecord
         end
       end
     else
-      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, x.id)
+      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, self.id)
     end
   end
 
