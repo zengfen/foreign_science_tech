@@ -28,5 +28,17 @@ class DispatcherBase < ActiveRecord::Base
     # }.each do |k, v|
     #   DispatcherHost.create(:ip => k, :is_internal => v)
     # end
+
+    $archon_redis.keys("archon_task_details_*").each do |k|
+      id = k.gsub("archon_task_details_", "")
+      spider_task = SpiderTask.find_by_id(id)
+      next if spider_task.blank?
+
+      $archon_redis.hgetall(k).each do |kk, vv|
+        content = JSON.parse(vv)
+        DispatcherSubtask.create(id: kk, task_id: content["task_id"], content: content, retry_count: 0)
+        DispatcherSubtask.create(id: kk, task_id: content["task_id"], status: 1, created_at: Time.now.to_i)
+      end
+    end
   end
 end
