@@ -63,12 +63,15 @@ class Account < ApplicationRecord
   #  如果一个账号的有效期过了，要清除要对应的account/token
   #  account删除之后也要清除，都要通过定时任务来完成
   def setup_redis
+    return if self.valid_time < Time.now - 10.minutes
     if control_template.is_bind_ip
-      $archon_redis.hgetall('archon_hosts').each do |ip, _|
-        $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, content)
+      DispatcherHost.all.each do |x|
+        if x.is_internal == self.is_internal
+          $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, self.id)
+        end
       end
     else
-      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, content)
+      $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, x.id)
     end
   end
 

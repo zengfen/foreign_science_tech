@@ -19,14 +19,14 @@ class DispatcherBase < ActiveRecord::Base
     #   DispatcherAccount.create(id: x.id, content: x.content, valid_time: x.valid_time.to_i)
     # end
 
-    {
-      '47.98.243.99' => true,
-      '47.96.70.15' => true,
-      '47.88.35.212' => false,
-      '47.96.68.127' => true,
-      '47.89.234.131' => true
-    }.each do |k, v|
-      DispatcherHost.create(:ip => k, :is_internal => v)
-    end
+    # {
+    #   '47.98.243.99' => true,
+    #   '47.96.70.15' => true,
+    #   '47.88.35.212' => false,
+    #   '47.96.68.127' => true,
+    #   '47.89.234.131' => true
+    # }.each do |k, v|
+    #   DispatcherHost.create(:ip => k, :is_internal => v)
+    # end
   end
 end
