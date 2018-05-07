@@ -4,9 +4,16 @@ class DispatcherBase < ActiveRecord::Base
 
 
   def self.migrate_data
+    data = {}
     $archon_redis.smembers("archon_available_tasks").each do |x|
-      puts x
-      puts SpiderTask.find(x).max_retry_count
+      data[x] =  SpiderTask.find(x).max_retry_count
+    end
+
+    puts data
+    $archon_redis.del("archon_available_tasks")
+
+    data.each do |k, v|
+      $archon_redis.hset("archon_available_tasks", k, v)
     end
   end
 end
