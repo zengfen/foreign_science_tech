@@ -66,7 +66,7 @@ class Account < ApplicationRecord
     return if self.valid_time < Time.now + 10.minutes
     if control_template.is_bind_ip
       DispatcherHost.all.each do |x|
-        if x.is_internal == self.is_internal
+        if x.is_internal == control_template.is_internal
           $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{ip}", Time.now.to_i * 1000, self.id)
         end
       end
