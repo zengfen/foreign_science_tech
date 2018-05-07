@@ -29,16 +29,27 @@ class DispatcherBase < ActiveRecord::Base
     #   DispatcherHost.create(:ip => k, :is_internal => v)
     # end
 
-    $archon_redis.keys("archon_task_details_*").each do |k|
+    # $archon_redis.keys("archon_task_details_*").each do |k|
+    #   puts k
+    #   id = k.gsub("archon_task_details_", "")
+    #   spider_task = SpiderTask.find_by_id(id)
+    #   next if spider_task.blank?
+
+    #   $archon_redis.hgetall(k).each do |kk, vv|
+    #     content = JSON.parse(vv)
+    #     DispatcherSubtask.create(id: kk, task_id: content["task_id"], content: content, retry_count: 0)
+    #     DispatcherSubtaskStatus.create(id: kk, task_id: content["task_id"], status: 1, created_at: Time.now.to_i)
+    #   end
+    # end
+
+    $archon_redis.keys("archon_task_total_results_*").each do |k|
       puts k
-      id = k.gsub("archon_task_details_", "")
+      id = k.gsub("archon_task_total_results_", "")
       spider_task = SpiderTask.find_by_id(id)
       next if spider_task.blank?
 
-      $archon_redis.hgetall(k).each do |kk, vv|
-        content = JSON.parse(vv)
-        DispatcherSubtask.create(id: kk, task_id: content["task_id"], content: content, retry_count: 0)
-        DispatcherSubtaskStatus.create(id: kk, task_id: content["task_id"], status: 1, created_at: Time.now.to_i)
+      $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).each do |kk, vv|
+        DispatcherTaskResultCounter.create(task_id: id.to_i, ip: "", hour: Time.parse("#{kk}0000"), result_count: vv.to_i)
       end
     end
   end

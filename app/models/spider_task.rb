@@ -338,6 +338,10 @@ class SpiderTask < ApplicationRecord
         $archon_redis.hdel(k, kk) if kk.start_with?("#{id},")
       end
     end
+
+    DispatcherSubtask.where(task_id: self.id).delete_all
+    DispatcherSubtaskStatus.where(task_id: self.id).delete_all
+    DispatcherTaskResultCounter.where(task_id: self.id).delete_all
   end
 
   def self.refresh_task_status
