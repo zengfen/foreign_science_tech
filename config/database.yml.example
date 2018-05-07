@@ -92,4 +92,5 @@ dispatcher:
   encoding: utf8
   host: 
   port: 
+  timeout: 300
 
