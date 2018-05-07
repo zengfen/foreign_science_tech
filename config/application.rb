@@ -18,7 +18,7 @@ module ArchonCenter
     config.eager_load_paths << Rails.root.join('app/models/index')
 
     config.autoload_paths += ["#{config.root}/lib"]
-    
+
     config.i18n.default_locale = 'zh-CN'
     config.active_record.default_timezone = :local
     config.time_zone = 'Beijing'
@@ -33,3 +33,6 @@ begin
 rescue Exception => e
   puts e
 end
+
+
+DispatcherDB = YAML.load_file(File.join(Rails.root, "config", "database.yml"))["dispatcher"]

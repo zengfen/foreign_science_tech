@@ -1,4 +1,3 @@
-class DispatcherAccount < ActiveRecord::Base
-  establish_connection 'dispatcher'
+class DispatcherAccount < DispatcherBase
   self.table_name = 'accounts'
 end

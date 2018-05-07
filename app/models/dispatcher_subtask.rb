@@ -1,5 +1,4 @@
-class DispatcherSubtask < ActiveRecord::Base
-  establish_connection 'dispatcher'
+class DispatcherSubtask < DispatcherBase
   self.table_name = "subtasks"
 
 end
