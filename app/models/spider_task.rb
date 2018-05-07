@@ -202,7 +202,7 @@ class SpiderTask < ApplicationRecord
       $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
     end
 
-    $archon_redis.sadd('archon_available_tasks', id)
+    $archon_redis.hset('archon_available_tasks', self.max_retry_count)
   end
 
   def success_count
@@ -315,7 +315,7 @@ class SpiderTask < ApplicationRecord
 
     $archon_redis.hdel('archon_task_account_controls', id)
 
-    $archon_redis.srem('archon_available_tasks', id)
+    $archon_redis.hdel('archon_available_tasks', id)
 
     $archon_redis.del("archon_task_hosts_#{id}")
 

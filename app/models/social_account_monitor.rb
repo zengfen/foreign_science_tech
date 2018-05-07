@@ -136,6 +136,6 @@ class SocialAccountMonitor < ApplicationRecord
       $archon_redis.hset('archon_task_account_controls', spider_task.id, spider.control_template.control_key)
     end
 
-    $archon_redis.sadd('archon_available_tasks', spider_task.id)
+    $archon_redis.hset('archon_available_tasks', spider_task.id, spider_task.max_retry_count)
   end
 end
