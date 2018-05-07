@@ -339,7 +339,7 @@ class SpiderTask < ApplicationRecord
     #   end
     # end
 
-    DispatcherRunningSubtask.where(task_id, self.id).delete_all
+    DispatcherRunningSubtask.where(task_id: self.id).delete_all
     DispatcherSubtask.where(task_id: self.id).delete_all
     DispatcherSubtaskStatus.where(task_id: self.id).delete_all
     DispatcherTaskResultCounter.where(task_id: self.id).delete_all
