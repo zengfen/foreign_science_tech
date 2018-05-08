@@ -62,6 +62,8 @@ class SpiderTask < ApplicationRecord
     else
       $archon_redis.zadd('archon_external_tasks', level, id)
     end
+
+    $archon_redis.hset('archon_available_tasks', self.id, max_retry_count)
   end
 
   def dequeue_level_task
@@ -70,6 +72,8 @@ class SpiderTask < ApplicationRecord
     else
       $archon_redis.zrem('archon_external_tasks', id)
     end
+
+    $archon_redis.hdel('archon_available_tasks', self.id)
   end
 
   def start!
@@ -323,7 +327,7 @@ class SpiderTask < ApplicationRecord
 
     # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
 
-    # redis_keys.map { |x| $archon_redis.del(x) }
+    redis_keys.map { |x| $archon_redis.del(x) }
 
     $archon_redis.hdel('archon_task_account_controls', id)
 
