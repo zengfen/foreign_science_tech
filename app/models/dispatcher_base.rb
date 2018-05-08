@@ -65,7 +65,7 @@ class DispatcherBase < ActiveRecord::Base
     # }
 
     data = {}
-    StatisticalInfo.select('host_ip, info_type, count, hour_field').where('count != 0').each do |x|
+    StatisticalInfo.select('host_ip, info_type, count, hour_field').where('count != 0 and info_type != 3').each do |x|
       ts = Time.parse(x.hour_field + '0000').to_i
       next if x.host_ip.blank?
 
