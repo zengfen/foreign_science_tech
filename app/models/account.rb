@@ -49,6 +49,7 @@ class Account < ApplicationRecord
       account = Account.new(content: line.strip,
                             account_type: account_type,
                             valid_time: valid_time,
+                            ips: ips,
                             control_template_id: control_template_id)
       account.save
     end
@@ -69,10 +70,18 @@ class Account < ApplicationRecord
   def setup_redis
     return if self.valid_time < Time.now + 10.minutes
     if control_template.is_bind_ip
-      DispatcherHost.all.each do |x|
-        if x.is_internal == control_template.is_internal
-          $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{x.ip}", Time.now.to_i * 1000, self.id)
-        end
+      agent_ips = if control_template.is_internal
+                    DispatcherHost.internal_agents
+                  else
+                    DispatcherHost.external_agents
+                  end
+
+      if !self.ips.blank?
+        agent_ips = self.ips
+      end
+
+     agent_ips.each do |x|
+          $archon_redis.zadd("archon_template_ip_accounts_#{control_template_id}_#{x}", Time.now.to_i * 1000, self.id)
       end
     else
       $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, self.id)
