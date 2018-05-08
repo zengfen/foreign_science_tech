@@ -35,9 +35,9 @@ class HostsRefreshTask
 
 
   def self.write_exception(e)
-      logger = Logger.new(log_file)  
-      logger.level = Logger::DEBUG 
-      logger.formatter = proc do |severity, datetime, progname, message| 
+      logger = Logger.new(log_file)
+      logger.level = Logger::DEBUG
+      logger.formatter = proc do |severity, datetime, progname, message|
         "[#{datetime.to_s(:db)}] [#{severity}] #{message}\n"
       end
       info = {exception:e.class.to_s,message:e.message,time:Time.now.to_s}
@@ -50,14 +50,14 @@ class HostsRefreshTask
       puts "task process is already running!"
       exit
     end
-    
+
     #常驻进程
     Process.daemon(true)
     write_pid
-       
+
     while true
       begin
-        Host.load_host_datas
+        # Host.load_host_datas
       rescue Exception =>e
         ActiveRecord::Base.connection.reconnect!  if e.message.to_s.include?('no connection to the server')
         write_exception(e)
