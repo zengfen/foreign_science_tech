@@ -54,8 +54,8 @@ class DispatcherHost  < DispatcherBase
 
       running_services[worker.ip][worker.service_name] = Time.now.to_i - worker.last_active_at
 
-      if Time.now.to_i - worker.last_active_at < 300
-        running_services[worker.ip] << service_names[worker.service_name]
+      if (Time.now.to_i - worker.last_active_at) < 300
+        running_service_counter[worker.ip] << service_names[worker.service_name]
       end
     end
 
