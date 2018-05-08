@@ -39,6 +39,10 @@ class Account < ApplicationRecord
   def save_with_split!
     return { 'error' => '内容为空' } if contents.blank?
 
+    if self.control_template.is_bind_ip && self.ips.blank?
+      return {'error' => "选择IP"}
+    end
+
     contents.split("\n").each do |line|
       next if line.blank?
 

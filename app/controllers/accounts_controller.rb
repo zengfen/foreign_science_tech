@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
   def create
     account_params = params
     .require(:account)
-    .permit(:contents, :control_template_id, :valid_time, :account_type)
+    .permit(:contents, :ips, :control_template_id, :valid_time, :account_type)
 
     @account = Account.new(account_params)
     message = @account.save_with_split!
