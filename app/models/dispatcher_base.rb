@@ -42,15 +42,68 @@ class DispatcherBase < ActiveRecord::Base
     #   end
     # end
 
-    $archon_redis.keys("archon_task_total_results_*").each do |k|
-      puts k
-      id = k.gsub("archon_task_total_results_", "")
-      spider_task = SpiderTask.find_by_id(id)
-      next if spider_task.blank?
+    # $archon_redis.keys("archon_task_total_results_*").each do |k|
+    #   puts k
+    #   id = k.gsub("archon_task_total_results_", "")
+    #   spider_task = SpiderTask.find_by_id(id)
+    #   next if spider_task.blank?
 
-      $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).each do |kk, vv|
-        DispatcherTaskResultCounter.create(task_id: id.to_i, ip: "", hour: Time.parse("#{kk}0000"), result_count: vv.to_i)
+    #   $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).each do |kk, vv|
+    #     DispatcherTaskResultCounter.create(task_id: id.to_i, ip: "", hour: Time.parse("#{kk}0000"), result_count: vv.to_i)
+    #   end
+    # end
+
+    # {
+    #   1 => 'discard_count', # 失败任务
+    #   2 => 'completed_count', # 成功任务
+    #   3 => 'runing_count', # 执行中任务
+    #   4 => 'data_count', # 数据量
+    #   5 => 'receiver_count', # 写入kafka数据量
+    #   6 => 'loader_consumer_count', # kafka消费数量
+    #   7 => 'loader_load_count', # 写入ES数量
+    #   # 8 => 'host_task_counters' # 主机完成的任务量
+    # }
+
+    data = {}
+    StatisticalInfo.select('host_ip, info_type, count, hour_field').where('count != 0').each do |x|
+      ts = Time.parse(x.hour_field + '0000').to_i
+      data["#{x.host_ip}_#{x.hour_field}"] ||= {
+        ip: x.host_ip,
+        hour: ts,
+        task_count: 0,
+        discard_count: 0,
+        completed_count: 0,
+        result_count: 0,
+        left_result_count: 0,
+        receiver_result_count: 0,
+        loader_consume_count: 0,
+        loader_load_count: 0,
+        dumper_task_count: 0,
+        dumper_result_count: 0
+      }
+
+      case x.info_type
+      when 1
+        data["#{x.host_ip}_#{x.hour_field}"][:task_count] += x.count
+        data["#{x.host_ip}_#{x.hour_field}"][:discard_count] += x.count
+      when 2
+        data["#{x.host_ip}_#{x.hour_field}"][:task_count] += x.count
+        data["#{x.host_ip}_#{x.hour_field}"][:completed_count] += x.count
+      when 4
+        data["#{x.host_ip}_#{x.hour_field}"][:result_count] += x.count
+      when 5
+        data["#{x.host_ip}_#{x.hour_field}"][:receiver_result_count] += x.count
+      when 6
+        data["#{x.host_ip}_#{x.hour_field}"][:loader_consume_count] += x.count
+      when 7
+        data["#{x.host_ip}_#{x.hour_field}"][:loader_load_count] += x.count
       end
     end
+
+    data.each do |x|
+      DispatcherHostTaskCounter.create(x)
+    end
+
+    nil
   end
 end
