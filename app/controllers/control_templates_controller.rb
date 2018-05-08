@@ -12,6 +12,7 @@ class ControlTemplatesController < ApplicationController
                               .permit(:name, :is_bind_ip,
                                       :window_size, :window_type,
                                       :has_account, :start_delay,
+                                      :is_internal,
                                       :end_delay, :max_count)
 
     @control_template = ControlTemplate.new(control_template_params)
