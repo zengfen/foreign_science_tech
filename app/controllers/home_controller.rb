@@ -17,17 +17,17 @@ class HomeController < ApplicationController
     current_time = Time.now.at_beginning_of_day.to_i
 
     # datas = StatisticalInfo.get_daily_count(current_time)
-    @today_completed_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(&:completed_count)
-    @today_discard_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(&:discard_count)
+    @today_completed_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(:completed_count)
+    @today_discard_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(:discard_count)
 
     @runing_count = DispatcherRunningSubtask.count
 
     # data_infos = StatisticalInfo.data_infos
-    @total_data_count = DispatcherHostTaskCounter.sum(&:result_count)
+    @total_data_count = DispatcherHostTaskCounter.sum(:result_count)
 
-    @total_completed_count = DispatcherHostTaskCounter.sum(&:completed_count)
+    @total_completed_count = DispatcherHostTaskCounter.sum(:completed_count)
 
-    @total_discard_count =     DispatcherHostTaskCounter.sum(&:discard_count)
+    @total_discard_count =     DispatcherHostTaskCounter.sum(:discard_count)
 
     @today_already_runing_count = @today_completed_count + @today_discard_count
     @total_already_runing_count = @total_completed_count + @total_discard_count
