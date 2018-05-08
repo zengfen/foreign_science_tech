@@ -72,7 +72,8 @@ function list_ips () {
     type:"get",
     dataType:"json",
     success:function(result){
-          $(".all_ips").html(result.html);
+      alert(result);
+          $(".all_ips").html(result);
       }
     });
   }else{
