@@ -4,7 +4,7 @@
     <% @agent_ips.each do |v|  %>
       <div class="i-checks inline">
         <label class="control-label">
-          <%= f.check_box(:ips ,v,:checked=> true)%>
+          <input type="checkbox" name="[]ips" value="<%= v %>" checked="checked" />
           <i></i> <%= v %>
         </label>
       </div>
