@@ -80,6 +80,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :accounts do
+    collection do
+      get 'ip_list'
+    end
+  end
+
   resources :media_accounts do
     collection do
       get 'test'

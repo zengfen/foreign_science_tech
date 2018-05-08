@@ -1,0 +1,13 @@
+<div class="form-group">
+  <label class="col-sm-2 control-label">选择Agent</label>
+  <div class="col-sm-10">
+    <% @agent_ips.each do |v|  %>
+      <div class="i-checks inline">
+        <label class="control-label">
+          <%= f.checkbox (:account_type, k , :checked=> true)%>
+          <i></i> <%= v %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</div>

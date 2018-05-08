@@ -41,4 +41,15 @@ class AccountsController < ApplicationController
     redirect_to root_path if @account.blank?
     render json: { type: 'success', message: '操作成功！' } if @account.destroy
   end
+
+
+  def ip_list
+    template = ControlTemplate.find(params[:id])
+    @ips = DispatcherHost.where(is_internal: template.is_internal).collect(&:ip)
+    @agent_ips = DispatcherHostServiceWorker.where(service_name: "agent", ip: @ips).group(:ip, :service_name).collect(&:ip)
+
+
+
+    render layout: false
+  end
 end
