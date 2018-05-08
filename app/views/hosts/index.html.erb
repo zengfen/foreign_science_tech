@@ -57,7 +57,7 @@
                   <thead>
                     <tr>
                       <th class="text-center">主机IP</th>
-                      <th class="text-center">国家</th>
+                      <th class="text-center">所属位置</th>
                       <th class="text-center">心跳时间</th>
                       <th class="text-center">安装服务</th>
                       <th class="text-center">在线服务</th>
@@ -67,18 +67,18 @@
                   <tbody class="text-center">
                     <% @hosts.each do |h| %>
                       <tr>
-                        <td><%= h.extranet_ip.to_s %></td>
+                        <td><%= h.ip %></td>
                         <td><%= h.network_environment_cn %></td>
-                        <td><%= time_ago_in_words(h.recording_time) %>前</td>
-                        <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=h.service_cn.join(',')%>"><%= h.host_service.count%></td>
-                        <td data-toggle="tooltip"  data-container="body"  data-placement="bottom" title="<%=h.online_services_cn.join(',')%>"><%= h.online_services_cn.count%></td>
+                        <td><%= time_ago_in_words(Time.at(h.last_active_at)) %>前</td>
+                        <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=@installed_services[h.ip].join(',')%>"><%= @installed_services[h.ip].size%></td>
+                        <td data-toggle="tooltip"  data-container="body"  data-placement="bottom" title="<%=@running_services[h.ip].join(',')%>"><%= @running_services[h.ip].size%></td>
                         <td class="pos-r">
                           <a href="##">
                             <i class="icon_data_analysis icon-more"></i>
                           </a>
                           <ul class="more-ul dn">
                             <li class="bor-b">
-                              <a href="/hosts/show?ip=<%= h.extranet_ip.to_s  %>">详情</a>
+                              <a href="/hosts/show?ip=<%= h.ip  %>">详情</a>
                             </li>
                             <li>
                               <%=link_to(host_path(h),:class=>"remove-line") do%>删除<%end%>
@@ -90,7 +90,6 @@
                   </tbody>
                 </table>
                 <div class="text-center">
-                  <%= paginate @hosts%>
                 </div>
               <%else%>
                 <%= render "shared/no_data" %>

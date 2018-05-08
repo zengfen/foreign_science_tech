@@ -3,7 +3,9 @@ class HostsController < ApplicationController
   def index
     opts = {}
     opts[:extranet_ip] = params[:keyword] unless params[:keyword].blank?
-    @hosts = Host.multi_services(params[:services]).where(opts).order('created_at desc').page(params[:page]).per(10)
+    # @hosts = Host.multi_services(params[:services]).where(opts).order('created_at desc').page(params[:page]).per(10)
+
+    @hosts, @installed_services, @running_services = DispatcherHost.list_services
   end
 
   def destroy

@@ -2,6 +2,18 @@ class DispatcherHost  < DispatcherBase
   self.table_name = "hosts"
 
 
+  def self.service_names
+    {
+      'agent' => '爬虫节点',
+      'supervisor' => '节点监控器',
+      'controller' => '主机控制器',
+      'dispatcher' => '任务分发器',
+      'loader' => '数据loaders',
+      'receiver' => '数据接收器',
+      "dumper" => '数据导出器',
+    }
+  end
+
   def self.internal_agents
     ips = DispatcherHost.where(is_internal: true).collect(&:ip)
     DispatcherHostServiceWorker
@@ -20,9 +32,41 @@ class DispatcherHost  < DispatcherBase
 
 
   def self.list_services
-    installed_services = DispatcherHostService.group(:ip, :service_name)
-    DispatcherHost.all.each do |host|
+    installed_services = []
+
+    DispatcherHostService.group(:ip, :service_name).each do |x|
+      installed_services[x.ip] ||= []
+      installed_services[x.ip] << service_names[x.service_name]
     end
+
+
+    all_service_workers = DispatcherHostServiceWorker.order("last_active_at desc")
+
+    running_services = {}
+
+    running_service_counter = {}
+    all_service_workers.each do |worker|
+      running_services[worker.ip] ||= {}
+      running_service_counter[worker.ip] ||= []
+
+      next if running_services[worker.ip].key?(woker.service_name)
+
+
+      running_services[worker.ip][worker.service_name] = Time.now.to_i - worker.last_active_at
+
+      if Time.now.to_i - worker.last_active_at < 300
+        running_services[worker.ip] << service_names[worker.service_name]
+      end
+    end
+
+
+    [DispatcherHost.all, installed_services, running_service_counter]
   end
+
+
+  def network_environment_cn
+    self.is_internal ? "境内" : "境外"
+  end
+
 
 end
