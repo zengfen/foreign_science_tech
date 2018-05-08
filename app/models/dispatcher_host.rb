@@ -32,7 +32,7 @@ class DispatcherHost  < DispatcherBase
 
 
   def self.list_services
-    installed_services = []
+    installed_services = {}
 
     DispatcherHostService.group(:ip, :service_name).each do |x|
       installed_services[x.ip] ||= []
