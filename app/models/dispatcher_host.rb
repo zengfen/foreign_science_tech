@@ -18,4 +18,11 @@ class DispatcherHost  < DispatcherBase
       .collect(&:ip)
   end
 
+
+  def self.list_services
+    installed_services = DispatcherHostService.group(:ip, :service_name)
+    DispatcherHost.all.each do |host|
+    end
+  end
+
 end
