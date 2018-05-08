@@ -7,9 +7,10 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">控制模板</label>
             <div class="col-sm-10">
-              <%= f.select(:control_template_id, @templates,{},{class: "form-control m-b"}) %>
+              <%= f.select(:control_template_id, @templates,{},{class: "form-control m-b", :onchange=>"list_ips()"}) %>
             </div>
           </div>
+          <div class="all_ips"></div>
           <div class="hr-line-dashed"></div>
           <div class="form-group">
             <label class="col-sm-2 control-label">类型</label>
@@ -60,5 +61,25 @@ $('#end_date').datetimepicker({
   autoclose: true,
   format: 'yyyy-mm-dd hh:ii'
 });
+
+function list_ips () {
+  var template_id = $('#account_control_template_id').val();
+  if (template_id!=""){
+  url  = '/accounts/'+ template_id+'/ip_list'
+  $.ajax({
+  url:url,
+    type:"get",
+    dataType:"json",
+    success:function(result){
+          $(".all_ips").html(result);
+      }
+    });
+  }else{
+    $(".all_ips").html('');
+  }
+
+}
   </script>
+
+
 <%end%>
