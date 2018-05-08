@@ -67,8 +67,11 @@ class DispatcherBase < ActiveRecord::Base
     data = {}
     StatisticalInfo.select('host_ip, info_type, count, hour_field').where('count != 0').each do |x|
       ts = Time.parse(x.hour_field + '0000').to_i
-      data["#{x.host_ip}_#{x.hour_field}"] ||= {
-        ip: x.host_ip,
+      next if x.host_ip.blank?
+
+      kk = "#{x.host_ip.strip}_#{x.hour_field}"
+      data[kk] ||= {
+        ip: x.host_ip.strip,
         hour: ts,
         task_count: 0,
         discard_count: 0,
@@ -84,19 +87,19 @@ class DispatcherBase < ActiveRecord::Base
 
       case x.info_type
       when 1
-        data["#{x.host_ip}_#{x.hour_field}"][:task_count] += x.count
-        data["#{x.host_ip}_#{x.hour_field}"][:discard_count] += x.count
+        data[kk][:task_count] += x.count
+        data[kk][:discard_count] += x.count
       when 2
-        data["#{x.host_ip}_#{x.hour_field}"][:task_count] += x.count
-        data["#{x.host_ip}_#{x.hour_field}"][:completed_count] += x.count
+        data[kk][:task_count] += x.count
+        data[kk][:completed_count] += x.count
       when 4
-        data["#{x.host_ip}_#{x.hour_field}"][:result_count] += x.count
+        data[kk][:result_count] += x.count
       when 5
-        data["#{x.host_ip}_#{x.hour_field}"][:receiver_result_count] += x.count
+        data[kk][:receiver_result_count] += x.count
       when 6
-        data["#{x.host_ip}_#{x.hour_field}"][:loader_consume_count] += x.count
+        data[k][:loader_consume_count] += x.count
       when 7
-        data["#{x.host_ip}_#{x.hour_field}"][:loader_load_count] += x.count
+        data[k][:loader_load_count] += x.count
       end
     end
 
