@@ -100,8 +100,8 @@ class DispatcherBase < ActiveRecord::Base
       end
     end
 
-    data.each do |x|
-      DispatcherHostTaskCounter.create(x)
+    data.each do |k, v|
+      DispatcherHostTaskCounter.create(v)
     end
 
     nil
