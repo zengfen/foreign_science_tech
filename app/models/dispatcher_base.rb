@@ -97,7 +97,7 @@ class DispatcherBase < ActiveRecord::Base
       when 5
         data[kk][:receiver_result_count] += x.count
       when 6
-        data[k][:loader_consume_count] += x.count
+        data[kk][:loader_consume_count] += x.count
       when 7
         data[k][:loader_load_count] += x.count
       end
