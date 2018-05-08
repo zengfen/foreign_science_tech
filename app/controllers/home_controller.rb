@@ -14,26 +14,23 @@ class HomeController < ApplicationController
 
 
 
-    current_time = Time.now
+    current_time = Time.now.at_beginning_of_day.to_i
 
-    datas = StatisticalInfo.get_daily_count(current_time)
-    @today_completed_count = datas["completed_count"]||0
-    @today_discard_count = datas["discard_count"]||0
+    # datas = StatisticalInfo.get_daily_count(current_time)
+    @today_completed_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(&:completed_count)
+    @today_discard_count = DispatcherHostTaskCounter.where("hour > #{current_time}").sum(&:discard_count)
 
-    runing_tasks = StatisticalInfo.runing_tasks.where(:hour_field=>current_time.strftime('%Y%m%d%H'))
-    @runing_count = runing_tasks.collect{|x| x.count}.sum unless runing_tasks.blank?
+    @runing_count = DispatcherRunningSubtask.count
 
-    data_infos = StatisticalInfo.data_infos
-    @total_data_count = data_infos.collect{|x| x.count}.sum unless data_infos.blank?
+    # data_infos = StatisticalInfo.data_infos
+    @total_data_count = DispatcherHostTaskCounter.sum(&:result_count)
 
-    completed_tasks = StatisticalInfo.completed_tasks
-    @total_completed_count = completed_tasks.collect{|x| x.count}.sum unless completed_tasks.blank?
+    @total_completed_count = DispatcherHostTaskCounter.sum(&:completed_count)
 
-    discard_tasks =  StatisticalInfo.discard_tasks
-    @total_discard_count = discard_tasks.collect{|x| x.count}.sum unless discard_tasks.blank?
+    @total_discard_count =     DispatcherHostTaskCounter.sum(&:discard_count)
 
-    @today_already_runing_count = @today_completed_count + @today_discard_count 
-    @total_already_runing_count = @total_completed_count + @total_discard_count 
+    @today_already_runing_count = @today_completed_count + @today_discard_count
+    @total_already_runing_count = @total_completed_count + @total_discard_count
 
 
 
@@ -70,14 +67,14 @@ class HomeController < ApplicationController
 
     # 加入时间和fake因数 后续不需要直接删除
     dis = 1034
-     
+
     @today_completed_count += dis * Time.now.hour
     @today_already_runing_count = @today_completed_count + @today_discard_count
 
-    
+
     @total_data_count += dis * Time.now.hour * 23
-    @total_completed_count += dis * Time.now.hour * 23 
-    @total_discard_count += dis * Time.now.hour 
+    @total_completed_count += dis * Time.now.hour * 23
+    @total_discard_count += dis * Time.now.hour
     @total_already_runing_count += @total_completed_count + @total_discard_count
 
     opts = {}
