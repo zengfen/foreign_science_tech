@@ -72,7 +72,7 @@ function list_ips () {
     type:"get",
     dataType:"json",
     success:function(result){
-          $(".all_ips").html(result);
+          $(".all_ips").html(result.html);
       }
     });
   }else{
