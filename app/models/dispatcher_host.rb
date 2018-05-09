@@ -94,8 +94,8 @@ class DispatcherHost  < DispatcherBase
     running_service_counter = {}
     all_service_workers.each do |worker|
 
-      next if !ip.blank? && ip != x.ip
-      next if !selected_services.blank? && !selected_services.includes?(x.service_name)
+      next if !ip.blank? && ip != worker.ip
+      next if !selected_services.blank? && !selected_services.includes?(worker.service_name)
 
       running_services[worker.ip] ||= {}
       running_service_counter[worker.ip] ||= {}
