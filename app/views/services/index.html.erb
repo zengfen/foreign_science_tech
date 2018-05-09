@@ -65,20 +65,21 @@
                   </thead>
                   <tbody class="text-center">
                     <% @services.each do |k, v| %>
+                      <% v.each do |vv| %>
                       <tr>
                         <td><%= k%></td>
-                        <td><%= v[0] ? "境内" : "境外"%></td>
-                        <td><%= v[1]%></td>
-                          <% if @running_services[k][v[1]].blank? %>
+                        <td><%= vv[0] ? "境内" : "境外"%></td>
+                        <td><%= vv[1]%></td>
+                          <% if @running_services[k][vv[1]].blank? %>
                             <td>下线</td>
                             <td>未知</td>
                           <% else %>
-                            <td><%= @running_services[k][v[1]][1] ? "在线" : "下线" %></td>
+                            <td><%= @running_services[k][vv[1]][1] ? "在线" : "下线" %></td>
                             <td>
-                              <% if @running_services[k][v[1]][0] == 0 %>
+                              <% if @running_services[k][vv[1]][0] == 0 %>
                                 未知
                               <% else %>
-                                <%= time_ago_in_words(Time.at(@running_services[k][v[1]][0])) %>前
+                                <%= time_ago_in_words(Time.at(@running_services[k][vv[1]][0])) %>前
                               <% end %>
                             </td>
                           <% end %>
@@ -94,6 +95,8 @@
                         </td>
                       </tr>
                     <% end %>
+
+                      <% end %>
                   </tbody>
                 </table>
                 <div class="text-center">
