@@ -70,7 +70,7 @@ class ServicesController < ApplicationController
 
     select_query = fields.collect{|x| "sum(host_task_counters.#{x}) as #{x}"}.join(",")
 
-    @results << [
+    @results = [
       DispatcherHostTaskCounter
                 .where("hour >= #{start}")
                 .order('hour desc'),
