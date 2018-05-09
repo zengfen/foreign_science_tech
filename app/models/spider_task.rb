@@ -225,7 +225,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def warning_count
-    DispatcherSubtaskStatus.where(task_id: id).where('status = 3').count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 2').count
   end
 
   def current_total_count
