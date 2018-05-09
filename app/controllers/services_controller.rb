@@ -18,14 +18,14 @@ class ServicesController < ApplicationController
     @loaders = DispatcherHostService.where(service_name: 'receiver')
 
     @results = []
-    loaders.each do |loader|
+    @loaders.each do |loader|
       @results << DispatcherHostTaskCounter
-        .where(ip: loader.ip)
-                  .where("hour > #{start}")
+                  .where(ip: loader.ip)
+                  .where("hour >= #{start}")
                   .order('hour desc')
 
       @results << DispatcherHostTaskCounter
-        .where(ip: loader.ip)
+                  .where(ip: loader.ip)
                   .sum(:receiver_batch_count, :receiver_result_count,
                        :receiver_bytes, :receiver_error_count)
     end
