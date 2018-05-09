@@ -18,14 +18,14 @@ class ServicesController < ApplicationController
     @receivers = DispatcherHostService.where(service_name: 'receiver')
 
     @results = []
-    @receivers.each do |receiver|
+    @receivers.each do |x|
       @results << [
         DispatcherHostTaskCounter
-                  .where(ip: receiver.ip)
+                  .where(ip: x.ip)
                   .where("hour >= #{start}")
                   .order('hour desc'),
         DispatcherHostTaskCounter
-        .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip).first
+        .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: x.ip).first
       ]
     end
   end
@@ -37,14 +37,14 @@ class ServicesController < ApplicationController
     @loaders = DispatcherHostService.where(service_name: 'loader')
 
     @results = []
-    @loaders.each do |loader|
+    @loaders.each do |x|
       @results << [
         DispatcherHostTaskCounter
-                  .where(ip: loader.ip)
+                  .where(ip: x.ip)
                   .where("hour >= #{start}")
                   .order('hour desc'),
         DispatcherHostTaskCounter
-        .select('sum(host_task_counters.loader_consume_count) as loader_consume_count, sum(host_task_counters.loader_load_count) as loader_load_count, sum(host_task_counters.loader_error_count) as loader_error_count').where(ip: receiver.ip).first
+        .select('sum(host_task_counters.loader_consume_count) as loader_consume_count, sum(host_task_counters.loader_load_count) as loader_load_count, sum(host_task_counters.loader_error_count) as loader_error_count').where(ip: x.ip).first
 
       ]
     end
