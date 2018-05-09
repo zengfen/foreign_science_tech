@@ -80,7 +80,7 @@
                             </td>
                           <% end %>
                           <td>
-                          <% if vv[2].blank? || vv[2] == 0 %>
+                          <% if vv[2].blank? || vv[2] == 0 || vv[3].blank? %>
                             -
                           <% else %>
                             <%= time_ago_in_words(Time.at(vv[2])) %>
