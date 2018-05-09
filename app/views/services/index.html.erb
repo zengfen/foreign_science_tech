@@ -61,7 +61,7 @@
                       <th class="text-center">服务名称</th>
                       <th class="text-center">是否在线</th>
                       <th class="text-center">在线时间</th>
-                      <th class="text-center">最近出错时间</th>
+                      <th class="text-center">出错时间</th>
                       <th class="text-center">错误内容</th>
                       <th class="text-center">操作</th>
                     </tr>
@@ -86,7 +86,13 @@
                               <% end %>
                             </td>
                           <% end %>
-                          <td><%= vv[2] %></td>
+                          <td>
+                          <% if vv[2].blank? || vv[2] == 0 %>
+                            无
+                          <% else %>
+                            <%= time_ago_in_words(time.ag(vv[2])) %>
+                          <% end %>
+                          </td>
                           <td><%= vv[3] %></td>
                           <td class="pos-r">
                             <a href="##">
