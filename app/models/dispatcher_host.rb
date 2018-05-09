@@ -70,11 +70,15 @@ class DispatcherHost  < DispatcherBase
 
 
   def self.service_details
+    hosts = {}
+    DispatcherHost.all.each do |x|
+      hosts[x.ip] = x.is_internal
+    end
     installed_services = {}
 
     DispatcherHostService.group(:ip, :service_name).each do |x|
       installed_services[x.ip] ||= []
-      installed_services[x.ip] << [x.is_internal, service_names[x.service_name]]
+      installed_services[x.ip] << [hosts[x.ip], service_names[x.service_name]]
     end
 
 
