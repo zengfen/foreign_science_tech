@@ -83,7 +83,7 @@
                           <% if vv[2].blank? || vv[2] == 0 %>
                             -
                           <% else %>
-                            <%= time_ago_in_words(time.ag(vv[2])) %>
+                            <%= time_ago_in_words(time.at(vv[2])) %>
                           <% end %>
                           </td>
                           <td><%= vv[3] %></td>
