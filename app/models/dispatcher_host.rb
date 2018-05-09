@@ -100,7 +100,7 @@ class DispatcherHost  < DispatcherBase
       running_services[worker.ip] ||= {}
       running_service_counter[worker.ip] ||= {}
 
-      # next if running_services[worker.ip].key?(worker.service_name)
+      next if running_services[worker.ip].key?(worker.service_name)
       running_services[worker.ip][worker.service_name] = ""
 
       last_active_interval = (Time.now.to_i - worker.last_active_at)

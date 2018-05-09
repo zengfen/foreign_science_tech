@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
     @services, @running_services = DispatcherHost.service_details(ip, service_names)
 
 
-    render json: [@services, @running_services]
+    render json: [service_names, @services, @running_services]
   end
 
 end
