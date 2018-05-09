@@ -344,8 +344,19 @@ class SpiderTask < ApplicationRecord
     SpiderTask.where(status: 1).find_each(&:update_finished_status!)
   end
 
+  def update_self_counters!
+    update_attributes(
+      current_success_count: success_count,
+      current_fail_count: fail_count,
+      current_warning_count: warning_count,
+      current_task_count: current_total_count)
+  end
+
   def update_finished_status!
     return unless is_running?
+
+    update_self_counters!
+
     if maybe_finished?
       update_attributes(status: 2)
 
