@@ -15,7 +15,26 @@ class ServicesController < ApplicationController
   def receiver
     start = (Time.now - 12.hours).at_beginning_of_hour.to_i
 
-    @loaders = DispatcherHostService.where(service_name: 'receiver')
+    @receivers = DispatcherHostService.where(service_name: 'receiver')
+
+    @results = []
+    @receivers.each do |receiver|
+      @results << [
+        DispatcherHostTaskCounter
+                  .where(ip: receiver.ip)
+                  .where("hour >= #{start}")
+                  .order('hour desc'),
+        DispatcherHostTaskCounter
+        .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip).first
+      ]
+    end
+  end
+
+
+  def loader
+    start = (Time.now - 12.hours).at_beginning_of_hour.to_i
+
+    @loaders = DispatcherHostService.where(service_name: 'loader')
 
     @results = []
     @loaders.each do |loader|
@@ -25,7 +44,8 @@ class ServicesController < ApplicationController
                   .where("hour >= #{start}")
                   .order('hour desc'),
         DispatcherHostTaskCounter
-        .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip).first
+        .select('sum(host_task_counters.loader_consume_count) as loader_consume_count, sum(host_task_counters.loader_load_count) as loader_load_count, sum(host_task_counters.loader_error_count) as loader_error_count').where(ip: receiver.ip).first
+
       ]
     end
   end
