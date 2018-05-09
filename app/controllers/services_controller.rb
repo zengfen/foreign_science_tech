@@ -68,7 +68,7 @@ class ServicesController < ApplicationController
       "receiver_bytes",
     ]
 
-    select_query = fields.colect{|x| "sum(host_task_counters.#{x}) as #{x}"}.join(",")
+    select_query = fields.collect{|x| "sum(host_task_counters.#{x}) as #{x}"}.join(",")
 
     @results << [
       DispatcherHostTaskCounter
