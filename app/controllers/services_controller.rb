@@ -19,14 +19,14 @@ class ServicesController < ApplicationController
 
     @results = []
     @loaders.each do |loader|
-      @results << DispatcherHostTaskCounter
+      @results << [
+        DispatcherHostTaskCounter
                   .where(ip: loader.ip)
                   .where("hour >= #{start}")
-                  .order('hour desc')
-
-      @results << DispatcherHostTaskCounter
-                  .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count')
-                  .where(ip: loader.ip)
+                  .order('hour desc'),
+        DispatcherHostTaskCounter
+                  .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip)
+      ]
     end
   end
 end
