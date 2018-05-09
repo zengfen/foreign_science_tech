@@ -105,7 +105,7 @@ class DispatcherHost  < DispatcherBase
 
       last_active_interval = (Time.now.to_i - worker.last_active_at)
 
-      running_service_counter[worker.ip][x.service_name] = [worker.last_active_at, last_active_interval < 300]
+      running_service_counter[worker.ip][worker.service_name] = [worker.last_active_at, last_active_interval < 300]
     end
 
 
