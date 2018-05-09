@@ -13,7 +13,7 @@ class ServicesController < ApplicationController
   end
 
   def receiver
-    start = (Time.now - 12.hours).at_beginning_of_hour
+    start = (Time.now - 12.hours).at_beginning_of_hour.to_i
 
     @loaders = DispatcherHostService.where(service_name: 'receiver')
 
