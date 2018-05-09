@@ -69,16 +69,21 @@ class DispatcherHost  < DispatcherBase
   end
 
 
-  def self.service_details
+  def self.service_details(ip, selected_services)
     hosts = {}
+
     DispatcherHost.all.each do |x|
+      next if !ip.blank? && ip != x.ip
       hosts[x.ip] = x.is_internal
     end
+
     installed_services = {}
 
     DispatcherHostService.group(:ip, :service_name).each do |x|
+      next if !ip.blank? && ip != x.ip
+      next if !selected_services.blank? && !selected_services.includes?(x.service_name)
       installed_services[x.ip] ||= []
-      installed_services[x.ip] << [hosts[x.ip], service_names[x.service_name]]
+      installed_services[x.ip] << [hosts[x.ip], x.service_name]
     end
 
 
@@ -88,6 +93,10 @@ class DispatcherHost  < DispatcherBase
 
     running_service_counter = {}
     all_service_workers.each do |worker|
+
+      next if !ip.blank? && ip != x.ip
+      next if !selected_services.blank? && !selected_services.includes?(x.service_name)
+
       running_services[worker.ip] ||= {}
       running_service_counter[worker.ip] ||= {}
 
@@ -96,7 +105,7 @@ class DispatcherHost  < DispatcherBase
 
       last_active_interval = (Time.now.to_i - worker.last_active_at)
 
-      running_service_counter[worker.ip][service_names[worker.service_name]] = [worker.last_active_at, last_active_interval < 300]
+      running_service_counter[worker.ip][x.service_name] = [worker.last_active_at, last_active_interval < 300]
     end
 
 

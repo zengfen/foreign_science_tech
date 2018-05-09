@@ -70,7 +70,7 @@
                       <tr>
                         <td><%= k%></td>
                         <td><%= vv[0] ? "境内" : "境外"%></td>
-                        <td><%= vv[1]%></td>
+                        <td><%= DispatcherHost.service_names[vv[1]]%></td>
                           <% if @running_services[k][vv[1]].blank? %>
                             <td>下线</td>
                             <td>未知</td>
