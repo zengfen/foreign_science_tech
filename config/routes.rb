@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       get 'loader_details'
       get 'dumper'
       get 'dumper_details'
+      get 'counters'
     end
   end
 

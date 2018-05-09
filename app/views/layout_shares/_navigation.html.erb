@@ -83,6 +83,7 @@
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,services') %>">
           <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
           <li class="<%= is_active_action("index", "services") %>"><%= link_to "服务监控", services_path%></li>
+          <li class="<%= is_active_action("counters", "services") %>"><%= link_to "数据量监控", services_path%></li>
           <li class="<%= is_active_action("receiver", "services") %>"><%= link_to "接收器数据量", "/services/receiver" %></li>
           <li class="<%= is_active_action("loader", "services") %>"><%= link_to "Loader数据量", "/services/loader" %></li>
           <li class="<%= is_active_action("dumper", "services") %>"><%= link_to "Dumper数据量", "/services/dumper" %></li>
