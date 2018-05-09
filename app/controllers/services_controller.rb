@@ -6,6 +6,10 @@ class ServicesController < ApplicationController
   end
 
   def show
+    ip = params[:ip]
+    service_name = params[:service_name]
+
+    @workers = DispatcherHostServiceWorker.where(:ip => ip, :service_name => service_name)
   end
 
 end
