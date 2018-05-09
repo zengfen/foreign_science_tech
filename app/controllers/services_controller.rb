@@ -5,4 +5,7 @@ class ServicesController < ApplicationController
     @services, @running_services = DispatcherHost.service_details(ip, service_names)
   end
 
+  def show
+  end
+
 end
