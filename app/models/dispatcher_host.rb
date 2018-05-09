@@ -95,7 +95,7 @@ class DispatcherHost  < DispatcherBase
     all_service_workers.each do |worker|
 
       next if !ip.blank? && ip != worker.ip
-      # next if !selected_services.blank? && !selected_services.include?(worker.service_name)
+      next if !selected_services.blank? && !selected_services.include?(worker.service_name)
 
       running_services[worker.ip] ||= {}
       running_service_counter[worker.ip] ||= {}
@@ -106,6 +106,11 @@ class DispatcherHost  < DispatcherBase
       last_active_interval = (Time.now.to_i - worker.last_active_at)
 
       running_service_counter[worker.ip][worker.service_name] = [worker.last_active_at, last_active_interval < 300]
+    end
+
+
+    installed_services.each do |_ip, _services|
+      running_service_counter[_ip] ||= {}
     end
 
 
