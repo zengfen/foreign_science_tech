@@ -83,7 +83,7 @@ class DispatcherHost  < DispatcherBase
       next if !ip.blank? && ip != x.ip
       next if !selected_services.blank? && !selected_services.include?(x.service_name)
       installed_services[x.ip] ||= []
-      installed_services[x.ip] << [hosts[x.ip], x.service_name]
+      installed_services[x.ip] << [hosts[x.ip], x.service_name, x.error_at, x.error_content]
     end
 
 

@@ -61,16 +61,18 @@
                       <th class="text-center">服务名称</th>
                       <th class="text-center">是否在线</th>
                       <th class="text-center">在线时间</th>
+                      <th class="text-center">最近出错时间</th>
+                      <th class="text-center">错误内容</th>
                       <th class="text-center">操作</th>
                     </tr>
                   </thead>
                   <tbody class="text-center">
                     <% @services.each do |k, v| %>
                       <% v.each do |vv| %>
-                      <tr>
-                        <td><%= k%></td>
-                        <td><%= vv[0] ? "境内" : "境外"%></td>
-                        <td><%= DispatcherHost.service_names[vv[1]]%></td>
+                        <tr>
+                          <td><%= k%></td>
+                          <td><%= vv[0] ? "境内" : "境外"%></td>
+                          <td><%= DispatcherHost.service_names[vv[1]]%></td>
                           <% if @running_services[k][vv[1]].blank? %>
                             <td>下线</td>
                             <td>未知</td>
@@ -84,20 +86,22 @@
                               <% end %>
                             </td>
                           <% end %>
-                        <td class="pos-r">
-                          <a href="##">
-                            <i class="icon_data_analysis icon-more"></i>
-                          </a>
-                          <ul class="more-ul dn">
-                            <li class="bor-b">
-                              <a href="/hosts/show?ip=<%= k  %>">详情</a>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
-                    <% end %>
-
+                          <td><%= vv[2] %></td>
+                          <td><%= vv[3] %></td>
+                          <td class="pos-r">
+                            <a href="##">
+                              <i class="icon_data_analysis icon-more"></i>
+                            </a>
+                            <ul class="more-ul dn">
+                              <li class="bor-b">
+                                <a href="/hosts/show?ip=<%= k  %>">详情</a>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
                       <% end %>
+
+                    <% end %>
                   </tbody>
                 </table>
                 <div class="text-center">
@@ -127,10 +131,10 @@
             <div class="hr-line-dashed"></div>
             <div>
               <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
-                                                                                     
+
                 <strong>确定</strong></button>
               <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
-                                                                                      
+
                 <strong>取消</strong></button>
             </div>
 
@@ -184,38 +188,38 @@
         })
       })
       .on("click",".remove-line",function(e){
-        
+
+        e.preventDefault();
+
+        //删除本行数据
+        //var _$this = $(this);
+        var $this = $(this),html = $this.closest('tr').find('td').first().html();
+        var $modal = $('#modal-form-remove');
+        $modal.find('.remove-html').html(html);
+        $modal.modal("show");
+
+        $('.sure-remove').off().on('click', function (e) {
           e.preventDefault();
-
-          //删除本行数据
-          //var _$this = $(this);
-          var $this = $(this),html = $this.closest('tr').find('td').first().html();
-          var $modal = $('#modal-form-remove');
-          $modal.find('.remove-html').html(html);
-          $modal.modal("show");
-
-          $('.sure-remove').off().on('click', function (e) {
-             e.preventDefault();
-            var _this=$(this);
-            //需要传到数据库中，需要后台传输数据，局部刷新页面
-            var url = $this.attr("href");
-            if (url != "##") {
-              $.ajax({
-                url: url,
-                type: 'DELETE',
-                success:function(data){
+          var _this=$(this);
+          //需要传到数据库中，需要后台传输数据，局部刷新页面
+          var url = $this.attr("href");
+          if (url != "##") {
+            $.ajax({
+              url: url,
+              type: 'DELETE',
+              success:function(data){
                 if (data.type=="success"){
                   _this.closest('.modal').modal("hide");
                   $this.closest('tr').remove();
                 }
               }});
-            }
-           
-          });
-        
+          }
+
+        });
+
       }).on("click",'.cancel-remove',function(e){
-         var $modal = $('#modal-form-remove');
-            $modal.modal("hide");
+        var $modal = $('#modal-form-remove');
+        $modal.modal("hide");
       });
 
 
