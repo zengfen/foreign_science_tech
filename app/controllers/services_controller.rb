@@ -25,7 +25,7 @@ class ServicesController < ApplicationController
                   .where("hour >= #{start}")
                   .order('hour desc'),
         DispatcherHostTaskCounter
-                  .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip)
+        .select('sum(host_task_counters.receiver_batch_count) as receiver_batch_count, sum(host_task_counters.receiver_result_count) as receiver_result_count, sum(host_task_counters.receiver_bytes) as receiver_bytes,sum(host_task_counters.receiver_error_count) as receiver_error_count').where(ip: loader.ip).first
       ]
     end
   end
