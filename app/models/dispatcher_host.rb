@@ -81,7 +81,7 @@ class DispatcherHost  < DispatcherBase
 
     DispatcherHostService.group(:ip, :service_name).each do |x|
       next if !ip.blank? && ip != x.ip
-      next if !selected_services.blank? && !selected_services.includes?(x.service_name)
+      next if !selected_services.blank? && !selected_services.include?(x.service_name)
       installed_services[x.ip] ||= []
       installed_services[x.ip] << [hosts[x.ip], x.service_name]
     end
@@ -95,7 +95,7 @@ class DispatcherHost  < DispatcherBase
     all_service_workers.each do |worker|
 
       next if !ip.blank? && ip != worker.ip
-      next if !selected_services.blank? && !selected_services.includes?(worker.service_name)
+      next if !selected_services.blank? && !selected_services.include?(worker.service_name)
 
       running_services[worker.ip] ||= {}
       running_service_counter[worker.ip] ||= {}
