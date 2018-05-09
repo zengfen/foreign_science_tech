@@ -92,10 +92,11 @@ class DispatcherHost  < DispatcherBase
       running_service_counter[worker.ip] ||= {}
 
       next if running_services[worker.ip].key?(worker.service_name)
+      running_services[worker.ip][worker.service_name] = ""
 
       last_active_interval = (Time.now.to_i - worker.last_active_at)
 
-      running_services[worker.ip][service_names[worker.service_name]] = [worker.last_active_at, last_active_interval < 300]
+      running_service_counter[worker.ip][service_names[worker.service_name]] = [worker.last_active_at, last_active_interval < 300]
     end
 
 
