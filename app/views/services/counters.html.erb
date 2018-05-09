@@ -57,7 +57,7 @@
                   </tr>
                   <% @results[0].each do |x| %>
                     <tr>
-                      <td><%= Time.at(x.hour) %></td>
+                      <td><%= Time.at(x.hour).strftime("%H:00:00") %></td>
                       <td><%= x.task_count %></td>
                       <td><%= x.discard_count %></td>
                       <td><%= x.completed_count %></td>
