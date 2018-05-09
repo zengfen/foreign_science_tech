@@ -5,17 +5,17 @@
 <td><%= spider_task.level %></td>
 <td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title='<%=spider_task.keyword%>'><%= truncate_utf(spider_task.keyword,10,"...")%></td>
 <td class="task_status"><%= raw status_html(spider_task)%></td>
-<td><%= spider_task.current_task_count %></td>
-<td><%= spider_task.current_success_count %></td>
-<td><a href="/tasks/results_trend/<%= spider_task.id %>" ><%= spider_task.result_count %></a></td>
+<td><%= spider_task.current_task_count || 0 %></td>
+<td><%= spider_task.current_success_count || 0 %></td>
+<td><a href="/tasks/results_trend/<%= spider_task.id %>" ><%= spider_task.result_count || 0 %></a></td>
 <td>
   <%=
-   link_to_if(spider_task.current_fail_count != 0, spider_task.current_fail_count, fail_tasks_task_path(spider_task)) do
-     "#{spider_task.current_fail_count}"
+   link_to_if((spider_task.current_fail_count || 0) != 0, (spider_task.current_fail_count || 0), fail_tasks_task_path(spider_task)) do
+     "#{spider_task.current_fail_count || 0}"
    end
 %>
 </td>
-<td><%= spider_task.current_warning_count %></td>
+<td><%= spider_task.current_warning_count || 0 %></td>
 <td><%= show_format_time(spider_task.created_at) %></td>
 <td class="pos-r">
   <a href="##">
