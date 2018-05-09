@@ -25,6 +25,7 @@
                 <thead>
                   <tr>
                     <th class="text-center">时间</th>
+                    <th class="text-center">IP</th>
                     <th class="text-center">任务</th>
                     <th class="text-center">错误任务</th>
                     <th class="text-center">完成任务</th>
@@ -42,6 +43,7 @@
                 <tbody class="text-center">
                   <tr>
                     <td>总量</td>
+                    <td>-</td>
                     <td><%= @results[1].task_count %></td>
                     <td><%= @results[1].discard_count %></td>
                     <td><%= @results[1].completed_count %></td>
@@ -58,6 +60,7 @@
                   <% @results[0].each do |x| %>
                     <tr>
                       <td><%= Time.at(x.hour).strftime("%H:00:00") %></td>
+                      <td><%= x.ip %></td>
                       <td><%= x.task_count %></td>
                       <td><%= x.discard_count %></td>
                       <td><%= x.completed_count %></td>
