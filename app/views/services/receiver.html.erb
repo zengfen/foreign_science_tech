@@ -40,7 +40,7 @@
                       <td><%= @results[i][1].receiver_bytes %></td>
                       <td><%= @results[i][1].receiver_error_count %></td>
                     </tr>
-                    <% @results[i].each do |x| %>
+                    <% @results[i][0].each do |x| %>
                       <tr>
                         <td><%= Time.at(x.hour) %></td>
                         <td><%= x.receiver_batch_count %></td>
