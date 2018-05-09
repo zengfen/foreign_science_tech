@@ -63,7 +63,7 @@ class SpiderTask < ApplicationRecord
       $archon_redis.zadd('archon_external_tasks', level, id)
     end
 
-    $archon_redis.hset('archon_available_tasks', self.id, max_retry_count)
+    $archon_redis.hset('archon_available_tasks', id, max_retry_count)
   end
 
   def dequeue_level_task
@@ -73,7 +73,7 @@ class SpiderTask < ApplicationRecord
       $archon_redis.zrem('archon_external_tasks', id)
     end
 
-    $archon_redis.hdel('archon_available_tasks', self.id)
+    $archon_redis.hdel('archon_available_tasks', id)
   end
 
   def start!
@@ -180,9 +180,9 @@ class SpiderTask < ApplicationRecord
         DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
         # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
-          $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
         else
-          $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
         end
       else
         keyword.split(',').each do |k|
@@ -191,9 +191,9 @@ class SpiderTask < ApplicationRecord
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
-            $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
           else
-            $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
           end
         end
       end
@@ -203,9 +203,9 @@ class SpiderTask < ApplicationRecord
       # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
       DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       if need_account
-        $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
       else
-        $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10)*1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
       end
     end
 
@@ -213,26 +213,26 @@ class SpiderTask < ApplicationRecord
       $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
     end
 
-    $archon_redis.hset('archon_available_tasks', self.id, max_retry_count)
+    $archon_redis.hset('archon_available_tasks', id, max_retry_count)
   end
 
   def success_count
-    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 1 or status = 2").count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 1 or status = 2').count
     # $archon_redis.scard("archon_completed_tasks_#{id}")
   end
 
   def fail_count
-    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 3").count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 3').count
     # $archon_redis.scard("archon_discard_tasks_#{id}")
   end
 
   def warning_count
-    DispatcherSubtaskStatus.where(task_id: self.id).where("status = 3").count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 3').count
     # $archon_redis.scard("archon_warning_tasks_#{id}")
   end
 
   def current_total_count
-    DispatcherSubtask.where(task_id: self.id).count
+    DispatcherSubtask.where(task_id: id).count
     # $archon_redis.hlen("archon_task_details_#{id}")
   end
 
@@ -241,9 +241,9 @@ class SpiderTask < ApplicationRecord
   end
 
   def result_count
-    DispatcherTaskResultCounter.where(task_id: self.id).sum(&:result_count)
+    DispatcherTaskResultCounter.where(task_id: id).sum(&:result_count)
     # $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i
-  # rescue StandardError
+    # rescue StandardError
     # 0
   end
 
@@ -257,15 +257,17 @@ class SpiderTask < ApplicationRecord
   # 重新添加到执行队列
   # 任务运行
   def retry_fail_task(task_md5)
-    return unless $archon_redis.sismember("archon_discard_tasks_#{id}", task_md5)
+    subtaskStatus = DispatcherSubtaskStatus.where(id: task_md5, status: 3).first
+    return if subtaskStatus.blank?
 
-    task_json = $archon_redis.hget("archon_task_details_#{id}", task_md5)
-    task = JSON.parse(task_json)
-    task['retry_count'] = 0
+    subtask = DispatcherSubtask.where(id: task_md5).first
+    return if subtask.blank?
+    subtask.retry_count = 0
+    subtask.save
 
-    $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
+    subtaskStatus.destroy
 
-    $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
+    task = JSON.parse(subtask.content)
 
     need_account = !spider.control_template_id.blank?
 
@@ -285,24 +287,26 @@ class SpiderTask < ApplicationRecord
 
   def retry_all_fail_task
     return if fail_count == 0
-    total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{id}")
 
     need_account = !spider.control_template_id.blank?
 
-    total_detail_keys.each do |task_md5|
-      task_json = $archon_redis.hget("archon_task_details_#{id}", task_md5)
-      task = JSON.parse(task_json)
-      task['retry_count'] = 0
-      $archon_redis.hset("archon_task_details_#{id}", task_md5, task.to_json)
+    DispatcherSubtaskStatus.where(task_id: id, status: 3).each do |subtaskStatus|
+      subtask = DispatcherSubtask.where(id: subtaskStatus.task_md5).first
+      next if subtask.blank?
 
-      $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
+
+
+      task = JSON.parse(subtask.content)
 
       if need_account && (task['ignore_account'].blank? || !task['ignore_account'])
         $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_md5)
       else
         $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_md5)
       end
+
+      subtaskStatus.destroy
     end
+
 
     if maybe_finished? || is_finished?
       self.status = 1
@@ -313,9 +317,9 @@ class SpiderTask < ApplicationRecord
   end
 
   def del_fail_task(task_md5)
-    return unless $archon_redis.sismember("archon_discard_tasks_#{id}", task_md5)
-    $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
-    $archon_redis.hdel("archon_task_details_#{id}", task_md5)
+    # return unless $archon_redis.sismember("archon_discard_tasks_#{id}", task_md5)
+    # $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
+    # $archon_redis.hdel("archon_task_details_#{id}", task_md5)
   end
 
   def clear_related_datas!
@@ -333,20 +337,10 @@ class SpiderTask < ApplicationRecord
 
     $archon_redis.hdel('archon_available_tasks', id)
 
-    # $archon_redis.del("archon_task_hosts_#{id}")
-
-    # $archon_redis.del("archon_task_total_results_#{id}")
-
-    # $archon_redis.keys('archon_host_tasks_*').each do |k|
-    #   $archon_redis.hkeys(k).each do |kk|
-    #     $archon_redis.hdel(k, kk) if kk.start_with?("#{id},")
-    #   end
-    # end
-
-    DispatcherRunningSubtask.where(task_id: self.id).delete_all
-    DispatcherSubtask.where(task_id: self.id).delete_all
-    DispatcherSubtaskStatus.where(task_id: self.id).delete_all
-    DispatcherTaskResultCounter.where(task_id: self.id).delete_all
+    DispatcherRunningSubtask.where(task_id: id).delete_all
+    DispatcherSubtask.where(task_id: id).delete_all
+    DispatcherSubtaskStatus.where(task_id: id).delete_all
+    DispatcherTaskResultCounter.where(task_id: id).delete_all
   end
 
   def self.refresh_task_status
