@@ -70,6 +70,14 @@ Rails.application.routes.draw do
   resources :user_avatars, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :control_templates, :proxies, :social_account_monitors
 
   resources :services do
+    collection do
+      get 'receiver'
+      get 'receiver_details'
+      get 'loader'
+      get 'loader_details'
+      get 'dumper'
+      get 'dumper_details'
+    end
   end
 
   resources :hosts do
