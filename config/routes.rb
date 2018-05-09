@@ -67,9 +67,12 @@ Rails.application.routes.draw do
       get 'load_edit_form'
     end
   end
-  resources :user_avatars,  :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors,  :control_templates, :proxies, :social_account_monitors
+  resources :user_avatars, :social_accounts, :controllers, :dispatchers, :loaders, :agents, :supervisors, :control_templates, :proxies, :social_account_monitors
 
-  resources :hosts  do
+  resources :services do
+  end
+
+  resources :hosts do
     collection do
       get 'service_errors'
       get 'service_counters'

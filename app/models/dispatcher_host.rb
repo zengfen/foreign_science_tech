@@ -69,4 +69,35 @@ class DispatcherHost  < DispatcherBase
   end
 
 
+  def self.service_details
+    installed_services = {}
+
+    DispatcherHostService.group(:ip, :service_name).each do |x|
+      installed_services[x.ip] ||= []
+      installed_services[x.ip] << [x.is_internal, service_names[x.service_name]]
+    end
+
+
+    all_service_workers = DispatcherHostServiceWorker.order("last_active_at desc")
+
+    running_services = {}
+
+    running_service_counter = {}
+    all_service_workers.each do |worker|
+      running_services[worker.ip] ||= {}
+      running_service_counter[worker.ip] ||= {}
+
+      next if running_services[worker.ip].key?(worker.service_name)
+
+      last_active_interval = (Time.now.to_i - worker.last_active_at)
+
+      running_services[worker.ip][service_names[x.service_name]] = [worker.last_active_at, last_active_interval < 300]
+    end
+
+
+    [installed_services, running_service_counter]
+
+  end
+
+
 end

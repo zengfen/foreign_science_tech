@@ -67,9 +67,9 @@ class CommandsController < ApplicationController
       return redirect_to action: :new
     end
 
-    $archon_redis.hgetall('archon_hosts').each do |k, _v|
-      $archon_redis.hset('archon_host_commands', k, command)
-      $archon_redis.hset('archon_host_command_statuses', k, '')
+    DispatcherHost.all.each do |x|
+      $archon_redis.hset('archon_host_commands', x.ip, command)
+      $archon_redis.hset('archon_host_command_statuses', x.ip, '')
     end
 
     redirect_to action: :new
