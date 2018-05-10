@@ -116,8 +116,18 @@ class SpiderTask < ApplicationRecord
     self.special_tag = specital_tags_ids
   end
 
+
+  def accounts_is_valid?
+    return true if self.spider.control_template.blank?
+
+    self.spider.control_template.accounts_is_valid?
+  end
+
+
   def save_with_spilt_keywords
     return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
+
+    return {"error" => "账号都已过期"} if self.accounts_is_valid?
 
     if spider.has_keyword
       keywords = keyword.split(',').collect(&:strip).uniq

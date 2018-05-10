@@ -4,8 +4,8 @@ class SpiderTasksController < ApplicationController
 
   def index
     opts = {}
-    opts[:special_tag] = params[:keyword] if !params[:keyword].blank?
-    @spider_tasks = @spider.spider_tasks.where(opts).order("created_at desc").page(params[:page]).per(10)
+    opts[:special_tag] = params[:keyword] unless params[:keyword].blank?
+    @spider_tasks = @spider.spider_tasks.where(opts).order('created_at desc').page(params[:page]).per(10)
     @spider_task = SpiderTask.new
   end
 
@@ -13,17 +13,15 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.new
   end
 
-  def show
-
-  end
+  def show; end
 
   def create
     @spider_task = SpiderTask.new(spider_task_params)
     @spider_task.special_tag_transfor_id
     add_funs = []
     params.keys.each do |key|
-      if key.to_s.match(/cate_/)
-        add_funs << {"#{key.gsub("cate_","")}"=>params[key.to_sym]}
+      if key.to_s =~ /cate_/
+        add_funs << { key.gsub('cate_', '').to_s => params[key.to_sym] }
       end
     end
 
@@ -34,24 +32,22 @@ class SpiderTasksController < ApplicationController
     message = @spider_task.save_with_spilt_keywords
     flash[message.keys.first.to_sym] = message.values.first
 
-    redirect_back(fallback_location:tasks_path)
+    redirect_back(fallback_location: tasks_path)
   end
-
 
   def start
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.start!
 
-    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
-    #redirect_back(fallback_location:tasks_path)
+    render template: '/tasks/refresh_spider_task.js.erb', layout: false
+    # redirect_back(fallback_location:tasks_path)
   end
-
 
   def stop
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.stop!
 
-    render :template => "/tasks/refresh_spider_task.js.erb", :layout => false
+    render template: '/tasks/refresh_spider_task.js.erb', layout: false
     # redirect_back(fallback_location:tasks_path)
   end
 
@@ -59,17 +55,17 @@ class SpiderTasksController < ApplicationController
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.destroy
 
-    render json: {type: "success",message:"删除成功！"}
+    render json: { type: 'success', message: '删除成功！' }
   end
 
-
   private
+
   def spider_task_params
-    params.require(:spider_task).permit(:spider_id,:special_tag, :level, :keyword,:max_retry_count,:is_split,:begin_time,:end_time)
+    params.require(:spider_task).permit(:spider_id, :special_tag, :level, :keyword, :max_retry_count, :is_split, :begin_time, :end_time)
   end
 
   def get_spider
     @spider = Spider.find_by(id: params[:spider_id])
-    redirect_to(root_url) if  @spider.blank?
+    redirect_to(root_url) if @spider.blank?
   end
 end

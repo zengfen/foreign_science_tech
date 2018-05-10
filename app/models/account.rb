@@ -36,6 +36,11 @@ class Account < ApplicationRecord
     Time.now < valid_time ? '有效' : '无效'
   end
 
+
+  def real_is_valid?
+    (Time.now + 10.minutes) < self.valid_time
+  end
+
   def save_with_split!
     return { 'error' => '内容为空' } if contents.blank?
 
