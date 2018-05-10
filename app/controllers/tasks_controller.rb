@@ -23,18 +23,7 @@ class TasksController < ApplicationController
   end
 
   def fail_tasks
-    total_detail_keys = $archon_redis.smembers("archon_discard_tasks_#{@spider_task.id}")
-
-    if total_detail_keys.blank?
-      flash[:error] = "失败任务数为空"
-      redirect_to tasks_path
-      return
-    end
-
-    @detail_keys =  Kaminari.paginate_array(total_detail_keys).page(params[:page]).per(10)
-    @fail_tasks = @detail_keys.collect{|x| JSON.parse($archon_redis.hget("archon_task_details_#{@spider_task.id}", x)) rescue {}}
-    task_error = $archon_redis.hmget("archon_task_errors_#{@spider_task.id}", *@detail_keys)
-    @fail_task_errors = @detail_keys.each_with_index.collect{|x, i| [x, task_error[i]]}.to_h
+    @fail_tasks =  DispatcherSubtaskStatus.where(task_id: @spider_task.id, status: 3).includes(:dispatcher_subtask).order("id asc").page(params[:page]).per(10)
   end
 
 
