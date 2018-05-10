@@ -180,9 +180,9 @@ class SpiderTask < ApplicationRecord
         DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
         # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
-          $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
         else
-          $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
         end
       else
         keyword.split(',').each do |k|
@@ -191,9 +191,9 @@ class SpiderTask < ApplicationRecord
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
-            $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
           else
-            $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
           end
         end
       end
@@ -203,9 +203,9 @@ class SpiderTask < ApplicationRecord
       # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
       DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       if need_account
-        $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
       else
-        $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i + 10) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
       end
     end
 
