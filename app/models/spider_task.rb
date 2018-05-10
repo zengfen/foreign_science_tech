@@ -73,7 +73,7 @@ class SpiderTask < ApplicationRecord
       $archon_redis.zrem('archon_external_tasks', id)
     end
 
-    $archon_redis.hdel('archon_available_tasks', id)
+
   end
 
   def start!
@@ -322,6 +322,7 @@ class SpiderTask < ApplicationRecord
   def clear_related_datas!
     dequeue_level_task # fix me
 
+
     redis_keys = []
     redis_keys << "archon_tasks_#{id}_0"
     redis_keys << "archon_tasks_#{id}_1"
@@ -360,6 +361,8 @@ class SpiderTask < ApplicationRecord
     if maybe_finished?
       update_attributes(status: 2)
 
+
+      $archon_redis.hdel('archon_available_tasks', id)
       dequeue_level_task
     end
   end
