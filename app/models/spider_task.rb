@@ -127,7 +127,7 @@ class SpiderTask < ApplicationRecord
   def save_with_spilt_keywords
     return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
 
-    return {"error" => "账号都已过期"} if self.accounts_is_valid?
+    return {"error" => "账号都已过期"} if !self.accounts_is_valid?
 
     if spider.has_keyword
       keywords = keyword.split(',').collect(&:strip).uniq
