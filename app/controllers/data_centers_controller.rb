@@ -5,11 +5,20 @@ class DataCentersController < ApplicationController
 
   def show
     table_name = params[:id]
+    tag_id = params[:tag_id]
+    if !tag_id.blank? && table_name.blank?
+      return redirect_to "/data_centers/show"
+    end
 
     if !table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
       @name = ArchonBase.model_mapper.invert[table_name]
       @results = eval((table_name + '_tag').camelize)
-                 .includes(:record).page(params[:page]).per(20)
+
+      unless tag_id.blank?
+        @results = @results.where(tag_id: tag_id)
+      end
+
+      @results = @results.includes(:record).page(params[:page]).per(20)
     end
   end
 
