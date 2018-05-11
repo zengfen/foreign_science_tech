@@ -12,7 +12,7 @@
     <tbody class="text-center">
       <% @results.each do |record| %>
         <tr>
-          <td><%= record.record.id %><a href="/data_centers/record_details?table_name=<%= record[1] %>&id=<%= record.record.id %>" target="_blank">Anchor Text</a></td>
+          <td><a href="/data_centers/record_details?table_name=<%= record[1] %>&id=<%= record.record.id %>" target="_blank"><%= record.record.id %></a></td>
           <td><%= record.record.site rescue nil%></td>
           <td><%= Time.at(record.record.created_time).to_s.gsub("+0800", "") rescue nil%></td>
           <td><%= Time.at(record.record.created_at).to_s.gsub("+0800", "") rescue nil%></td>
