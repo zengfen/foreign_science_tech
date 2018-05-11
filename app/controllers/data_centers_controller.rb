@@ -15,7 +15,7 @@ class DataCentersController < ApplicationController
       @results = eval((table_name + '_tag').camelize)
 
       unless tag_id.blank?
-        @results = @results.where(tag_id: tag_id)
+        @results = @results.where(tag: tag_id)
       end
 
       @results = @results.includes(:record).page(params[:page]).per(20)
