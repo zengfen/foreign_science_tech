@@ -34,7 +34,11 @@
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
               <li class="tab-li active">
-                <a href="#" data-target="all-page">列表信息[<%= @name %>][<%= @results.total_count %>条]</a>
+                <a href="#" data-target="all-page">列表信息
+                  <% if !@results.blank? %>
+                    [<%= @name %>][<%= @results.total_count %>条]
+                  <% end %>
+                </a>
               </li>
             </ul>
             <div class="ibox-content p15-0 all-page table-content">
