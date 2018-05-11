@@ -1,3 +1,3 @@
 class ArchonFacebookCommentTag < ArchonBase
-  belongs_to :archon_facebook_comment, foreign_key: :pid
+  belongs_to :record, foreign_key: :pid, class: "ArchonFacebookComment"
 end

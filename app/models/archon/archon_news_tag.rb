@@ -1,3 +1,3 @@
 class ArchonNewsTag < ArchonBase
-  belongs_to :archon_news, foreign_key: :pid
+  belongs_to :record, foreign_key: :pid, class: "ArchonNews"
 end

@@ -1,4 +1,3 @@
 class ArchonVideoTag < ArchonBase
-
-  belongs_to :archon_video, foreign_key: :pid
+  belongs_to :record, foreign_key: :pid, class: "ArchonVideo"
 end

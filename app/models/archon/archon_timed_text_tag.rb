@@ -1,3 +1,3 @@
 class ArchonTimedTextTag < ArchonBase
-  belongs_to :archon_timed_text, foreign_key: :pid
+  belongs_to :record, foreign_key: :pid, class: "ArchonTimedText"
 end
