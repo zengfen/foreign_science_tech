@@ -36,7 +36,7 @@
               <li class="tab-li active">
                 <a href="#" data-target="all-page">列表信息
                   <% if !@results.blank? %>
-                    [<%= @name %>][<%= ( SpecialTag.find(params[:tag_id]).tag if !params[:id].blank?)%>]
+                    [<%= @name %>][<%= ( SpecialTag.find(params[:tag_id]).tag if !params[:tag_id].blank?)%>]
                   <% end %>
                 </a>
               </li>
