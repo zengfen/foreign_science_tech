@@ -17,7 +17,7 @@ class ArchonBase < ActiveRecord::Base
       # '社交' => 'archon_sns_post',
       # '博客' => 'archon_blog',
       # '招聘' => 'archon_hiring',
-      '新闻评论' => 'archon_news_comment',
+      # '新闻评论' => 'archon_news_comment',
       # '酒店评论' => 'archon_hotel_comments',
       'Facebook' => 'archon_facebook_post',
       'Facebook评论' => 'archon_facebook_comment',
