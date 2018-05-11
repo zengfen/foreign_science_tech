@@ -36,3 +36,4 @@ end
 
 
 DispatcherDB = YAML.load_file(File.join(Rails.root, "config", "database.yml"))["dispatcher"]
+ArchonDataDB = YAML.load_file(File.join(Rails.root, "config", "database.yml"))["archon_data"]
