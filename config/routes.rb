@@ -126,6 +126,10 @@ Rails.application.routes.draw do
   end
   resources :password_resets, only: %i[new create edit update]
 
+
+  resources :data_centers do
+  end
+
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/sidekiq'
