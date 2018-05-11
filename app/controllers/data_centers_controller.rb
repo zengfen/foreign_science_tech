@@ -14,7 +14,7 @@ class DataCentersController < ApplicationController
   end
 
   def record_details
-    unless table_name.blank?
+    if !table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
       @name = ArchonBase.model_mapper.invert[table_name]
 
       @results = eval((table_name + '_tag').camelize)
