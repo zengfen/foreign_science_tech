@@ -35,6 +35,7 @@ class ArchonBase < ActiveRecord::Base
 
     metas = []
     model_mapper.each do |k, v|
+      puts k
       metas << [k, v] + temp_metas[v.tableize]
     end
 
