@@ -1,0 +1,3 @@
+class ArchonFacebookPostTag < ArchonBase
+
+end

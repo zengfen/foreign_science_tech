@@ -1,0 +1,3 @@
+class ArchonWeiboUser < ArchonBase
+
+end

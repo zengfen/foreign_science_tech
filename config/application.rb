@@ -16,6 +16,7 @@ module ArchonCenter
     # -- all .rb files in that directory are automatically loaded.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.eager_load_paths << Rails.root.join('app/models/index')
+    config.eager_load_paths << Rails.root.join('app/models/archon')
 
     config.autoload_paths += ["#{config.root}/lib"]
 

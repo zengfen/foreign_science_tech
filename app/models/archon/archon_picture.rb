@@ -1,0 +1,3 @@
+class ArchonPicture < ArchonBase
+
+end

@@ -1,0 +1,3 @@
+class ArchonNews < ArchonBase
+
+end

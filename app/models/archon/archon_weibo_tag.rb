@@ -1,0 +1,3 @@
+class ArchonWeiboTag < ArchonBase
+
+end

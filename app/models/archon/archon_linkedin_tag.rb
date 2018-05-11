@@ -1,0 +1,3 @@
+class ArchonLinkedinTag < ArchonBase
+
+end

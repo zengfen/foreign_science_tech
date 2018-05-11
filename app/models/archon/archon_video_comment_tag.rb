@@ -1,0 +1,3 @@
+class ArchonVideoCommentTag < ArchonBase
+
+end

@@ -1,0 +1,3 @@
+class ArchonTimedTextTag < ArchonBase
+
+end

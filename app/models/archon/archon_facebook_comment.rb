@@ -1,0 +1,3 @@
+class ArchonFacebookComment < ArchonBase
+
+end

@@ -1,0 +1,3 @@
+class ArchonNewsTag < ArchonBase
+
+end

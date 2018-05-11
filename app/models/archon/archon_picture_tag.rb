@@ -1,0 +1,3 @@
+class ArchonPictureTag < ArchonBase
+
+end

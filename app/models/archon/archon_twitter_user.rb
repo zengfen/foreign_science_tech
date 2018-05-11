@@ -1,0 +1,3 @@
+class ArchonTwitterUser < ArchonBase
+
+end

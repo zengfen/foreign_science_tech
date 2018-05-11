@@ -1,0 +1,3 @@
+class ArchonTwitter < ArchonBase
+
+end
