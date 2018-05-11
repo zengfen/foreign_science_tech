@@ -10,4 +10,7 @@
 
 class SpecialTag < ApplicationRecord
 
+  def self.tags
+    all.collect{|x| [x.tag, x.id]}
+  end
 end

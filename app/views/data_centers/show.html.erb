@@ -10,15 +10,15 @@
           <div class="bg-search">
             <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
-                <div class="col-md-8">
+
+                <div class="col-md-4">
                   <div class="form-group mb0">
-                    <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                    <i class="search-line" style=></i>
-                    <i class="fa fa-search search-icon"></i></div>
+                    <%=select_tag(:table_name,options_for_select(ArchonBase.model_mapper.to_a,params["table_name"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+                  </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                   <div class="form-group mb0">
-                    <%=select_tag(:category,options_for_select(ArchonBase.model_mapper.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:tag_id,options_for_select(SpecialTag.tags,params["tag_id"]),include_blank: "标签",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="ibox-tools dib">
