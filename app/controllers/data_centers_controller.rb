@@ -4,7 +4,7 @@ class DataCentersController < ApplicationController
   end
 
   def show
-    table_name = params[:id]
+    table_name = params[:table_name]
     tag_id = params[:tag_id]
     if !tag_id.blank? && table_name.blank?
       return redirect_to "/data_centers/show"

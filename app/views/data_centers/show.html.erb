@@ -13,7 +13,7 @@
 
                 <div class="col-md-4">
                   <div class="form-group mb0">
-                    <%=select_tag(:id, options_for_select(ArchonBase.model_mapper.to_a,params["id"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:table_name, options_for_select(ArchonBase.model_mapper.to_a,params["table_name"]),include_blank: "类别",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="col-md-4">
