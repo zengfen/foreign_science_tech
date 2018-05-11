@@ -128,6 +128,9 @@ Rails.application.routes.draw do
 
 
   resources :data_centers do
+    collection do
+      get 'record_details'
+    end
   end
 
   require 'sidekiq/web'

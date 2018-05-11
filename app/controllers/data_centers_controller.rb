@@ -10,7 +10,7 @@ class DataCentersController < ApplicationController
       return redirect_to "/data_centers/show"
     end
 
-    if !table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
+    if !table_name.blank?
       @name = ArchonBase.model_mapper.invert[table_name]
       @results = eval((table_name + '_tag').camelize)
 
@@ -23,22 +23,21 @@ class DataCentersController < ApplicationController
   end
 
   def record_details
-    if !table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
-      @name = ArchonBase.model_mapper.invert[table_name]
-
-      @results = eval((table_name + '_tag').camelize)
-
+    table_name = params[:table_name]
+    id = params[:id]
+    if !table_name.blank? && !id.blank?
+      @record = eval(table_name.camelize)
       if table_name == 'archon_facebook_post'
-        @results = @results.includes(record: :user)
+        @record = @record.includes(:user).find(id).to_json(include: [:user])
       elsif table_name == 'archon_facebook_comment'
-        @results = @results.includes(record:  :user)
+        @record = @record.includes(:user).find(id).to_json(include: [:user])
       elsif table_name == 'archon_twitter' || table_name == 'archon_weibo'
-        @results = @results.includes(record: %i[user retweet_user])
+        @record = @record.includes(%i[user retweet_user]).find(id).to_json(include: [:user, :retweet_user])
       else
-        @results = @results.includes(:record)
+        @record = @record.find(id).to_json
       end
 
-      @results = @results.page(params[:page]).per(20)
+      @record = JSON.parse(@record)
     end
   end
 end
