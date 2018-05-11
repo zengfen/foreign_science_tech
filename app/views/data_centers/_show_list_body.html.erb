@@ -14,8 +14,8 @@
         <tr>
           <td><%= record.record.id %></td>
           <td><%= record.record.site%></td>
-          <td><%= Time.at(record.record.created_time) rescue nil%></td>
-          <td><%= Time.at(record.record.created_at) rescue nil%></td>
+          <td><%= Time.at(record.record.created_time).to_s.gsub("+0800", "") rescue nil%></td>
+          <td><%= Time.at(record.record.created_at).to_s.gsub("+0800", "") rescue nil%></td>
           <td><%= record.record.title%></td>
         </tr>
       <% end %>
