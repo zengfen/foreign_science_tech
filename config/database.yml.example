@@ -94,3 +94,12 @@ dispatcher:
   port: 
   timeout: 300
 
+archon_data:
+  adapter: mysql2
+  database: archon_dispatcher
+  username: root
+  password: 123456
+  encoding: utf8
+  host: 
+  port: 
+  timeout: 300
