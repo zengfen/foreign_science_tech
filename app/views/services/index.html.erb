@@ -67,10 +67,16 @@
                           <td><%= vv[0] ? "境内" : "境外"%></td>
                           <td><%= DispatcherHost.service_names[vv[1]]%></td>
                           <% if @running_services[k][vv[1]].blank? %>
-                            <td>下线</td>
+                            <td><span class="label label-danger">下线</span></td>
                             <td>未知</td>
                           <% else %>
-                            <td><%= @running_services[k][vv[1]][1] ? "在线" : "下线" %></td>
+                            <td>
+                              <% if @running_services[k][vv[1]][1] %>
+                                <span class="label label-primary">在线</span>
+                              <% else %>
+                                <span class="label label-danger">下线</span>
+                              <% end %>
+                            </td>
                             <td>
                               <% if @running_services[k][vv[1]][0] == 0 %>
                                 未知
