@@ -18,7 +18,7 @@ class DataCentersController < ApplicationController
         @results = @results.where(tag: tag_id)
       end
 
-      @results = @results.includes(:record).page(params[:page]).per(20)
+      @results = @results.includes(:record).page(params[:page]).per(20).without_count
     end
   end
 

@@ -22,7 +22,8 @@
     </tbody>
   </table>
   <div class="text-center">
-    <%= paginate @results %>
+    <%= link_to_prev_page @results, 'Previous Page' %>
+    <%= link_to_next_page @results, 'Next Page' %>
   </div>
 <%else%>
   <%= render "shared/no_data" %>
