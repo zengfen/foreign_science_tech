@@ -2,7 +2,8 @@ class ServicesController < ApplicationController
   def index
     ip = params[:keyword]
     service_names = params[:services]
-    @services, @running_services = DispatcherHost.service_details(ip, service_names)
+    online_status = params[:online_status]
+    @services, @running_services = DispatcherHost.service_details(ip, service_names, online_status)
   end
 
   def show

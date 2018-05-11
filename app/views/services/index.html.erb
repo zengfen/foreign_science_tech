@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:services,options_for_select([["选择状态", ""], ["在线", true], ["离线", false]],params["online_status"]),:class=>"form-control chosen-select1")%>
+                    <%=select_tag(:services,options_for_select([["选择状态", ""], ["在线", "1"], ["离线", "0"]],params["online_status"]),:class=>"form-control chosen-select1")%>
                   </div>
                 </div>
 
