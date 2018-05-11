@@ -1,3 +1,3 @@
 class ArchonPictureTag < ArchonBase
-  belongs_to :record, foreign_key: :pid, class: "ArchonPicture"
+  belongs_to :record, foreign_key: :pid, class_name: "ArchonPicture"
 end
