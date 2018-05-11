@@ -6,7 +6,7 @@ class DataCentersController < ApplicationController
   def show
     table_name = params[:id]
 
-    unless table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
+    if !table_name.blank? && !ArchonBase.model_mapper.invert[table_name].blank?
       @name = ArchonBase.model_mapper.invert[table_name]
       @results = eval((table_name + '_tag').camelize)
                  .includes(:record).page(params[:page]).per(20)
