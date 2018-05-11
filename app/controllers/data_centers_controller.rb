@@ -8,6 +8,9 @@ class DataCentersController < ApplicationController
   def show
     table_name = params[:id]
 
+
+    @name = ArchonBase.model_mapper.invert[table_name]
+
     @results = eval((table_name + "_tag").camelize)
 
     if table_name == "archon_facebook_post"
