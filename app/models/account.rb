@@ -44,7 +44,7 @@ class Account < ApplicationRecord
   def save_with_split!
     return { 'error' => '内容为空' } if contents.blank?
 
-    if self.control_template.is_bind_ip && self.ips.blank?
+    if self.control_template.is_bind_ip && self.valid_ips.blank?
       return {'error' => "选择IP"}
     end
 
@@ -54,7 +54,7 @@ class Account < ApplicationRecord
       account = Account.new(content: line.strip,
                             account_type: account_type,
                             valid_time: valid_time,
-                            ips: ips,
+                            valid_ips: self.valid_ips,
                             control_template_id: control_template_id)
       account.save
     end
@@ -81,8 +81,8 @@ class Account < ApplicationRecord
                     DispatcherHost.external_agents
                   end
 
-      if !self.ips.blank?
-        agent_ips = self.ips
+      if !self.valid_ips.blank?
+        agent_ips = self.valid_ips
       end
 
      agent_ips.each do |x|
