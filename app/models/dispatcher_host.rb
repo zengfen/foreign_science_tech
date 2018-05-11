@@ -116,6 +116,12 @@ class DispatcherHost  < DispatcherBase
       running_service_counter[_ip] ||= {}
     end
 
+    if !online_status.blank?
+      installed_services.each do |_ip, _services|
+        installed_services.delete(ip) if _services.blank?
+      end
+    end
+
 
     [installed_services, running_service_counter]
 
