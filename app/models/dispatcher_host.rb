@@ -69,7 +69,7 @@ class DispatcherHost  < DispatcherBase
   end
 
 
-  def self.service_details(ip, selected_services)
+  def self.service_details(ip, selected_services, online_status)
     hosts = {}
 
     DispatcherHost.all.each do |x|
@@ -104,6 +104,9 @@ class DispatcherHost  < DispatcherBase
       running_services[worker.ip][worker.service_name] = ""
 
       last_active_interval = (Time.now.to_i - worker.last_active_at)
+
+      next if !online_status.blank? && online_status == "1" && last_active_interval > 300
+      next if !online_status.blank? && online_status == "0" && last_active_interval < 300
 
       running_service_counter[worker.ip][worker.service_name] = [worker.last_active_at, last_active_interval < 300]
     end
