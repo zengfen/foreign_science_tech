@@ -117,6 +117,11 @@ class SpiderTask < ApplicationRecord
   end
 
 
+  def tidb_table_name
+    self.spider.tidb_table_name
+  end
+
+
   def accounts_is_valid?
     return true if self.spider.control_template.blank?
 
