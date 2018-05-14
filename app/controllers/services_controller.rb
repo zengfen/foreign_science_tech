@@ -80,4 +80,23 @@ class ServicesController < ApplicationController
                 .select(select_query).first
     ]
   end
+
+
+  def dumper
+    start = (Time.now - 12.hours).at_beginning_of_hour.to_i
+
+    @dumpers = DispatcherHostService.where(service_name: 'dumper')
+
+    @results = []
+    @dumpers.each do |x|
+      @results << [
+        DispatcherHostTaskCounter
+                  .where(ip: x.ip)
+                  .where("hour >= #{start}")
+                  .order('hour desc'),
+        DispatcherHostTaskCounter
+                  .select('sum(host_task_counters.dumper_task_count) as dumper_task_count, sum(host_task_counters.dumper_result_count) as dumper_result_count').where(ip: x.ip).first
+      ]
+    end
+  end
 end
