@@ -33,7 +33,7 @@ class Account < ApplicationRecord
   end
 
   def is_valid?
-    Time.now < valid_time ? '有效' : '无效'
+    Time.now < valid_time
   end
 
 

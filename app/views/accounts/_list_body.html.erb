@@ -18,7 +18,13 @@
           <td class="text-center"><%= account.account_type_cn%></td>
           <td class="text-center"><%= account.control_template.name%></td>
           <td class="text-center"><%= show_format_time(account.valid_time)%></td>
-          <td class="text-center"><%= account.is_valid?%></td>
+          <td class="text-center">
+            <% if account.is_valid? %>
+              <span class="label label-primary">有效</span>
+            <% else %>
+              <span class="label label-danger">过期</span>
+            <% end %>
+          </td>
           <td class="text-center"><%= show_format_time(account.created_at)%></td>
           <td class="pos-r">
             <a href="##">
@@ -26,7 +32,7 @@
             </a>
             <ul class="more-ul dn">
               <li>
-                 <%=link_to(account_path(account),:class=>"remove-line") do%>删除<%end%>
+                <%=link_to(account_path(account),:class=>"remove-line") do%>删除<%end%>
               </li>
             </ul>
           </td>
