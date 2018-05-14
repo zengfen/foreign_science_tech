@@ -24,27 +24,7 @@ class Spider < ApplicationRecord
   belongs_to :control_template
 
   validates :spider_name, presence: true, length: { maximum: 50 },
-    uniqueness: { case_sensitive: false }
-
-  def self.index_categories
-    {
-      '新闻' => 'archon_news',
-      '论坛' => 'archon_bbs',
-      '微博' => 'archon_weibo',
-      '视频' => 'archon_video',
-      '电商' => 'archon_electric_business',
-      '图片' => 'archon_picture',
-      '问答' => 'archon_question',
-      '社交' => 'archon_sns_post',
-      '博客' => 'archon_blog',
-      '招聘' => 'archon_hiring',
-      '新闻评论' => 'archon_news_comment',
-      '酒店评论' => 'archon_hotel_comments',
-      "Facebook" => "archon_facebook_post",
-      "Twitter" => "archon_twitter_post",
-      "Linkedin" => "archon_linkedin",
-    }
-  end
+                          uniqueness: { case_sensitive: false }
 
   def self.categories
     {
@@ -52,18 +32,27 @@ class Spider < ApplicationRecord
       '论坛' => 'forums',
       '微博' => 'weibo',
       '视频' => 'video',
+      '视频评论' => 'video_comment',
       '电商' => 'electric_business',
       '图片' => 'picture',
+      '图片评论' => 'picture_comment',
       '问答' => 'question',
       '社交' => 'sns_post',
       '博客' => 'blog',
       '招聘' => 'hiring',
       '新闻评论' => 'news_comment',
-      '酒店评论' => 'hotel_comments',
-      'Facebook' => "facebook_post",
-      'Twitter' => "twitter_post",
-      "Linkedin" => "linkedin_post"
+      '酒店评论' => 'hotel_comment',
+      'Facebook' => 'facebook_post',
+      'Facebook评论' => 'facebook_comment',
+      'Twitter' => 'twitter',
+      'Linkedin' => 'linkedin',
+      '字幕' => 'timed_text'
     }
+  end
+
+
+  def tidb_table_name
+    self.class[self.category]
   end
 
   def category_cn

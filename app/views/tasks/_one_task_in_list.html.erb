@@ -7,7 +7,7 @@
 <td class="task_status"><%= raw status_html(spider_task)%></td>
 <td><%= spider_task.current_task_count || 0 %></td>
 <td><%= spider_task.current_success_count || 0 %></td>
-<td><a href="/tasks/results_trend/<%= spider_task.id %>" ><%= spider_task.result_count || 0 %></a></td>
+<td><a href="data_centers/show?table_name=archon_news&tag_id=<%= spider_task.special_tag%>" ><%= spider_task.result_count || 0 %></a></td>
 <td>
   <%=
    link_to_if((spider_task.current_fail_count || 0) != 0, (spider_task.current_fail_count || 0), fail_tasks_task_path(spider_task)) do
