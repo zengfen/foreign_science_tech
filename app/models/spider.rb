@@ -52,7 +52,7 @@ class Spider < ApplicationRecord
 
 
   def tidb_table_name
-    self.class[self.category]
+    "archon_#{self.category}"
   end
 
   def category_cn
