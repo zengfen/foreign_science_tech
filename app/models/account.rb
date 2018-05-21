@@ -111,6 +111,7 @@ class Account < ApplicationRecord
   def self.check_invalid_accounts
     accounts = Account.where('valid_time < ?', Time.now + 10.minutes)
     accounts.each do |x|
+      DispatcherAccount.find_by_id(x.id).delete
       $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
         $archon_redis.zrem(k, x.id)
       end
