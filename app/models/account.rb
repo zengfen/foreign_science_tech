@@ -105,5 +105,8 @@ class Account < ApplicationRecord
     $archon_redis.keys("archon_template_ip_accounts_#{control_template_id}_*").each do |k|
       $archon_redis.zrem(k, self.id)
     end
+
+
+    DispatcherAccount.create(id: self.id, content: self.content, valid_time: self.valid_time.to_i)
   end
 end
