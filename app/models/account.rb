@@ -124,4 +124,9 @@ class Account < ApplicationRecord
       end
     end
   end
+
+
+  def self.expired_accounts
+    Account.where('valid_time < ?', Time.now + 10.minutes)
+  end
 end
