@@ -10,7 +10,7 @@
               <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"cycle_task_get_spider()"}) %>
             </div>
             <div class="col-sm-2">
-               <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="cycle_btn_ins"></i>
+              <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="cycle_btn_ins"></i>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -38,6 +38,25 @@
               <%= f.text_field :special_tag,:placeholder=>"特殊标签",:class=>"form-control"%>
             </div>
           </div>
+          <div class="hr-line-dashed"></div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">是否按时间增量</label>
+            <div class="col-sm-10">
+              <div class="i-checks inline">
+                <label class="control-label">
+                  <input type="radio" name="spider_cycle_task[is_time_delta]" checked="checked" value="true" />
+                  <i></i> 是
+                </label>
+              </div>
+              <div class="i-checks inline">
+                <label class="control-label">
+                  <input type="radio" name="spider_cycle_task[is_time_delta]" value="" />
+                  <i></i> 否
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
           <div class="hr-line-dashed"></div>
           <div class="form-group">
             <label class="col-sm-2 control-label">选择周期</label>
@@ -88,62 +107,62 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     function cycle_task_get_spider () {
-    	   var spider_id = $('#spider_cycle_task_spider_id').val();
-    	   if (spider_id!=""){
-    	  	   url  = '/spiders/'+ spider_id +'/spider_cycle_tasks'
-    	       $('.cycle-form').attr('action',url);
-    	       $.ajax({
-    	                   url:"/tasks/get_spider",
-    	                   data:{id:spider_id},
-    	                   type:"get",
-    	                   dataType:"json",
-    	                   success:function(result){
-    	                    if (result.type=="true"){
-    	                       $(".cycle_keywords_inputs").html($('.cycle-keywords').html());
-    	                    }else{
-    	                       $(".cycle_keywords_inputs").html('');
-    	                    }
-                          $(".cycle_tags_inputs").html(result.add_funs);
-                          $(".cycle_time_limits").html(result.time_limits);
+      var spider_id = $('#spider_cycle_task_spider_id').val();
+      if (spider_id!=""){
+        url  = '/spiders/'+ spider_id +'/spider_cycle_tasks'
+        $('.cycle-form').attr('action',url);
+        $.ajax({
+          url:"/tasks/get_spider",
+          data:{id:spider_id},
+          type:"get",
+          dataType:"json",
+          success:function(result){
+            if (result.type=="true"){
+              $(".cycle_keywords_inputs").html($('.cycle-keywords').html());
+            }else{
+              $(".cycle_keywords_inputs").html('');
+            }
+            $(".cycle_tags_inputs").html(result.add_funs);
+            $(".cycle_time_limits").html(result.time_limits);
 
-                          $('#cycle_btn_ins').attr("title",result.instruction).tooltip('fixTitle').tooltip('show');
-    	                    }
-    	              });
-         }else{
-          $(".cycle_keywords_inputs").html('');
-          $(".cycle_tags_inputs").html('');
-          $(".cycle_time_limits").html('');
-          $('#cycle_btn_ins').attr("title","请先选择模板").tooltip('fixTitle').tooltip('show');
-        }
+            $('#cycle_btn_ins').attr("title",result.instruction).tooltip('fixTitle').tooltip('show');
+          }
+        });
+      }else{
+        $(".cycle_keywords_inputs").html('');
+        $(".cycle_tags_inputs").html('');
+        $(".cycle_time_limits").html('');
+        $('#cycle_btn_ins').attr("title","请先选择模板").tooltip('fixTitle').tooltip('show');
       }
-    $("#cycle_iconrange_level").ionRangeSlider({
-    min: 1,
-    max: 10,
-    //postfix: "",
-    grid: true,
-    grid_num: 9,
-    onFinish: function (data) {
-    $(".cycle_level_num").val(data.from);
     }
+    $("#cycle_iconrange_level").ionRangeSlider({
+      min: 1,
+      max: 10,
+      //postfix: "",
+      grid: true,
+      grid_num: 9,
+      onFinish: function (data) {
+        $(".cycle_level_num").val(data.from);
+      }
     });
     $("#cycle_iconrange_retry").ionRangeSlider({
-    min: 1,
-    max: 10,
-    //postfix: "",
-    grid: true,
-    grid_num: 9,
-    onFinish: function (data) {
-    $(".cycle_retry_num").val(data.from);
-    }
+      min: 1,
+      max: 10,
+      //postfix: "",
+      grid: true,
+      grid_num: 9,
+      onFinish: function (data) {
+        $(".cycle_retry_num").val(data.from);
+      }
     });
 
-$(function() {
-    $('form.cycle-form .i-checks').iCheck({
+    $(function() {
+      $('form.cycle-form .i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green',
-    });
+      });
 
-});
+    });
 
   </script>
 <%end%>

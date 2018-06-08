@@ -101,6 +101,11 @@ class SpiderCycleTask < ApplicationRecord
     st_params.delete(:period)
     st_params.delete(:next_time)
     st_params.delete(:status)
+
+    if self.is_time_delta
+      st_params[:begin_time] = self.begin_time
+      # st_params[:end_time] = self.next_time
+    end
     st = SpiderTask.new(st_params)
     st.save
     st.enqueue
@@ -121,7 +126,7 @@ class SpiderCycleTask < ApplicationRecord
   def update_next_time
     cron = Rufus::Scheduler::CronLine.new(Sidekiq::Cron::Job.find(self.job_name).cron)
     next_time = cron.next_time(Time.now.utc).utc
-    self.update_attributes(:next_time=>next_time)
+    self.update_attributes(:next_time=>next_time, :begin_time => Time.now)
   end
 
   def special_tag_transfor_id
