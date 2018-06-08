@@ -169,6 +169,17 @@ class SpiderTask < ApplicationRecord
 
     # // ArchonTaskDetailHashKeyFormat  md5 -> task
     # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
+    #
+
+    b_time = ""
+    if !self.begin_time.blank?
+      b_time = self.begin_time.to_s
+    end
+
+    e_time = ""
+    if !self.end_time.blank?
+      e_time = self.end_time.to_s
+    end
 
     task_template = {
       'task_id' => id,
@@ -181,7 +192,7 @@ class SpiderTask < ApplicationRecord
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
-      'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: begin_time, end_time: end_time }
+      'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: b_time, end_time: e_time }
     }
 
     need_account = !spider.control_template_id.blank?
