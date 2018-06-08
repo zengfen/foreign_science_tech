@@ -6,7 +6,7 @@ class SpidersController < ApplicationController
     opts = {}
     opts[:category] = params[:category] unless params[:category].blank?
     opts[:spider_name] = params[:keyword] unless params[:keyword].blank?
-    @spiders = Spider.where(opts).order('created_at desc').page(params[:page]).per(10)
+    @spiders = Spider.where(opts).order('created_at desc').page(params[:page]).per(20)
     @spider = Spider.new
 
     @templates = ControlTemplate.select('id, name').collect { |x| [x.name, x.id] }.to_a
