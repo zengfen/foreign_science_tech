@@ -60,7 +60,12 @@ class SpiderCycleTask < ApplicationRecord
     {
       "1month"=>{:cron=>"0 0 1 * * Asia/Shanghai",:time=>1.month},
       "1week"=>{:cron=>"0 0 * * 1 Asia/Shanghai",:time=>1.week},
+      "2day"=>{:cron=>"0 0 */2 * * Asia/Shanghai",:time=> 2.day},
       "1day"=>{:cron=>"0 0 * * * Asia/Shanghai",:time=> 1.day},
+      "12hour"=>{:cron=>"0 */12 * * * Asia/Shanghai",:time=> 12.hour},
+      "6hour"=>{:cron=>"0 */6 * * * Asia/Shanghai",:time=> 6.hour},
+      "3hour"=>{:cron=>"0 */3 * * * Asia/Shanghai",:time=> 3.hour},
+      "2hour"=>{:cron=>"0 */2 * * * Asia/Shanghai",:time=> 2.hour},
       "1hour"=>{:cron=>"0 * * * * Asia/Shanghai",:time=> 1.hour},
       "30mins"=>{:cron=>"*/30 * * * * Asia/Shanghai",:time=>30.minutes},
       "10mins"=>{:cron=>"*/10 * * * * Asia/Shanghai",:time=> 10.minutes},
