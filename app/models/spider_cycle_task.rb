@@ -106,6 +106,7 @@ class SpiderCycleTask < ApplicationRecord
     st_params.delete(:period)
     st_params.delete(:next_time)
     st_params.delete(:status)
+    st_params.delete(:is_time_delta)
 
     if self.is_time_delta
       st_params[:begin_time] = self.begin_time
