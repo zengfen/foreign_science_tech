@@ -34,6 +34,6 @@ class ApiController < ApplicationController
     $archon_redis.zadd("okidb_dumper_task_ids", Time.now.to_i + 10, @spider_task.id)
 
 
-    render json: {archon_task_id: @spider_task.id}
+    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag.to_i}
   end
 end
