@@ -19,7 +19,7 @@ class ApiController < ApplicationController
       is_split: false,
     )
     @spider_task.special_tag_transfor_id
-    @spider_task.start!
+    # @spider_task.start!
 
 
     details = {
