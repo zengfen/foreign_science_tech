@@ -243,9 +243,9 @@ window.setInterval(function(){
           url:current_url,
           type:'get',
           success:function(data){
-            $("[data-toggle='tooltip']").tooltip('destroy');
+            $(".all-page").find("[data-toggle='tooltip']").tooltip('destroy');
             $(".all-page").html(data);
-            $("[data-toggle='tooltip']").tooltip();
+            $(".all-page").find("[data-toggle='tooltip']").tooltip();
           },
           complete: function (XHR, TS) { 
             XHR = null 
