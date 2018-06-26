@@ -239,11 +239,23 @@ window.setInterval(function(){
   var status = $(".task_status").find('span').text();
   var bool1 = !$('.all-page').hasClass('dn');
   if (bool1 && status.indexOf("执行中")!=-1){
-    $.get(current_url, function(data){
-      $("[data-toggle='tooltip']").tooltip('destroy');
-      $(".all-page").html(data);
-      $("[data-toggle='tooltip']").tooltip();
-    })
+      $.ajax({
+          url:current_url,
+          type:'get',
+          success:function(data){
+            $("[data-toggle='tooltip']").tooltip('destroy');
+            $(".all-page").html(data);
+            $("[data-toggle='tooltip']").tooltip();
+          },
+          complete: function (XHR, TS) { 
+            XHR = null 
+          } 
+      });
+    // $.get(current_url, function(data){
+    //   $("[data-toggle='tooltip']").tooltip('destroy');
+    //   $(".all-page").html(data);
+    //   $("[data-toggle='tooltip']").tooltip();
+    // })
   }
 }, 5000);
 $("[data-toggle='tooltip']").tooltip();

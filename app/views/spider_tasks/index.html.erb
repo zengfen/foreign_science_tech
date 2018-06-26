@@ -165,8 +165,12 @@ $(document)
           if (data.type=="success"){
             _this.closest('.modal').modal("hide");
             $this.closest('tr').remove();
-          }
-        }});
+            }
+          },
+          complete: function (XHR, TS) { 
+           XHR = null 
+           } //回收资源
+       });
       }
      
     });
