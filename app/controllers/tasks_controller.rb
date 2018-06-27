@@ -22,6 +22,12 @@ class TasksController < ApplicationController
     end
   end
 
+  def gc
+     GC.start
+     memory = `ps -o rss= -p #{$$}`.to_i
+     render plain: "hello, #{memory / 1024}MB\n #{GC.stat} \n"
+  end
+
   def fail_tasks
     @fail_tasks =  DispatcherSubtaskStatus.where(task_id: @spider_task.id, status: 3).includes(:dispatcher_subtask).order("id asc").page(params[:page]).per(10)
   end

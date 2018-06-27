@@ -12,7 +12,7 @@ end
 # and maximum; this matches the default thread size of Active Record.
 #
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
-threads threads_count, threads_count
+# threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
@@ -74,7 +74,7 @@ on_worker_boot do
 end
 
 before_fork do
-  ActiveRecord::Base.connection_pool.disconnect!
+  ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
 end
 # Allow puma to be restarted by `rails restart` command.
 # plugin :tmp_restart
