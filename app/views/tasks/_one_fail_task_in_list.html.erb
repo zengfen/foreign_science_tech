@@ -1,5 +1,5 @@
 <%data = JSON.parse(fail_task.dispatcher_subtask.content)%>
-<td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title='<%=data["url"]%>'><%= truncate_utf(data["url"],10,"...")%></td>
+<td  data-toggle="tooltip"  data-container="body" data-placement="bottom"  title='<%=data["url"]%>'><%= truncate_utf(data["url"],15,"...")%></td>
 <td><%= fail_task.error_content %></td>
 <td><%= fail_task.dispatcher_subtask.retry_count %></td>
 <td><%= JSON.parse(fail_task.dispatcher_subtask.content)["max_retry_count"] %></td>
