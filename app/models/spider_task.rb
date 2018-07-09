@@ -40,7 +40,7 @@ class SpiderTask < ApplicationRecord
   scope :unfinished, -> { where.not(status: 2) }
   scope :finished, -> { where(status: 2) }
 
-  # after_create :enqueue
+  after_create :setup_task_spider
   before_destroy :clear_related_datas!
 
   def status_cn
@@ -395,5 +395,10 @@ class SpiderTask < ApplicationRecord
       $archon_redis.hdel('archon_available_tasks', id)
       dequeue_level_task
     end
+  end
+
+
+  def setup_task_spider
+    $archon_redis.hset("archon_task_spider", self.id, self.spider.id)
   end
 end

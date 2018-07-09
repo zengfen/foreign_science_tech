@@ -27,8 +27,8 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: { maximum: 50 },
                           uniqueness: { case_sensitive: false }
 
-  after_create :add_spider_control_template
-  after_destroy :remove_spider_control_template
+  after_create :add_control_template_id
+  before_destroy :remove_control_template_id
 
   validates_uniqueness_of :template_name
 
@@ -103,11 +103,23 @@ class Spider < ApplicationRecord
     end
   end
 
-  def add_spider_control_template
-    $archon_redis.hset('archon_spider_control_templates', template_name, control_template_id || '')
+  def add_control_template_id
+    $archon_redis.hset("archon_spider_ids", self.template_name, self.id)
+    $archon_redis.hset("archon_spiders", self.id, self.template_name)
+    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
+    dep_ids = self.dep_control_template_ids
+    dep_ids << self.control_template_id
+    dep_ids.uniq!
+    dep_ids.delete(nil)
+    dep_ids.delete("")
+
+    $archon_redis.hset("archon_spider_control_ids", template_name, dep_ids.join(","))
   end
 
-  def remove_spider_control_template
-    $archon_redis.hdel('archon_spider_control_templates', template_name)
+  def remove_control_template_id
+    $archon_redis.hdel("archon_spider_ids", self.template_name)
+    $archon_redis.hdel("archon_spiders", self.id)
+    $archon_redis.hdel('archon_template_control_id', template_name)
+    $archon_redis.hdel('archon_spider_control_ids', template_name)
   end
 end
