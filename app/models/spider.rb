@@ -26,8 +26,8 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: { maximum: 50 },
                           uniqueness: { case_sensitive: false }
 
-  after_create :add_template_name_hash
-  after_destroy :remove_template_name_hash
+  after_create :add_spider_control_template
+  after_destroy :remove_spider_control_template
 
   validates_uniqueness_of :template_name
 
@@ -102,11 +102,11 @@ class Spider < ApplicationRecord
     end
   end
 
-  def add_template_name_hash
-    $archon_redis.hset('template_control_template_map', template_name, control_template_id || '')
+  def add_spider_control_template
+    $archon_redis.hset('spider_control_templates', template_name, control_template_id || '')
   end
 
-  def remove_template_name_hash
-    $archon_redis.hdel('template_control_template_map', template_name)
+  def remove_spider_control_template
+    $archon_redis.hdel('spider_control_templates', template_name)
   end
 end
