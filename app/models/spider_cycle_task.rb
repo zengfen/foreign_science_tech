@@ -2,7 +2,7 @@
 #
 # Table name: spider_cycle_tasks
 #
-#  id                  :integer          not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  spider_id           :integer
 #  level               :integer          default(1)
 #  keyword             :text
@@ -20,6 +20,7 @@
 #  begin_time          :datetime
 #  end_time            :datetime
 #  is_split            :boolean          default(FALSE)
+#  is_time_delta       :boolean          default(FALSE), not null
 #
 
 class SpiderCycleTask < ApplicationRecord

@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: hosts
+#
+#  ip             :string(255)      not null, primary key
+#  is_internal    :boolean
+#  last_active_at :bigint(8)
+#
+
 class DispatcherHost < DispatcherBase
   self.table_name = 'hosts'
 

@@ -2,7 +2,7 @@
 #
 # Table name: social_accounts
 #
-#  id               :integer          not null, primary key
+#  id               :bigint(8)        not null, primary key
 #  name             :string
 #  account_type     :string
 #  account          :string

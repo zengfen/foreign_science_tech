@@ -2,25 +2,29 @@
 #
 # Table name: spider_tasks
 #
-#  id                   :integer          not null, primary key
-#  spider_id            :integer
-#  level                :integer          default(1)
-#  keyword              :text
-#  special_tag          :string
-#  status               :integer          default(0)
-#  success_count        :integer          default(0)
-#  fail_count           :integer          default(0)
-#  refresh_time         :datetime
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  max_retry_count      :integer          default(2)
-#  warning_count        :integer          default(0)
-#  spider_cycle_task_id :integer
-#  task_type            :integer          default(1)
-#  additional_function  :json
-#  is_split             :boolean          default(FALSE)
-#  begin_time           :datetime
-#  end_time             :datetime
+#  id                    :bigint(8)        not null, primary key
+#  spider_id             :integer
+#  level                 :integer          default(1)
+#  keyword               :text
+#  special_tag           :string
+#  status                :integer          default(0)
+#  success_count         :integer          default(0)
+#  fail_count            :integer          default(0)
+#  refresh_time          :datetime
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  max_retry_count       :integer          default(2)
+#  warning_count         :integer          default(0)
+#  spider_cycle_task_id  :integer
+#  task_type             :integer          default(1)
+#  additional_function   :json
+#  is_split              :boolean          default(FALSE)
+#  begin_time            :datetime
+#  end_time              :datetime
+#  current_task_count    :integer
+#  current_success_count :integer
+#  current_fail_count    :integer
+#  current_warning_count :integer
 #
 
 class SpiderTask < ApplicationRecord

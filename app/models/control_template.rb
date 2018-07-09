@@ -2,7 +2,7 @@
 #
 # Table name: control_templates
 #
-#  id               :integer          not null, primary key
+#  id               :bigint(8)        not null, primary key
 #  name             :string
 #  is_bind_ip       :boolean
 #  window_type      :integer
@@ -15,6 +15,7 @@
 #  has_account      :boolean          default(TRUE), not null
 #  start_delay      :float
 #  end_delay        :float
+#  is_internal      :boolean          default(TRUE), not null
 #
 
 class ControlTemplate < ApplicationRecord

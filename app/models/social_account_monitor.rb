@@ -2,7 +2,7 @@
 #
 # Table name: social_account_monitors
 #
-#  id              :integer          not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  account_type    :string
 #  spider_id       :integer
 #  cycle_type      :string

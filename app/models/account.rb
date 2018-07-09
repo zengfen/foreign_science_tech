@@ -2,13 +2,14 @@
 #
 # Table name: accounts
 #
-#  id                  :integer          not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  content             :string
 #  account_type        :integer
 #  control_template_id :integer
 #  valid_time          :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  valid_ips           :text             default([]), is an Array
 #
 
 class Account < ApplicationRecord

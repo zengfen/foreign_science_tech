@@ -2,7 +2,7 @@
 #
 # Table name: hosts
 #
-#  id                  :integer          not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  extranet_ip         :inet
 #  intranet_ip         :inet
 #  network_environment :integer          default(1)

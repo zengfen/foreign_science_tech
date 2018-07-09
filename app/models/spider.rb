@@ -2,20 +2,21 @@
 #
 # Table name: spiders
 #
-#  id                  :integer          not null, primary key
-#  spider_name         :string
-#  spider_type         :integer
-#  network_environment :integer          default(1)
-#  proxy_support       :boolean          default(FALSE)
-#  has_keyword         :boolean          default(TRUE)
-#  template_name       :string
-#  category            :string
-#  additional_function :json             is an Array
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  control_template_id :integer
-#  instruction         :string
-#  has_time_limit      :boolean          default(FALSE)
+#  id                       :bigint(8)        not null, primary key
+#  spider_name              :string
+#  spider_type              :integer
+#  network_environment      :integer          default(1)
+#  proxy_support            :boolean          default(FALSE)
+#  has_keyword              :boolean          default(TRUE)
+#  template_name            :string
+#  category                 :string
+#  additional_function      :json             is an Array
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  control_template_id      :integer
+#  instruction              :string
+#  has_time_limit           :boolean          default(FALSE)
+#  dep_control_template_ids :integer          default([]), not null, is an Array
 #
 
 class Spider < ApplicationRecord

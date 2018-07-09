@@ -2,7 +2,7 @@
 #
 # Table name: statistical_infos
 #
-#  id             :integer          not null, primary key
+#  id             :bigint(8)        not null, primary key
 #  host_ip        :string
 #  info_type      :integer
 #  count          :integer
