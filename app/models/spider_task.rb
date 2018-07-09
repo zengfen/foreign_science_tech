@@ -399,6 +399,6 @@ class SpiderTask < ApplicationRecord
 
 
   def setup_task_spider
-    $archon_redis.hset("archon_task_spider", self.id, self.spider.id)
+    $archon_redis.hset("archon_task_spider", self.id, self.spider_id)
   end
 end
