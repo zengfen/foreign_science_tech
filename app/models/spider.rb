@@ -26,6 +26,8 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: { maximum: 50 },
                           uniqueness: { case_sensitive: false }
 
+  validates_uniqueness_of :template_name
+
   def self.categories
     {
       '新闻' => 'news',
