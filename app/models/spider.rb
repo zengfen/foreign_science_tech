@@ -26,6 +26,9 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: { maximum: 50 },
                           uniqueness: { case_sensitive: false }
 
+  after_create :add_template_name_hash
+  after_destroy :remove_template_name_hash
+
   validates_uniqueness_of :template_name
 
   def self.categories
@@ -52,9 +55,8 @@ class Spider < ApplicationRecord
     }
   end
 
-
   def tidb_table_name
-    "archon_#{self.category}"
+    "archon_#{category}"
   end
 
   def category_cn
@@ -98,5 +100,13 @@ class Spider < ApplicationRecord
     dates.each do |date|
       category.classify.constantize.create_index(date)
     end
+  end
+
+  def add_template_name_hash
+    $archon_redis.hset('template_control_template_map', template_name, control_template_id || '')
+  end
+
+  def remove_template_name_hash
+    $archon_redis.hdel('template_control_template_map', template_name)
   end
 end
