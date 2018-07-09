@@ -103,10 +103,10 @@ class Spider < ApplicationRecord
   end
 
   def add_spider_control_template
-    $archon_redis.hset('spider_control_templates', template_name, control_template_id || '')
+    $archon_redis.hset('archon_spider_control_templates', template_name, control_template_id || '')
   end
 
   def remove_spider_control_template
-    $archon_redis.hdel('spider_control_templates', template_name)
+    $archon_redis.hdel('archon_spider_control_templates', template_name)
   end
 end
