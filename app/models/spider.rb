@@ -103,6 +103,28 @@ class Spider < ApplicationRecord
     end
   end
 
+  def control_template_id_details
+    ids = []
+    if !self.control_template_id.blank?
+      ids << self.control_template.id
+      if self.control_template.is_bind_ip
+        ids << "1"
+      else
+        ids << "0"
+      end
+
+      self.dep_control_template_ids.each do |x|
+        c = ControlTemplate.find(x)
+        ids << c.id
+        if c.is_bind_ip
+          ids << "1"
+        else
+          ids << "0"
+        end
+      end
+    end
+  end
+
   def add_control_template_id
     $archon_redis.hset("archon_spider_ids", self.template_name, self.id)
     $archon_redis.hset("archon_spiders", self.id, self.template_name)
