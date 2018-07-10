@@ -123,6 +123,8 @@ class Spider < ApplicationRecord
         end
       end
     end
+
+    ids.join(",")
   end
 
   def add_control_template_id
