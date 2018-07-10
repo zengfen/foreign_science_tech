@@ -400,5 +400,6 @@ class SpiderTask < ApplicationRecord
 
   def setup_task_spider
     $archon_redis.hset("archon_task_spider", self.id, self.spider_id)
+    $archon_redis.hset("archon_task_controls", self.id, self.spider.control_template_id_details)
   end
 end
