@@ -99,6 +99,17 @@ class Spider < ApplicationRecord
         spider.errors.add(:additional_function, '格式错误')
       end
     end
+
+    temp_templates = {}
+    (1 .. 4).to_a.each do |i|
+      template_name = spider.send("template_name#{i}")
+      control_id = spider.send("control_template_id#{i}")
+      if !template_name.blank?
+        temp_templates[template_name] = control_id
+      end
+    end
+    spider.dep_templates = temp_templates
+
     spider
   end
 
@@ -133,22 +144,22 @@ class Spider < ApplicationRecord
   end
 
   def add_control_template_id
-    $archon_redis.hset("archon_spider_ids", self.template_name, self.id)
-    $archon_redis.hset("archon_spiders", self.id, self.template_name)
-    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-    dep_ids = self.dep_control_template_ids
-    dep_ids << self.control_template_id
-    dep_ids.uniq!
-    dep_ids.delete(nil)
-    dep_ids.delete("")
+    # $archon_redis.hset("archon_spider_ids", self.template_name, self.id)
+    # $archon_redis.hset("archon_spiders", self.id, self.template_name)
+    # $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
+    # dep_ids = self.dep_control_template_ids
+    # dep_ids << self.control_template_id
+    # dep_ids.uniq!
+    # dep_ids.delete(nil)
+    # dep_ids.delete("")
 
-    $archon_redis.hset("archon_spider_control_ids", template_name, dep_ids.join(","))
+    # $archon_redis.hset("archon_spider_control_ids", template_name, dep_ids.join(","))
   end
 
   def remove_control_template_id
-    $archon_redis.hdel("archon_spider_ids", self.template_name)
-    $archon_redis.hdel("archon_spiders", self.id)
-    $archon_redis.hdel('archon_template_control_id', template_name)
-    $archon_redis.hdel('archon_spider_control_ids', template_name)
+    # $archon_redis.hdel("archon_spider_ids", self.template_name)
+    # $archon_redis.hdel("archon_spiders", self.id)
+    # $archon_redis.hdel('archon_template_control_id', template_name)
+    # $archon_redis.hdel('archon_spider_control_ids', template_name)
   end
 end
