@@ -91,6 +91,14 @@
                   <%= f.text_field :template_name3,:placeholder=>"模板名称",:class=>"form-control" %>
                 </div>
                 <div class="col-md-6">
+                  <%= f.select(:control_template_id3, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.text_field :template_name4,:placeholder=>"模板名称",:class=>"form-control" %>
+                </div>
+                <div class="col-md-6">
                   <%= f.select(:control_template_id4, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
                 </div>
               </div>
