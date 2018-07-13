@@ -104,6 +104,13 @@ class Spider < ApplicationRecord
     (1 .. 4).to_a.each do |i|
       template_name = spider.send("template_name#{i}")
       next if template_name.blank?
+      template_name.strip!
+
+      if temp_templates.include?(template_name)
+        spider.errors.add("template_name#{i}".to_sym, '模板重复')
+        return spider
+      end
+
       control_id = spider.send("control_template_id#{i}")
       if !template_name.blank?
         temp_templates[template_name] = control_id
