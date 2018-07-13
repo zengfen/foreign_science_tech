@@ -103,6 +103,7 @@ class Spider < ApplicationRecord
     temp_templates = {}
     (1 .. 4).to_a.each do |i|
       template_name = spider.send("template_name#{i}")
+      next if template_name.blank?
       control_id = spider.send("control_template_id#{i}")
       if !template_name.blank?
         temp_templates[template_name] = control_id
