@@ -101,11 +101,11 @@ class Spider < ApplicationRecord
     spider
   end
 
-  def self.create_index(category, dates)
-    dates.each do |date|
-      category.classify.constantize.create_index(date)
-    end
-  end
+  # def self.create_index(category, dates)
+  #   dates.each do |date|
+  #     category.classify.constantize.create_index(date)
+  #   end
+  # end
 
   def control_template_id_details
     ids = []
