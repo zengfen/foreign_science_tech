@@ -7,7 +7,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">爬虫名</label>
             <div class="col-sm-10">
-              <%= f.text_field :spider_name,:placeholder=>"爬虫名",:class=>"form-control",:required=>true %>  
+              <%= f.text_field :spider_name,:placeholder=>"爬虫名",:class=>"form-control",:required=>true %>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
@@ -16,7 +16,7 @@
             <div class="col-sm-10">
               <%Spider.spider_types.each_with_index do |k,i|%>
                 <div class="i-checks inline">
-                  <label class="control-label"> 
+                  <label class="control-label">
                     <%= f.radio_button(:spider_type, k.last,:checked=>(@spider.spider_type.blank? ? (i==0) : (@spider.spider_type == k.last)))%>
                     <i></i> <%=k.first%>
                   </label>
@@ -37,7 +37,7 @@
             <div class="col-sm-10">
               <%Spider.network_environments.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label class="control-label"> 
+                  <label class="control-label">
                     <%= f.radio_button(:network_environment, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -51,7 +51,7 @@
             <div class="col-sm-10">
               <%{"是"=>true,"否"=>false}.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label class="control-label"> 
+                  <label class="control-label">
                     <%= f.radio_button(:proxy_support, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -63,6 +63,21 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">账号控制模板</label>
             <div class="col-sm-10">
+              <div class="row">
+                <div class="col-md-6">
+                  <%= f.text_field :spider_name,:placeholder=>"模板名称",:class=>"form-control" %>
+                </div>
+                <div class="col-md-6">
+                  <%= f.select(:control_template_id, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-line-dashed"></div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">依赖模板和控制</label>
+            <div class="col-sm-10">
               <%= f.select(:control_template_id, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
             </div>
           </div>
@@ -73,7 +88,7 @@
             <div class="col-sm-10">
               <%{"是"=>true,"否"=>false}.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label class="control-label"> 
+                  <label class="control-label">
                     <%= f.radio_button(:has_keyword, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -87,7 +102,7 @@
             <div class="col-sm-10">
               <%{"是"=>true,"否"=>false}.each do |k,v|%>
                 <div class="i-checks inline">
-                  <label class="control-label"> 
+                  <label class="control-label">
                     <%= f.radio_button(:has_time_limit, v)%>
                     <i></i> <%=k%>
                   </label>
@@ -99,14 +114,14 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">模板名称</label>
             <div class="col-sm-10">
-              <%= f.text_field :template_name,:placeholder=>"模板名称",:class=>"form-control",:required=>true %>  
+              <%= f.text_field :template_name,:placeholder=>"模板名称",:class=>"form-control",:required=>true %>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
           <div class="form-group">
             <label class="col-sm-2 control-label">附加条件</label>
             <div class="col-sm-10">
-             <%=f.text_area :additional_function,:class=>"form-control",:value=>(@spider.additional_function.blank? ? "":@spider.additional_function.to_json) %>
+              <%=f.text_area :additional_function,:class=>"form-control",:value=>(@spider.additional_function.blank? ? "":@spider.additional_function.to_json) %>
             </div>
           </div>
 
@@ -115,16 +130,16 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">说明</label>
             <div class="col-sm-10">
-             <%=f.text_area :instruction,:class=>"form-control"%>
+              <%=f.text_area :instruction,:class=>"form-control"%>
             </div>
           </div>
           <div class="hr-line-dashed"></div>
           <div class="form-group">
-              <div class="col-sm-2 col-sm-offset-10">
-                  <button class="btn btn-primary" type="submit">保存</button>
-              </div>
+            <div class="col-sm-2 col-sm-offset-10">
+              <button class="btn btn-primary" type="submit">保存</button>
+            </div>
           </div>
-       <%end%>
+        <%end%>
       </div>
     </div>
   </div>

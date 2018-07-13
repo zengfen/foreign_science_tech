@@ -32,6 +32,10 @@ class Spider < ApplicationRecord
 
   validates_uniqueness_of :template_name
 
+
+  attr_accessor :template_name1, :template_name2, :template_name3, :template_name4, :template_name5
+  attr_accessor :control_template_id1, :control_template_id2, :control_template_id3, :control_template_id4, :control_template_id5
+
   def self.categories
     {
       '新闻' => 'news',
