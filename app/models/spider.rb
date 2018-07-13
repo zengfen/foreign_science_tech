@@ -17,6 +17,7 @@
 #  instruction              :string
 #  has_time_limit           :boolean          default(FALSE)
 #  dep_control_template_ids :integer          default([]), not null, is an Array
+#  dep_templates            :json             not null
 #
 
 class Spider < ApplicationRecord
