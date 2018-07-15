@@ -33,7 +33,6 @@ class Spider < ApplicationRecord
 
   validates_uniqueness_of :template_name
 
-
   attr_accessor :template_name1, :template_name2, :template_name3, :template_name4, :template_name5
   attr_accessor :control_template_id1, :control_template_id2, :control_template_id3, :control_template_id4, :control_template_id5
 
@@ -101,7 +100,7 @@ class Spider < ApplicationRecord
     end
 
     temp_templates = {}
-    (1 .. 4).to_a.each do |i|
+    (1..4).to_a.each do |i|
       template_name = spider.send("template_name#{i}")
       next if template_name.blank?
       template_name.strip!
@@ -112,9 +111,7 @@ class Spider < ApplicationRecord
       end
 
       control_id = spider.send("control_template_id#{i}")
-      if !template_name.blank?
-        temp_templates[template_name] = control_id
-      end
+      temp_templates[template_name] = control_id unless template_name.blank?
     end
     spider.dep_templates = temp_templates
 
@@ -127,41 +124,63 @@ class Spider < ApplicationRecord
   #   end
   # end
 
-  def control_template_id_details
+  def accounts_is_valid?
     ids = []
-    if !self.control_template_id.blank?
-      ids << self.control_template.id
-      if self.control_template.is_bind_ip
-        ids << "1"
-      else
-        ids << "0"
-      end
+    unless control_template_id.blank?
+      ids << control_template.id
 
-      self.dep_templates.each do |k, v|
-        c = ControlTemplate.find(v)
-        ids << c.id
-        if c.is_bind_ip
-          ids << "1"
-        else
-          ids << "0"
-        end
+    end
+
+    dep_templates.each do |_k, v|
+      c = ControlTemplate.find(v)
+      ids << c.id
+    end
+
+    ida.each do |x|
+      c = ControlTemplate.find(x)
+      if !c.accounts_is_valid?
+        return false
       end
     end
 
-    ids.join(",")
+    return true
+  end
+
+  def control_template_id_details
+    ids = []
+    unless control_template_id.blank?
+      ids << control_template.id
+      ids << if control_template.is_bind_ip
+               '1'
+             else
+               '0'
+             end
+    end
+
+    dep_templates.each do |_k, v|
+      c = ControlTemplate.find(v)
+      ids << c.id
+      ids << if c.is_bind_ip
+               '1'
+             else
+               '0'
+             end
+    end
+
+    ids.join(',')
   end
 
   def add_control_template_id
     $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
 
-    self.dep_templates.each do |k, v|
+    dep_templates.each do |k, v|
       $archon_redis.hset('archon_template_control_id', k, v || '')
     end
   end
 
   def remove_control_template_id
     $archon_redis.hdel('archon_template_control_id', template_name)
-    self.dep_templates.each do |k, v|
+    dep_templates.each do |k, _v|
       $archon_redis.hdel('archon_template_control_id', k)
     end
   end

@@ -127,9 +127,7 @@ class SpiderTask < ApplicationRecord
 
 
   def accounts_is_valid?
-    return true if self.spider.control_template.blank?
-
-    self.spider.control_template.accounts_is_valid?
+    self.spider.accounts_is_valid?
   end
 
 
