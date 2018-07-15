@@ -203,6 +203,14 @@ class SpiderTask < ApplicationRecord
 
     Rails.logger.info(need_account)
 
+    archon_template_id = self.control_template_id
+
+    prefix_integer = 0
+
+    if !archon_template_id.blank?
+      prefix_integer = archon_template_id * 10000000000000
+    end
+
     if spider.has_keyword
       if is_split
         task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
@@ -210,9 +218,9 @@ class SpiderTask < ApplicationRecord
         DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
         # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
-          $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
         else
-          $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
         end
       else
         keyword.split(',').each do |k|
@@ -221,9 +229,9 @@ class SpiderTask < ApplicationRecord
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
-            $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
           else
-            $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
           end
         end
       end
@@ -233,9 +241,9 @@ class SpiderTask < ApplicationRecord
       # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
       DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       if need_account
-        $archon_redis.zadd("archon_tasks_#{id}_1", (Time.now.to_i) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
       else
-        $archon_redis.zadd("archon_tasks_#{id}_0", (Time.now.to_i) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
       end
     end
 
@@ -356,12 +364,14 @@ class SpiderTask < ApplicationRecord
     redis_keys = []
     redis_keys << "archon_tasks_#{id}_0"
     redis_keys << "archon_tasks_#{id}_1"
+    redis_keys << "archon_tasks_#{id}"
 
     # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
 
     redis_keys.map { |x| $archon_redis.del(x) }
 
     $archon_redis.hdel('archon_task_account_controls', id)
+    $archon_redis.hdel('archon_task_controls', id)
 
     $archon_redis.hdel('archon_available_tasks', id)
 
