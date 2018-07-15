@@ -201,7 +201,7 @@ class SpiderTask < ApplicationRecord
 
     Rails.logger.info(need_account)
 
-    archon_template_id = self.control_template_id
+    archon_template_id = self.spider.control_template_id
 
     prefix_integer = 0
 
