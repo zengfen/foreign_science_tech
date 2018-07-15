@@ -137,8 +137,8 @@ class Spider < ApplicationRecord
         ids << "0"
       end
 
-      self.dep_control_template_ids.each do |x|
-        c = ControlTemplate.find(x)
+      self.dep_templates.each do |k, v|
+        c = ControlTemplate.find(v)
         ids << c.id
         if c.is_bind_ip
           ids << "1"
