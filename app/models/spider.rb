@@ -152,22 +152,17 @@ class Spider < ApplicationRecord
   end
 
   def add_control_template_id
-    # $archon_redis.hset("archon_spider_ids", self.template_name, self.id)
-    # $archon_redis.hset("archon_spiders", self.id, self.template_name)
-    # $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-    # dep_ids = self.dep_control_template_ids
-    # dep_ids << self.control_template_id
-    # dep_ids.uniq!
-    # dep_ids.delete(nil)
-    # dep_ids.delete("")
+    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
 
-    # $archon_redis.hset("archon_spider_control_ids", template_name, dep_ids.join(","))
+    self.dep_templates.each do |k, v|
+      $archon_redis.hset('archon_template_control_id', k, v || '')
+    end
   end
 
   def remove_control_template_id
-    # $archon_redis.hdel("archon_spider_ids", self.template_name)
-    # $archon_redis.hdel("archon_spiders", self.id)
-    # $archon_redis.hdel('archon_template_control_id', template_name)
-    # $archon_redis.hdel('archon_spider_control_ids', template_name)
+    $archon_redis.hdel('archon_template_control_id', template_name)
+    self.dep_templates.each do |k, v|
+      $archon_redis.hdel('archon_template_control_id', k)
+    end
   end
 end
