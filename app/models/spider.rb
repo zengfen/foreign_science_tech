@@ -136,7 +136,7 @@ class Spider < ApplicationRecord
       ids << c.id
     end
 
-    ida.each do |x|
+    ids.each do |x|
       c = ControlTemplate.find(x)
       if !c.accounts_is_valid?
         return false
