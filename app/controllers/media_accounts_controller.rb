@@ -4,7 +4,7 @@ class MediaAccountsController < ApplicationController
   def index
   	client = EsConnect.client
   	@options = MediaAccount.get_aggs_opts
-  	@media_accounts = MediaAccount.order("created_at asc").page(params[:page]).per(20)
+  	@media_accounts = MediaAccount.order("mri desc").page(params[:page]).per(20)
   end
 
   def test
