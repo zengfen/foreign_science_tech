@@ -67,5 +67,6 @@ class SpidersController < ApplicationController
   def get_spider
     @spider = Spider.find_by(id: params[:id])
     redirect_to root_path if @spider.blank?
+    @spider.set_control_template
   end
 end
