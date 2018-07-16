@@ -77,38 +77,16 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">依赖模板和控制</label>
             <div class="col-sm-10">
-              <div class="row">
-                <div class="col-md-6">
-                  <%= f.text_field :template_name1,:placeholder=>"模板名称",:class=>"form-control" %>
+              <% (1..5).to_a.each do |i| %>
+                <div class="row">
+                  <div class="col-md-6">
+                    <%= f.text_field "template_name#{i}",:placeholder=>"模板名称",:class=>"form-control" %>
+                  </div>
+                  <div class="col-md-6">
+                    <%= f.select("control_template_id#{i}", @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <%= f.select(:control_template_id1, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <%= f.text_field :template_name2,:placeholder=>"模板名称",:class=>"form-control" %>
-                </div>
-                <div class="col-md-6">
-                  <%= f.select(:control_template_id2, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <%= f.text_field :template_name3,:placeholder=>"模板名称",:class=>"form-control" %>
-                </div>
-                <div class="col-md-6">
-                  <%= f.select(:control_template_id3, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <%= f.text_field :template_name4,:placeholder=>"模板名称",:class=>"form-control" %>
-                </div>
-                <div class="col-md-6">
-                  <%= f.select(:control_template_id4, @templates, {:include_blank => '选择'},{class: "form-control m-b"}) %>
-                </div>
-              </div>
+              <% end %>
             </div>
           </div>
 

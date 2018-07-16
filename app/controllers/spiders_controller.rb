@@ -61,7 +61,7 @@ class SpidersController < ApplicationController
   private
 
   def spider_params
-    params.require(:spider).permit(:spider_name, :spider_type, :network_environment, :proxy_support, :has_keyword, :template_name, :category, :additional_function, :control_template_id,:instruction,:has_time_limit, :template_name1, :template_name2, :template_name3, :template_name4, :control_template_id1, :control_template_id2, :control_template_id3, :control_template_id4)
+    params.require(:spider).permit(:spider_name, :spider_type, :network_environment, :proxy_support, :has_keyword, :template_name, :category, :additional_function, :control_template_id,:instruction,:has_time_limit, :template_name1, :template_name2, :template_name3, :template_name4,:template_name5, :control_template_id1, :control_template_id2, :control_template_id3, :control_template_id4, :control_template_id5)
   end
 
   def get_spider

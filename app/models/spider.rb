@@ -100,7 +100,7 @@ class Spider < ApplicationRecord
     end
 
     temp_templates = {}
-    (1..4).to_a.each do |i|
+    (1..5).to_a.each do |i|
       template_name = spider.send("template_name#{i}")
       next if template_name.blank?
       template_name.strip!
@@ -197,5 +197,15 @@ class Spider < ApplicationRecord
 
     self.dep_templates = d
     self.save
+  end
+
+
+  def set_control_template
+    i = 1
+    self.dep_templates.each do |k, v|
+      break if i > 5
+      self.send("template_name#{i}=", k)
+      self.send("control_template_id#{i}=", v)
+    end
   end
 end

@@ -302,12 +302,20 @@ class SpiderTask < ApplicationRecord
 
     task = JSON.parse(subtask.content)
 
-    need_account = !spider.control_template_id.blank?
 
-    if need_account && (task['ignore_account'].blank? || !task['ignore_account'])
-      $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_md5)
+
+    archon_template_id = $archon_redis.hget(task["template_id"])
+    prefix_integer = 0
+
+    if !archon_template_id.blank?
+      prefix_integer = archon_template_id * 10000000000000
+    end
+
+
+    if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
+      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
     else
-      $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_md5)
+      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
     end
 
     if maybe_finished? || is_finished?
@@ -321,7 +329,7 @@ class SpiderTask < ApplicationRecord
   def retry_all_fail_task
     return if fail_count == 0
 
-    need_account = !spider.control_template_id.blank?
+    # need_account = !spider.control_template_id.blank?
 
     DispatcherSubtaskStatus.where(task_id: id, status: 3).each do |subtaskStatus|
       subtask = DispatcherSubtask.where(id: subtaskStatus.task_md5).first
@@ -331,10 +339,19 @@ class SpiderTask < ApplicationRecord
 
       task = JSON.parse(subtask.content)
 
-      if need_account && (task['ignore_account'].blank? || !task['ignore_account'])
-        $archon_redis.zadd("archon_tasks_#{id}_1", Time.now.to_i, task_md5)
+
+      archon_template_id = $archon_redis.hget(task["template_id"])
+      prefix_integer = 0
+
+      if !archon_template_id.blank?
+        prefix_integer = archon_template_id * 10000000000000
+      end
+
+
+      if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
       else
-        $archon_redis.zadd("archon_tasks_#{id}_0", Time.now.to_i, task_md5)
+        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
       end
 
       subtaskStatus.destroy
