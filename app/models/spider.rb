@@ -184,4 +184,18 @@ class Spider < ApplicationRecord
       $archon_redis.hdel('archon_template_control_id', k)
     end
   end
+
+
+  def update_dep_templates(templates)
+    return if templates.blank?
+
+    d = {}
+
+    templates.each do |x|
+      d[x] = self.control_template_id
+    end
+
+    self.dep_templates = d
+    self.save
+  end
 end
