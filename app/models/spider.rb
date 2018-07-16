@@ -206,6 +206,7 @@ class Spider < ApplicationRecord
       break if i > 5
       self.send("template_name#{i}=", k)
       self.send("control_template_id#{i}=", v)
+      i += 1
     end
   end
 end
