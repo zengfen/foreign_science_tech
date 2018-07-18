@@ -304,7 +304,7 @@ class SpiderTask < ApplicationRecord
 
 
 
-    archon_template_id = $archon_redis.hget(task["template_id"])
+    archon_template_id = $archon_redis.hget('archon_template_control_id', task["template_id"])
     prefix_integer = 0
 
     if !archon_template_id.blank?
@@ -340,7 +340,7 @@ class SpiderTask < ApplicationRecord
       task = JSON.parse(subtask.content)
 
 
-      archon_template_id = $archon_redis.hget(task["template_id"])
+      archon_template_id = $archon_redis.hget('archon_template_control_id', task["template_id"])
       prefix_integer = 0
 
       if !archon_template_id.blank?
