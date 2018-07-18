@@ -22,7 +22,8 @@ class ArchonBase < ActiveRecord::Base
       'Facebook' => 'archon_facebook_post',
       'Facebook评论' => 'archon_facebook_comment',
       'Twitter' => 'archon_twitter',
-      'Linkedin' => 'archon_linkedin'
+      'Linkedin' => 'archon_linkedin',
+      "商户" => "archon_place",
     }
   end
 

@@ -56,7 +56,8 @@ class Spider < ApplicationRecord
       'Facebook评论' => 'facebook_comment',
       'Twitter' => 'twitter',
       'Linkedin' => 'linkedin',
-      '字幕' => 'timed_text'
+      '字幕' => 'timed_text',
+      "商户" => "place",
     }
   end
 

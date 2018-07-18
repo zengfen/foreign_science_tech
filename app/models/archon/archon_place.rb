@@ -1,0 +1,3 @@
+class ArchonPlace < ArchonBase
+
+end
