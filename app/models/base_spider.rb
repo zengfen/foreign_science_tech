@@ -20,7 +20,7 @@ class BaseSpider < ApplicationRecord
   end
 
   def network_environment_cn
-    network_environment == 1 ? '境内' : '境外'
+    network_environment == "1" ? '境内' : '境外'
   end
 
 
