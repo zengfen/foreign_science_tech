@@ -19,6 +19,10 @@ class BaseSpider < ApplicationRecord
     $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
   end
 
+  def network_environment_cn
+    network_environment == 1 ? '境内' : '境外'
+  end
+
   # def self.build_spider(spider_params)
   #   spider = BaseSpider.new(spider_params)
 
