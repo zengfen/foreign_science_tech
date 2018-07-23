@@ -7,7 +7,7 @@ class BaseSpider < ApplicationRecord
   validates :template_name, presence: true, length: { maximum: 50 },
                             uniqueness: { case_sensitive: false }
 
-  after_create :sync_to_redis
+  # after_create :sync_to_redis
 
   def control_template_name
     return '' if control_template_id.blank?
