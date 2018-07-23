@@ -3,8 +3,8 @@ class BaseSpidersController < ApplicationController
   before_action :get_spider, only: %i[show show_info load_edit_form update destroy]
 
   def index
-    @spiders = Spider.order('created_at desc').page(params[:page]).per(20)
-    @spider = Spider.new
+    @spiders = BaseSpider.order('created_at desc').page(params[:page]).per(20)
+    @spider = BaseSpider.new
 
     @templates = ControlTemplate.select('id, name').collect { |x| [x.name, x.id] }.to_a
   end
