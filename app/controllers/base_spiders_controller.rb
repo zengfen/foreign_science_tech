@@ -12,7 +12,7 @@ class BaseSpidersController < ApplicationController
   def show; end
 
   def create
-    @spider = BaseSpider.build_spider(spider_params)
+    @spider = BaseSpider.new(spider_params)
     if @spider.save
       flash[:success] = '创建成功'
     else
