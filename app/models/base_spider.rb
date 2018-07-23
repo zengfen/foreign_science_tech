@@ -1,0 +1,2 @@
+class BaseSpider < ApplicationRecord
+end
