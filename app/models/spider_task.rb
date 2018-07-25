@@ -76,8 +76,6 @@ class SpiderTask < ApplicationRecord
     else
       $archon_redis.zrem('archon_external_tasks', id)
     end
-
-
   end
 
   def start!
@@ -120,21 +118,18 @@ class SpiderTask < ApplicationRecord
     self.special_tag = specital_tags_ids
   end
 
-
   def tidb_table_name
-    self.spider.tidb_table_name
+    spider.tidb_table_name
   end
-
 
   def accounts_is_valid?
-    self.spider.accounts_is_valid?
+    spider.accounts_is_valid?
   end
-
 
   def save_with_spilt_keywords
     return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
 
-    return {"error" => "账号都已过期"} if !self.accounts_is_valid?
+    return { 'error' => '账号都已过期' } unless accounts_is_valid?
 
     if spider.has_keyword
       keywords = keyword.split(',').collect(&:strip).uniq
@@ -173,15 +168,11 @@ class SpiderTask < ApplicationRecord
     # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
     #
 
-    b_time = ""
-    if !self.begin_time.blank?
-      b_time = self.begin_time.to_s
-    end
+    b_time = ''
+    b_time = begin_time.to_s unless begin_time.blank?
 
-    e_time = ""
-    if !self.end_time.blank?
-      e_time = self.end_time.to_s
-    end
+    e_time = ''
+    e_time = end_time.to_s unless end_time.blank?
 
     task_template = {
       'task_id' => id,
@@ -201,12 +192,12 @@ class SpiderTask < ApplicationRecord
 
     Rails.logger.info(need_account)
 
-    archon_template_id = self.spider.control_template_id
+    archon_template_id = spider.control_template_id
 
     prefix_integer = 0
 
-    if !archon_template_id.blank?
-      prefix_integer = archon_template_id * 10000000000000
+    unless archon_template_id.blank?
+      prefix_integer = archon_template_id * 10_000_000_000_000
     end
 
     if spider.has_keyword
@@ -216,9 +207,9 @@ class SpiderTask < ApplicationRecord
         DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
         # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
         if need_account
-          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
         else
-          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
         end
       else
         keyword.split(',').each do |k|
@@ -227,9 +218,9 @@ class SpiderTask < ApplicationRecord
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
           if need_account
-            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
           else
-            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
           end
         end
       end
@@ -239,9 +230,9 @@ class SpiderTask < ApplicationRecord
       # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
       DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       if need_account
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
       else
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + (Time.now.to_i) * 1000, task_template['task_md5'])
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
       end
     end
 
@@ -302,15 +293,12 @@ class SpiderTask < ApplicationRecord
 
     task = JSON.parse(subtask.content)
 
-
-
-    archon_template_id = $archon_redis.hget('archon_template_control_id', task["template_id"])
+    archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
     prefix_integer = 0
 
-    if !archon_template_id.blank?
-      prefix_integer = archon_template_id * 10000000000000
+    unless archon_template_id.blank?
+      prefix_integer = archon_template_id * 10_000_000_000_000
     end
-
 
     if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
       $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
@@ -335,18 +323,14 @@ class SpiderTask < ApplicationRecord
       subtask = DispatcherSubtask.where(id: subtaskStatus.task_md5).first
       next if subtask.blank?
 
-
-
       task = JSON.parse(subtask.content)
 
-
-      archon_template_id = $archon_redis.hget('archon_template_control_id', task["template_id"])
+      archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
       prefix_integer = 0
 
-      if !archon_template_id.blank?
-        prefix_integer = archon_template_id * 10000000000000
+      unless archon_template_id.blank?
+        prefix_integer = archon_template_id * 10_000_000_000_000
       end
-
 
       if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
         $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
@@ -356,7 +340,6 @@ class SpiderTask < ApplicationRecord
 
       subtaskStatus.destroy
     end
-
 
     if maybe_finished? || is_finished?
       self.status = 1
@@ -374,7 +357,6 @@ class SpiderTask < ApplicationRecord
 
   def clear_related_datas!
     dequeue_level_task # fix me
-
 
     redis_keys = []
     redis_keys << "archon_tasks_#{id}_0"
@@ -405,7 +387,8 @@ class SpiderTask < ApplicationRecord
       current_success_count: success_count,
       current_fail_count: fail_count,
       current_warning_count: warning_count,
-      current_task_count: current_total_count)
+      current_task_count: current_total_count
+    )
   end
 
   def update_finished_status!
@@ -416,15 +399,24 @@ class SpiderTask < ApplicationRecord
     if maybe_finished?
       update_attributes(status: 2)
 
-
       $archon_redis.hdel('archon_available_tasks', id)
       dequeue_level_task
     end
   end
 
-
   def setup_task_spider
     # $archon_redis.hset("archon_task_spider", self.id, self.spider_id)
-    $archon_redis.hset("archon_task_controls", self.id, self.spider.control_template_id_details)
+    $archon_redis.hset('archon_task_controls', id, spider.control_template_id_details)
+  end
+
+  def self.clear_expired_tasks
+    tasks = SpiderTask.where(status: 2).where('created_at < ?', 2.month.ago)
+    return if tasks.blank?
+
+    tasks.each do |task|
+      DispatcherRunningSubtask.where(task_id: task.id).delete_all
+      DispatcherSubtask.where(task_id: task.id).delete_all
+      DispatcherSubtaskStatus.where(task_id: task.id).delete_all
+    end
   end
 end
