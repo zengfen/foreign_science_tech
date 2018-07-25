@@ -18,12 +18,13 @@ class ArchonBase < ActiveRecord::Base
       # '博客' => 'archon_blog',
       # '招聘' => 'archon_hiring',
       # '新闻评论' => 'archon_news_comment',
-      # '酒店评论' => 'archon_hotel_comments',
+      '酒店评论' => 'archon_hotel_comment',
       'Facebook' => 'archon_facebook_post',
       'Facebook评论' => 'archon_facebook_comment',
       'Twitter' => 'archon_twitter',
       'Linkedin' => 'archon_linkedin',
       "商户" => "archon_place",
+      "景区评论" => "archon_scenic_comment",
     }
   end
 

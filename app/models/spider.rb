@@ -58,6 +58,7 @@ class Spider < ApplicationRecord
       'Linkedin' => 'linkedin',
       '字幕' => 'timed_text',
       "商户" => "place",
+      "景点评论" => "scenic_comment",
     }
   end
 
