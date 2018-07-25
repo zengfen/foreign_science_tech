@@ -1,0 +1,2 @@
+class ArchonScenicComment < ArchonBase
+end

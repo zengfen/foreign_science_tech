@@ -1,0 +1,5 @@
+class ArchonHotelComment < ArchonBase
+
+end
+
+
