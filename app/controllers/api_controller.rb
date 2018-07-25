@@ -36,4 +36,29 @@ class ApiController < ApplicationController
 
     render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag.to_i}
   end
+
+
+  def create_normal_task
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+
+    @spider_task = SpiderTask.new(
+      spider_id: params[:spider_id],
+      level: 1,
+      max_retry_count: 1,
+      keyword: params[:keyword],
+      special_tag: params[:special_tag],
+      status: 0,
+      task_type: 2,
+      is_split: false,
+    )
+    @spider_task.special_tag_transfor_id
+    @spider_task.save_with_spilt_keywords
+    @spider_task.start!
+
+
+    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag.to_i}
+  end
+
 end
