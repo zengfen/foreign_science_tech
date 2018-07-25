@@ -200,15 +200,19 @@ class SpiderTask < ApplicationRecord
       prefix_integer = archon_template_id * 10_000_000_000_000
     end
 
-    if spider.has_keyword
-      if is_split
-        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
-        task_template['url'] = keyword
-        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-        # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-        if need_account
-          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-        else
+    if spider.has_keyword && is_split
+      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
+      task_template['url'] = keyword
+      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+    end
+
+    if spider.has_keyword && !is_split
+      if (split_group_count || 0) > 0
+        keyword.split(',').each_slice(split_group_count).each do |kk|
+          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k.join(',')}{}#{spider.template_name}")
+          task_template['url'] = k.join(",")
+          DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
         end
       else
@@ -216,28 +220,17 @@ class SpiderTask < ApplicationRecord
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
           task_template['url'] = k
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-          # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-          if need_account
-            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-          else
-            $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-          end
+          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
         end
       end
-    else
-      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
-      task_template['url'] = keyword
-      # $archon_redis.hset("archon_task_details_#{id}", task_template['task_md5'], task_template.to_json)
-      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-      if need_account
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-      else
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-      end
+
     end
 
-    unless spider.control_template_id.blank?
-      $archon_redis.hset('archon_task_account_controls', id, spider.control_template.control_key)
+    unless spider.has_keyword
+      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
+      task_template['url'] = keyword
+      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
     end
 
     $archon_redis.hset('archon_available_tasks', id, max_retry_count)
