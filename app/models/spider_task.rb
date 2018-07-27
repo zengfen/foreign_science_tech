@@ -290,7 +290,7 @@ class SpiderTask < ApplicationRecord
     prefix_integer = 0
 
     unless archon_template_id.blank?
-      prefix_integer = archon_template_id * 10_000_000_000_000
+      prefix_integer = archon_template_id.to_i * 10_000_000_000_000
     end
 
     if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
@@ -322,7 +322,7 @@ class SpiderTask < ApplicationRecord
       prefix_integer = 0
 
       unless archon_template_id.blank?
-        prefix_integer = archon_template_id * 10_000_000_000_000
+        prefix_integer = archon_template_id.to_i * 10_000_000_000_000
       end
 
       if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
