@@ -313,7 +313,7 @@ class SpiderTask < ApplicationRecord
     # need_account = !spider.control_template_id.blank?
 
     DispatcherSubtaskStatus.where(task_id: id, status: 3).each do |subtaskStatus|
-      subtask = DispatcherSubtask.where(id: subtaskStatus.task_md5).first
+      subtask = DispatcherSubtask.where(id: subtaskStatus.id).first
       next if subtask.blank?
 
       task = JSON.parse(subtask.content)
