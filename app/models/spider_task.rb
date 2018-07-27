@@ -326,9 +326,9 @@ class SpiderTask < ApplicationRecord
       end
 
       if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
+        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, subtask.id)
       else
-        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
+        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, subtask.id)
       end
 
       subtaskStatus.destroy
