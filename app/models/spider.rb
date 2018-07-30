@@ -117,6 +117,14 @@ class Spider < ApplicationRecord
     end
     spider.dep_templates = temp_templates
 
+
+    is_internal = spider.network_environment == 1
+
+    if !spider.control_template.blank? && spider.control_template.is_internal != is_internal
+      spider.errors.add('network_environment', '控制模板网络环境不一致')
+      return spider
+    end
+
     spider
   end
 
