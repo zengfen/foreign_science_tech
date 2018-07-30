@@ -15,6 +15,7 @@
 //= require inspinia.js
 //= require forms
 //= require sweetalert/sweetalert.min.js
+//= require toastr/toastr.min.js
 //= require echarts.common.min.js
 //= require macarons.js
 //= require clipboard/clipboard.min.js
