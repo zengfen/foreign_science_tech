@@ -72,7 +72,7 @@ class ApiController < ApplicationController
       task = JSON.parse(x.to_json)
       spider = JSON.parse(x.spider.to_json)
       keywords.each do |k|
-        if x.keyword.include?(k) || k.include?(x.keyword)
+        if !x.keyword.blank? &&(x.keyword.include?(k) || k.include?(x.keyword))
           resulst << {task:task,spider:spider}
         elsif x.spider.spider_name.include?(k) || k.include?(x.spider.spider_name)
           resulst << {task:task,spider:spider}
