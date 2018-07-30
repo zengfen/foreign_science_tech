@@ -61,4 +61,26 @@ class ApiController < ApplicationController
     render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag.to_i}
   end
 
+  def task_api
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    keywords = params[:keywords] rescue []
+    SpiderTask.includes("spider").where(task_type:1).each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      keywords.each do |k|
+        if x.keyword.include?(k) || k.include?(x.keyword)
+          resulst << {task:task,spider:spider}
+        elsif x.spider.spider_name.include?(k) || k.include?(x.spider.spider_name)
+          resulst << {task:task,spider:spider}
+        end
+      end
+    end
+
+    render json: {resulst:resulst}
+
+  end
+
 end
