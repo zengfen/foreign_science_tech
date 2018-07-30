@@ -67,6 +67,7 @@ class ApiController < ApplicationController
 
     resulst = []
     keywords = params[:keywords] rescue []
+    keywords = [] if keywords.blank?
     SpiderTask.includes("spider").where(task_type:1).each do |x|
       task = JSON.parse(x.to_json)
       spider = JSON.parse(x.spider.to_json)
