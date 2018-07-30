@@ -259,6 +259,21 @@ window.setInterval(function(){
   }
 }, 5000);
 $("[data-toggle='tooltip']").tooltip();
+$(document).on('click', '.keyword', function(){
+    var data = $(this).data('original-title')
+    var clipboard = new Clipboard('.keyword', { // td上可以加个class 以便准确定位
+      text: function() {
+        return data;
+      }
+    });
+    clipboard.on('success', function(e) {
+      alert("复制成功");
+    });
+  
+    clipboard.on('error', function(e) {
+      console.log(e);
+    });
+  })
     </script>
   <% end %>
 

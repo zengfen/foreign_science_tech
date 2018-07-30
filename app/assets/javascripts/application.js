@@ -17,4 +17,5 @@
 //= require sweetalert/sweetalert.min.js
 //= require echarts.common.min.js
 //= require macarons.js
+//= require clipboard/clipboard.min.js
 
