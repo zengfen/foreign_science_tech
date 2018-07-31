@@ -72,9 +72,9 @@ class ApiController < ApplicationController
       task = JSON.parse(x.to_json)
       spider = JSON.parse(x.spider.to_json)
       keywords.each do |k|
-        if !x.keyword.blank? &&(x.keyword.downcase.include?(k) || k.include?(x.keyword.downcase))
+        if !x.keyword.blank? &&(x.keyword.downcase.include?(k.downcase) || k.downcase.include?(x.keyword.downcase))
           resulst << {task:task,spider:spider}
-        elsif x.spider.spider_name.include?(k) || k.include?(x.spider.spider_name)
+        elsif x.spider.spider_name.include?(k.downcase) || k.downcase.include?(x.spider.spider_name)
           resulst << {task:task,spider:spider}
         end
       end
@@ -95,9 +95,9 @@ class ApiController < ApplicationController
       task = JSON.parse(x.to_json)
       spider = JSON.parse(x.spider.to_json)
       keywords.each do |k|
-        if !x.keyword.blank? &&(x.keyword.downcase.include?(k) || k.include?(x.keyword.downcase))
+        if !x.keyword.blank? &&(x.keyword.downcase.include?(k.downcase) || k.downcase.include?(x.keyword.downcase))
           resulst << {task:task,spider:spider}
-        elsif x.spider.spider_name.include?(k) || k.include?(x.spider.spider_name)
+        elsif x.spider.spider_name.include?(k.downcase) || k.downcase.include?(x.spider.spider_name)
           resulst << {task:task,spider:spider}
         end
       end
