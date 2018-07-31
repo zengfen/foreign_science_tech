@@ -84,6 +84,35 @@ class ApiController < ApplicationController
 
   end
 
+  def task_api_all
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    SpiderTask.includes("spider").where(task_type:1).each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      resulst << {task:task,spider:spider}
+    end
+
+    render json: {resulst:resulst}
+
+  end  
+
+  def cycle_task_api_all
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    SpiderCycleTask.includes("spider").each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      resulst << {task:task,spider:spider}
+    end
+
+    render json: {resulst:resulst}    
+  end  
+
   def cycle_task_api
     secret = params[:secret]
     return render json: { msg: 'error secret' } if secret != '123'
