@@ -143,7 +143,7 @@ class SpiderCycleTask < ApplicationRecord
 
   def save_with_spilt_keywords
     if spider.has_keyword && !spider.blank?
-      keywords = keyword.split(',').collect(&:strip).uniq
+      keywords = keyword.keyword.gsub('，',',').split(',').collect(&:strip).uniq
       keywords.delete(nil)
       keywords.delete('')
       if is_split
