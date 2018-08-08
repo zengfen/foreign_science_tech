@@ -314,7 +314,6 @@ class SpiderTask < ApplicationRecord
     subtask.retry_count = 0
     subtask.save
 
-    subtaskStatus.destroy
 
     task = JSON.parse(subtask.content)
 
