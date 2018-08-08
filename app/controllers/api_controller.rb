@@ -72,9 +72,9 @@ class ApiController < ApplicationController
       task = JSON.parse(x.to_json)
       spider = JSON.parse(x.spider.to_json)
       keywords.each do |k|
-        if !x.keyword.blank? &&(x.keyword.include?(k) || k.include?(x.keyword))
+        if !x.keyword.blank? &&(x.keyword.downcase.include?(k.downcase) || k.downcase.include?(x.keyword.downcase))
           resulst << {task:task,spider:spider}
-        elsif x.spider.spider_name.include?(k) || k.include?(x.spider.spider_name)
+        elsif x.spider.spider_name.include?(k.downcase) || k.downcase.include?(x.spider.spider_name)
           resulst << {task:task,spider:spider}
         end
       end
@@ -82,6 +82,57 @@ class ApiController < ApplicationController
 
     render json: {resulst:resulst}
 
+  end
+
+  def task_api_all
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    SpiderTask.includes("spider").where(task_type:1).each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      resulst << {task:task,spider:spider}
+    end
+
+    render json: {resulst:resulst}
+
+  end  
+
+  def cycle_task_api_all
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    SpiderCycleTask.includes("spider").each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      resulst << {task:task,spider:spider}
+    end
+
+    render json: {resulst:resulst}    
+  end  
+
+  def cycle_task_api
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+
+    resulst = []
+    keywords = params[:keywords] rescue []
+    keywords = [] if keywords.blank?
+    SpiderCycleTask.includes("spider").each do |x|
+      task = JSON.parse(x.to_json)
+      spider = JSON.parse(x.spider.to_json)
+      keywords.each do |k|
+        if !x.keyword.blank? &&(x.keyword.downcase.include?(k.downcase) || k.downcase.include?(x.keyword.downcase))
+          resulst << {task:task,spider:spider}
+        elsif x.spider.spider_name.include?(k.downcase) || k.downcase.include?(x.spider.spider_name)
+          resulst << {task:task,spider:spider}
+        end
+      end
+    end
+
+    render json: {resulst:resulst}    
   end
 
 end
