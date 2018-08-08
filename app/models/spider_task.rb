@@ -307,6 +307,38 @@ class SpiderTask < ApplicationRecord
     end
   end
 
+
+  def retry_task(task_md5)
+    subtask = DispatcherSubtask.where(id: task_md5).first
+    return if subtask.blank?
+    subtask.retry_count = 0
+    subtask.save
+
+    subtaskStatus.destroy
+
+    task = JSON.parse(subtask.content)
+
+    archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
+    prefix_integer = 0
+
+    unless archon_template_id.blank?
+      prefix_integer = archon_template_id.to_i * 10_000_000_000_000
+    end
+
+    if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
+      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
+    else
+      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
+    end
+
+    if maybe_finished? || is_finished?
+      self.status = 1
+      save
+
+      enqueue_level_task
+    end
+  end
+
   def retry_all_fail_task
     return if fail_count == 0
 
