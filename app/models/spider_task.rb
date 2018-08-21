@@ -443,4 +443,48 @@ class SpiderTask < ApplicationRecord
       DispatcherSubtaskStatus.where(task_id: task.id).delete_all
     end
   end
+
+
+  def self.do_monitor_twitter_friends(file_count = 1)
+    files = Dir.glob("#{Rails.root}/vendor/data/part*")
+    total_file_count = files.count
+    return if total_file_count == 0
+
+    files = files[0, file_count]
+    return if files.blank?
+
+    files.each do |f|
+      puts f
+      lines = File.new(f).to_a.collect{|x| x.strip}.join(",")
+      next if lines.blank?
+      @spider_task = SpiderTask.new(
+        spider_id: 100,
+        level: 1,
+        max_retry_count: 1,
+        keyword: lines,
+        special_tag: "",
+        status: 0,
+        task_type: 1,
+        additional_function: [{"by_screen_name"=>"1"}, {"has_friends"=>"1"}],
+        is_split: false,
+        split_group_count: 100,
+      )
+      # @spider_task.special_tag_transfor_id
+      @spider_task.save_with_spilt_keywords
+      @spider_task.start!
+    end
+    # @spider_task = SpiderTask.new(
+    #   spider_id: params[:spider_id],
+    #   level: 1,
+    #   max_retry_count: 1,
+    #   keyword: params[:keyword],
+    #   special_tag: params[:special_tag],
+    #   status: 0,
+    #   task_type: 2,
+    #   is_split: false,
+    # )
+    # @spider_task.special_tag_transfor_id
+    # @spider_task.save_with_spilt_keywords
+    # @spider_task.start!
+  end
 end
