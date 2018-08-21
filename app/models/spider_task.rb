@@ -471,7 +471,7 @@ class SpiderTask < ApplicationRecord
       )
       # @spider_task.special_tag_transfor_id
       @spider_task.save_with_spilt_keywords
-      @spider_task.start!
+      # @spider_task.start!
     end
     # @spider_task = SpiderTask.new(
     #   spider_id: params[:spider_id],
