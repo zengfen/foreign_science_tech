@@ -210,7 +210,7 @@ class SpiderTask < ApplicationRecord
     if spider.has_keyword && !is_split
       if (split_group_count || 0) > 0
         keyword.split(',').each_slice(split_group_count).each do |kk|
-          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k.join(',')}{}#{spider.template_name}")
+          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
           task_template['url'] = k.join(",")
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
