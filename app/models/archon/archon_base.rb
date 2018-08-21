@@ -41,7 +41,7 @@ class ArchonBase < ActiveRecord::Base
       metas << [k, v] + temp_metas[v.tableize]
     end
 
-    metas << ["Twitter用户", "archon_twitter_user", temp_metas["archon_twitter_users"]]
+    metas << ["Twitter用户", "archon_twitter_user"] + temp_metas["archon_twitter_users"]
     metas
   end
 end
