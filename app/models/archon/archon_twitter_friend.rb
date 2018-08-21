@@ -1,0 +1,2 @@
+class ArchonTwitterFriend < ArchonBase
+end
