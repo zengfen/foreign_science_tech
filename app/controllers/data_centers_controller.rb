@@ -10,6 +10,14 @@ class DataCentersController < ApplicationController
       return redirect_to "/data_centers/show"
     end
 
+
+    special_tables = ["archon_twitter_user", "archon_twitter_friend"]
+
+    if special_tables.include?(table_name)
+      @results = eval(table_name.camelize).page(params[:page]).per(20).without_count
+      return render "special_tables"
+    end
+
     if !table_name.blank?
       @name = ArchonBase.model_mapper.invert[table_name]
       @results = eval((table_name + '_tag').camelize)
