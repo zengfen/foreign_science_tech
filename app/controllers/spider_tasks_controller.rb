@@ -61,7 +61,7 @@ class SpiderTasksController < ApplicationController
   private
 
   def spider_task_params
-    params.require(:spider_task).permit(:spider_id, :special_tag, :level, :keyword, :max_retry_count, :is_split, :begin_time, :end_time)
+    params.require(:spider_task).permit(:spider_id, :special_tag, :level, :keyword, :max_retry_count, :is_split, :begin_time, :end_time, :split_group_count)
   end
 
   def get_spider
