@@ -472,19 +472,8 @@ class SpiderTask < ApplicationRecord
       # @spider_task.special_tag_transfor_id
       @spider_task.save_with_spilt_keywords
       # @spider_task.start!
+
+      `rm -f #{f}`
     end
-    # @spider_task = SpiderTask.new(
-    #   spider_id: params[:spider_id],
-    #   level: 1,
-    #   max_retry_count: 1,
-    #   keyword: params[:keyword],
-    #   special_tag: params[:special_tag],
-    #   status: 0,
-    #   task_type: 2,
-    #   is_split: false,
-    # )
-    # @spider_task.special_tag_transfor_id
-    # @spider_task.save_with_spilt_keywords
-    # @spider_task.start!
   end
 end
