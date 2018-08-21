@@ -42,6 +42,7 @@ class ArchonBase < ActiveRecord::Base
     end
 
     metas << ["Twitter用户", "archon_twitter_user"] + temp_metas["archon_twitter_users"]
+    metas << ["Twitter关注", "archon_twitter_friend"] + temp_metas["archon_twitter_friends"]
     metas
   end
 end
