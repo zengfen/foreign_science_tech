@@ -77,8 +77,9 @@ class HomeController < ApplicationController
     @total_discard_count += dis * Time.now.hour
     @total_already_runing_count += @total_completed_count + @total_discard_count
 
-    opts = {}
-    @spider_tasks = SpiderTask.includes('spider').where(opts).order('created_at desc').page(params[:page]).per(5)
+    # opts = {}
+    @recent_finished_tasks = SpiderTask.includes('spider').where(status: 2).order('updated_at desc').page(params[:page]).per(5)
+    @recent_running_tasks = SpiderTask.includes('spider').where(status: 1).order('updated_at desc').page(params[:page]).per(5)
 
     # 求总的把所有的主机的加起来即可。
     # archon_host_discard_counter_101.37.18.174  member: 201812321 score: 459
