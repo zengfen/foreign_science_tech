@@ -135,7 +135,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <%@spider_tasks.each do |spider_task|%>
+                  <%@recent_finished_tasks.each do |spider_task|%>
                     <tr>
                       <td><span class="label label-primary"><%=raw status_text(spider_task)%></span> </td>
                       <td><i class="fa fa-clock-o"></i> <%=show_format_time(spider_task.created_at)%></td>
@@ -143,30 +143,7 @@
                       <td class="text-navy"> <%=spider_task.spider.spider_name%></td>
                     </tr>
                   <%end%>
-                  <!--  <tr>
-                    <td><span class="label label-primary">完成</span> </td>
-                    <td><i class="fa fa-clock-o"></i> <%=Time.now.strftime("%H:%M")%></td>
-                    <td>Social</td>
-                    <td class="text-navy"> FB时间线</td>
                   </tr>
-                  <tr>
-                    <td><span class="label label-primary">完成</span> </td>
-                    <td><i class="fa fa-clock-o"></i> <%=1.minutes.ago.strftime("%H:%M")%></td>
-                    <td>Social</td>
-                    <td class="text-navy"> FB时间线</td>
-                  </tr>
-                  <tr>
-                    <td><span class="label label-primary">完成</span> </td>
-                    <td><i class="fa fa-clock-o"></i> <%=2.minutes.ago.strftime("%H:%M")%></td>
-                    <td>Social</td>
-                    <td class="text-navy"> TW时间线</td>
-                  </tr>
-                  <tr>
-                    <td><span class="label label-primary">完成</span> </td>
-                    <td><i class="fa fa-clock-o"></i> <%=3.minutes.ago.strftime("%H:%M")%></td>
-                    <td>Social</td>
-                    <td class="text-navy"> TW搜索 </td>
-                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -175,7 +152,7 @@
         <div class="col-lg-6">
           <div class="ibox float-e-margins">
             <div class="ibox-title">
-              <h5>预警任务</h5>
+              <h5>运行中的任务</h5>
               <div class="ibox-tools">
                 <a class="collapse-link">
                   <i class="fa fa-chevron-up"></i>
@@ -191,16 +168,18 @@
                   <tr>
                     <th>状态</th>
                     <th>时间</th>
+                    <th>类型</th>
                     <th>爬虫</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="label label-warning">疑似解析失败</span> </td>
-                    <td><i class="fa fa-clock-o"></i> <%=2781.minutes.ago.strftime("%H:%M")%></td>
-                    <td class="text-navy"> 密西西比大学官网</td>
-                  </tr>
-                </tbody>
+                  <%@recent_running_tasks.each do |spider_task|%>
+                    <tr>
+                      <td><span class="label label-primary"><%=raw status_text(spider_task)%></span> </td>
+                      <td><i class="fa fa-clock-o"></i> <%=show_format_time(spider_task.created_at)%></td>
+                      <td><%=spider_task.spider.category_cn%></td>
+                      <td class="text-navy"> <%=spider_task.spider.spider_name%></td>
+                    </tr>
+                  <%end%>
               </table>
             </div>
           </div>
