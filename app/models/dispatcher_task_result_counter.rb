@@ -10,4 +10,9 @@
 
 class DispatcherTaskResultCounter < DispatcherBase
   self.table_name = "task_result_counters"
+
+
+  def self.list_recent_24hours_trend()
+    # start_time = Time.now.
+  end
 end

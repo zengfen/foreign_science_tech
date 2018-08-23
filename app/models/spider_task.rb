@@ -402,6 +402,12 @@ class SpiderTask < ApplicationRecord
     DispatcherTaskResultCounter.where(task_id: id).delete_all
   end
 
+
+  def clear_subtasks
+    DispatcherSubtask.where(task_id: id).delete_all
+    DispatcherSubtaskStatus.where(task_id: id).delete_all
+  end
+
   def self.refresh_task_status
     SpiderTask.where(status: 1).find_each(&:update_finished_status!)
   end
