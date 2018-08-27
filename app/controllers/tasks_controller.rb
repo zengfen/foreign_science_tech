@@ -17,12 +17,12 @@ class TasksController < ApplicationController
     opts[:spiders] = {:category=>params[:category]} if !params[:category].blank?
 
     if params[:task_type].blank?
-      @spider_tasks = SpiderTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(20)
+      @spider_tasks = SpiderTask.includes("spider").where(opts).order(created_at: :desc).page(params[:page]).per(20)
       if request.xhr?
         return render "_list_body.html.erb", layout: false
       end
     else
-      @spider_cycle_tasks = SpiderCycleTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(20)
+      @spider_cycle_tasks = SpiderCycleTask.includes("spider").where(opts).order(created_at: :desc).page(params[:page]).per(20)
       if request.xhr?
         return render "_cycle_list_body.html.erb", layout: false
       end
