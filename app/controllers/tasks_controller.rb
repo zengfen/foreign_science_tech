@@ -9,7 +9,9 @@ class TasksController < ApplicationController
     opts = {}
 
     if !params[:keyword].blank?
-      st_ids = SpecialTag.where("tag like ? or id like ?", "'%#{params[:keyword]}%'","'%#{params[:keyword]}%'").collect{|x| x.id} 
+      st_id_qs = SpecialTag.where(:id=>params[:keyword].to_i).collect{|x| x.id} 
+      st_tag_qs = SpecialTag.where("tag like ?", "%#{params[:keyword]}%").collect{|x| x.id} 
+      st_ids = st_id_qs + st_tag_qs
       opts[:special_tag] =  st_ids if !st_ids.blank?
     end
 
