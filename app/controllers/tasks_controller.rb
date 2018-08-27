@@ -15,7 +15,7 @@ class TasksController < ApplicationController
     end
 
    
-    opts[:"spiders.category"] = params[:category] if !params[:category].blank?
+    opts["spiders.category"] = params[:category] if !params[:category].blank?
 
     if params[:task_type].blank?
       @spider_tasks = SpiderTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(20)
