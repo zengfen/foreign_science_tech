@@ -52,7 +52,7 @@
          
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-             <% url = params.permit(:controller, :action,:keyword).clone
+             <% url = params.permit(:controller, :action,:keyword,:category).clone
               %>
               <li class="tab-li <%= is_active_params(params, "task_type", nil) %>">
                 <a href="<%= url_for(url.merge(:task_type => nil))%>" data-target="all-page">任务列表</a>
