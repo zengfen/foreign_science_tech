@@ -16,14 +16,18 @@
           <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-9">
+                <div class="col-md-7">
                   <div class="form-group mb0">
 
                     <input type="text" placeholder="特殊标签" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
                     <i class="search-line" ></i>
                     <i class="fa fa-search search-icon"></i></div>
                 </div>
-
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
 
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
