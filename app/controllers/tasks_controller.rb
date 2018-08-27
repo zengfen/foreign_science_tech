@@ -7,7 +7,11 @@ class TasksController < ApplicationController
     @spider_cycle_task = SpiderCycleTask.new
 
     opts = {}
-    opts[:special_tag] = params[:keyword] if !params[:keyword].blank?
+
+    if !params[:keyword].blank?
+      st_ids = SpecialTag.where("tag like '%?%' or id like '%?%'", params[:keyword],params[:keyword]).collect{|x| x.id} 
+      opts[:special_tag] =  st_ids if !st_ids.blank?
+    end
 
     if params[:task_type].blank?
       @spider_tasks = SpiderTask.includes("spider").where(opts).order("created_at desc").page(params[:page]).per(20)
