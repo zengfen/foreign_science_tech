@@ -25,6 +25,7 @@ class ArchonBase < ActiveRecord::Base
       'Linkedin' => 'archon_linkedin',
       "商户" => "archon_place",
       "景区评论" => "archon_scenic_comment",
+      "Okidb临时人物" => "archon_temp_person_record"
     }
   end
 
