@@ -114,6 +114,8 @@ class SpiderTask < ApplicationRecord
   end
 
   def special_tag_transfor_id
+    return if self.special_tag.blank?
+
     specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
     self.special_tag = specital_tags_ids
   end
