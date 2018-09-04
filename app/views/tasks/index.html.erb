@@ -136,11 +136,11 @@
 
 <!--这里是提示框-->
 <div id="modal-form-show-keyword" class="modal fade in" aria-hidden="true">
-  <div class="modal-dialog" style="width: 460px;top: 190px;">
+  <div class="modal-dialog" style="width: 800px">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <button type="button" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
+        <button type="button" onclick="copy_keyword()" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
         <h4 class="modal-title">关键词列表</h4>
       </div>
       <div class="modal-body">
@@ -321,6 +321,17 @@ function show_keyword(id) {
     var $modal = $('#modal-form-show-keyword');
     $modal.modal("show");
   })
+}
+function copy_keyword() {
+var clipboard = new Clipboard('.keyword', {
+      text: function(el) {
+        var data = $("#modal-form-show-keyword .keywords_list").html();
+        return data;
+      }
+    });
+    clipboard.on('success', function(e) {
+     toastr.success("复制成功");
+    });
 }
     </script>
   <% end %>
