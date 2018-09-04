@@ -140,7 +140,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <button type="button" id="copy_button" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
+        <button type="button" id="copy_button" data-clipboard-target="#modal-form-show-keyword .keywords_list" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
         <h4 class="modal-title">关键词列表</h4>
       </div>
       <div class="modal-body">
@@ -323,12 +323,7 @@ function show_keyword(id) {
   })
 }
 
-var clipboard1 = new Clipboard('#copy_button', {
-      text: function(el) {
-        var data = $(el).data('#modal-form-show-keyword .keywords_list')
-        return data;
-      }
-    });
+var clipboard1 = new Clipboard('#copy_button');
     clipboard1.on('success', function(e) {
      toastr.success("复制成功");
     });
