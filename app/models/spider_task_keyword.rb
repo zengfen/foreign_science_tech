@@ -1,0 +1,2 @@
+class SpiderTaskKeyword < ApplicationRecord
+end
