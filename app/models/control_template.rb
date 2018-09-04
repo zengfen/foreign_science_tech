@@ -79,6 +79,7 @@ class ControlTemplate < ApplicationRecord
     $archon_redis.hset('archon_template_intervals', id, interval_in_ms)
   end
 
+
   def accounts_is_valid?
     self.accounts.each do |x|
       return true if x.real_is_valid?

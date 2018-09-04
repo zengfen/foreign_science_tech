@@ -507,6 +507,12 @@ class SpiderTask < ApplicationRecord
       DispatcherSubtaskStatus.where(task_id: id).delete_all
       DispatcherTaskResultCounter.where(task_id: id).delete_all
     end
+  end
 
+
+  def self.clear_tasks_by_spider_id(id)
+    SpiderTask.where(spider_id: id, status: 2).each do |x|
+      x.destroy
+    end
   end
 end
