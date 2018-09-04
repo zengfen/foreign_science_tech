@@ -484,4 +484,29 @@ class SpiderTask < ApplicationRecord
       `rm -f #{f}`
     end
   end
+
+
+  def self.clear_task_by_ids(ids)
+    ids.each do |id|
+      redis_keys = []
+      redis_keys << "archon_tasks_#{id}_0"
+      redis_keys << "archon_tasks_#{id}_1"
+      redis_keys << "archon_tasks_#{id}"
+
+      # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
+
+      redis_keys.map { |x| $archon_redis.del(x) }
+
+      $archon_redis.hdel('archon_task_account_controls', id)
+      $archon_redis.hdel('archon_task_controls', id)
+
+      $archon_redis.hdel('archon_available_tasks', id)
+
+      DispatcherRunningSubtask.where(task_id: id).delete_all
+      DispatcherSubtask.where(task_id: id).delete_all
+      DispatcherSubtaskStatus.where(task_id: id).delete_all
+      DispatcherTaskResultCounter.where(task_id: id).delete_all
+    end
+
+  end
 end
