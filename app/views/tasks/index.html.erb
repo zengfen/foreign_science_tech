@@ -323,7 +323,7 @@ function show_keyword(id) {
   })
 }
 
-var clipboard1 = new Clipboard('copy_button', {
+var clipboard1 = new Clipboard('#copy_button', {
       text: function(el) {
         var data = $(el).data('#modal-form-show-keyword .keywords_list')
         return data;
