@@ -205,22 +205,22 @@ class SpiderTask < ApplicationRecord
     end
 
     if spider.has_keyword && is_split
-      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
-      task_template['url'] = keyword
+      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{self.spider_task_keyword.keyword}{}#{spider.template_name}")
+      task_template['url'] = self.spider_task_keyword.keyword
       DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
       $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
     end
 
     if spider.has_keyword && !is_split
       if (split_group_count || 0) > 0
-        keyword.split(',').each_slice(split_group_count).each do |kk|
+        self.spider_task_keyword.keyword.split(',').each_slice(split_group_count).each do |kk|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
           task_template['url'] = kk.join(",")
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
           $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
         end
       else
-        keyword.split(',').each do |k|
+        self.spider_task_keyword.keyword.split(',').each do |k|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
           task_template['url'] = k
           DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
