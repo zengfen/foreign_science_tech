@@ -35,6 +35,8 @@ class SpiderTask < ApplicationRecord
   belongs_to :spider
   belongs_to :spider_cycle_task, required: false
 
+  has_one :spider_task_keyword
+
   scope :cycle, -> { where.not(task_type: 1) }
   scope :not_cycle, -> { where(task_type: 1) }
   scope :unfinished, -> { where.not(status: 2) }

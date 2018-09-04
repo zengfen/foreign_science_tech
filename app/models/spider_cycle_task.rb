@@ -32,6 +32,8 @@ class SpiderCycleTask < ApplicationRecord
   has_many :spider_tasks
   belongs_to :spider
 
+  has_one :spider_cycle_task_keyword
+
   after_create :init_task_job
 
   before_destroy :destroy_job!
