@@ -85,7 +85,7 @@ class TasksController < ApplicationController
 
 
   def show_keyword
-    render text: SpiderTaskKeyword.where(spider_task_id: params[:id]).keyword
+    render text: SpiderTaskKeyword.where(spider_task_id: params[:id]).first.keyword
   end
 
   private
