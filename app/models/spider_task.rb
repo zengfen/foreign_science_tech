@@ -42,7 +42,7 @@ class SpiderTask < ApplicationRecord
   scope :unfinished, -> { where.not(status: 2) }
   scope :finished, -> { where(status: 2) }
 
-  after_create :setup_task_spider
+  after_create :setup_task_spider, :setup_spider_keyword
   before_destroy :clear_related_datas!
 
   def status_cn
@@ -441,6 +441,13 @@ class SpiderTask < ApplicationRecord
   def setup_task_spider
     # $archon_redis.hset("archon_task_spider", self.id, self.spider_id)
     $archon_redis.hset('archon_task_controls', id, spider.control_template_id_details)
+  end
+
+
+  def setup_spider_keyword
+    SpiderTaskKeyword.create(spider_task_id: self.id, keyword: self.keyword)
+    self.keyword = self.keyword[0..10] rescue nil
+    self.save
   end
 
   def self.clear_expired_tasks
