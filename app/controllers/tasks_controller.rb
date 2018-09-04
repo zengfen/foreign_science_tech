@@ -9,7 +9,7 @@ class TasksController < ApplicationController
     opts = {}
 
     if !params[:keyword].blank?
-      st_tag_qs = SpecialTag.where("tag like ?", "%#{params[:keyword]}%").collect{|x| x.id} 
+      st_tag_qs = SpecialTag.where("tag like ?", "%#{params[:keyword]}%").collect{|x| x.id}
       st_ids = (st_tag_qs << params[:keyword].to_i)
       opts[:special_tag] =  st_ids if !st_ids.blank?
     end
@@ -81,6 +81,11 @@ class TasksController < ApplicationController
     key = "archon_task_total_results_#{params[:id]}"
 
     @results = $archon_redis.zrange(key, 0, -1, :withscores => true).sort_by{|x| x[0]}.to_h
+  end
+
+
+  def show_keyword
+    render text: SpiderTaskKeyword.find(params[:id]).keyword
   end
 
   private

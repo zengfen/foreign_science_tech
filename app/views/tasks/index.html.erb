@@ -133,6 +133,26 @@
     </div>
 </div>
 
+
+<!--这里是提示框-->
+<div id="modal-form-show-keyword" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 460px;top: 190px;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="m-t-none m-b">关键词列表</h3>
+            <div class="hr-line-dashed"></div>
+            <div class="keywords_list">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <% content_for :javascript do %>
     <script>
 
@@ -288,6 +308,16 @@ var clipboard = new Clipboard('.keyword', {
       console.log(e);
     });
      $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000});
+
+
+
+function show_keyword(id) {
+  $.get("/tasks/show_keyword?id=" + id, function(data) {
+    $("#modal-form-show-keyword .keywords_list").html(data);
+    var $modal = $('#modal-form-show-keyword');
+    $modal.modal("show");
+  })
+}
     </script>
   <% end %>
 
