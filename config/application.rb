@@ -27,7 +27,6 @@ module ArchonCenter
   end
 end
 
-
 begin
   $archon_redis = Redis.new(Rails.application.config_for(:redis))
   $geo_ip = GeoIP.new('config/GeoIP.dat')
@@ -35,6 +34,9 @@ rescue Exception => e
   puts e
 end
 
-
-DispatcherDB = YAML.load_file(File.join(Rails.root, "config", "database.yml"))["dispatcher"]
-ArchonDataDB = YAML.load_file(File.join(Rails.root, "config", "database.yml"))["archon_data"]
+begin
+  DispatcherDB = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['dispatcher']
+  ArchonDataDB = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['archon_data']
+rescue Exception => e
+  puts e
+end
