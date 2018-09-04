@@ -404,6 +404,9 @@ class SpiderTask < ApplicationRecord
     DispatcherSubtask.where(task_id: id).delete_all
     DispatcherSubtaskStatus.where(task_id: id).delete_all
     DispatcherTaskResultCounter.where(task_id: id).delete_all
+
+
+    SpiderTaskKeyword.where(spider_id: self.id).first.destroy
   end
 
 
