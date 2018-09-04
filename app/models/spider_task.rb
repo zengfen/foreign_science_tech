@@ -527,4 +527,15 @@ class SpiderTask < ApplicationRecord
       x.destroy
     end
   end
+
+
+  def self.fix_keywords
+    SpiderTask.all.each do |x|
+      SpiderTaskKeyword.create(spider_task_id: x.id, keyword: x.keyword)
+      x.keyword = x.keyword[0..10] rescue nil
+      x.save
+    end
+
+    nil
+  end
 end
