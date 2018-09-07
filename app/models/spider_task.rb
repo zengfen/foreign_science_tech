@@ -523,8 +523,9 @@ class SpiderTask < ApplicationRecord
   end
 
 
-  def self.clear_tasks_by_spider_id(id)
-    SpiderTask.where(spider_id: id, status: 2).each do |x|
+  # [118, 119, 120, 121, 122]
+  def self.clear_tasks_by_spider_id(ids)
+    SpiderTask.where(spider_id: ids, status: 2).each do |x|
       x.destroy
     end
   end
