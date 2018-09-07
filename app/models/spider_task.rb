@@ -25,6 +25,7 @@
 #  current_success_count :integer
 #  current_fail_count    :integer
 #  current_warning_count :integer
+#  split_group_count     :integer
 #
 
 class SpiderTask < ApplicationRecord

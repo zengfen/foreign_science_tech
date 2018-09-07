@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: base_spiders
+#
+#  id                  :bigint(8)        not null, primary key
+#  name                :string
+#  template_name       :string
+#  network_environment :string
+#  control_template_id :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
 class BaseSpider < ApplicationRecord
   belongs_to :control_template
 

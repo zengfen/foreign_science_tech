@@ -21,6 +21,7 @@
 #  end_time            :datetime
 #  is_split            :boolean          default(FALSE)
 #  is_time_delta       :boolean          default(FALSE), not null
+#  split_group_count   :integer
 #
 
 class SpiderCycleTask < ApplicationRecord

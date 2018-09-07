@@ -16,6 +16,7 @@
 #  start_delay      :float
 #  end_delay        :float
 #  is_internal      :boolean          default(TRUE), not null
+#  is_reset         :boolean          default(FALSE), not null
 #
 
 class ControlTemplate < ApplicationRecord
