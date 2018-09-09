@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group mb0">
-                    <%=select_tag(:spider_ids ,options_for_select(Spider.select("spider_name,id").collect("spider_name,id"),params["spider_ids"]),include_blank: "模板",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:spider_ids ,options_for_select(Spider.select("spider_name,id").collect{|x| [x.spider_name, x.id]},params["spider_ids"]),include_blank: "模板",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="col-md-2">
