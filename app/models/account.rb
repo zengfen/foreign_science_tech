@@ -90,7 +90,7 @@ class Account < ApplicationRecord
       $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, id)
     end
 
-    DispatcherAccount.create(id: id, content: content, valid_time: valid_time.to_i)
+    DispatcherAccount.create(id: id, content: content, valid_time: valid_time.to_i) rescue "Account Exist"
   end
 
   #  过期之后要执行这个来删除对应的数据
