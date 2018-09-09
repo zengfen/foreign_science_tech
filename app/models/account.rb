@@ -74,7 +74,7 @@ class Account < ApplicationRecord
   #  account删除之后也要清除，都要通过定时任务来完成
   def setup_redis
     return if valid_time < Time.now + 10.minutes
-    next if x.control_template.blank?
+    return if x.control_template.blank?
     if control_template.is_bind_ip
       agent_ips = if control_template.is_internal
                     DispatcherHost.internal_agents
