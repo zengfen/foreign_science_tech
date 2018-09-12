@@ -137,7 +137,7 @@ class SpiderTask < ApplicationRecord
     return { 'error' => '账号都已过期' } unless accounts_is_valid?
 
     if spider.has_keyword
-      keywords = keyword.gsub('，',',').split(',').collect(&:strip)
+      keywords = keyword.gsub('，',',').split(',').collect(&:strip).uniq
       keywords.delete(nil)
       keywords.delete('')
       return { 'error' => '设置关键词!' } if keywords.blank?
