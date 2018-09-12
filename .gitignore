@@ -24,7 +24,7 @@
 !/public/apple-touch-icon.png
 !/public/favicon.ico
 !/public/robots.txt
-
+.idea
 db/schema.rb
 
 /node_modules
