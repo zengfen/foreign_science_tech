@@ -188,6 +188,7 @@ class SpiderTask < ApplicationRecord
       'template_id' => spider.template_name,
       'account' => '',
       'ignore_account' => false,
+      'timeout_second' => self.timeout_second,
       'proxy' => '',
       'retry_count' => 0,
       'max_retry_count' => max_retry_count,
