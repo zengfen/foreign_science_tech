@@ -26,6 +26,7 @@
 #  current_fail_count    :integer
 #  current_warning_count :integer
 #  split_group_count     :integer
+#  timeout_second        :integer          default(15), not null
 #
 
 class SpiderTask < ApplicationRecord
