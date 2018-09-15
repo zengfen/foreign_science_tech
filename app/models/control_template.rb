@@ -78,6 +78,9 @@ class ControlTemplate < ApplicationRecord
 
   def setup_redis
     $archon_redis.hset('archon_template_intervals', id, interval_in_ms)
+    if self.is_reset
+      $archon_redis.sadd('archon_template_reset_ids', id)
+    end
   end
 
 
