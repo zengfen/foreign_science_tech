@@ -13,6 +13,7 @@ class ControlTemplatesController < ApplicationController
                                       :window_size, :window_type,
                                       :has_account, :start_delay,
                                       :is_internal,
+                                      :is_reset,
                                       :end_delay, :max_count)
 
     @control_template = ControlTemplate.new(control_template_params)
