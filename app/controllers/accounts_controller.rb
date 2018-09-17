@@ -2,6 +2,12 @@ class AccountsController < ApplicationController
   def index
     @templates = ControlTemplate.select('id, name').where(has_account: true).collect { |x| [x.name, x.id] }.to_a
     @accounts = Account.where(control_template_id: @templates.collect{|x| x[1]}).order('created_at desc').page(params[:page]).per(50)
+
+    ids  = @accounts.collect(&:id)
+    real_accounts = DispatcherAccount.find(ids).collect{|x| [x.id, x.content]}.to_h
+    @accounts.each do |x|
+      x.content = real_accounts[x.id]
+    end
     @account = Account.new
 
 
