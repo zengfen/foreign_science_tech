@@ -28,7 +28,7 @@
 class SpiderCycleTask < ApplicationRecord
   validates :spider_id, presence: true
   validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-  validates :max_retry_count, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+  validates :max_retry_count, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 9}
   validates :period, presence: true
 
   has_many :spider_tasks
