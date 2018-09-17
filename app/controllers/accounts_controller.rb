@@ -15,7 +15,6 @@ class AccountsController < ApplicationController
     .permit(:contents, {:valid_ips => []}, :control_template_id, :valid_time, :account_type)
 
     @account = Account.new(account_params)
-    Rails.logger.info(@account.valid_ips)
     message = @account.save_with_split!
 
     flash[message.keys.first.to_sym] = message.values.first
