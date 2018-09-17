@@ -42,6 +42,7 @@ class Account < ApplicationRecord
   end
 
   def save_with_split!
+    Rails.logger.info(self.valid_ips)
     return { 'error' => '内容为空' } if contents.blank?
 
     if control_template.is_bind_ip && valid_ips.blank?
