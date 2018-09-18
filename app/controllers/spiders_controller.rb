@@ -12,7 +12,8 @@ class SpidersController < ApplicationController
     @templates = ControlTemplate.select('id, name').collect { |x| [x.name, x.id] }.to_a
   end
 
-  def show; end
+  def show
+  end
 
   def create
     @spider = Spider.build_spider(spider_params)
