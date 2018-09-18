@@ -47,6 +47,11 @@ class SpiderTask < ApplicationRecord
   after_create :setup_task_spider, :setup_spider_keyword
   before_destroy :clear_related_datas!
 
+
+  def self.status_list
+    { 0 => '未启动', 1 => '执行中', 2 => '完成', 3 => '已暂停' }
+  end
+
   def status_cn
     cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '完成', 3 => '已暂停' }
     cn_hash[status]
@@ -195,9 +200,9 @@ class SpiderTask < ApplicationRecord
       'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: b_time, end_time: e_time }
     }
 
-    need_account = !spider.control_template_id.blank?
+    # need_account = !spider.control_template_id.blank?
 
-    Rails.logger.info(need_account)
+    # Rails.logger.info(need_account)
 
     archon_template_id = spider.control_template_id
 
