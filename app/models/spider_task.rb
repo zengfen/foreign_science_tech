@@ -48,7 +48,7 @@ class SpiderTask < ApplicationRecord
   before_destroy :clear_related_datas!
 
   def status_cn
-    cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '执行结束', 3 => '已暂停' }
+    cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '完成', 3 => '已暂停' }
     cn_hash[status]
   end
 
