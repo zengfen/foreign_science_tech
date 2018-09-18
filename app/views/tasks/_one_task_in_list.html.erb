@@ -1,5 +1,5 @@
 <%spider_task.update_finished_status!%>
-<td><%= spider_task.special_tag_names.join(",")[0, 10]%></td>
+<td><%= truncate(spider_task.special_tag_names.join(","), :length => 10)%></td>
 <td><%= spider_task.special_tag%></td>
 <td><%= spider_task.spider.spider_name%></td>
 <td><%= spider_task.level %></td>
