@@ -21,13 +21,13 @@ module ApplicationHelper
   def is_active_params(params,key,value)
     params[key] == value ? "active" : nil
   end
-  
+
   def show_boolean_cn(obj)
   	(obj)? "是":"否" rescue "-"
   end
 
   def show_format_time(time)
-    time.strftime("%Y-%m-%d %H:%M:%S") rescue "-"
+    time.strftime("%m-%d %H:%M:%S") rescue "-"
   end
 
   def truncate_utf(text, length = 15, truncate_string = "")
