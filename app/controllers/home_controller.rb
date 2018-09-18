@@ -66,16 +66,16 @@ class HomeController < ApplicationController
     # @today_task_count = @today_completed_count + @today_discard_count
 
     # 加入时间和fake因数 后续不需要直接删除
-    dis = 1034
+    # dis = 1034
 
-    @today_completed_count += dis * Time.now.hour
-    @today_already_runing_count = @today_completed_count + @today_discard_count
+    # @today_completed_count += dis * Time.now.hour
+    # @today_already_runing_count = @today_completed_count + @today_discard_count
 
 
-    @total_data_count += dis * Time.now.hour * 23
-    @total_completed_count += dis * Time.now.hour * 23
-    @total_discard_count += dis * Time.now.hour
-    @total_already_runing_count += @total_completed_count + @total_discard_count
+    # @total_data_count += dis * Time.now.hour * 23
+    # @total_completed_count += dis * Time.now.hour * 23
+    # @total_discard_count += dis * Time.now.hour
+    # @total_already_runing_count += @total_completed_count + @total_discard_count
 
     # opts = {}
     @recent_finished_tasks = SpiderTask.includes('spider').where(status: 2).order('updated_at desc').page(params[:page]).per(5)
