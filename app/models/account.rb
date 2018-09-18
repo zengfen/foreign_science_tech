@@ -20,6 +20,7 @@ class Account < ApplicationRecord
   belongs_to :control_template
   after_create :setup_redis
   before_destroy :clear_redis
+  before_destroy :remove_related_data
 
   def self.account_types
     {
@@ -99,6 +100,19 @@ class Account < ApplicationRecord
   def clear_redis
     return if valid_time > Time.now + 10.minutes
 
+    $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
+      $archon_redis.zrem(k, id)
+    end
+
+    $archon_redis.keys("archon_template_ip_accounts_#{control_template_id}_*").each do |k|
+      $archon_redis.zrem(k, id)
+    end
+
+    DispatcherAccount.find(id).delete
+  end
+
+
+  def remove_related_data
     $archon_redis.keys("archon_template_accounts_#{control_template_id}").each do |k|
       $archon_redis.zrem(k, id)
     end
