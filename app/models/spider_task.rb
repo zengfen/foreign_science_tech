@@ -550,11 +550,34 @@ class SpiderTask < ApplicationRecord
 
 
   def self.fix_ghost_tasks
-    $archon_redis.keys("archon_tasks_*").each do |x|
-      id = x.gsub("archon_tasks_", "")
+    $archon_redis.keys("archon_tasks_*").each do |y|
+      id = y.gsub("archon_tasks_", "")
       task = SpiderTask.find(id) rescue nil
       next if !task.blank?
+
       puts id
+
+      $archon_redis.zrem('archon_internal_tasks', id)
+      $archon_redis.zrem('archon_external_tasks', id)
+      redis_keys = []
+      redis_keys << "archon_tasks_#{id}_0"
+      redis_keys << "archon_tasks_#{id}_1"
+      redis_keys << "archon_tasks_#{id}"
+
+      redis_keys.map { |x| $archon_redis.del(x) }
+
+      $archon_redis.hdel('archon_task_account_controls', id)
+      $archon_redis.hdel('archon_task_controls', id)
+
+      $archon_redis.hdel('archon_available_tasks', id)
+
+      DispatcherRunningSubtask.where(task_id: id).delete_all
+      DispatcherSubtask.where(task_id: id).delete_all
+      DispatcherSubtaskStatus.where(task_id: id).delete_all
+      DispatcherTaskResultCounter.where(task_id: id).delete_all
+
+
+      SpiderTaskKeyword.where(spider_task_id: id).delete_all
     end
 
     nil
