@@ -41,7 +41,8 @@ class ApiController < ApplicationController
   def create_normal_task
     secret = params[:secret]
     return render json: { msg: 'error secret' } if secret != '123'
-
+    return render json: { msg: 'error spider_id' } if params[:spider_id].blank?
+    return render json: { msg: 'error keyword' } if params[:keyword].blank?
 
     @spider_task = SpiderTask.new(
       spider_id: params[:spider_id],
