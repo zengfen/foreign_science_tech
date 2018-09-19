@@ -30,6 +30,7 @@ class Spider < ApplicationRecord
 
   after_create :add_control_template_id
   before_destroy :remove_control_template_id
+  after_update :update_control_template_id
 
   validates_uniqueness_of :template_name
 
@@ -187,6 +188,11 @@ class Spider < ApplicationRecord
     dep_templates.each do |k, v|
       $archon_redis.hset('archon_template_control_id', k, v || '')
     end
+  end
+
+
+  def update_control_template_id
+    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
   end
 
   def remove_control_template_id
