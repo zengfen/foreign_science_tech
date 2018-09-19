@@ -552,6 +552,8 @@ class SpiderTask < ApplicationRecord
   def self.fix_ghost_tasks
     $archon_redis.keys("archon_tasks_*").each do |x|
       id = x.gsub("archon_tasks_", "")
+      task = SpiderTask.find(id) rescue nil
+      next if !task.blank?
       puts id
     end
 
