@@ -550,8 +550,7 @@ class SpiderTask < ApplicationRecord
 
 
   def self.fix_ghost_tasks
-    $archon_redis.keys("archon_tasks_*").each do |y|
-      id = y.gsub("archon_tasks_", "")
+    $archon_redis.hgetall("archon_available_tasks").each do |id, z|
       task = SpiderTask.find(id) rescue nil
       next if !task.blank?
 
