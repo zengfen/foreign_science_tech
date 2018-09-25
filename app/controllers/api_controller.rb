@@ -59,7 +59,7 @@ class ApiController < ApplicationController
     @spider_task.start!
 
 
-    render json: @spider_task
+    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag}
   end
 
 
@@ -68,7 +68,7 @@ class ApiController < ApplicationController
     return render json: { msg: 'error secret' } if secret != '123'
     return render json: { msg: 'error task_id' } if params[:task_id].blank?
     @spider_task = SpiderTask.find(params[:task_id])
-    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag,archon_task_status: @spider_task.status}
+    render json: @spider_task
   end
 
   def task_api
