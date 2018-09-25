@@ -60,7 +60,8 @@ class Spider < ApplicationRecord
       '字幕' => 'timed_text',
       "商户" => "place",
       "景点评论" => "scenic_comment",
-      "Okidb人物" => "temp_person_record"
+      "Okidb人物" => "temp_person_record",
+      "Linkedin用户" => "linkedin_user",
     }
   end
 
