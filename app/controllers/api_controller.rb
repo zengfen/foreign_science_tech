@@ -59,7 +59,7 @@ class ApiController < ApplicationController
     @spider_task.start!
 
 
-    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag}
+    render json: @spider_task
   end
 
 
