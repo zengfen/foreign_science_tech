@@ -62,6 +62,15 @@ class ApiController < ApplicationController
     render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag}
   end
 
+
+  def show_normal_task
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+    return render json: { msg: 'error task_id' } if params[:task_id].blank?
+    @spider_task = SpiderTask.find(params[:task_id])
+    render json: {archon_task_id: @spider_task.id, archon_special_tag_id: @spider_task.special_tag,archon_task_status: @spider_task.status}
+  end
+
   def task_api
     secret = params[:secret]
     return render json: { msg: 'error secret' } if secret != '123'
@@ -98,7 +107,7 @@ class ApiController < ApplicationController
 
     render json: {resulst:resulst}
 
-  end  
+  end
 
   def cycle_task_api_all
     secret = params[:secret]
@@ -111,8 +120,8 @@ class ApiController < ApplicationController
       resulst << {task:task,spider:spider}
     end
 
-    render json: {resulst:resulst}    
-  end  
+    render json: {resulst:resulst}
+  end
 
   def cycle_task_api
     secret = params[:secret]
@@ -133,7 +142,7 @@ class ApiController < ApplicationController
       end
     end
 
-    render json: {resulst:resulst}    
+    render json: {resulst:resulst}
   end
 
 end
