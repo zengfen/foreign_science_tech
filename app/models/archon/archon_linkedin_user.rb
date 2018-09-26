@@ -1,0 +1,3 @@
+class ArchonLinkedinUser < ArchonBase
+
+end
