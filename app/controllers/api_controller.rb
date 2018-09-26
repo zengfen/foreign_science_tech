@@ -71,6 +71,15 @@ class ApiController < ApplicationController
     render json: @spider_task
   end
 
+  def destroy_normal_task
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+    return render json: { msg: 'error task_id' } if params[:task_id].blank?
+    @spider_task = SpiderTask.find(params[:task_id])
+    @spider_task.destroy
+    render json: {status:"ok"}
+  end
+
   def task_api
     secret = params[:secret]
     return render json: { msg: 'error secret' } if secret != '123'
