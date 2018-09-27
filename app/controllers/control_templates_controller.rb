@@ -1,4 +1,5 @@
 class ControlTemplatesController < ApplicationController
+  before_action :logged_in_user
   before_action :test_account,only: %i[create]
   def index
     @templates = ControlTemplate.order('created_at desc').page(params[:page]).per(10)
