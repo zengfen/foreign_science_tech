@@ -1,6 +1,7 @@
 class SpidersController < ApplicationController
   before_action :logged_in_user
   before_action :get_spider, only: %i[show show_info load_edit_form update destroy]
+  before_action :test_account,only: %i[create update destroy]
 
   def index
     opts = {}

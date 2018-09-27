@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :test_account,only: %i[create destroy]
   def index
     @templates = ControlTemplate.select('id, name').where(has_account: true).collect { |x| [x.name, x.id] }.to_a
     @accounts = Account.where(control_template_id: @templates.collect{|x| x[1]}).order('created_at desc').page(params[:page]).per(50)

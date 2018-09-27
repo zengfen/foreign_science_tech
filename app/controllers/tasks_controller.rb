@@ -33,9 +33,9 @@ class TasksController < ApplicationController
   end
 
   def gc
-     GC.start
-     memory = `ps -o rss= -p #{$$}`.to_i
-     render plain: "hello, #{memory / 1024}MB\n #{GC.stat} \n"
+    GC.start
+    memory = `ps -o rss= -p #{$$}`.to_i
+    render plain: "hello, #{memory / 1024}MB\n #{GC.stat} \n"
   end
 
   def fail_tasks

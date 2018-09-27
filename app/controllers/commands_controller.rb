@@ -1,4 +1,5 @@
 class CommandsController < ApplicationController
+  before_action :test_account,only: %i[create clear]
   def index
     current_command = $archon_redis.get('controller_command')
     @current_command = JSON.parse(current_command) unless current_command.blank?

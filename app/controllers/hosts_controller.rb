@@ -1,5 +1,6 @@
 class HostsController < ApplicationController
   before_action :logged_in_user
+  before_action :test_account,only: %i[destroy]
   def index
     opts = {}
     opts[:extranet_ip] = params[:keyword] unless params[:keyword].blank?
