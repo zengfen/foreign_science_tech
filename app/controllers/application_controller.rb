@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-	include SessionsHelper
+  include SessionsHelper
   # protect_from_forgery with: :exception
 
   before_action :invalid_check
@@ -8,12 +8,18 @@ class ApplicationController < ActionController::Base
   # 确保用户已登录
   def logged_in_user
     unless logged_in?
-    	store_location
+      store_location
       flash[:notice] = "请先登录！"
       redirect_to login_path
     end
   end
 
+  def test_account
+    if @current_user.email == "test@china-revival.com"
+      redirect_to :back
+      return
+    end
+  end
 
   def invalid_check
     @expired_account_count = Account.expired_accounts.count

@@ -1,6 +1,7 @@
 class SpiderTasksController < ApplicationController
   before_action :logged_in_user
   before_action :get_spider
+  before_action :test_account,only: %i[create start stop destroy]
 
   def index
     opts = {}
