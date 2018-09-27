@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   def test_account
     if @current_user.email == "test@china-revival.com"
-      redirect_to action: "index"
+      redirect_back fallback_location: root_path
       return
     end
   end
