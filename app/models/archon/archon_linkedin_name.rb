@@ -27,6 +27,8 @@ class ArchonLinkedinName < ArchonBase
       users0.each do |x|
         results << {id: x, is_dump: true}
       end
+
+      ArchonLinkedinName.create(results)
     end
 
 
