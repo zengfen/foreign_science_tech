@@ -47,7 +47,7 @@ class ApiController < ApplicationController
     @spider_task = SpiderTask.new(
       spider_id: params[:spider_id],
       level: 1,
-      max_retry_count: 1,
+      max_retry_count: 0,
       keyword: params[:keyword],
       special_tag: params[:special_tag],
       status: 0,
