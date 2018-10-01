@@ -1,6 +1,8 @@
 class ArchonBase < ActiveRecord::Base
   self.abstract_class = true
-  establish_connection ArchonDataDB
+  # establish_connection ArchonDataDB
+  establish_connection DispatcherDB
+  # establish_connection ArchonDataDB
 
   def self.model_mapper
     {
