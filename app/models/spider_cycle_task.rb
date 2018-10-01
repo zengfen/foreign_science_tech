@@ -10,7 +10,7 @@
 #  status              :integer          default(0)
 #  success_count       :integer          default(0)
 #  fail_count          :integer          default(0)
-#  max_retry_count     :integer          default(2)
+#  max_retry_count     :integer          default(0)
 #  warning_count       :integer          default(0)
 #  period              :string
 #  next_time           :datetime

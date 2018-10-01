@@ -13,7 +13,7 @@
 #  refresh_time          :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  max_retry_count       :integer          default(2)
+#  max_retry_count       :integer          default(0)
 #  warning_count         :integer          default(0)
 #  spider_cycle_task_id  :integer
 #  task_type             :integer          default(1)
