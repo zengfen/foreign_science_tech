@@ -462,7 +462,7 @@ class SpiderTask < ApplicationRecord
   end
 
   def self.clear_expired_tasks
-    tasks = SpiderTask.where(status: 2).where('created_at < ?', 10.days.ago)
+    tasks = SpiderTask.where(status: 2).where('created_at < ?', 2.days.ago)
     return if tasks.blank?
 
     tasks.each do |task|
