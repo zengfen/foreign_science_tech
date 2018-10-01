@@ -16,7 +16,7 @@ class ArchonLinkedinName < ArchonBase
         end
       end
 
-      users = ArchonLinkedinUser.select("id").where(id: valid_ids).where("experience == '' and education == '' and skills == ''").collect(&:id)
+      users = ArchonLinkedinUser.select("id").where(id: valid_ids).where("experience='' and education='' and skills=''").collect(&:id)
       users0 = valid_ids - users
 
       results = []
