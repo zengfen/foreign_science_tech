@@ -91,4 +91,24 @@ class DispatcherSubtaskStatus < DispatcherBase
     end
   end
 
+
+  def self.check_accounts
+    while true
+      task = SpiderTask.where(spider_id: 128, status: 1).first
+      if task.blank?
+        sleep(10)
+        next
+      end
+
+      subtask = DispatcherSubtaskStatus.where(task_id: task.id).order("created_at desc").limit(1)
+      if subtask.error_content == "cookie is expired" && (subtask.created_at > 1.minute.ago)
+        ControlTemplate.find(66).accounts.each do |x|
+          x.remove_related_data
+        end
+      end
+
+
+      sleep(10)
+    end
+  end
 end
