@@ -20,7 +20,7 @@ class DispatcherSubtaskStatus < DispatcherBase
       spider = SpiderTask.find(id)
       next if spider.spider_id != 128
       next if spider.status != 2
-      tasks = DispatcherRunningSubtask.where(task_id: id)
+      tasks = DispatcherSubtaskStatus.where(task_id: id)
       retry_ids = []
       tasks.each do |x|
         subtask = DispatcherSubtask.find(x.id)
