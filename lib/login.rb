@@ -226,7 +226,7 @@ class Login
       ).each.map{ |k,v| '%s="%s"' % [k,v] }.join('; ')),
       'referer' => 'https://' + URI(http.base_uri).host + '/',
       'x-isajaxform' => '1',
-      ('x-%s-tracedatacontext' % ENV.fetch('PARTNERID')) => ('X-LI-ORIGIN-UUID=%s' % response.headers['x-li-uuid']),
+      ('x-%s-tracedatacontext' % 'linkedin') => ('X-LI-ORIGIN-UUID=%s' % response.headers['x-li-uuid']),
       'x-requested-with' => 'XMLHttpRequest'
     }
                    )
