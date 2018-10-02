@@ -45,6 +45,7 @@ class DispatcherSubtaskStatus < DispatcherBase
               name.is_invalid = true
               name.save
             end
+          elsif x.error_content == "screenName is too lang"
           else
             retry_ids << x.id
           end
