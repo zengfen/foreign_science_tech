@@ -147,5 +147,10 @@ class Account < ApplicationRecord
   end
 
 
+  def self.login_linkedin
+    l = Login.new("383751446@qq.com", "ZAQ12wsx")
+    l.sign_in!
+    puts l.cookies
+  end
 
 end
