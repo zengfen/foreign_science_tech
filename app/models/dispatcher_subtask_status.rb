@@ -43,13 +43,13 @@ class DispatcherSubtaskStatus < DispatcherBase
       end
 
 
-      if has_expire_cookie
-        ControlTemplate.find(66).accounts.each do |x|
-          x.valid_time = 1.hour.ago
-          x.save
-        end
-        break
-      end
+      # if has_expire_cookie
+      #   ControlTemplate.find(66).accounts.each do |x|
+      #     x.valid_time = 1.hour.ago
+      #     x.save
+      #   end
+      #   break
+      # end
       spider.destroy
     end
   end
