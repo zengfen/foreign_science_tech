@@ -18,7 +18,7 @@ class DispatcherSubtaskStatus < DispatcherBase
   def self.sync_status
     SpiderTask.where(spider_id: 128).each do |spider|
       next if spider.status != 2
-      tasks = DispatcherSubtaskStatus.where(task_id: id)
+      tasks = DispatcherSubtaskStatus.where(task_id: spider.id)
       tasks.each do |x|
         subtask = DispatcherSubtask.find(x.id)
         content = JSON.parse(subtask.content)['url']
