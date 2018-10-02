@@ -103,6 +103,8 @@ class DispatcherSubtaskStatus < DispatcherBase
       subtask = DispatcherSubtaskStatus.where(task_id: task.id).order("created_at desc").first
       if subtask.error_content == "cookie is expired" && (subtask.created_at > 1.minute.ago)
         ControlTemplate.find(66).accounts.each do |x|
+          x.valid_time = 5.minute.ago
+          x.save
           x.remove_related_data
         end
       end
