@@ -28,7 +28,7 @@ class DispatcherSubtaskStatus < DispatcherBase
         if x.status == 1
           name = ArchonLinkedinName.where(id: content).first
           if name.blank?
-            ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: false)
+            ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: false) rescue nil
           else
             name.is_dump = true
             name.is_invalid = false
