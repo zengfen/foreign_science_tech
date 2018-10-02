@@ -19,9 +19,14 @@ class DispatcherSubtaskStatus < DispatcherBase
     SpiderTask.where(spider_id: 128).each do |spider|
       next if spider.status != 2
       tasks = DispatcherSubtaskStatus.where(task_id: spider.id, status: 3)
+      has_expire_cookie = false
       tasks.each do |x|
         subtask = DispatcherSubtask.find(x.id)
         content = JSON.parse(subtask.content)['url']
+        if x.error_content == "cookie is expired"
+          has_expire_cookie = true
+          break
+        end
         next unless x.error_content == "This profile can't be accessed"
         name = ArchonLinkedinName.where(id: content).first
         if name.blank?
@@ -37,6 +42,14 @@ class DispatcherSubtaskStatus < DispatcherBase
         end
       end
 
+
+      if has_expire_cookie
+        ControlTemplate.find(66).accounts.each do |x|
+          x.valid_time = 1.hour.ago
+          x.save
+        end
+        break
+      end
       spider.destroy
     end
   end
