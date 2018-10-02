@@ -39,7 +39,7 @@ class DispatcherSubtaskStatus < DispatcherBase
           if x.error_content == "This profile can't be accessed"
             name = ArchonLinkedinName.where(id: content).first
             if name.blank?
-              ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: true)
+              ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: true) rescue nil
             else
               name.is_dump = true
               name.is_invalid = true
