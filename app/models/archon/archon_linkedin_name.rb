@@ -48,7 +48,7 @@ class ArchonLinkedinName < ArchonBase
       users = []
 
       temp_ids.each do |x|
-        if x.include?("/")
+        if x.include?("/") || x.include?("?")
           users << x
         end
       end
