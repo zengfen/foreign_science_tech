@@ -18,23 +18,26 @@ class DispatcherSubtaskStatus < DispatcherBase
   def self.sync_status
     SpiderTask.where(spider_id: 128).each do |spider|
       next if spider.status != 2
-      tasks = DispatcherSubtaskStatus.where(task_id: spider.id)
+      tasks = DispatcherSubtaskStatus.where(task_id: spider.id, status: 3)
       tasks.each do |x|
         subtask = DispatcherSubtask.find(x.id)
         content = JSON.parse(subtask.content)['url']
-        if x.status == 3
-          if x.error_content == "This profile can't be accessed"
-            name = ArchonLinkedinName.where(id: content).first
-            if name.blank?
-              ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: true) rescue nil
-            else
-              name.is_dump = true
-              name.is_invalid = true
-              name.save
-            end
+        next unless x.error_content == "This profile can't be accessed"
+        name = ArchonLinkedinName.where(id: content).first
+        if name.blank?
+          begin
+            ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: true)
+          rescue Exception => _
+            nil
           end
+        else
+          name.is_dump = true
+          name.is_invalid = true
+          name.save
         end
       end
+
+      spider.destroy
     end
   end
 end
