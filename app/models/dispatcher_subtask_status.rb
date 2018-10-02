@@ -92,6 +92,30 @@ class DispatcherSubtaskStatus < DispatcherBase
   end
 
 
+  def self.retry_all
+    SpiderTask.where(spider_id: 128).each do |spider|
+      next if spider.status != 2
+      tasks = DispatcherSubtaskStatus.where(task_id: spider.id, status: 3)
+      tasks.each do |x|
+        if x.error_content == "cookie is expired"
+          spider.retry_fail_task(x.id)
+        end
+      end
+
+
+      # if has_expire_cookie
+      #   ControlTemplate.find(66).accounts.each do |x|
+      #     x.valid_time = 1.hour.ago
+      #     x.save
+      #   end
+      #   break
+      # end
+      # spider.destroy
+    end
+  end
+
+
+
   def self.check_accounts
     while true
       task = SpiderTask.where(spider_id: 128, status: 1).first
