@@ -21,20 +21,9 @@ class DispatcherSubtaskStatus < DispatcherBase
       next if spider.spider_id != 128
       next if spider.status != 2
       tasks = DispatcherSubtaskStatus.where(task_id: id)
-      retry_ids = []
       tasks.each do |x|
         subtask = DispatcherSubtask.find(x.id)
         content = JSON.parse(subtask.content)['url']
-        if x.status == 1
-          name = ArchonLinkedinName.where(id: content).first
-          if name.blank?
-            ArchonLinkedinName.create(id: content, is_dump: true, is_invalid: false) rescue nil
-          else
-            name.is_dump = true
-            name.is_invalid = false
-            name.save
-          end
-        end
         if x.status == 3
           if x.error_content == "This profile can't be accessed"
             name = ArchonLinkedinName.where(id: content).first
@@ -45,16 +34,8 @@ class DispatcherSubtaskStatus < DispatcherBase
               name.is_invalid = true
               name.save
             end
-          elsif x.error_content == "screenName is too lang"
-          else
-            retry_ids << x.id
           end
         end
-      end
-
-
-      retry_ids.each do |x|
-        spider.retry_fail_task(x)
       end
     end
   end
