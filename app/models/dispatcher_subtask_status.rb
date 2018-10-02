@@ -100,7 +100,7 @@ class DispatcherSubtaskStatus < DispatcherBase
         next
       end
 
-      subtask = DispatcherSubtaskStatus.where(task_id: task.id).order("created_at desc").limit(1)
+      subtask = DispatcherSubtaskStatus.where(task_id: task.id).order("created_at desc").first
       if subtask.error_content == "cookie is expired" && (subtask.created_at > 1.minute.ago)
         ControlTemplate.find(66).accounts.each do |x|
           x.remove_related_data
