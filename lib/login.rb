@@ -12,7 +12,7 @@ class Login
 
   attr_accessor :email, :password, :socks_proxy, :user_agent, :signed_in, :cookies, :http, :profile_url_template
 
-  def initialize(email:, password:)
+  def initialize(email, password)
     self.email = email
     self.password = password
     self.socks_proxy = socks_proxy
