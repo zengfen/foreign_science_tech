@@ -37,9 +37,25 @@ class ArchonLinkedinName < ArchonBase
 
 
   def self.remove_users
-    ids = ArchonLinkedinName.select("id").where("is_dump = 0").collect(&:id)
+    ids = ArchonLinkedinUser.select("id").collect(&:id)
+
+    i = 0
     ids.each_slice(100).each do |temp_ids|
-      ArchonLinkedinUser.where(id: temp_ids).delete_all
+      puts i
+      i += 1
+
+      users = ArchonLinkedinUser.select("id").where(id: valid_ids).where("experience='' and education='' and skills=''").collect(&:id)
+
+      if users.size > 0
+        ArchonLinkedinUser.where(id: users).delete_all
+        ArchonLinkedinName.where(id: users).delete_all
+      end
+
     end
+
+    # ids = ArchonLinkedinName.select("id").where("is_dump = 0").collect(&:id)
+    # ids.each_slice(100).each do |temp_ids|
+    #   ArchonLinkedinUser.where(id: temp_ids).delete_all
+    # end
   end
 end
