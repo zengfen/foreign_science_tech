@@ -15,10 +15,8 @@ class DispatcherSubtaskStatus < DispatcherBase
   has_one :dispatcher_subtask, foreign_key: :id
   belongs_to :dispatcher_subtask, foreign_key: :id
 
-  def self.sync_status(ids)
-    ids.each do |id|
-      spider = SpiderTask.find(id)
-      next if spider.spider_id != 128
+  def self.sync_status
+    SpiderTask.where(spider_id: 128).each do |spider|
       next if spider.status != 2
       tasks = DispatcherSubtaskStatus.where(task_id: id)
       tasks.each do |x|
