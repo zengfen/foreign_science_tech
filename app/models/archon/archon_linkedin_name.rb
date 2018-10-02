@@ -44,7 +44,16 @@ class ArchonLinkedinName < ArchonBase
       puts i
       i += 1
 
-      users = ArchonLinkedinUser.select("id").where(id: temp_ids).where("experience='' and education=''").collect(&:id)
+
+      users = []
+
+      temp_ids.each do |x|
+        if x.include?("/")
+          users << x
+        end
+      end
+
+      # users = ArchonLinkedinUser.select("id").where(id: temp_ids).where("experience='' and education=''").collect(&:id)
 
       if users.size > 0
         ArchonLinkedinUser.where(id: users).delete_all
