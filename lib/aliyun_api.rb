@@ -7,7 +7,7 @@ class AliyunApi
 
     a = make_request({:Action => "DescribeRegions"})
     rescue Exception => e
-      puts e.response.message
+      puts e.response.body
 
     end
     return nil
