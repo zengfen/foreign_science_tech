@@ -94,7 +94,7 @@ class DispatcherSubtaskStatus < DispatcherBase
 
   def self.retry_all
     SpiderTask.where(spider_id: 128).each do |spider|
-      next if spider.status != 2
+      # next if spider.status != 2
       tasks = DispatcherSubtaskStatus.where(task_id: spider.id, status: 3)
       tasks.each do |x|
         if x.error_content == "cookie is expired"
