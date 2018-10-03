@@ -23,9 +23,9 @@ class AliyunApi
                          :SecurityGroupId => "sg-u16i9xyyd",
                          :InstanceChargeType => "PostPaid",
                          :InternetChargeType => "PayByBandwidth",
-                         :InternetMaxBandwidthOut => 1,
-                         :Amount => c,
-                         :PasswordInherit => true,
+                         :InternetMaxBandwidthOut => 1.to_s,
+                         :Amount => c.to_s,
+                         :PasswordInherit => "true",
 
     })
   end
