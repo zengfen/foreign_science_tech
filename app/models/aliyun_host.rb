@@ -1,4 +1,11 @@
 class AliyunHost < ApplicationRecord
+  def self.need_reopen
+    x = AliyunHost.first
+    return true if x.blank?
+
+    (x.created_at < 1.hour.ago)
+  end
+
   def self.reopen_hosts(c = 1)
     results = AliyunApi.create_instances(c)
     instance_ids = results["InstanceIdSets"]["InstanceIdSet"]
