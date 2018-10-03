@@ -38,7 +38,7 @@ class AliyunHost < ApplicationRecord
 
   def wait_ready
     attr = AliyunApi.instance_attr(self.instance_id)
-    self.public_ip = attr["PublicIpAddress"]["IpAddress"]
+    self.public_ip = (attr["PublicIpAddress"]["IpAddress"] || []).first
     self.is_running = (attr["Status"] == "Running")
     self.save
   end
