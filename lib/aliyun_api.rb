@@ -55,7 +55,7 @@ class AliyunApi
   end
 
   def self.delete_instance(instance_id)
-    return make_request({:Action => "DeleteInstance", :InstanceId => instance_id})
+    return make_request({:Action => "DeleteInstance", :InstanceId => instance_id, :Force => true})
   end
 
   def self.allocate_public_ip(instance_id)
