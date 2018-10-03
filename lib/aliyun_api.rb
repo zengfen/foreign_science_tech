@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class AliyunApi
+  #  us-west-1
   def self.regions
     return make_request({:Action => "DescribeRegions"})
   end
@@ -13,6 +14,22 @@ class AliyunApi
     return make_request({:Action => "DescribeInstanceStatus", :RegionId => region_id, :PageNumber => page.to_s, :PageSize => per_page.to_s})
   end
 
+  def self.create_instances(c = 1)
+    return make_request({:Action => "RunInstances",
+                         :RegionId => "us-west-1",
+                         :ZoneId => "us-west-1b",
+                         :ImageId => "m-rj91xsu9fz739otof4go",
+                         :InstanceType => "ecs.n1.tiny",
+                         :SecurityGroupId => "sg-u16i9xyyd",
+                         :InstanceChargeType => "PostPaid",
+                         :InternetChargeType => "PayByBandwidth",
+                         :InternetMaxBandwidthOut => 1,
+                         :Amount => c,
+                         :PasswordInherit => true,
+
+    })
+  end
+
   def self.instance_types
     return make_request({:Action => "DescribeInstanceTypes"})
   end
@@ -21,9 +38,9 @@ class AliyunApi
     return make_request({:Action => "DescribeSecurityGroups", :RegionId => region_id})
   end
 
-  def self.create_instance(region_id, image_id, instance_type, security_group_id, password)
-    return make_request({:Action => "CreateInstance", :RegionId => region_id, :ImageId => image_id, :InstanceType => instance_type, :SecurityGroupId => security_group_id, :Password => password, :InternetMaxBandwidthIn => "1", :InternetMaxBandwidthOut => "1"})
-  end
+  # def self.create_instance(region_id, image_id, instance_type, security_group_id, password)
+  #   return make_request({:Action => "CreateInstance", :RegionId => region_id, :ImageId => image_id, :InstanceType => instance_type, :SecurityGroupId => security_group_id, :Password => password, :InternetMaxBandwidthIn => "1", :InternetMaxBandwidthOut => "1"})
+  # end
 
   def self.stop_instance(instance_id, is_force = false)
     return make_request({:Action => "StopInstance", :InstanceId => instance_id, :ForceStop => is_force.to_s})

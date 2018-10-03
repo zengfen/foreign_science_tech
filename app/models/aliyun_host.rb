@@ -1,0 +1,2 @@
+class AliyunHost < ApplicationRecord
+end
