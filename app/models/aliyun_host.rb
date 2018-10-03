@@ -31,6 +31,7 @@ class AliyunHost < ApplicationRecord
   def self.close_all_hosts
     self.all.each do |x|
       AliyunApi.delete_instance(x.instance_id)
+      x.destroy
     end
   end
 
