@@ -108,7 +108,7 @@ class Account < ApplicationRecord
       $archon_redis.zrem(k, id)
     end
 
-    DispatcherAccount.find(id).delete
+    DispatcherAccount.find(id).delete rescue nil
   end
 
 
@@ -121,7 +121,7 @@ class Account < ApplicationRecord
       $archon_redis.zrem(k, id)
     end
 
-    DispatcherAccount.find(id).delete
+    DispatcherAccount.find(id).delete rescue nil
   end
 
   def self.check_invalid_accounts
