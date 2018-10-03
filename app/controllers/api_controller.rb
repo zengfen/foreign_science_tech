@@ -155,4 +155,14 @@ class ApiController < ApplicationController
     render json: {resulst:resulst}
   end
 
+  def list_normal_tasks
+    secret = params[:secret]
+    return render json: { msg: 'error secret' } if secret != '123'
+    return render json: { msg: 'error spider_id' } if params[:spider_id].blank?
+    status = params[:status]
+
+    @spider_task = SpiderTask.where(spider_id: params[:spider_id], status: status)
+    render json: {tasks: @spider_task.collect(&:id)}
+  end
+
 end
