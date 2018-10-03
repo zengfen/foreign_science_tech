@@ -119,7 +119,7 @@ class DispatcherSubtaskStatus < DispatcherBase
   def self.check_accounts
     while true
       ids = SpiderTask.where(spider_id: 128, status: 1).collect(&:id)
-      if task.blank?
+      if ids.blank?
         sleep(10)
         next
       end
