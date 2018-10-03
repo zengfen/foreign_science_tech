@@ -42,7 +42,7 @@ class Hm
     return if !AliyunHost.need_reopen
 
     AliyunHost.close_all_hosts
-    ips = AliyunHost.reopen_hosts(10)
+    ips = AliyunHost.reopen_hosts(5)
 
     puts ips
 
