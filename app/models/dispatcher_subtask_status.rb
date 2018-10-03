@@ -25,7 +25,7 @@ class DispatcherSubtaskStatus < DispatcherBase
         content = JSON.parse(subtask.content)['url']
         if x.error_content == "cookie is expired"
           has_expire_cookie = true
-          break
+          # break
         end
         next unless x.error_content == "This profile can't be accessed"
         name = ArchonLinkedinName.where(id: content).first
