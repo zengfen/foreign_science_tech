@@ -91,7 +91,7 @@ class AliyunApi
     sign_string << CGI.escape(sign_string_new[1..-1])
     # puts sign_string
 
-    signature = OpenSSL::HMAC.digest("sha1", sign_string, "#{api_secret}&").to_s
+    signature = OpenSSL::HMAC.digest("sha1","#{api_secret}&",  sign_string).to_s
     signature = Base64.encode64(signature).strip
     params[:Signature] = signature
 
