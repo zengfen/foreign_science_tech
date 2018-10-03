@@ -131,6 +131,10 @@ class DispatcherSubtaskStatus < DispatcherBase
           x.save
           x.remove_related_data
         end
+
+        SpiderTask.where(spider_id: 128, status: 1).each do |x|
+          x.stop!
+        end
       end
 
       sleep(10)
