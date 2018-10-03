@@ -2,15 +2,7 @@
 
 class AliyunApi
   def self.regions
-
-    begin
-
-    a = make_request({:Action => "DescribeRegions"})
-    rescue Exception => e
-      puts e.response.body
-
-    end
-    return nil
+    return make_request({:Action => "DescribeRegions"})
   end
 
   def self.images(region_id)
@@ -97,7 +89,6 @@ class AliyunApi
 
     req_params_string = params.to_a.collect{|x| "#{x[0]}=#{CGI.escape(x[1])}"}.join("&")
 
-    puts "https://ecs.aliyuncs.com/?#{req_params_string}"
 
     return JSON.parse(RestClient.get("https://ecs.aliyuncs.com/?#{req_params_string}").body)
   end
