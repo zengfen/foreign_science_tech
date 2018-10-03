@@ -2,7 +2,15 @@
 
 class AliyunApi
   def self.regions
-    return make_request({:Action => "DescribeRegions"})
+
+    begin
+
+    a = make_request({:Action => "DescribeRegions"})
+    rescue Exception => e
+      puts e.response.message
+
+    end
+    return nil
   end
 
   def self.images(region_id)
