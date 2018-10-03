@@ -90,7 +90,7 @@ class AliyunApi
     req_params_string = params.to_a.collect{|x| "#{x[0]}=#{CGI.escape(x[1])}"}.join("&")
 
 
-    return JSON.parse(RestClient.get("http://ecs.aliyuncs.com/?#{req_params_string}").body)
+    return JSON.parse(RestClient.get("https://ecs.aliyuncs.com/?#{req_params_string}").body)
   end
 
 
