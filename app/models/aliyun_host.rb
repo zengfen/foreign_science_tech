@@ -2,6 +2,7 @@ class AliyunHost < ApplicationRecord
   def self.reopen_hosts(c = 1)
     results = AliyunApi.create_instances(c)
     instance_ids = results["InstanceIdSets"]["InstanceIdSet"]
+    puts instance_ids
     instance_ids.each do |x|
       AliyunHost.create(instance_id: x)
     end
