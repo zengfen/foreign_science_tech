@@ -35,7 +35,7 @@ class Hm
       sleep(15)
 
       AliyunHost.close_all_hosts
-      ips = AliyunHost.reopen_hosts(10)
+      ips = AliyunHost.reopen_hosts(20)
 
       puts ips
 
