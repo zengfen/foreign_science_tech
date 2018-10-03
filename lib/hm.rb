@@ -19,7 +19,7 @@ class Hm
         SpiderTask.where(spider_id: 128, status: 1).each(&:stop!)
       end
 
-      check_reopen
+      # check_reopen
 
       sleep(10)
     end
@@ -35,7 +35,7 @@ class Hm
       sleep(15)
 
       AliyunHost.close_all_hosts
-      ips = AliyunHost.reopen_hosts(5)
+      ips = AliyunHost.reopen_hosts(10)
 
       puts ips
 
