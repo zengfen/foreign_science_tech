@@ -129,7 +129,7 @@ class LinkedinWorker
       tasks.each do |task|
         uid = details[task.id]
         if task.status == 3
-          if task.error_content == "This profile can't be accessed"
+          if task.error_content == "This profile can't be accessed" || task.error_content == "screenName is wrong" || task.error_content == "screenName is too lang"
             invalid_ids << uid unless uid.blank?
           else
             retry_ids << uid unless uid.blank?

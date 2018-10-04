@@ -43,4 +43,5 @@ class Hm
       account.setup_redis
     end
   end
+
 end
