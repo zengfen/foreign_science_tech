@@ -17,7 +17,7 @@ class LinkedinWorker
 
     return if spider_task_count > 0
 
-    10.times do
+    20.times do
       check_cookies
       return unless has_valid_account?
       ids = get_batch_users
