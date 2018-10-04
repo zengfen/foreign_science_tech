@@ -3,7 +3,7 @@ class UpdateNamesFromLinkedinUser
     ArchonLinkedinUser.select("id").find_in_batches do |users|
       insert_names = []
       ids = users.map{|x| x["id"]}
-      update_ids = ArchonLinkedinName.where(id:ids).map{|x| x["id"]}
+      update_ids = ArchonLinkedinName.select("id").where(id:ids).map{|x| x["id"]}
       create_ids = ids - update_ids
 
       create_ids.each do |id|
