@@ -46,7 +46,7 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    A.get_tasks_ids
+    ArchonLinkedinName.
   end
 
   def self.list_spider_tasks
