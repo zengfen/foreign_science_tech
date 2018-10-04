@@ -25,9 +25,7 @@ class Hm
     end
   end
 
-  def self.check_reopen
-    return unless AliyunHost.need_reopen
-
+  def self.check_reopen(c  = 1)
     account = ControlTemplate.find(66).accounts.first
     if !account.blank? && account.is_valid?
       account.remove_related_data
@@ -35,7 +33,7 @@ class Hm
       sleep(15)
 
       AliyunHost.close_all_hosts
-      ips = AliyunHost.reopen_hosts(20)
+      ips = AliyunHost.reopen_hosts(c)
 
       puts ips
 
