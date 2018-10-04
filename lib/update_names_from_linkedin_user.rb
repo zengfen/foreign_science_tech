@@ -16,7 +16,7 @@ class UpdateNamesFromLinkedinUser
 
       ArchonLinkedinName.where(id: update_ids).update_all(is_finished: true, is_dump: true, is_invalid: false)
       create_sql = "INSERT INTO #{ArchonLinkedinName.table_name} (id,is_dump,is_finished) VALUES #{insert_names.map {|rec| "(#{rec.join(", ")})" }.join(" ,")}"
-      ArchonLinkedinName.connection.insert_sql(create_sql)
+      ArchonLinkedinName.connection.execute(create_sql)
     end
   end
 end
