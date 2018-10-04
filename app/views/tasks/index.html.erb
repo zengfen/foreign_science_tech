@@ -276,7 +276,8 @@ window.setInterval(function(){
   var current_url = $("#current_url").val();
   var status = $(".task_status").find('span').text();
   var bool1 = !$('.all-page').hasClass('dn');
-  if (bool1 && status.indexOf("执行中")!=-1){
+  //  && status.indexOf("执行中")!=-1
+  if (bool1){
       $.ajax({
           url:current_url,
           type:'get',
