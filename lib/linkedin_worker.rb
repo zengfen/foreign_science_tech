@@ -116,7 +116,7 @@ class LinkedinWorker
     return if ids.blank?
     ids.each do |id|
       tasks = DispatcherSubtaskStatus.select('status, content, error_content').where(task_id: id)
-      finished_uids = []
+      finished_ids = []
       retry_ids = []
       invalid_ids = []
       tasks.each do |task|
@@ -128,7 +128,7 @@ class LinkedinWorker
             retry_ids << uid unless uid.blank?
           end
         else
-          finished_uids << uid unless uid.blank?
+          finished_ids << uid unless uid.blank?
         end
       end
 
