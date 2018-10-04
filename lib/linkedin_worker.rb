@@ -97,19 +97,23 @@ class LinkedinWorker
   end
 
   def self.set_users_dumped(ids)
+    return if ids.blank?
     ArchonLinkedinName.where(id: ids).update_all(is_dump: true, dump_ts: Time.now.to_i)
   end
 
   def self.set_users_finished(ids)
+    return if ids.blank?
     ArchonLinkedinName.where(id: ids).update_all(is_finish: true)
   end
 
   def self.set_users_not_dumped(ids)
-    ArchonLinkedinName.where(id: ids).update_all(is_dump: false)
+    return if ids.blank?
+    ArchonLinkedinName.where(id: ids).update_all(is_dump: false, is_finish: false)
   end
 
   def self.set_users_invalid(ids)
-    ArchonLinkedinName.where(id: ids).update_all(is_finish: true, is_invalid: true)
+    return if ids.blank?
+    ArchonLinkedinName.where(id: ids).update_all(is_finish: true, is_invalid: true, is_dump: true)
   end
 
   def self.update_finished_tasks(ids)
