@@ -46,7 +46,7 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    ArchonLinkedinName.
+    ArchonLinkedinName.where("is_dump = ?",nil)
   end
 
   def self.list_spider_tasks
