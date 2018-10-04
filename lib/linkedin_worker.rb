@@ -46,7 +46,9 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    ArchonLinkedinName.where("is_dump = ?",nil)
+    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(1000)
+    ids = names.map{|x| x.id}
+    return ids
   end
 
   def self.list_spider_tasks
