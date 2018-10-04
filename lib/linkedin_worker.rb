@@ -121,12 +121,13 @@ class LinkedinWorker
   def self.update_finished_tasks(ids)
     return if ids.blank?
     ids.each do |id|
-      tasks = DispatcherSubtaskStatus.select('status, content, error_content').where(task_id: id)
+      tasks = DispatcherSubtaskStatus.select('id, status, error_content').where(task_id: id)
+      details = DispatcherSubtask.select("id, content").where(id: tasks.collect(&:id)).collect{|x| [x.id, JSON.parse(x.content)['url']]}.to_h
       finished_ids = []
       retry_ids = []
       invalid_ids = []
       tasks.each do |task|
-        uid = JSON.parse(task.content)['url']
+        uid = details[task.id]
         if task.status == 3
           if task.error_content == "This profile can't be accessed"
             invalid_ids << uid unless uid.blank?
