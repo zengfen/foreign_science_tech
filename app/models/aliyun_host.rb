@@ -7,11 +7,12 @@ class AliyunHost < ApplicationRecord
   end
 
   def self.reopen_hosts(c = 1)
+    AliyunHost.where("created_at < '#{1.day.ago}'").delete_all
     results = AliyunApi.create_instances(c)
     instance_ids = results["InstanceIdSets"]["InstanceIdSet"]
     puts instance_ids
     instance_ids.each do |x|
-      AliyunHost.create(instance_id: x)
+      AliyunHost.create(instance_id: x, is_disabled: false)
     end
 
 
@@ -31,14 +32,30 @@ class AliyunHost < ApplicationRecord
       sleep(5)
     end
 
+    need_closed = []
+    self.where(is_disabled: false).each do |h|
+      c = self.where(public_ip: h.public_ip).count
+      if c > 1
+        h.is_disabled = true
+        h.save
 
-    return self.all.collect(&:public_ip)
+        need_closed << h
+      end
+    end
+
+    puts need_closed
+    need_closed.each do |x|
+      AliyunApi.delete_instance(x.instance_id)
+    end
+
+    return self.where(is_disabled: false).collect(&:public_ip)
   end
 
   def self.close_all_hosts
     self.all.each do |x|
       AliyunApi.delete_instance(x.instance_id)
-      # x.destroy
+      x.is_disabled = true
+      x.save
     end
   end
 
