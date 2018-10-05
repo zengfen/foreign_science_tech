@@ -66,4 +66,8 @@ class AliyunHost < ApplicationRecord
     self.is_running = (attr["Status"] == "Running")
     self.save
   end
+
+  def self.get_all_ips
+    self.where(is_disabled: false).collect(&:public_ip)
+  end
 end
