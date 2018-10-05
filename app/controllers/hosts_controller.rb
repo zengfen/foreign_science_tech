@@ -131,4 +131,9 @@ class HostsController < ApplicationController
       end
     end
   end
+
+
+  def block_ips
+    @ips = $archon_redis.smembers("archon_stopped_agents")
+  end
 end

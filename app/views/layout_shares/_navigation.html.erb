@@ -87,6 +87,7 @@
         <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,services') %>">
           <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
+          <li class="<%= is_active_action("block_ips", "hosts") %>"><%= link_to "节点黑名单", "/hosts/block_ips" %></li>
           <li class="<%= is_active_action("index", "services") %>"><%= link_to "服务监控", services_path%></li>
           <li class="<%= is_active_action("counters", "services") %>"><%= link_to "数据量监控", "/services/counters"%></li>
           <li class="<%= is_active_action("receiver", "services") %>"><%= link_to "接收器数据量", "/services/receiver" %></li>
