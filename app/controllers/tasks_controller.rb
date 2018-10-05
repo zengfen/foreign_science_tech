@@ -21,7 +21,7 @@ class TasksController < ApplicationController
 
     if params[:task_type].blank?
       @spider_tasks = SpiderTask.includes("spider").where(opts).order(created_at: :desc).page(params[:page]).per(20)
-      @result_counter = DispatcherTaskResultCounter.select("task_id, sum(result_count) as c").group("task_id").where(task_id: @spider_tasks.collect(&:id)).collect{|x| [x.task_id, c]}.to_h
+      @result_counter = DispatcherTaskResultCounter.select("task_id, sum(result_count) as c").group("task_id").where(task_id: @spider_tasks.collect(&:id)).collect{|x| [x.task_id, x.c]}.to_h
       if request.xhr?
         return render "_list_body.html.erb", layout: false
       end
