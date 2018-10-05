@@ -59,7 +59,8 @@ class Hm
 
   def self.reset_accounts
     ArchonLinkedinUser.where("created_ts > 1538703323").select("id").collect(&:id).each_slice(1000).each do |ids|
-      LinkedinWorker.set_users_not_dumped(ids)
+      ArchonLinkedinUser.where(id: ids).delete_all
+      # LinkedinWorker.set_users_not_dumped(ids)
     end
 
     nil
