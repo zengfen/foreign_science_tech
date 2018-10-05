@@ -249,19 +249,19 @@ class SpiderTask < ApplicationRecord
   end
 
   def success_count
-    DispatcherSubtaskStatus.select("1").where(task_id: id).where('status = 1 or status = 2').count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 1 or status = 2').count
   end
 
   def fail_count
-    DispatcherSubtaskStatus.select("1").where(task_id: id).where('status = 3').count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 3').count
   end
 
   def warning_count
-    DispatcherSubtaskStatus.select("1").where(task_id: id).where('status = 2').count
+    DispatcherSubtaskStatus.where(task_id: id).where('status = 2').count
   end
 
   def current_total_count
-    DispatcherSubtask.select("1").where(task_id: id).count
+    DispatcherSubtask.where(task_id: id).count
     # $archon_redis.hlen("archon_task_details_#{id}")
   end
 
