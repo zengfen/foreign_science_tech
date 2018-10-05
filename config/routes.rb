@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       get 'loader_es_trend'
       get 'host_task_counters'
       get 'block_ips'
+      get 'del_block_ip'
     end
   end
 

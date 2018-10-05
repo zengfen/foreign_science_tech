@@ -136,4 +136,12 @@ class HostsController < ApplicationController
   def block_ips
     @ips = $archon_redis.smembers("archon_stopped_agents")
   end
+
+
+  def del_block_ip
+    $archon_redis.srem("archon_stopped_agents", params[:ip])
+
+
+    redirect_to :back
+  end
 end
