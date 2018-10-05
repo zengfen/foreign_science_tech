@@ -44,4 +44,15 @@ class Hm
     end
   end
 
+
+  def self.reset_ips
+    account = ControlTemplate.find(66).accounts.first
+    if !account.blank? && account.is_valid?
+      account.remove_related_data
+      account.valid_ips = AliyunHost.get_all_ips
+      account.save
+      account.setup_redis
+    end
+  end
+
 end
