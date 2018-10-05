@@ -55,4 +55,14 @@ class Hm
     end
   end
 
+
+
+  def self.reset_accounts
+    ArchonLinkedinUser.where("created_ts > 1538703323").select("id").collect(&:id).each_slice(1000).each do |ids|
+      LinkedinWorker.set_users_not_dumped(ids)
+    end
+
+    nil
+  end
+
 end
