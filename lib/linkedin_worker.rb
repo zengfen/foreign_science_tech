@@ -17,13 +17,18 @@ class LinkedinWorker
 
     return if spider_task_count > 0
 
-    20.times do
+
+    ids = get_batch_users
+    return if ids.blank?
+
+
+    ids.each_slice(1000).each do |temp_ids|
       check_cookies
       return unless has_valid_account?
-      ids = get_batch_users
-      create_tasks(ids)
-      set_users_dumped(ids)
+      create_tasks(temp_ids)
+      set_users_dumped(temp_ids)
     end
+
   end
 
   def self.running?
@@ -46,7 +51,7 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(1000)
+    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(20000)
     ids = names.map{|x| x.id}
     return ids
   end
