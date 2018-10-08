@@ -125,4 +125,11 @@ class DispatcherHost < DispatcherBase
 
     [installed_services, running_service_counter]
   end
+
+
+  def self.clear_hosts
+    DispatcherHost.where("last_active_at < #{10.minutes.ago.to_i}").delete_all
+    DispatcherHostService.where("last_active_at < #{10.minutes.ago.to_i}").delete_all
+    DispatcherHostService.where().not(ip: DispatcherHost.all.collect(&:ip)).delete_all
+  end
 end
