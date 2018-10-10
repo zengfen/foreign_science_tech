@@ -15,7 +15,7 @@ class LinkedinWorker
 
     return unless stopped_ids.blank?
 
-    return if spider_task_count > 0
+    return if spider_task_count > 3
 
 
     ids = get_batch_users
@@ -51,7 +51,7 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(20000)
+    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(10000)
     ids = names.map{|x| x.id}
     return ids
   end
