@@ -66,4 +66,17 @@ class Hm
     nil
   end
 
+
+  def self.do_stop_all_agent
+    start_ts = Time.now.to_i
+
+    while (Time.now.to_i - 6 * 3600) < start_ts
+
+      sleep(10)
+    end
+
+
+    AliyunHost.close_all_hosts
+  end
+
 end
