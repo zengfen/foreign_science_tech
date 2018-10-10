@@ -168,6 +168,7 @@ class SpiderTask < ApplicationRecord
     { 'success' => '保存成功！' }
   end
 
+
   def enqueue
     # // ArchonInternalTaskKey 国内顶级任务的列表
     # ArchonInternalTaskKey = "archon_internal_tasks"
@@ -178,6 +179,12 @@ class SpiderTask < ApplicationRecord
     # // ArchonTaskDetailHashKeyFormat  md5 -> task
     # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
     #
+    #
+    #
+
+
+    created_tasks = []
+    created_keys = []
 
     b_time = ''
     b_time = begin_time.to_s unless begin_time.blank?
@@ -215,8 +222,9 @@ class SpiderTask < ApplicationRecord
     if spider.has_keyword && is_split
       task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{self.spider_task_keyword.keyword}{}#{spider.template_name}")
       task_template['url'] = self.spider_task_keyword.keyword
-      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+      created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+
+      created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
     end
 
     if spider.has_keyword && !is_split
@@ -224,15 +232,15 @@ class SpiderTask < ApplicationRecord
         self.spider_task_keyword.keyword.split(',').each_slice(split_group_count).each do |kk|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
           task_template['url'] = kk.join(",")
-          DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+          created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+          created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
         end
       else
         self.spider_task_keyword.keyword.split(',').each do |k|
           task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
           task_template['url'] = k
-          DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-          $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+          created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+          created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
         end
       end
 
@@ -241,12 +249,105 @@ class SpiderTask < ApplicationRecord
     unless spider.has_keyword
       task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
       task_template['url'] = keyword
-      DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+      created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+      created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
     end
+
+
+    if !created_tasks.blank?
+      created_tasks.each_slice(500).each do |temp_tasks|
+        DispatcherSubtask.import(temp_tasks, recursive: true)
+      end
+
+      created_keys.each do |x|
+        $archon_redis.zadd(x[0], x[1], x[2])
+      end
+    end
+
 
     $archon_redis.hset('archon_available_tasks', id, max_retry_count)
   end
+
+
+  #def enqueue
+  #  # // ArchonInternalTaskKey 国内顶级任务的列表
+  #  # ArchonInternalTaskKey = "archon_internal_tasks"
+
+  #  # // ArchonExternalTaskKey 境外任务
+  #  # ArchonExternalTaskKey = "archon_external_task"
+
+  #  # // ArchonTaskDetailHashKeyFormat  md5 -> task
+  #  # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
+  #  #
+
+  #  b_time = ''
+  #  b_time = begin_time.to_s unless begin_time.blank?
+
+  #  e_time = ''
+  #  e_time = end_time.to_s unless end_time.blank?
+
+  #  task_template = {
+  #    'task_id' => id,
+  #    'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}"),
+  #    'params' => {},
+  #    'url' => keyword, # keyword or url
+  #    'template_id' => spider.template_name,
+  #    'account' => '',
+  #    'ignore_account' => false,
+  #    'timeout_second' => self.timeout_second,
+  #    'proxy' => '',
+  #    'retry_count' => 0,
+  #    'max_retry_count' => max_retry_count,
+  #    'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: b_time, end_time: e_time }
+  #  }
+
+  #  # need_account = !spider.control_template_id.blank?
+
+  #  # Rails.logger.info(need_account)
+
+  #  archon_template_id = spider.control_template_id
+
+  #  prefix_integer = 0
+
+  #  unless archon_template_id.blank?
+  #    prefix_integer = archon_template_id * 10_000_000_000_000
+  #  end
+
+  #  if spider.has_keyword && is_split
+  #    task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{self.spider_task_keyword.keyword}{}#{spider.template_name}")
+  #    task_template['url'] = self.spider_task_keyword.keyword
+  #    DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+  #    $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+  #  end
+
+  #  if spider.has_keyword && !is_split
+  #    if (split_group_count || 0) > 0
+  #      self.spider_task_keyword.keyword.split(',').each_slice(split_group_count).each do |kk|
+  #        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
+  #        task_template['url'] = kk.join(",")
+  #        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+  #        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+  #      end
+  #    else
+  #      self.spider_task_keyword.keyword.split(',').each do |k|
+  #        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
+  #        task_template['url'] = k
+  #        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+  #        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+  #      end
+  #    end
+
+  #  end
+
+  #  unless spider.has_keyword
+  #    task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
+  #    task_template['url'] = keyword
+  #    DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
+  #    $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
+  #  end
+
+  #  $archon_redis.hset('archon_available_tasks', id, max_retry_count)
+  #end
 
   def success_count
     DispatcherSubtaskStatus.select(1).where(task_id: id).where('status = 1 or status = 2').count
