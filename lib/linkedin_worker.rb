@@ -3,7 +3,7 @@ class LinkedinWorker
     while running?
       do_work
 
-      sleep 10
+      sleep 5
     end
   end
 
