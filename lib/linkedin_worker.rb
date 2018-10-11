@@ -115,10 +115,12 @@ class LinkedinWorker
     ArchonLinkedinName.where(id: ids).update_all(has_skills: true)
   end
 
-  def self.set_users_finished(ids)
-    return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_finished: true)
-  end
+
+
+  # def self.set_users_finished(ids)
+  #   return if ids.blank?
+  #   ArchonLinkedinName.where(id: ids).update_all(is_finished: true)
+  # end
 
   def self.set_users_not_dumped(ids)
     return if ids.blank?
