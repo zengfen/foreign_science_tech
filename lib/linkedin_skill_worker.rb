@@ -95,7 +95,7 @@ class LinkedinSkillWorker
 
     data = []
     users.each do |user|
-      skill = user.skill
+      skill = user.skills
       next if skill.blank?
 
       skill = JSON.parse(skill) rescue nil
@@ -112,7 +112,7 @@ class LinkedinSkillWorker
 
       first_skill = skill_values.first
       if first_skill["skillId"].blank?
-        reset_skill_uids = user.id
+        reset_skill_uids << user.id
         next
       end
 
