@@ -70,4 +70,17 @@ class AliyunHost < ApplicationRecord
   def self.get_all_ips
     self.where(is_disabled: false).collect(&:public_ip)
   end
+
+
+  def self.restart_agent(ips)
+    $archon_redis.del('archon_current_command')
+    $archon_redis.del('archon_host_commands')
+    $archon_redis.del('archon_host_command_statuses')
+
+
+    ips.each do |x|
+      $archon_redis.hset('archon_host_commands', x, command)
+      $archon_redis.hset('archon_host_command_statuses', x, '')
+    end
+  end
 end
