@@ -51,7 +51,7 @@ class LinkedinWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(10000)
+    names = ArchonLinkedinName.where("has_skills = ?",false).select("id").limit(10000)
     ids = names.map{|x| x.id}
     return ids
   end
@@ -105,7 +105,7 @@ class LinkedinWorker
 
   def self.set_users_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_dump: true, dump_ts: Time.now.to_i)
+    ArchonLinkedinName.where(id: ids).update_all(has_skills: true)
   end
 
   def self.set_users_finished(ids)
@@ -115,12 +115,12 @@ class LinkedinWorker
 
   def self.set_users_not_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_dump: false, is_finished: false)
+    ArchonLinkedinName.where(id: ids).update_all(has_skills: false)
   end
 
   def self.set_users_invalid(ids)
     return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_finished: true, is_invalid: true, is_dump: true)
+    ArchonLinkedinName.where(id: ids).update_all(is_finished: true, has_skills: true, is_invalid: true, is_dump: true)
   end
 
   def self.update_finished_tasks(ids)
@@ -144,7 +144,7 @@ class LinkedinWorker
         end
       end
 
-      set_users_finished(finished_ids) unless finished_ids.blank?
+      # set_users_finished(finished_ids) unless finished_ids.blank?
 
       set_users_not_dumped(retry_ids) unless retry_ids.blank?
 
