@@ -128,7 +128,7 @@ class DispatcherHost < DispatcherBase
 
 
   def self.clear_hosts
-    DispatcherHost.where("last_active_at < #{10.minutes.ago.to_i}").delete_all
+    DispatcherHost.where("last_active_at < #{2.minutes.ago.to_i}").delete_all
     DispatcherHostService.where().not(ip: DispatcherHost.all.collect(&:ip)).delete_all
   end
 end

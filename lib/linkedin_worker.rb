@@ -50,8 +50,14 @@ class LinkedinWorker
     account.is_valid?
   end
 
+  # def self.get_batch_users
+  #   names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(10000)
+  #   ids = names.map{|x| x.id}
+  #   return ids
+  # end
+
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_dump = ?",false).select("id").limit(10000)
+    names = ArchonLinkedinName.where("has_skills=?",false).select("id").limit(10000)
     ids = names.map{|x| x.id}
     return ids
   end
