@@ -129,7 +129,7 @@ class LinkedinSkillWorker
 
       group_count = 1 if group_count == 0
 
-      skill_ids.in_groups(group_count).each do |x|
+      skill_ids.in_groups(group_count, false).each do |x|
         data << "#{user.id}|||#{x.join('|')}"
       end
     end
