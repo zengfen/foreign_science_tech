@@ -79,7 +79,7 @@ class AliyunHost < ApplicationRecord
 
 
     ips.each do |x|
-      $archon_redis.hset('archon_host_commands', x, command)
+      $archon_redis.hset('archon_host_commands', x, "agent_restart")
       $archon_redis.hset('archon_host_command_statuses', x, '')
     end
   end
