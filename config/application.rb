@@ -17,6 +17,7 @@ module ArchonCenter
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.eager_load_paths << Rails.root.join('app/models/index')
     config.eager_load_paths << Rails.root.join('app/models/archon')
+    config.eager_load_paths += Dir["#{config.root}/lib/"]
 
     config.autoload_paths += ["#{config.root}/lib"]
 
