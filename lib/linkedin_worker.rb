@@ -15,7 +15,7 @@ class LinkedinWorker
 
     return unless stopped_ids.blank?
 
-    return if running_count > 10
+    return if running_count.size > 10
 
 
     ids = get_batch_users
