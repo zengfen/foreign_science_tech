@@ -10,12 +10,12 @@ class LinkedinWorker
   def self.do_work
     check_cookies
 
-    stopped_ids, _, finished_ids = list_spider_tasks
+    stopped_ids, running_count, finished_ids = list_spider_tasks
     update_finished_tasks(finished_ids)
 
     return unless stopped_ids.blank?
 
-    return if spider_task_count > 15
+    return if running_count > 10
 
 
     ids = get_batch_users
