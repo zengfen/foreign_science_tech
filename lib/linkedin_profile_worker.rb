@@ -153,4 +153,18 @@ class LinkedinProfileWorker
       SpiderTask.find(id).destroy
     end
   end
+
+  def self.retry_tasks(ids)
+    ids.each do |id|
+      tasks = DispatcherSubtaskStatus.select('id, status, error_content').where(task_id: id)
+      details = DispatcherSubtask.select("id, content").where(id: tasks.collect(&:id)).collect{|x| [x.id, JSON.parse(x.content)['url']]}.to_h
+      retry_ids = []
+      tasks.each do |task|
+        uid = details[task.id]
+        retry_ids << uid unless uid.blank?
+      end
+      set_users_not_dumped(retry_ids) unless retry_ids.blank?
+      SpiderTask.find(id).destroy
+    end
+  end
 end
