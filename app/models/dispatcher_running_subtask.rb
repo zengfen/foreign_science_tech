@@ -12,4 +12,12 @@
 class DispatcherRunningSubtask < DispatcherBase
   self.table_name = "running_subtasks"
 
+
+  def self.rollback(task_id)
+    spider_task = SpiderTask.find(task_id)
+    DispatcherRunningSubtask.where(task_id: id).each do |x|
+      spider_task.retry_task(x.id)
+      x.destroy
+    end
+  end
 end
