@@ -57,19 +57,19 @@ class LinkedinSkillWorker
   end
 
   def self.list_spider_tasks
-    stopped_ids = SpiderTask.where(spider_id: 128, status: 3).collect(&:id)
-    running_ids = SpiderTask.where(spider_id: 128, status: 1).collect(&:id)
-    finished_ids = SpiderTask.where(spider_id: 128, status: 2).collect(&:id)
+    stopped_ids = SpiderTask.where(spider_id: 133, status: 3).collect(&:id)
+    running_ids = SpiderTask.where(spider_id: 133, status: 1).collect(&:id)
+    finished_ids = SpiderTask.where(spider_id: 133, status: 2).collect(&:id)
 
     [stopped_ids, running_ids, finished_ids]
   end
 
   def self.spider_task_count
-    SpiderTask.where(spider_id: 128).count
+    SpiderTask.where(spider_id: 133).count
   end
 
   def self.check_cookies
-    ids = SpiderTask.where(spider_id: 128, status: 1).collect(&:id)
+    ids = SpiderTask.where(spider_id: 133, status: 1).collect(&:id)
     return if ids.blank?
 
     subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
@@ -81,7 +81,7 @@ class LinkedinSkillWorker
         account.remove_related_data
       end
 
-      SpiderTask.where(spider_id: 128, status: 1).each(&:stop!)
+      SpiderTask.where(spider_id: 133, status: 1).each(&:stop!)
     end
   end
 
@@ -95,7 +95,7 @@ class LinkedinSkillWorker
 
     data = []
     users.each do |user|
-      skill = user.skill
+      skill = user.skills
       next if skill.blank?
 
       skill = JSON.parse(skill) rescue nil
@@ -112,7 +112,7 @@ class LinkedinSkillWorker
 
       first_skill = skill_values.first
       if first_skill["skillId"].blank?
-        reset_skill_uids = user.id
+        reset_skill_uids << user.id
         next
       end
 
@@ -129,7 +129,7 @@ class LinkedinSkillWorker
 
       group_count = 1 if group_count == 0
 
-      skill_ids.in_groups(group_count).each do |x|
+      skill_ids.in_groups(group_count, false).each do |x|
         data << "#{user.id}|||#{x.join('|')}"
       end
     end
