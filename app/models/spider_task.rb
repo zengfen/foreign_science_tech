@@ -254,6 +254,8 @@ class SpiderTask < ApplicationRecord
     end
 
 
+    Rails.logger.info(created_tasks)
+
     if !created_tasks.blank?
       created_tasks.each_slice(500).each do |temp_tasks|
         DispatcherSubtask.import(temp_tasks, recursive: true)
