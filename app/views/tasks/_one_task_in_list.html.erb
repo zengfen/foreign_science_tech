@@ -16,7 +16,7 @@
 %>
 </td>
 <td><%= spider_task.current_warning_count || 0 %></td>
-<td><a href="data_centers/show?table_name=<%= spider_task.tidb_table_name %>&tag_id=<%= spider_task.special_tag%>" ><%= @result_counter[spider_task.id] || 0 %></a></td>
+<td><a href="data_centers/show?table_name=<%= spider_task.tidb_table_name %>&tag_id=<%= spider_task.special_tag%>" ><%= (@result_counter[spider_task.id] rescue nil) || 0 %></a></td>
 <td><%= show_format_time(spider_task.created_at) %></td>
 <td class="pos-r">
   <a href="##">
