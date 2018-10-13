@@ -157,12 +157,12 @@ class LinkedinSkillWorker
 
   def self.set_users_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_skill_user: true)
+    ArchonLinkedinUser.where(id: ids).update_all(is_skill_user: true)
   end
 
   def self.set_users_not_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_skill_user: false)
+    ArchonLinkedinUser.where(id: ids).update_all(is_skill_user: false)
   end
 
 
