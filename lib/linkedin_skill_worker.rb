@@ -51,7 +51,7 @@ class LinkedinSkillWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_skill_user = ?", false).select("id").limit(10000)
+    names = ArchonLinkedinUser.where("is_skill_user = ?", false).select("id").limit(10000)
     ids = names.map{|x| x.id}
     return ids
   end
