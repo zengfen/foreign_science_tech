@@ -121,14 +121,14 @@ class LinkedinSkillWorker
 
 
       skill_values.each do |skill_value|
-        next if skill_value["endorsementCount"] < 20
-        sid =  skill_value["skillId"].split(",").last.gsub(")", "")
-        data << "#{user.id}|#{sid}"
+        next if skill_value["endorsementCount"].to_i < 20
+        sid =  skill_value["skillId"].split("fs_skill:(").last.gsub(")", "").split(",")
+        data << "#{sid[0]}|#{sid[1]}"
       end
 
     end
 
-    group_count = data / 5
+    group_count = data.length / 5
 
     group_count = 1 if group_count == 0
 
