@@ -94,6 +94,9 @@ class LinkedinSkillWorker
     reset_skill_uids = []
 
     data = []
+
+    final_data = []
+
     users.each do |user|
       skill = user.skills
       next if skill.blank?
@@ -117,21 +120,20 @@ class LinkedinSkillWorker
       end
 
 
-      skill_ids = []
       skill_values.each do |skill_value|
-        next if skill_value["endorsementCount"] == 0
-        skill_ids << skill_value["skillId"].split(",").last.gsub(")", "")
+        next if skill_value["endorsementCount"] < 20
+        sid =  skill_value["skillId"].split(",").last.gsub(")", "")
+        data << "#{user.id}|#{sid}"
       end
 
-      next if skill_ids.blank?
+    end
 
-      group_count = skill_ids / 5
+    group_count = data / 5
 
-      group_count = 1 if group_count == 0
+    group_count = 1 if group_count == 0
 
-      skill_ids.in_groups(group_count, false).each do |x|
-        data << "#{user.id}|||#{x.join('|')}"
-      end
+    data.in_groups(group_count, false).each do |x|
+      final_data << "#{x.join('|||')}"
     end
 
 
@@ -141,7 +143,7 @@ class LinkedinSkillWorker
       spider_id: 133,
       level: 1,
       max_retry_count: 0,
-      keyword: data.join(','),
+      keyword: final_data.join(','),
       special_tag: '',
       status: 0,
       task_type: 2,
