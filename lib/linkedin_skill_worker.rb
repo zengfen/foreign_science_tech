@@ -51,7 +51,7 @@ class LinkedinSkillWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinUser.where("is_skill_user = ?", false).select("id").limit(10000)
+    names = ArchonLinkedinName.where("is_skill_user = ? and is_finished = ?", false,true).select("id").limit(10000)
     ids = names.map{|x| x.id}
     return ids
   end
@@ -157,12 +157,12 @@ class LinkedinSkillWorker
 
   def self.set_users_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinUser.where(id: ids).update_all(is_skill_user: true)
+    ArchonLinkedinName.where(id: ids).update_all(is_skill_user: true)
   end
 
   def self.set_users_not_dumped(ids)
     return if ids.blank?
-    ArchonLinkedinUser.where(id: ids).update_all(is_skill_user: false)
+    ArchonLinkedinName.where(id: ids).update_all(is_skill_user: false)
   end
 
 
