@@ -96,7 +96,7 @@ class LinkedinWorker
     return if ids.blank?
 
 
-    data = ids.each_slice(5).to_a.collect{|x| x.join("|")}.join(",")
+    data = ids.each_slice(10).to_a.collect{|x| x.join("|")}.join(",")
 
     spider_task = SpiderTask.new(
       spider_id: 128,
