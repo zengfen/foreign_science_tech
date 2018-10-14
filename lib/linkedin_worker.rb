@@ -15,7 +15,7 @@ class LinkedinWorker
 
     return unless stopped_ids.blank?
 
-    return if running_count.size > 10
+    return if running_count.size > 15
 
 
     ids = get_batch_users
@@ -131,7 +131,6 @@ class LinkedinWorker
       else
         task.retry_all_fail_task
       end
-
     end
   end
 end
