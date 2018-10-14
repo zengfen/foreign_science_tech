@@ -22,7 +22,7 @@ class LinkedinSkillWorker
     return if ids.blank?
 
 
-    ids.each_slice(500).each do |temp_ids|
+    ids.each_slice(1000).each do |temp_ids|
       check_cookies
       return unless has_valid_account?
       create_tasks(temp_ids)
@@ -51,7 +51,7 @@ class LinkedinSkillWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_skill_user = ? and is_finished = ?", false,true).select("id").limit(10000)
+    names = ArchonLinkedinName.where("is_skill_user = ? and is_finished = ?", false,true).select("id").limit(20000)
     ids = names.map{|x| x.id}
     return ids
   end
