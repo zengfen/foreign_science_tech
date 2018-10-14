@@ -22,7 +22,7 @@ class LinkedinWorker
     return if ids.blank?
 
 
-    ids.each_slice(1000).each do |temp_ids|
+    ids.each_slice(2000).each do |temp_ids|
       check_cookies
       return unless has_valid_account?
       create_tasks(temp_ids)
