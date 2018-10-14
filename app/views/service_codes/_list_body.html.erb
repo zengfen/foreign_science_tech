@@ -19,14 +19,9 @@
           <td class="text-center"><%= code.current_branch%></td>
           <td class="text-center"><%= code.created_at%></td>
           <td class="pos-r">
-            <a href="##">
-              <i class="icon_data_analysis icon-more"></i>
+            <a href="/service_codes/compile?name=<%= code.name %>">
+              编译
             </a>
-            <ul class="more-ul dn">
-              <li>
-                删除
-              </li>
-            </ul>
           </td>
         </tr>
       <% end %>
