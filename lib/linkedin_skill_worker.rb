@@ -51,7 +51,7 @@ class LinkedinSkillWorker
   end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("is_skill_user = ? and is_finished = ? and has_skills = ?", false,true,true).select("id").limit(20000)
+    names = ArchonLinkedinName.where("is_skill_user = ? and is_finished = ?", false,true).select("id").limit(20000)
     ids = names.map{|x| x.id}
     return ids
   end
@@ -91,7 +91,6 @@ class LinkedinSkillWorker
     users = ArchonLinkedinUser.select("id, skills").where(id: ids)
     return if users.blank?
 
-    reset_skill_uids = []
 
     data = []
 
@@ -103,7 +102,6 @@ class LinkedinSkillWorker
 
       skill = JSON.parse(skill) rescue nil
       if skill.blank?
-        reset_skill_uids << user.id
         next
       end
 
@@ -112,13 +110,6 @@ class LinkedinSkillWorker
       skill_values.delete("")
       skill_values.flatten!
       next if skill_values.blank?
-
-      first_skill = skill_values.first
-      if first_skill["skillId"].blank?
-        reset_skill_uids << user.id
-        next
-      end
-
 
       skill_values.each do |skill_value|
         next if skill_value["endorsementCount"].to_i < 20
@@ -136,8 +127,6 @@ class LinkedinSkillWorker
       final_data << "#{x.join('|||')}"
     end
 
-
-    reset_users_has_skill(reset_skill_uids)
 
     spider_task = SpiderTask.new(
       spider_id: 133,
@@ -160,16 +149,6 @@ class LinkedinSkillWorker
     ArchonLinkedinName.where(id: ids).update_all(is_skill_user: true)
   end
 
-  def self.set_users_not_dumped(ids)
-    return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_skill_user: false)
-  end
-
-
-  def self.reset_users_has_skill(ids)
-    return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(has_skills: false)
-  end
 
 
   def self.update_finished_tasks(ids)
