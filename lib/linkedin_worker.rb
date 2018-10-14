@@ -95,11 +95,14 @@ class LinkedinWorker
   def self.create_tasks(ids)
     return if ids.blank?
 
+
+    data = ids.each_slice(5).to_a.collect{|x| x.join("|")}.join(",")
+
     spider_task = SpiderTask.new(
       spider_id: 128,
       level: 1,
       max_retry_count: 0,
-      keyword: ids.join(','),
+      keyword: data,
       special_tag: '',
       status: 0,
       task_type: 2,
