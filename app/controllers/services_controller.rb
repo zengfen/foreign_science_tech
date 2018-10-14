@@ -1,4 +1,6 @@
 class ServicesController < ApplicationController
+  before_action :logged_in_user
+
   def index
     ip = params[:keyword]
     service_names = params[:services]

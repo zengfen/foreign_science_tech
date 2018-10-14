@@ -1,4 +1,6 @@
 class DataCentersController < ApplicationController
+  before_action :logged_in_user
+
   def index
     @results = ArchonBase.table_metas
   end
