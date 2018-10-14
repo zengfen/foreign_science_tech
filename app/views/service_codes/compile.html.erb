@@ -1,0 +1,69 @@
+<% provide(:title, "Control Templates") %>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>代码管理</h5>
+        </div>
+
+        <div class="ibox-content pl15">
+        </div>
+        <div id="result_release">
+
+          <div class="ibox-content table-sql">
+            <ul class="tab-ul clear-p">
+              <li class="tab-li acive">
+                <a href="#" data-target="all-page">代码管理</a>
+              </li>
+            </ul>
+
+            <div class="ibox-content p15-0 all-page table-content" >
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                      <%= form_for(@code, url: "",:html=>{:class=>"form-horizontal spider-task-form"}) do |f| %>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">名称</label>
+                          <div class="col-sm-10">
+                            <%= f.text_field :name, :placeholder=>"名称",:class=>"form-control"%>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">GOPATH</label>
+                          <div class="col-sm-10">
+                            <%= f.text_field :go_path, :placeholder=>"GOPATH",:class=>"form-control"%>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">代码路径</label>
+                          <div class="col-sm-10">
+                            <%= f.text_field :code_path, :placeholder=>"代码路径",:class=>"form-control"%>
+                          </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <div class="col-sm-2 col-sm-offset-10">
+                            <button class="btn btn-primary submit_btn" type="button">保存</button>
+                          </div>
+                        </div>
+                      <%end%>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--这里是提示框-->
+
