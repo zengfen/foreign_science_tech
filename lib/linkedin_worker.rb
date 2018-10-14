@@ -57,7 +57,7 @@ class LinkedinWorker
   # end
 
   def self.get_batch_users
-    names = ArchonLinkedinName.where("has_skills = ?",false).select("id").limit(20000)
+    names = ArchonLinkedinName.where("is_finished = ? and has_skills = ?", true, false).select("id").limit(20000)
 
     ids = names.map{|x| x.id}
     return ids
@@ -113,56 +113,25 @@ class LinkedinWorker
     spider_task.start!
   end
 
+
   def self.set_users_dumped(ids)
     return if ids.blank?
     ArchonLinkedinName.where(id: ids).update_all(has_skills: true)
   end
 
 
-
-  # def self.set_users_finished(ids)
-  #   return if ids.blank?
-  #   ArchonLinkedinName.where(id: ids).update_all(is_finished: true)
-  # end
-
-  def self.set_users_not_dumped(ids)
-    return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(has_skills: false)
-  end
-
-  def self.set_users_invalid(ids)
-    return if ids.blank?
-    ArchonLinkedinName.where(id: ids).update_all(is_finished: true, has_skills: true, is_invalid: true, is_dump: true)
-  end
-
   def self.update_finished_tasks(ids)
     return if ids.blank?
     ids.each do |id|
-      tasks = DispatcherSubtaskStatus.select('id, status, error_content').where(task_id: id)
-      details = DispatcherSubtask.select("id, content").where(id: tasks.collect(&:id)).collect{|x| [x.id, JSON.parse(x.content)['url']]}.to_h
-      finished_ids = []
-      retry_ids = []
-      invalid_ids = []
-      tasks.each do |task|
-        uid = details[task.id]
-        if task.status == 3
-          if task.error_content == "This profile can't be accessed" || task.error_content == "screenName is wrong" || task.error_content == "screenName is too lang"
-            invalid_ids << uid unless uid.blank?
-          else
-            retry_ids << uid unless uid.blank?
-          end
-        else
-          finished_ids << uid unless uid.blank?
-        end
+
+      task = SpiderTask.find(id) rescue nil
+      next if task.blank?
+      if task.current_fail_count == 0
+        task.destroy
+      else
+        task.retry_all_fail_task
       end
 
-      # set_users_finished(finished_ids) unless finished_ids.blank?
-
-      set_users_not_dumped(retry_ids) unless retry_ids.blank?
-
-      set_users_invalid(invalid_ids) unless invalid_ids.blank?
-
-      SpiderTask.find(id).destroy
     end
   end
 end
