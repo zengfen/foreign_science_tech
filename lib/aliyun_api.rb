@@ -18,7 +18,7 @@ class AliyunApi
     return make_request({:Action => "RunInstances",
                          :RegionId => "us-west-1",
                          :ZoneId => "us-west-1b",
-                         :ImageId => "m-rj9at7nu2rpsexda91d0",
+                         :ImageId => "m-rj9a3ceu03qxn538ioay",
                          :InstanceType => "ecs.n1.tiny",
                          :SecurityGroupId => "sg-u16i9xyyd",
                          :InstanceChargeType => "PostPaid",
