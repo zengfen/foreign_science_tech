@@ -70,8 +70,8 @@
                         <td><%= h.ip %></td>
                         <td><%= h.network_environment_cn %></td>
                         <td><%= time_ago_in_words(Time.at(h.last_active_at)) %>前</td>
-                        <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=@installed_services[h.ip].join(',')%>"><%= @installed_services[h.ip].size%></td>
-                        <td data-toggle="tooltip"  data-container="body"  data-placement="bottom" title="<%=@running_services[h.ip].join(',')%>"><%= @running_services[h.ip].size%></td>
+                        <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=@installed_services[h.ip].join(',') rescue nil%>"><%= @installed_services[h.ip].size rescue nil%></td>
+                        <td data-toggle="tooltip"  data-container="body"  data-placement="bottom" title="<%=@running_services[h.ip].join(',') rescue nil%>"><%= @running_services[h.ip].size rescue nil%></td>
                         <td class="pos-r">
                           <a href="##">
                             <i class="icon_data_analysis icon-more"></i>
