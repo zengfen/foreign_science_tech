@@ -1,7 +1,7 @@
 class ArchonWikidata < ArchonBase
 
-  def self.update_social(id, fb, tw)
-    x = ArchonWikidata.find(id)
+  def update_social(fb, tw)
+    x = self
     if !fb.blank?
       x.facebook = [fb].to_json
     end
