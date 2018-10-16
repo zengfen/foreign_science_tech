@@ -1,0 +1,4 @@
+class ArchonWikidata < ArchonBase
+end
+
+
