@@ -43,9 +43,9 @@
 #  mri        :string
 #
 
-class MediaAccount <  ActiveRecord::Base
+class MediaAccount #<  ActiveRecord::Base
   # self.abstract_class = true
-  establish_connection MediaDB
+  # establish_connection MediaDB
 
   def self.init_data(path)
     type = path.split(".").last

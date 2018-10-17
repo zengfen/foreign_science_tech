@@ -12,9 +12,9 @@
 #  account_category :integer          default(0)
 #
 
-class SocialAccount <   ActiveRecord::Base
+class SocialAccount #<   ActiveRecord::Base
 
-  establish_connection MediaDB
+  # establish_connection MediaDB
 
   def self.import_data
     max_count = File.open("#{Rails.root}/tmp/people.csv").readlines.count
