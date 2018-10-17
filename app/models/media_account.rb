@@ -360,4 +360,22 @@ class MediaAccount <  ActiveRecord::Base
     ma.load_to_es
   end
 
+
+  def self.dump_all_to_json
+    f = File.new("db/media_account.txt", "w")
+
+    start_id = 0
+    while true
+      records = MediaAccount.where("id > #{start_id}").order("id asc").limit(1000)
+      break if records.blank?
+      records.each do |x|
+        start_id = x.id
+
+        f.puts x.to_json
+      end
+    end
+
+    f.close
+  end
+
 end
