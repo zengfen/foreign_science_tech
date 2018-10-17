@@ -1,6 +1,6 @@
 class DispatcherBase < ActiveRecord::Base
   self.abstract_class = true
-  # establish_connection DispatcherDB
+  establish_connection DispatcherDB
 
   def self.migrate_data
     # data = {}

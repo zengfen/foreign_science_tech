@@ -37,7 +37,7 @@ rescue Exception => e
 end
 
 begin
-  # DispatcherDB = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['dispatcher']
+  DispatcherDB = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['dispatcher']
   ArchonDataDB = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['archon_data']
   NewArchonCenter = YAML.load_file(File.join(Rails.root, 'config', 'database.yml'))['new_archon_center']
 rescue Exception => e
