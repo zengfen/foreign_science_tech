@@ -3,7 +3,7 @@ class NewAccount < Base
 
 
   def self.load
-    filename = self.class.to_s.gsub("New", "") + ".rb"
+    filename = self.to_s.gsub("New", "") + ".rb"
 
     content = File.readlines("#{Rails.root}/db/#{filename}").join("")
 
