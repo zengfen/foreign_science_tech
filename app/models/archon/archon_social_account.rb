@@ -1,0 +1,3 @@
+class ArchonSocialAccount  < ArchonBase
+
+end
