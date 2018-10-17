@@ -43,7 +43,8 @@
 #  mri        :string
 #
 
-class MediaAccount < ApplicationRecord
+class MediaAccount <  ActiveRecord::Base
+  establish_connection MediaDB
 
   def self.init_data(path)
     type = path.split(".").last

@@ -12,7 +12,9 @@
 #  account_category :integer          default(0)
 #
 
-class SocialAccount < ApplicationRecord
+class SocialAccount <   ActiveRecord::Base
+
+  establish_connection MediaDB
 
   def self.import_data
     max_count = File.open("#{Rails.root}/tmp/people.csv").readlines.count
@@ -154,7 +156,7 @@ class SocialAccount < ApplicationRecord
 	        ma.save
 	      end
       end
-    end 
+    end
 	end
 
 	def self.import_organization_datas(path="#{Rails.root}/organizations.csv")
@@ -213,7 +215,7 @@ class SocialAccount < ApplicationRecord
 	        ma.save
 	      end
       end
-    end 
+    end
 	end
 
   def self.statuses
