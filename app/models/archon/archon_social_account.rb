@@ -3,7 +3,13 @@ class ArchonSocialAccount  < ArchonBase
     records = []
     File.new("db/social_account.txt").each do |line|
       next if line.blank?
-      records << self.new(JSON.parse(line))
+      record = self.new(JSON.parse(line))
+
+      if !record.account.blank?
+        next if record.account.size >= 255
+      end
+
+      records << record
       if records.size == 1000
         self.import records
 
