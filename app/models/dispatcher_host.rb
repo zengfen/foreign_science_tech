@@ -122,7 +122,6 @@ class DispatcherHost < DispatcherBase
     end
 
 
-
     [installed_services, running_service_counter]
   end
 
