@@ -23,4 +23,23 @@ class ArchonSocialAccount  < ArchonBase
 
     nil
   end
+
+
+  def self.statuses
+    {0=>"停止",1=>"采集中"}
+  end
+
+  def status_cn
+    self.statuses[self.status]
+  end
+
+  def self.account_categories
+    {0=>"组织",1=>"人物"}
+  end
+
+  def account_category_cn
+    self.account_categories[self.account_category]
+  end
+
+
 end
