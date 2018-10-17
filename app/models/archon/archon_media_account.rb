@@ -14,5 +14,7 @@ class ArchonMediaAccount  < ArchonBase
     if records.size > 0
       self.import records
     end
+
+    nil
   end
 end
