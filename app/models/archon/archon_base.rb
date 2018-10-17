@@ -29,6 +29,8 @@ class ArchonBase < ActiveRecord::Base
       "Linkedin用户" =>  "archon_linkedin_user",
       "Linkedin用户ID" => "archon_linkedin_name",
       "Wikidata" =>  "archon_wikidata",
+      "社交账号" => "archon_social_account",
+      "媒体账号" => "archon_media_account",
     }
   end
 
