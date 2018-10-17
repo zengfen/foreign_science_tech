@@ -30,7 +30,7 @@ class ArchonSocialAccount  < ArchonBase
   end
 
   def status_cn
-    self.statuses[self.status]
+    self.class.statuses[self.status]
   end
 
   def self.account_categories
@@ -38,7 +38,7 @@ class ArchonSocialAccount  < ArchonBase
   end
 
   def account_category_cn
-    self.account_categories[self.account_category]
+    self.class.account_categories[self.account_category]
   end
 
 
