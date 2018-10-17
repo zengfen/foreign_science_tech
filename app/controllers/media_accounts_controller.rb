@@ -2,9 +2,8 @@ class MediaAccountsController < ApplicationController
   before_action :logged_in_user
 
   def index
-  	client = EsConnect.client
   	@options = MediaAccount.get_aggs_opts
-  	@media_accounts = MediaAccount.order("mri desc").page(params[:page]).per(20)
+  	@media_accounts = ArchonMediaAccount.page(params[:page]).per(20)
   end
 
   def test
@@ -25,7 +24,7 @@ class MediaAccountsController < ApplicationController
   	res = client.search index:"media_accounts",body:{
   		  	 size: 20,
            from: page - 1,
-           query:{ bool:{must:must_opts}},                                       
+           query:{ bool:{must:must_opts}},
            sort: {data_id: {order: "asc" }}
         }
     total_count = res["hits"]["total"]
