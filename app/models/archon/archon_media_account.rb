@@ -4,7 +4,7 @@ class ArchonMediaAccount  < ArchonBase
     File.new("db/media_account.txt").each do |line|
       next if line.blank?
       records << self.new(JSON.parse(line))
-      if records.size == 100
+      if records.size == 1000
         self.import records
 
         records = []
