@@ -24,7 +24,7 @@ class ServiceCodeVersion < ApplicationRecord
 
 
   def file_name
-    Digest::MD5.hexdigest(self.name) + ".tar.gz"
+    self.name+"_6ef823f21e3d96d9e7a31d2e8d0cddca" + ".tar.gz"
   end
 
   def do_package_and_upload
