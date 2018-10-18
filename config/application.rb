@@ -44,3 +44,21 @@ begin
 rescue Exception => e
   puts e
 end
+
+
+$e_client = Aliyun::OSS::Client.new(
+  :endpoint => 'http://oss-us-west-1.aliyuncs.com',
+  :access_key_id => 'ZeYymZ4l5LYsMdCe',
+  :access_key_secret => 'k07G51MNpN0GeGfQ8Kru1pzg8FG1ny')
+AliyunEBucket = "archon-binary-0"
+
+
+$i_client = Aliyun::OSS::Client.new(
+  :endpoint => 'http://oss-cn-hangzhou.aliyuncs.com',
+  :access_key_id => 'ZeYymZ4l5LYsMdCe',
+  :access_key_secret => 'k07G51MNpN0GeGfQ8Kru1pzg8FG1ny')
+
+AliyunIBucket = "archon-binary-1"
+
+
+
