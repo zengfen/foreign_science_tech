@@ -10,7 +10,7 @@
     <tbody class="text-center">
       <% @versions.each do |code| %>
         <tr>
-          <td class="text-center"><%= code.name %></td>
+          <td class="text-center"><%= code.name_cn %></td>
           <td class="text-center"><%= code.updated_at%></td>
           <td class="pos-r">
             <a href="/service_code_versions/package?name=<%= code.name %>">

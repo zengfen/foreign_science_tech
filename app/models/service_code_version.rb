@@ -16,4 +16,9 @@ class ServiceCodeVersion < ApplicationRecord
       ServiceCodeVersion.create(name: x)
     end
   end
+
+
+  def name_cn
+    self.class.version_name_list[self.name]
+  end
 end
