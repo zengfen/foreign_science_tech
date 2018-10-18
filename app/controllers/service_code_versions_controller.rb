@@ -9,17 +9,12 @@ class ServiceCodeVersionsController < ApplicationController
 
 
   def package
-    @code = ServiceCode.where(name: params[:name]).first
-    base_params = params
-    .require(:service_code)
-    .permit(:name, :go_path,
-            :code_path, :current_branch, :config_content)
+    @version = ServiceCodeVersion.where(name: params[:name]).first
+    @version.do_package_and_upload
 
 
-    @code.do_compile(base_params[:go_path], base_params[:code_path], base_params[:current_branch], base_params[:config_content])
 
-
-    redirect_back(fallback_location: "/service_codes")
+    redirect_back(fallback_location: "/service_code_versions")
   end
 
 
