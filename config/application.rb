@@ -1,4 +1,5 @@
 require_relative 'boot'
+require 'aliyun/oss'
 
 require 'rails/all'
 
