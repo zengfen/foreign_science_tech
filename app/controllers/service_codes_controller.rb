@@ -18,10 +18,10 @@ class ServiceCodesController < ApplicationController
     base_params = params
     .require(:service_code)
     .permit(:name, :go_path,
-            :code_path, :current_branch)
+            :code_path, :current_branch, :config_content)
 
 
-    @code.do_compile(base_params[:go_path], base_params[:code_path], base_params[:current_branch])
+    @code.do_compile(base_params[:go_path], base_params[:code_path], base_params[:current_branch], base_params[:config_content])
 
 
     redirect_back(fallback_location: "/service_codes")
