@@ -17,7 +17,7 @@ class ServiceCode < ApplicationRecord
 
   def do_compile(go_path, code_path, current_branch, config_content)
     if self.name == "archon_agent" || self.name == "archon_supervisor"
-      content <<-CONF
+      content = <<-CONF
 package config
 
 var ConfigContent = `
@@ -27,7 +27,7 @@ var ConfigContent = `
       `cd #{code_path}; git pull; git checkout #{current_branch}; git pull;`
 
       File.open("#{code_path}/config/default.go", "w") do |file|
-        file.puts config
+        file.puts content
       end
 
       `cd #{code_path}; go install`
