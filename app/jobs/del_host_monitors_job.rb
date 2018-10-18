@@ -3,7 +3,7 @@ class DelHostMonitorsJob < ApplicationJob
 
   def perform(*args)
   	# Do something later
-  	HostMonitor.daily_delete
+  	# HostMonitor.daily_delete
   end
 
 end
