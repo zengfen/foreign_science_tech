@@ -54,7 +54,7 @@ end
 
 
 $oss_client = Aliyun::OSS::Client.new(
-  :endpoint => 'http://oss-cn-hangzhou.aliyuncs.com',
+  :endpoint => 'http://oss-cn-hangzhou-internal.aliyuncs.com',
   :access_key_id => 'ZeYymZ4l5LYsMdCe',
   :access_key_secret => 'k07G51MNpN0GeGfQ8Kru1pzg8FG1ny')
 
