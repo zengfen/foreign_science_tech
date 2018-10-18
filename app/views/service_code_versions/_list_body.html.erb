@@ -1,46 +1,26 @@
-<%if !@templates.blank?%>
+<%if !@versions.blank?%>
   <table class="table table-striped table-bordered table-hover table-vcenter">
     <thead>
       <tr>
         <th class="text-center">名称</th>
-        <th class="text-center">国家</th>
-        <th class="text-center">需要账号</th>
-        <th class="text-center">绑定ip</th>
-        <th class="text-center">窗口大小</th>
-        <th class="text-center">窗口类型</th>
-        <th class="text-center">访问次数</th>
-        <th class="text-center">创建时间</th>
+        <th class="text-center">打包时间</th>
         <th class="text-center">操作</th>
       </tr>
     </thead>
     <tbody class="text-center">
-      <% @templates.each do |template| %>
+      <% @versions.each do |code| %>
         <tr>
-          <td class="text-center"><%= template.name %></td>
-          <td class="text-center"><%= template.is_internal ? "境内" : "境外" %></td>
-          <td class="text-center"><%= template.has_account ? "是" : "否" %></td>
-          <td class="text-center"><%= template.is_bind_ip ? "是" : "否"%></td>
-          <td class="text-center"><%= template.window_size%></td>
-          <td class="text-center"><%= template.window_type_cn%></td>
-          <td class="text-center"><%= template.max_count%></td>
-          <td class="text-center"><%= template.created_at%></td>
+          <td class="text-center"><%= code.name %></td>
+          <td class="text-center"><%= code.updated_at%></td>
           <td class="pos-r">
-            <a href="##">
-              <i class="icon_data_analysis icon-more"></i>
+            <a href="/service_code_versions/package?name=<%= code.name %>">
+              打包
             </a>
-            <ul class="more-ul dn">
-              <li>
-                删除
-              </li>
-            </ul>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <div class="text-center">
-    <%= paginate @templates%>
-  </div>
 <%else%>
   <%= render "shared/no_data" %>
 <%end%>
