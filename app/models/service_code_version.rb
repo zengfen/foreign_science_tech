@@ -28,18 +28,18 @@ class ServiceCodeVersion < ApplicationRecord
   end
 
   def do_package_and_upload
-    go_path = ServiceCode.first.go_path
+    go_path = ServiceCode.first.go_path + "/bin"
 
     if self.name == "all_file"
-      `cd #{go_path}/bin; rm #{self.file_name}; tar zcvf #{self.file_name} archon_agent archon_template archon_supervisor`
+      `cd #{go_path}; rm #{self.file_name}; tar zcvf #{self.file_name} archon_agent archon_template archon_supervisor`
     end
 
     if self.name == "supervisor_file"
-      `cd #{go_path}/bin; rm #{self.file_name}; tar zcvf #{self.file_name} archon_supervisor`
+      `cd #{go_path}; rm #{self.file_name}; tar zcvf #{self.file_name} archon_supervisor`
     end
 
     if self.name == "agent_template_file"
-      `cd #{go_path}/bin; rm #{self.file_name}; tar zcvf #{self.file_name} archon_agent archon_template`
+      `cd #{go_path}; rm #{self.file_name}; tar zcvf #{self.file_name} archon_agent archon_template`
     end
     self.file_path = "#{go_path}/#{self.file_name}"
     self.sha1_code = `sha1sum #{self.file_path}`.split(" ").first
