@@ -31,6 +31,8 @@ var ConfigContent = `
       end
 
       `cd #{code_path}; go install`
+    else
+      `cd #{code_path}; git pull; git checkout #{current_branch}; git pull; go install`
     end
 
     self.go_path = go_path
