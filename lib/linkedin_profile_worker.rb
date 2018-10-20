@@ -10,24 +10,24 @@ class LinkedinProfileWorker
   def self.do_work
     check_cookies
 
-    stopped_ids, _, finished_ids = list_spider_tasks
-    update_finished_tasks(finished_ids)
-
-    return unless stopped_ids.blank?
-
-    return if spider_task_count > 10
-
-
-    ids = get_batch_users
-    return if ids.blank?
-
-
-    ids.each_slice(1000).each do |temp_ids|
-      check_cookies
-      return unless has_valid_account?
-      create_tasks(temp_ids)
-      set_users_dumped(temp_ids)
-    end
+    # stopped_ids, _, finished_ids = list_spider_tasks
+    # update_finished_tasks(finished_ids)
+    #
+    # return unless stopped_ids.blank?
+    #
+    # return if spider_task_count > 10
+    #
+    #
+    # ids = get_batch_users
+    # return if ids.blank?
+    #
+    #
+    # ids.each_slice(1000).each do |temp_ids|
+    #   check_cookies
+    #   return unless has_valid_account?
+    #   create_tasks(temp_ids)
+    #   set_users_dumped(temp_ids)
+    # end
 
   end
 
@@ -44,7 +44,7 @@ class LinkedinProfileWorker
   end
 
   def self.has_valid_account?
-    account = ControlTemplate.find(68).accounts.first
+    account = ControlTemplate.find(69).accounts.first
     return false if account.blank?
 
     account.is_valid?
@@ -74,7 +74,7 @@ class LinkedinProfileWorker
 
     subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
     if !subtask.blank? && subtask.created_at > 1.minute.ago.to_i
-      account = ControlTemplate.find(68).accounts.first
+      account = ControlTemplate.find(69).accounts.first
       unless account.blank?
         account.valid_time = 5.minute.ago
         account.save
