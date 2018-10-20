@@ -7,7 +7,7 @@ class AliyunHost < ApplicationRecord
   end
 
   def self.reopen_hosts(c = 1)
-    AliyunHost.where("created_at < '#{1.day.ago}'").delete_all
+    AliyunHost.where("created_at < ?", 1.day.ago).delete_all
     results = AliyunApi.create_instances(c)
     instance_ids = results["InstanceIdSets"]["InstanceIdSet"]
     puts instance_ids
