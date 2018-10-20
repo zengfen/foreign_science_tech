@@ -9,7 +9,7 @@ class Hm
 
       subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
       if !subtask.blank? && subtask.created_at > 1.minute.ago.to_i
-        account = ControlTemplate.find(66).accounts.first
+        account = ControlTemplate.find(68).accounts.first
         unless account.blank?
           account.valid_time = 5.minute.ago
           account.save
@@ -26,7 +26,7 @@ class Hm
   end
 
   def self.check_reopen(c  = 1)
-    account = ControlTemplate.find(66).accounts.first
+    account = ControlTemplate.find(68).accounts.first
     if !account.blank? && account.is_valid?
       account.remove_related_data
 
@@ -46,7 +46,7 @@ class Hm
 
 
   def self.reset_ips
-    account = ControlTemplate.find(66).accounts.first
+    account = ControlTemplate.find(68).accounts.first
     if !account.blank? && account.is_valid?
       account.remove_related_data
       account.valid_ips = AliyunHost.get_all_ips
