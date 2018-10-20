@@ -24,7 +24,7 @@ class AliyunApi
                          :ZoneId => "cn-hangzhou-b",
                          :ImageId => "m-bp1333b76dxvlg5huq1k",
                          :InstanceType => "ecs.n1.tiny",
-                         :SecurityGroupId => "sg-u16i9xyyd",
+                         :SecurityGroupId => "sg-23daaftsk",
                          :InstanceChargeType => "PostPaid",
                          :InternetChargeType => "PayByBandwidth",
                          :InternetMaxBandwidthOut => 1.to_s,
