@@ -14,11 +14,15 @@ class AliyunApi
     return make_request({:Action => "DescribeInstanceStatus", :RegionId => region_id, :PageNumber => page.to_s, :PageSize => per_page.to_s})
   end
 
+
+                         # :RegionId => "us-west-1",
+                         # :ZoneId => "us-west-1b",
+
   def self.create_instances(c = 1)
     return make_request({:Action => "RunInstances",
-                         :RegionId => "us-west-1",
-                         :ZoneId => "us-west-1b",
-                         :ImageId => "m-rj99j5k8x07ynk1sezmf",
+                         :RegionId => "cn-hangzhou",
+                         :ZoneId => "cn-hangzhou-b",
+                         :ImageId => "m-bp1333b76dxvlg5huq1k",
                          :InstanceType => "ecs.n1.tiny",
                          :SecurityGroupId => "sg-u16i9xyyd",
                          :InstanceChargeType => "PostPaid",
