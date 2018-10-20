@@ -135,6 +135,7 @@ class LinkedinSkillWorker
       keyword: final_data.join(','),
       special_tag: '',
       status: 0,
+      timeout_second: 5,
       task_type: 2,
       is_split: false
     )
