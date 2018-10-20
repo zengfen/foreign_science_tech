@@ -93,6 +93,7 @@ class LinkedinProfileWorker
       level: 1,
       max_retry_count: 0,
       keyword: ids.join(','),
+      timeout_second: 5,
       special_tag: '',
       status: 0,
       task_type: 2,
