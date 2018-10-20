@@ -44,7 +44,7 @@ class LinkedinWorker
   end
 
   def self.has_valid_account?
-    account = ControlTemplate.find(68).accounts.first
+    account = ControlTemplate.find(69).accounts.first
     return false if account.blank?
 
     account.is_valid?
@@ -81,7 +81,7 @@ class LinkedinWorker
 
     subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
     if !subtask.blank? && subtask.created_at > 1.minute.ago.to_i
-      account = ControlTemplate.find(68).accounts.first
+      account = ControlTemplate.find(69).accounts.first
       unless account.blank?
         account.valid_time = 5.minute.ago
         account.save
