@@ -3,6 +3,6 @@ class RefreshStatisticInfoJob < ApplicationJob
 
   def perform(*args)
   	# Do something later
-  	StatisticalInfo.refresh_data
+  	# StatisticalInfo.refresh_data
   end
 end

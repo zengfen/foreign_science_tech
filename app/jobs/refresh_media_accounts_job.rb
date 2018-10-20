@@ -3,6 +3,6 @@ class RefreshMediaAccountsJob < ApplicationJob
 
   def perform(*args)
   	# Do something later
-  	MediaAccount.daily_update
+  	# MediaAccount.daily_update
   end
 end

@@ -92,7 +92,7 @@ class Account < ApplicationRecord
       $archon_redis.zadd("archon_template_accounts_#{control_template_id}", Time.now.to_i * 1000, id)
     end
 
-    DispatcherAccount.create(id: id, content: content, valid_time: valid_time.to_i) rescue "Account Exist"
+    # DispatcherAccount.create(id: id, content: content, valid_time: valid_time.to_i) rescue "Account Exist"
   end
 
   #  过期之后要执行这个来删除对应的数据
@@ -108,7 +108,7 @@ class Account < ApplicationRecord
       $archon_redis.zrem(k, id)
     end
 
-    DispatcherAccount.find(id).delete rescue nil
+    # DispatcherAccount.find(id).delete rescue nil
   end
 
 
@@ -121,16 +121,16 @@ class Account < ApplicationRecord
       $archon_redis.zrem(k, id)
     end
 
-    DispatcherAccount.find(id).delete rescue nil
+    # DispatcherAccount.find(id).delete rescue nil
   end
 
   def self.check_invalid_accounts
     accounts = Account.where('valid_time < ?', Time.now + 10.minutes)
     accounts.each do |x|
-      m = DispatcherAccount.find_by_id(x.id)
-      if !m.blank?
-        m.delete
-      end
+      # m = DispatcherAccount.find_by_id(x.id)
+      # if !m.blank?
+      #   m.delete
+      # end
       $archon_redis.keys("archon_template_accounts_#{x.control_template_id}").each do |k|
         $archon_redis.zrem(k, x.id)
       end
