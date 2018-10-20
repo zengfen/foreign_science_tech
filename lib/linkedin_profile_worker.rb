@@ -10,24 +10,24 @@ class LinkedinProfileWorker
   def self.do_work
     check_cookies
 
-    stopped_ids, _, finished_ids = list_spider_tasks
-    update_finished_tasks(finished_ids)
-
-    return unless stopped_ids.blank?
-
-    return if spider_task_count > 10
-
-
-    ids = get_batch_users
-    return if ids.blank?
-
-
-    ids.each_slice(1000).each do |temp_ids|
-      check_cookies
-      return unless has_valid_account?
-      create_tasks(temp_ids)
-      set_users_dumped(temp_ids)
-    end
+    # stopped_ids, _, finished_ids = list_spider_tasks
+    # update_finished_tasks(finished_ids)
+    #
+    # return unless stopped_ids.blank?
+    #
+    # return if spider_task_count > 10
+    #
+    #
+    # ids = get_batch_users
+    # return if ids.blank?
+    #
+    #
+    # ids.each_slice(1000).each do |temp_ids|
+    #   check_cookies
+    #   return unless has_valid_account?
+    #   create_tasks(temp_ids)
+    #   set_users_dumped(temp_ids)
+    # end
 
   end
 
