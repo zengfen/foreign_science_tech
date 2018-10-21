@@ -47,22 +47,22 @@ class ServiceCodeVersion < ApplicationRecord
 
 
 
-    bucket = $oss_client_e.get_bucket(AliyunEBucket)
-    if bucket.object_exists?(self.file_name)
-      bucket.delete_object(self.file_name)
-    end
-    bucket.put_object(self.file_name, :file => self.file_path)
-    bucket_url = bucket.object_url(self.file_name).split("?").first + "\n" + self.sha1_code
+    # bucket = $oss_client_e.get_bucket(AliyunEBucket)
+    # if bucket.object_exists?(self.file_name)
+    #   bucket.delete_object(self.file_name)
+    # end
+    # bucket.put_object(self.file_name, :file => self.file_path)
+    # bucket_url = bucket.object_url(self.file_name).split("?").first + "\n" + self.sha1_code
 
-    if self.name == "all_file"
-      $archon_redis.set("AgentGetAllPackFile_external", bucket_url)
-    end
-    if self.name == "supervisor_file"
-      $archon_redis.set("AgentGetSupervisorFile_external", bucket_url)
-    end
-    if self.name == "agent_template_file"
-      $archon_redis.set("AgentGetAgentAndTemplateFile_external", bucket_url)
-    end
+    # if self.name == "all_file"
+    #   $archon_redis.set("AgentGetAllPackFile_external", bucket_url)
+    # end
+    # if self.name == "supervisor_file"
+    #   $archon_redis.set("AgentGetSupervisorFile_external", bucket_url)
+    # end
+    # if self.name == "agent_template_file"
+    #   $archon_redis.set("AgentGetAgentAndTemplateFile_external", bucket_url)
+    # end
 
 
     bucket = $oss_client_i.get_bucket(AliyunIBucket)
