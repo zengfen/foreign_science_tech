@@ -15,7 +15,7 @@ class LinkedinProfileWorker
     
     return unless stopped_ids.blank?
     
-    return if spider_task_count >= 10
+    return if spider_task_count >= 2
     
     
     ids = get_batch_users
