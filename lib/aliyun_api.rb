@@ -17,14 +17,22 @@ class AliyunApi
 
                          # :RegionId => "us-west-1",
                          # :ZoneId => "us-west-1b",
+  #
+  #
+  #
+  #                         :RegionId => "cn-hangzhou",
+                         # :ZoneId => "cn-hangzhou-b",
+                         # :ImageId => "m-bp1333b76dxvlg5huq1k",
+                         # :InstanceType => "ecs.n1.tiny",
+                         # :SecurityGroupId => "sg-23dzeg6le",
 
   def self.create_instances(c = 1)
     return make_request({:Action => "RunInstances",
-                         :RegionId => "cn-hangzhou",
-                         :ZoneId => "cn-hangzhou-b",
-                         :ImageId => "m-bp1333b76dxvlg5huq1k",
+                         :RegionId => "us-east-1",
+                         :ZoneId => "us-east-1a",
+                         :ImageId => "m-0xi8a3w7ztha2y8oe853",
                          :InstanceType => "ecs.n1.tiny",
-                         :SecurityGroupId => "sg-23dzeg6le",
+                         :SecurityGroupId => "sg-0xicocmi3sipxvn81kq4",
                          :InstanceChargeType => "PostPaid",
                          :InternetChargeType => "PayByBandwidth",
                          :InternetMaxBandwidthOut => 1.to_s,
