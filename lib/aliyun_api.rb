@@ -27,12 +27,17 @@ class AliyunApi
                          # :SecurityGroupId => "sg-23dzeg6le",
 
   def self.create_instances(c = 1)
+    begin
+
+    rescue Exception => e
+      puts e.response.body
+    end
     return make_request({:Action => "RunInstances",
                          :RegionId => "us-east-1",
                          :ZoneId => "us-east-1a",
                          :ImageId => "m-0xi8a3w7ztha2y8oe853",
                          :InstanceType => "ecs.n1.tiny",
-                         :SecurityGroupId => "sg-0xicocmi3sipxvn81kq4",
+                         :SecurityGroupId => "sg-0xi0pspxlml778gjloz5",
                          :InstanceChargeType => "PostPaid",
                          :InternetChargeType => "PayByBandwidth",
                          :InternetMaxBandwidthOut => 1.to_s,
