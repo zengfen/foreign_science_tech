@@ -32,7 +32,7 @@ class AliyunApi
                          :ZoneId => "us-east-1a",
                          :ImageId => "m-0xi8a3w7ztha2y8oe853",
                          :InstanceType => "ecs.n1.tiny",
-                         :SecurityGroupId => "sg-0xicocmi3sipxvn81kq4",
+                         :SecurityGroupId => "sg-0xi0pspxlml778gjloz5",
                          :InstanceChargeType => "PostPaid",
                          :InternetChargeType => "PayByBandwidth",
                          :InternetMaxBandwidthOut => 1.to_s,
