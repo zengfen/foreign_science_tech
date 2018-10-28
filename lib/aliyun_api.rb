@@ -27,11 +27,6 @@ class AliyunApi
                          # :SecurityGroupId => "sg-23dzeg6le",
 
   def self.create_instances(c = 1)
-    begin
-
-    rescue Exception => e
-      puts e.response.body
-    end
     return make_request({:Action => "RunInstances",
                          :RegionId => "us-east-1",
                          :ZoneId => "us-east-1a",
