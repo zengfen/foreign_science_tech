@@ -44,7 +44,7 @@ class LinkedinProfileWorker
   end
 
   def self.has_valid_account?
-    account = ControlTemplate.find(73).accounts.first
+    account = ControlTemplate.find(74).accounts.first
     return false if account.blank?
 
     account.is_valid?
