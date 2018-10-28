@@ -74,7 +74,7 @@ class LinkedinProfileWorker
 
     subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
     if !subtask.blank? && subtask.created_at > 1.minute.ago.to_i
-      account = ControlTemplate.find(73).accounts.first
+      account = ControlTemplate.find(74).accounts.first
       unless account.blank?
         account.valid_time = 5.minute.ago
         account.save

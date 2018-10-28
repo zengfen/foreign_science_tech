@@ -1,3 +1,3 @@
 class ArchonSearchKeyword < ArchonBase
-
+  
 end
