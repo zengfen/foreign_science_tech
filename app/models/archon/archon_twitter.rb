@@ -26,7 +26,13 @@ class ArchonTwitter < ArchonBase
 
 
   def self.delete_twitter_ids
-    ids = $redis.smembers("dump_twitter_ids_for_fix")
+    ids = $redis.smembers("twitter_by_tag_232")
+    ids.each_slice(10000).each do |new_ids|
+      ArchonTwitter.where(id: new_ids).delete_all
+    end
+
+
+    ids = $redis.smembers("twitter_by_tag_233")
     ids.each_slice(10000).each do |new_ids|
       ArchonTwitter.where(id: new_ids).delete_all
     end
