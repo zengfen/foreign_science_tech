@@ -28,22 +28,61 @@ class ArchonTwitter < ArchonBase
   def self.delete_twitter_ids
     ids = $redis.smembers("twitter_by_tag_232")
     ids.each_slice(10000).each do |new_ids|
-      ArchonTwitter.where(id: new_ids).delete_all
+      spider_task = SpiderTask.new(
+        spider_id: 92,
+        level: 1,
+        max_retry_count: 0,
+        keyword: new_ids.each_slice(100).to_a.collect{|x| x.join("|")}.join(","),
+        timeout_second: 15,
+        special_tag: 'tjwwj',
+        status: 0,
+        task_type: 2,
+        is_split: false
+      )
+      spider_task.special_tag_transfor_id
+      spider_task.save_with_spilt_keywords
+      spider_task.start!
     end
 
 
     ids = $redis.smembers("twitter_by_tag_233")
     ids.each_slice(10000).each do |new_ids|
-      ArchonTwitter.where(id: new_ids).delete_all
+      spider_task = SpiderTask.new(
+        spider_id: 92,
+        level: 1,
+        max_retry_count: 0,
+        keyword: new_ids.each_slice(100).to_a.collect{|x| x.join("|")}.join(","),
+        timeout_second: 15,
+        special_tag: 'tjwwj9',
+        status: 0,
+        task_type: 2,
+        is_split: false
+      )
+      spider_task.special_tag_transfor_id
+      spider_task.save_with_spilt_keywords
+      spider_task.start!
     end
 
 
-    ids = $redis.smembers("twitter_tag_ids")
-    ids.each_slice(10000).each do |new_ids|
-      ArchonTwitterTag.where(id: new_ids).delete_all
-    end
+    # ids = $redis.smembers("twitter_tag_ids")
+    # ids.each_slice(10000).each do |new_ids|
+    #   ArchonTwitterTag.where(id: new_ids).delete_all
+    # end
 
 
+
+
+
+    # ids = $redis.smembers("twitter_by_tag_233")
+    # ids.each_slice(10000).each do |new_ids|
+    #   ArchonTwitter.where(id: new_ids).delete_all
+    # end
+
+
+    # ids = $redis.smembers("twitter_by_tag_233")
+    # ids.each_slice(10000).each do |new_ids|
+    #   ArchonTwitter.where(id: new_ids).delete_all
+    # end
     nil
   end
 end
