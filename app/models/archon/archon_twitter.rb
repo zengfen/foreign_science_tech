@@ -6,13 +6,11 @@ class ArchonTwitter < ArchonBase
   def self.dump_twitter_ids
     ids = $redis.smembers("dump_twitter_ids_for_fix")
 
-    ids.each_slice(1000).each do |new_ids|
-      tags = ArchonTwitterTag.where(pid: new_ids)
-      tags.each do |t|
-        next if t.tag != 232 && t.tag != 233
-        $redis.sadd("twitter_by_tag_#{t.tag}", t.pid)
-        $redis.sadd("twitter_tag_ids", t.id)
-      end
+    tags = ArchonTwitterTag.where(pid: ids)
+    tags.each do |t|
+      next if t.tag != 232 && t.tag != 233
+      $redis.sadd("twitter_by_tag_#{t.tag}", t.pid)
+      $redis.sadd("twitter_tag_ids", t.id)
     end
     # user_id = []
     # ArchonTwitter.select("id,user_id").where("place != ''").each do |x|
