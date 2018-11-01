@@ -27,7 +27,7 @@ class ArchonTwitter < ArchonBase
 
   def self.delete_twitter_ids
     ids = $redis.smembers("twitter_by_tag_232")
-    ids.each_slice(10000).each do |new_ids|
+    ids.each_slice(1000).each do |new_ids|
       spider_task = SpiderTask.new(
         spider_id: 92,
         level: 1,
@@ -46,7 +46,7 @@ class ArchonTwitter < ArchonBase
 
 
     ids = $redis.smembers("twitter_by_tag_233")
-    ids.each_slice(10000).each do |new_ids|
+    ids.each_slice(1000).each do |new_ids|
       spider_task = SpiderTask.new(
         spider_id: 92,
         level: 1,
