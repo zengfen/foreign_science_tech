@@ -1,7 +1,7 @@
 class LinkedinSkillUser
   def self.check
     while true
-      do_work
+      check_cookies
 
       puts "11"
       sleep 5
