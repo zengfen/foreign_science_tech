@@ -3,6 +3,7 @@ class LinkedinSkillUser
     while true
       do_work
 
+      puts "11"
       sleep 5
     end
   end
