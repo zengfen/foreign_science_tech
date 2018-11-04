@@ -33,20 +33,23 @@ class LinkedinSkillUser
 
 
 
+    data.uniq.each_slice(500).each do |new_data|
+      spider_task = SpiderTask.new(
+        spider_id: 139,
+        level: 1,
+        max_retry_count: 0,
+        keyword: new_data.join(','),
+        special_tag: '',
+        status: 0,
+        timeout_second: 10,
+        task_type: 2,
+        is_split: false
+      )
+      spider_task.special_tag_transfor_id
+      spider_task.save_with_spilt_keywords
+    end
 
-    spider_task = SpiderTask.new(
-      spider_id: 139,
-      level: 1,
-      max_retry_count: 0,
-      keyword: data.join(','),
-      special_tag: '',
-      status: 0,
-      timeout_second: 10,
-      task_type: 2,
-      is_split: false
-    )
-    spider_task.special_tag_transfor_id
-    spider_task.save_with_spilt_keywords
+
     # spider_task.start!
 
   end
