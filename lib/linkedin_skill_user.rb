@@ -1,4 +1,31 @@
 class LinkedinSkillUser
+  def self.check
+    while true
+      do_work
+
+      sleep 5
+    end
+  end
+
+
+  def self.check_cookies
+    ids = SpiderTask.where(spider_id: 139, status: 1).collect(&:id)
+    return if ids.blank?
+
+    subtask = DispatcherSubtaskStatus.where(task_id: ids, status: 3, error_content: 'cookie is expired').order('created_at desc').first
+    if !subtask.blank? && subtask.created_at > 1.minute.ago.to_i
+      account = ControlTemplate.find(75).accounts.first
+      unless account.blank?
+        account.valid_time = 5.minute.ago
+        account.save
+        account.remove_related_data
+      end
+
+      SpiderTask.where(spider_id: 139, status: 1).each(&:stop!)
+    end
+  end
+
+
   def self.create_tasks(ids)
     return if ids.blank?
 
