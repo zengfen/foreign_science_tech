@@ -1,0 +1,2 @@
+class ArchonTwitterList < ArchonBase
+end
