@@ -3,7 +3,7 @@ class FixTwitterUser
     ids = ArchonTwitterUser.select("id").where("updated_ts < 1539964800 and description = ''").limit(1000).collect(&:id)
     File.open("ArchonTwitterUser.txt", "a+") do |f|
       ids.each do |x|
-        file.puts x
+        f.puts x
       end
     end
 
