@@ -24,7 +24,7 @@ class FixTwitterUser
       )
       spider_task.special_tag_transfor_id
       spider_task.save_with_spilt_keywords
-      spider_task.start
+      spider_task.start!
 
 
       ArchonTwitterUser.where(id: temp_ids).delete_all
