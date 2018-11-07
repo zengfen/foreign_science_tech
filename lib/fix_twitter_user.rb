@@ -4,6 +4,7 @@ class FixTwitterUser
       x.destroy
     end
     ids = ArchonTwitterUser.select('id').where("updated_ts < 1539964800 and description = ''").limit(30_000).collect(&:id)
+    return if ids.blank?
     File.open('ArchonTwitterUser.txt', 'a+') do |f|
       ids.each do |x|
         f.puts x
