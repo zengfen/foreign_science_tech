@@ -1,5 +1,8 @@
 class FixTwitterUser
   def self.fix_user
+    SpiderTask.where(spider_id: 100, status:2).each do |x|
+      x.destroy
+    end
     ids = ArchonTwitterUser.select('id').where("updated_ts < 1539964800 and description = ''").limit(30_000).collect(&:id)
     File.open('ArchonTwitterUser.txt', 'a+') do |f|
       ids.each do |x|
