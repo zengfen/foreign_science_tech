@@ -380,7 +380,7 @@ class SpiderTask < ApplicationRecord
 
   def maybe_finished?
     # current_running_count == 0
-    current_total_count == success_count + fail_count
+    (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
   end
 
   # 重试失败任务
@@ -546,8 +546,8 @@ class SpiderTask < ApplicationRecord
     if maybe_finished?
       update_attributes(status: 2)
 
-      # $archon_redis.hdel('archon_available_tasks', id)
-      # dequeue_level_task
+      $archon_redis.hdel('archon_available_tasks', id)
+      dequeue_level_task
     end
   end
 
