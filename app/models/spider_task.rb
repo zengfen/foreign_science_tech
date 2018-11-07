@@ -546,8 +546,8 @@ class SpiderTask < ApplicationRecord
     if maybe_finished?
       update_attributes(status: 2)
 
-      $archon_redis.hdel('archon_available_tasks', id)
-      dequeue_level_task
+      # $archon_redis.hdel('archon_available_tasks', id)
+      # dequeue_level_task
     end
   end
 
