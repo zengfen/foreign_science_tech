@@ -58,6 +58,37 @@ class ArchonTwitterUser < ArchonBase
       spider_task.save_with_spilt_keywords
       spider_task.start!
     end
+  end
 
+
+  def self.dump_not_exist_user(file)
+    ids = []
+
+    File.new(file).each do |x|
+      next if x.blank?
+
+      ids << x.strip.downcase
+    end
+
+    ids.uniq!
+
+
+    new_ids = []
+    ids.each_slice(3000).each do |temp_ids|
+      names = ArchonTwitterUser.select("screen_name_lower").where(screen_name_lower: temp_ids).collect(&:screen_name_lower)
+
+      new_ids += (temp_ids - names)
+    end
+
+
+    out = "dump_#{Time.now.to_i}"
+
+    File.open(out) do |f|
+      new_ids.each do |x|
+        f.puts x
+      end
+    end
+
+    out
   end
 end
