@@ -83,7 +83,7 @@ class ArchonTwitterUser < ArchonBase
 
     out = "dump_#{Time.now.to_i}"
 
-    File.open(out) do |f|
+    File.open(out, "w") do |f|
       new_ids.each do |x|
         f.puts x
       end
