@@ -1,3 +1,3 @@
 class ArchonLinkedinUserTag < ArchonBase
-  belongs_to :record , foreign_key: :pid, class_name: "ArchonLinkedinUser"
+  belongs_to :archon_linkedin_users , foreign_key: :pid
 end
