@@ -42,4 +42,14 @@ class ArchonLinkedinUser < ArchonBase
       f.puts user.to_json
     end
   end
+
+
+  def self.search_and_dump(keyword)
+    f = File.open("us_users/#{keyword}.txt")
+    ArchonLinkedinUser.select("id").where("experience like '%\"Str\":\"#{keyword}\",%'").each do |x|
+      f.puts x.id
+    end
+
+    f.close
+  end
 end
