@@ -45,7 +45,7 @@ class ArchonLinkedinUser < ArchonBase
 
 
   def self.search_and_dump(keyword)
-    f = File.open("us_users/#{keyword}.txt")
+    f = File.open("us_users/#{keyword}.txt", "w")
     ArchonLinkedinUser.select("id").where("experience like '%\"Str\":\"#{keyword}\",%'").each do |x|
       f.puts x.id
     end
