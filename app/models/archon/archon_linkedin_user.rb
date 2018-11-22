@@ -70,8 +70,8 @@ class ArchonLinkedinUser < ArchonBase
           experience = user.experience
           JSON.parse(experience).each do |y|
             if y["companyName"]["Str"] == name
-              data[y["title"]["str"]] ||= 0
-              data[y["title"]["str"]] += 1
+              data[y["title"]["Str"]] ||= 0
+              data[y["title"]["Str"]] += 1
             end
           end
         end
