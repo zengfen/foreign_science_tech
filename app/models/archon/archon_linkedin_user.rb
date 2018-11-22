@@ -52,4 +52,31 @@ class ArchonLinkedinUser < ArchonBase
 
     f.close
   end
+
+
+  def self.list_all_users
+    data = {}
+    Dir.glob("us_users/*.txt").each do |f|
+      name = f.split("/").last.gsub(".txt", "")
+      File.open(f).each do |id|
+        next if id.blank?
+        user = ArchonLinkedinUser.find(id.strip)
+        experience = user.experience
+        JSON.parse(experience).each do |y|
+          if y["companyName"]["Str"] == name
+            data[y["title"]["str"]] ||= 0
+            data[y["title"]["str"]] += 1
+          end
+        end
+      end
+    end
+
+    puts data
+
+    File.open("army_group_title", "w") do |f|
+      data.to_a.sort_by{|x| x[1]}.reverse.each do |x|
+        f.puts "#{x[0]},#{x[1]}"
+      end
+    end
+  end
 end
