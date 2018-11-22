@@ -58,14 +58,21 @@ class ArchonLinkedinUser < ArchonBase
     data = {}
     Dir.glob("us_users/*.txt").each do |f|
       name = f.split("/").last.gsub(".txt", "")
+      ids =  []
       File.open(f).each do |id|
         next if id.blank?
-        user = ArchonLinkedinUser.find(id.strip)
-        experience = user.experience
-        JSON.parse(experience).each do |y|
-          if y["companyName"]["Str"] == name
-            data[y["title"]["str"]] ||= 0
-            data[y["title"]["str"]] += 1
+        ids << id.strip
+      end
+
+      ids.each_slice(1000).each do |new_ids|
+        users = ArchonLinkedinUser.select("experience").where(id: new_ids)
+        users.each do |user|
+          experience = user.experience
+          JSON.parse(experience).each do |y|
+            if y["companyName"]["Str"] == name
+              data[y["title"]["str"]] ||= 0
+              data[y["title"]["str"]] += 1
+            end
           end
         end
       end
