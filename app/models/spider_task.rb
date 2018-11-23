@@ -709,4 +709,12 @@ class SpiderTask < ApplicationRecord
 
     # SpiderTaskKeyword.where(spider_task_id: self.id).delete_all
   end
+
+
+  def recover_all
+    ids = DispatcherSubtask.select("id").where(task_id: self.id).collect(&:id) - DispatcherSubtaskStatus.select("id").where(task_id: self.id).collect(&:id)
+    ids.each do |x|
+      self.retry_task(x)
+    end
+  end
 end
