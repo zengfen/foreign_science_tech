@@ -379,8 +379,9 @@ class SpiderTask < ApplicationRecord
   end
 
   def maybe_finished?
+    (current_total_count == success_count + fail_count)
     # current_running_count == 0
-    (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
+    # (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
   end
 
   # 重试失败任务
