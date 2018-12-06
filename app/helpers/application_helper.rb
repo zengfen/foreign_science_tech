@@ -30,6 +30,10 @@ module ApplicationHelper
     time.strftime("%m-%d %H:%M:%S") rescue "-"
   end
 
+  def show_format_time_y(time)
+    time.strftime("%F %T") rescue "-"
+  end
+
   def truncate_utf(text, length = 15, truncate_string = "")
     l=0
     char_array=(text || "").unpack("U*")
