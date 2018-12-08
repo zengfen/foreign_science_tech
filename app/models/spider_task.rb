@@ -542,12 +542,12 @@ class SpiderTask < ApplicationRecord
   def update_finished_status!
     return if !is_running?
 
-    DispatcherRunningSubtask.where("created_at < #{15.minutes.ago.to_i}", task_id: self.id).each do |x|
-      task_id = x.id
-      x.destroy
+    # DispatcherRunningSubtask.where("created_at < #{15.minutes.ago.to_i}", task_id: self.id).each do |x|
+    #   task_id = x.id
+    #   x.destroy
 
-      self.retry_task(task_id)
-    end
+    #   self.retry_task(task_id)
+    # end
 
     update_self_counters!
 
