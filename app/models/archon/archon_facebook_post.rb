@@ -8,7 +8,7 @@ class ArchonFacebookPost < ArchonBase
       ids = res.collect{|x| x.pid}
       break if ids.blank?
       puts offset_id = res.last.id
-      ArchonFacebookPostTag.select("id,title").where(id:ids).each do |tw|
+      ArchonFacebookPost.select("id,title").where(id:ids).each do |tw|
         File.open("244_facebook_text.txt","a"){|f| f.puts tw.title.to_s.gsub("\n","")}
       end
     end
