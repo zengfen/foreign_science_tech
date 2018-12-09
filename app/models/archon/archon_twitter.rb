@@ -3,6 +3,19 @@ class ArchonTwitter < ArchonBase
   #belongs_to :retweet_user, foreign_key: :retweet_user_id, class_name: "ArchonTwitterUser"
 
 
+  def self.dump_text
+    offset_id = 0
+    tag = 244
+    while true
+      ids = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag} order by id asc limit 20000").collect{|x| x.pid}
+      break if ids.blank?
+      puts offset_id = ids.last
+      ArchonTwitter.select("id,title").where(id:ids).each do |tw|
+        File.open("244_twitter_text.txt","a"){|f| f.puts tw.title.to_s.gsub("\n","")}
+      end
+    end
+  end
+
   def self.dump_twitter_ids
     ids = $redis.smembers("dump_twitter_ids_for_fix")
 
