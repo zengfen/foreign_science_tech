@@ -74,6 +74,7 @@ class Account < ApplicationRecord
   #  如果一个账号的有效期过了，要清除要对应的account/token
   #  account删除之后也要清除，都要通过定时任务来完成
   def setup_redis
+    return if self.valid_time.blank?
     return if valid_time < Time.now + 10.minutes
     return if self.control_template.blank?
     if control_template.is_bind_ip

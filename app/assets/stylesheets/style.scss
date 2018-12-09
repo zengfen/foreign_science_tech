@@ -684,3 +684,8 @@ label.ml20 > input, label.ml0 > input {
   max-height: 100px;
   overflow-y: auto;
 }
+.keywords_list{
+  word-wrap:break-word;
+  max-height: 400px;
+  overflow-y: auto;
+}

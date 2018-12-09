@@ -379,8 +379,9 @@ class SpiderTask < ApplicationRecord
   end
 
   def maybe_finished?
+    (current_total_count == success_count + fail_count)
     # current_running_count == 0
-    (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
+    # (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
   end
 
   # 重试失败任务
@@ -541,12 +542,12 @@ class SpiderTask < ApplicationRecord
   def update_finished_status!
     return if !is_running?
 
-    DispatcherRunningSubtask.where("created_at < #{15.minutes.ago.to_i}", task_id: self.id).each do |x|
-      task_id = x.id
-      x.destroy
+    # DispatcherRunningSubtask.where("created_at < #{15.minutes.ago.to_i}", task_id: self.id).each do |x|
+    #   task_id = x.id
+    #   x.destroy
 
-      self.retry_task(task_id)
-    end
+    #   self.retry_task(task_id)
+    # end
 
     update_self_counters!
 
@@ -708,5 +709,13 @@ class SpiderTask < ApplicationRecord
 
 
     # SpiderTaskKeyword.where(spider_task_id: self.id).delete_all
+  end
+
+
+  def recover_all
+    ids = DispatcherSubtask.select("id").where(task_id: self.id).collect(&:id) - DispatcherSubtaskStatus.select("id").where(task_id: self.id).collect(&:id)
+    ids.each do |x|
+      self.retry_task(x)
+    end
   end
 end

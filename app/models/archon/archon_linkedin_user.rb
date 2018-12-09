@@ -42,4 +42,48 @@ class ArchonLinkedinUser < ArchonBase
       f.puts user.to_json
     end
   end
+
+
+  def self.search_and_dump(keyword)
+    f = File.open("us_users/#{keyword}.txt", "w")
+    ArchonLinkedinUser.select("id").where("experience like '%\"Str\":\"#{keyword}\",%'").each do |x|
+      f.puts x.id
+    end
+
+    f.close
+  end
+
+
+  def self.list_all_users
+    data = {}
+    Dir.glob("us_users/*.txt").each do |f|
+      name = f.split("/").last.gsub(".txt", "")
+      ids =  []
+      File.open(f).each do |id|
+        next if id.blank?
+        ids << id.strip
+      end
+
+      ids.each_slice(1000).each do |new_ids|
+        users = ArchonLinkedinUser.select("experience").where(id: new_ids)
+        users.each do |user|
+          experience = user.experience
+          JSON.parse(experience).each do |y|
+            if y["companyName"]["Str"] == name
+              data[y["title"]["Str"]] ||= 0
+              data[y["title"]["Str"]] += 1
+            end
+          end
+        end
+      end
+    end
+
+    puts data
+
+    File.open("army_group_title", "w") do |f|
+      data.to_a.sort_by{|x| x[1]}.reverse.each do |x|
+        f.puts "#{x[0]},#{x[1]}"
+      end
+    end
+  end
 end
