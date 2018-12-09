@@ -7,7 +7,7 @@ class ArchonTwitter < ArchonBase
     offset_id = 0
     tag = 244
     while true
-      ids = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag} order by id asc limit 20000").collect{|x| x.pid}
+      ids = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(20000).collect{|x| x.pid}
       break if ids.blank?
       puts offset_id = ids.last
       ArchonTwitter.select("id,title").where(id:ids).each do |tw|
