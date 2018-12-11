@@ -721,7 +721,7 @@ class SpiderTask < ApplicationRecord
 
 
   def virtual_destroy
-    return if x.status != 2
+    return if self.status != 2
     dequeue_level_task # fix me
 
     redis_keys = []
