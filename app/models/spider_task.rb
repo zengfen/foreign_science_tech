@@ -535,7 +535,8 @@ class SpiderTask < ApplicationRecord
       current_success_count: success_count,
       current_fail_count: fail_count,
       current_warning_count: warning_count,
-      current_task_count: current_total_count
+      current_task_count: current_total_count,
+      current_result_count: result_count,
     )
   end
 
