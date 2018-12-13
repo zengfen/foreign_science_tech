@@ -53,6 +53,7 @@ class ApiController < ApplicationController
       status: 0,
       task_type: 2,
       is_split: false,
+      additional_function: params[:additional_function],
     )
     @spider_task.special_tag_transfor_id
     @spider_task.save_with_spilt_keywords
