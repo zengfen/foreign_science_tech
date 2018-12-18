@@ -95,3 +95,6 @@ gem 'mail'
 gem 'activerecord-import'
 gem 'seed_dump'
 gem 'aliyun-sdk'
+
+# 批量插入
+gem 'bulk_insert'
