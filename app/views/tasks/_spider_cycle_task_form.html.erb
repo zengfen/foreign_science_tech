@@ -7,7 +7,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">选择模版</label>
             <div class="col-sm-8">
-              <%= f.select(:spider_id,Spider.all.collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider",:onchange=>"cycle_task_get_spider()"}) %>
+              <%= f.select(:spider_id,Spider.all.order('spider_name asc').collect{|x| [x.spider_name,x.id]},{include_blank: "请选择模版"},{class: "form-control m-b spider chosen-select",:onchange=>"cycle_task_get_spider()"}) %>
             </div>
             <div class="col-sm-2">
               <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="cycle_btn_ins"></i>
@@ -163,6 +163,6 @@
       });
 
     });
-
+$('.chosen-select').chosen({width: "100%",disable_search_threshold: 10,search_contains: true,no_results_text: "未匹配到关键词："});
   </script>
 <%end%>
