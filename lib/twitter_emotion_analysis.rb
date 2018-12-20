@@ -1,6 +1,8 @@
 # encoding: utf-8
-require "rails"
-require "rest_client"
+# 读取 ArchonTwitterTag 表的数据，存储tag
+# nohup rails r TwitterEmotionAnalysis.read_archon_twitter_tags &
+# 更新数据的 pos_neg 和 pos_neg_score
+# nohup rails r TwitterEmotionAnalysis.update_twitter_pos_neg &
 
 class TwitterEmotionAnalysis
   # twitter数据情感分析
@@ -9,7 +11,7 @@ class TwitterEmotionAnalysis
     # 更新数据的 pos_neg 和 pos_neg_score
     # nohup rails r TwitterEmotionAnalysis.update_twitter_pos_neg &
     def update_twitter_pos_neg
-      tags = redis.smembers(tags_key)
+      # tags = redis.smembers(tags_key)
       tags = [24]
       tags.each do |tag|
         while true
@@ -26,6 +28,8 @@ class TwitterEmotionAnalysis
 
     end
 
+
+    # 更新数据库中的数据
     def deal_batch_data(ids)
       datas = []
       ArchonTwitter.select("id, source_url, created_time").where(id:ids).find_each do |tw|
@@ -41,10 +45,10 @@ class TwitterEmotionAnalysis
     # 调用获取情感分析api
     def analysis_result(tw)
       params = {}
-      params[:global_id] = ""
-      params[:tweet] = ""
+      params[:global_id] = tw.id
+      params[:tweet] = tw.title
       params[:url] = tw.source_url
-      params[:date_time] = tw.created_time.strftime("%F %T")
+      params[:date_time] = Time.at(tw.created_time).strftime("%F %T")
  
       url = analysis_url
       retry_count = 3
@@ -61,8 +65,13 @@ class TwitterEmotionAnalysis
       return res
     end
 
+    def  archon_twitter_file
+      "#{Rails.root}/public/tea/archon_twitter.json"
+    end
+
     def analysis_url
-      "http://47.96.96.39:8009/twitter_sentiment"
+      'http://47.96.96.39:8009/twitter_sentiment'
+      # "http://47.96.96.39:8009/twitter_sentiment"
     end
 
     # 读取 ArchonTwitterTag 表的数据，存储tag
@@ -92,7 +101,38 @@ class TwitterEmotionAnalysis
     end
 
 
-
+    # 将数据写入文件
+    # def deal_batch_data(ids)
+    #   tag = 24
+    #   offset_id = 0
+    #   datas = []
+    #   res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(10000)
+    #   ids = res.pluck(:pid)
+    #   ArchonTwitter.select("id, source_url, created_time, title").where(id:ids).find_each do |tw|
+    #     # res = analysis_result(tw)
+    #     params = {}
+    #     params[:global_id] = tw.id
+    #     params[:tweet] = tw.title
+    #     params[:url] = tw.source_url
+    #     params[:date_time] = Time.at(tw.created_time).strftime("%F %T")
+    #
+    #     url = 'http://47.96.96.39:8009/twitter_sentiment'
+    #     retry_count = 3
+    #     res = {}
+    #     begin
+    #       res = RestClient.post(url, params)
+    #       res = JSON.parse(res) rescue {}
+    #     rescue Exception => e
+    #       if retry_count > 0
+    #         retry_count -= 1
+    #         retry
+    #       end
+    #     end
+    #     datas << {id: tw.id, pos_neg: res["polarity"], pos_neg_score: res["score"], created_time: Time.at(tw.created_time).strftime("%F %T"), title: tw.title}.to_json
+    #   end
+    #
+    #   File.open("#{Rails.root}/public/tea/archon_twitter.txt", "a+") {|f| f.puts datas}
+    # end
 
 
   end
