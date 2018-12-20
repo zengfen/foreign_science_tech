@@ -11,7 +11,7 @@ class TwitterEmotionAnalysis
     # 更新数据的 pos_neg 和 pos_neg_score
     # nohup rails r TwitterEmotionAnalysis.update_twitter_pos_neg &
     def update_twitter_pos_neg
-      tags = redis.smembers(tags_key)
+      tags = $redis.smembers(tags_key)
       tags.each do |tag|
         while true
           offset_key = archon_titter_offset_id_key
@@ -76,11 +76,15 @@ class TwitterEmotionAnalysis
     # 读取 ArchonTwitterTag 表的数据，存储tag
     # nohup rails r TwitterEmotionAnalysis.read_archon_twitter_tags &
     def read_archon_twitter_tags
+      # 获取上次 ArchonTwitterTag 表读到的数据偏移id
       offset_id = $redis.get(archon_titter_tag_offset_id_key) || 0
-      key = tags_key
-      ArchonTwitterTag.select(:tag,:id).where("id > #{offset_id}").find_each do |x|
-        $redis.sadd(key, x.tag)
-      end
+      # 获取最新的数据id
+      new_offset_id = ArchonTwitterTag.where("id > #{offset_id}").order(:id).last.try(:id)
+      return if new_offset_id.blank?
+      # 更新redis
+      $redis.set(archon_titter_tag_offset_id_key, new_offset_id)
+      tags = ArchonTwitterTag.where("id > #{offset_id}").select(:tag).group(:tag).map{|x| x.tag}
+      $redis.sadd(tags_key, tags)
     end
 
     # 存储tags的key ac_tea 是 archon_center_twitter_emotion_analysis 缩写
