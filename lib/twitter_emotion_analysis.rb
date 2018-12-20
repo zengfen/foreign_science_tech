@@ -16,7 +16,7 @@ class TwitterEmotionAnalysis
         while true
           offset_key = archon_titter_offset_id_key
           offset_id = $redis.hget(offset_key, tag) || 0
-          res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(1000)
+          res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(10000)
           ids = res.pluck(:pid)
           break if ids.blank?
           offset_id = res.last.id
