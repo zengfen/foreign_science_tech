@@ -11,13 +11,12 @@ class TwitterEmotionAnalysis
     # 更新数据的 pos_neg 和 pos_neg_score
     # nohup rails r TwitterEmotionAnalysis.update_twitter_pos_neg &
     def update_twitter_pos_neg
-      # tags = redis.smembers(tags_key)
-      tags = [24]
+      tags = redis.smembers(tags_key)
       tags.each do |tag|
         while true
           offset_key = archon_titter_tag_offset_id_key
           offset_id = $redis.hget(offset_key, tag) || 0
-          res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(10000)
+          res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(1000)
           ids = res.pluck(:pid)
           break if ids.blank?
           offset_id = res.last.id
