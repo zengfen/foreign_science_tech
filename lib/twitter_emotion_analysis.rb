@@ -32,7 +32,7 @@ class TwitterEmotionAnalysis
     # 更新数据库中的数据
     def deal_batch_data(ids)
       datas = []
-      ArchonTwitter.select("id, source_url, created_time").where(id:ids).find_each do |tw|
+      ArchonTwitter.select("id, title, source_url, created_time").where(id:ids).find_each do |tw|
         res = analysis_result(tw)
         datas << {id: tw.id, pos_neg: res["polarity"], pos_neg_score: res["score"], updated_at: Time.now}
       end
@@ -48,7 +48,7 @@ class TwitterEmotionAnalysis
       params[:global_id] = tw.id
       params[:tweet] = tw.title
       params[:url] = tw.source_url
-      params[:date_time] = Time.at(tw.created_time).strftime("%F %T")
+      params[:date_time] = Time.at(tw.created_time).strftime("%F %T") rescue nil
  
       url = analysis_url
       retry_count = 3
