@@ -15,7 +15,7 @@ class TwitterEmotionAnalysis
       tags = [24]
       tags.each do |tag|
         while true
-          offset_key = tag_offset_id_key
+          offset_key = archon_titter_tag_offset_id_key
           offset_id = $redis.hget(offset_key, tag) || 0
           res = ArchonTwitterTag.where("id > #{offset_id} and tag = #{tag}").order("id asc").limit(10000)
           ids = res.pluck(:pid)
@@ -95,10 +95,10 @@ class TwitterEmotionAnalysis
     end
 
 
-    # 存储 ArchonTwitter 表每个tag当前的offset_id的key
-    def archon_titter_offset_id_key
-      "ac_tea_archon_twitter_offset_id"
-    end
+    # # 存储 ArchonTwitter 表每个tag当前的offset_id的key
+    # def archon_titter_offset_id_key
+    #   "ac_tea_archon_twitter_offset_id"
+    # end
 
 
     # 将数据写入文件
