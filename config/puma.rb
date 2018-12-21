@@ -75,13 +75,13 @@ preload_app!
 
 before_fork do
   ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
-  PumaWorkerKiller.config do |config|
-    config.ram           = 16*1024 # mb  服务器内存
-   # config.frequency     = 5    # seconds
-    config.percent_usage = 0.7 # 内存使用上限
-    config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds
-  end
-  PumaWorkerKiller.start
+  # PumaWorkerKiller.config do |config|
+  #   config.ram           = 16*1024 # mb  服务器内存
+  #  # config.frequency     = 5    # seconds
+  #   config.percent_usage = 0.7 # 内存使用上限
+  #   config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds
+  # end
+  # PumaWorkerKiller.start
 end
 # Allow puma to be restarted by `rails restart` command.
 # plugin :tmp_restart
