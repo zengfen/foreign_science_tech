@@ -26,7 +26,7 @@ class Spider < ApplicationRecord
   belongs_to :control_template
 
   validates :spider_name, presence: true, length: { maximum: 50 },
-                          uniqueness: { case_sensitive: false }
+    uniqueness: { case_sensitive: false }
 
   after_create :add_control_template_id
   before_destroy :remove_control_template_id
@@ -63,6 +63,7 @@ class Spider < ApplicationRecord
       "Okidb人物" => "temp_person_record",
       "Linkedin用户" => "linkedin_user",
       "Wikidata" =>  "archon_wikidata",
+      "VK" =>  "archon_vks",
     }
   end
 
@@ -165,67 +166,67 @@ class Spider < ApplicationRecord
     unless control_template_id.blank?
       ids << control_template.id
       ids << if control_template.is_bind_ip
-               '1'
-             else
-               '0'
-             end
-    end
-
-    dep_templates.each do |_k, v|
-      c = ControlTemplate.find(v)
-      ids << c.id
-      ids << if c.is_bind_ip
-               '1'
-             else
-               '0'
-             end
-    end
-
-    ids.join(',')
-  end
-
-  def add_control_template_id
-    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-
-    dep_templates.each do |k, v|
-      $archon_redis.hset('archon_template_control_id', k, v || '')
+      '1'
+    else
+      '0'
     end
   end
 
-
-  def update_control_template_id
-    $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-  end
-
-  def remove_control_template_id
-    $archon_redis.hdel('archon_template_control_id', template_name)
-    dep_templates.each do |k, _v|
-      $archon_redis.hdel('archon_template_control_id', k)
+  dep_templates.each do |_k, v|
+    c = ControlTemplate.find(v)
+    ids << c.id
+    ids << if c.is_bind_ip
+    '1'
+    else
+      '0'
     end
   end
 
+  ids.join(',')
+end
 
-  def update_dep_templates(templates)
-    return if templates.blank?
+def add_control_template_id
+  $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
 
-    d = {}
+  dep_templates.each do |k, v|
+    $archon_redis.hset('archon_template_control_id', k, v || '')
+  end
+end
 
-    templates.each do |x|
-      d[x] = self.control_template_id
-    end
 
-    self.dep_templates = d
-    self.save
+def update_control_template_id
+  $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
+end
+
+def remove_control_template_id
+  $archon_redis.hdel('archon_template_control_id', template_name)
+  dep_templates.each do |k, _v|
+    $archon_redis.hdel('archon_template_control_id', k)
+  end
+end
+
+
+def update_dep_templates(templates)
+  return if templates.blank?
+
+  d = {}
+
+  templates.each do |x|
+    d[x] = self.control_template_id
   end
 
+  self.dep_templates = d
+  self.save
+end
 
-  def set_control_template
-    i = 1
-    self.dep_templates.each do |k, v|
-      break if i > 5
-      self.send("template_name#{i}=", k)
-      self.send("control_template_id#{i}=", v)
-      i += 1
-    end
+
+def set_control_template
+  i = 1
+  self.dep_templates.each do |k, v|
+    break if i > 5
+    self.send("template_name#{i}=", k)
+    self.send("control_template_id#{i}=", v)
+    i += 1
   end
+end
 end
