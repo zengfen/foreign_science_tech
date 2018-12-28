@@ -99,7 +99,7 @@ class ArchonTwitterUser < ArchonBase
     count = 0
     ArchonTwitterUser.last(100).each do |user|
       basic = user.get_twitter_basic
-      post = ArchonTwitter.get_twitter_post(user.id, tag)
+      post = ArchonTwitter.get_twitter_post(user.id, user.name, user.screen_name, tag)
       next if post.blank?
       oids = post.map{|x| x[:tweetID] }
       postReply = ArchonTwitter.get_twittwer_post_reply(oids)
@@ -120,7 +120,7 @@ class ArchonTwitterUser < ArchonBase
     File.open("#{json_file_path}/twitter_data.json", "a+") {|f| f.puts datas}
   end
 
-  def get_facebook_basic
+  def get_twitter_basic
     twitter_basic = {
       "userId": self.id, #int
       "userName": self.name, #string    名称
@@ -130,7 +130,7 @@ class ArchonTwitterUser < ArchonBase
       "website": "https://twitter.com/#{self.screen_name}", #string    个人twitter页面地址
       "description": self.description, #string    简介
       "location": self.location, #string                    #位置
-      "createdAt": (self.created_at.strftime("%Y%m%d%H%M%S") rescue nil), #string  #加入时间
+      "createdAt": (Time.at(self.created_at).strftime("%Y%m%d%H%M%S") rescue nil), #string  #加入时间
       "birthday": "", #string 出生日期
       "timelineCount": self.status_count, #int       推文数目
       "friendCount": self.friend_count, #int       关注的人数目
