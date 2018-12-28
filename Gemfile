@@ -89,7 +89,7 @@ gem 'roo', :git => 'https://github.com/roo-rb/roo.git'
 gem 'roo-xls'
 gem 'mysql2'
 # gem 'newrelic_rpm'#监控
-gem 'puma_worker_killer'
+# gem 'puma_worker_killer'
 gem 'httparty'
 gem 'mail'
 gem 'activerecord-import'
