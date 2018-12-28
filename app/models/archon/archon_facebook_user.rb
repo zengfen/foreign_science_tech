@@ -62,7 +62,7 @@ class ArchonFacebookUser < ArchonBase
 
 
 
-
+  # ArchonFacebookUser.dump_data_to_json
   def self.dump_data_to_json
     datas = []
     ArchonFacebookUser.where("education <> ''").limit(10).each do |user|
@@ -96,12 +96,12 @@ class ArchonFacebookUser < ArchonBase
     }
     work = JSON.parse(self.work).map{|x|
       {
-        "startTime": (Time.parse(x["start_date"]).strftime("%Y%m%dT%H%M") rescue null), #起始时间
-        "endTime": (Time.parse(x["end_date"]).strftime("%Y%m%dT%H%M") rescue null), #结束时间
-        "name": (x["employer"]["name"] rescue null), #公司名称
+        "startTime": (Time.parse(x["start_date"]).strftime("%Y%m%dT%H%M") rescue nil), #起始时间
+        "endTime": (Time.parse(x["end_date"]).strftime("%Y%m%dT%H%M") rescue nil), #结束时间
+        "name": (x["employer"]["name"] rescue nil), #公司名称
         "url": "", #公司链接    (预留)
-        "position": (x["position"]["name"] rescue null), #职位
-        "location": (x["location"]["name"] rescue null), #工作地点
+        "position": (x["position"]["name"] rescue nil), #职位
+        "location": (x["location"]["name"] rescue nil), #工作地点
         "other": "", #其他字段
         "fullText": "" #工作情况全文
       }
@@ -116,7 +116,7 @@ class ArchonFacebookUser < ArchonBase
       "religion": "", #string  宗教
       "birthday": self.birthday, #string  生日
       "politics": "", #string  党派       (预留)
-      "interested": (JSON.parse(self.interested_in) rescue null) , #string  性取向     (预留)
+      "interested": (JSON.parse(self.interested_in) rescue nil) , #string  性取向     (预留)
       "marriedStatus": self.relationship_status, #string  婚姻状况   (已婚、未婚、离异、未知)
       "language": (JSON.parse(self.languages).map{|x| x["name"]} rescue []),
       "registerEmail": "", #注册邮箱
@@ -127,14 +127,14 @@ class ArchonFacebookUser < ArchonBase
         {"phoneNumber":
            {
              "displayNumber": self.phone, #string 展示号码
-             "universalNumber": null #string 通用号码
+             "universalNumber": nil #string 通用号码
            },
-         "phoneType": null #string 电话类型
+         "phoneType": nil #string 电话类型
         }
       ],
       "currentCity": "", #string 城市名，现居住城市
       "hometown": hometown, #string 城市名，家乡
-      "quotes": null, #string 座右铭
+      "quotes": nil, #string 座右铭
       #教育情况（起始时间、结束时间、学校名、学校链接、学校图标URL、学位、其他字段、教育情况全文）、居住地、学校、职业等
       "education": education,
       #工作情况（起始时间、结束时间、公司名称、公司链接、公司图标链接、职位、工作地点、说明、其他字段（工作情况所有描述信息）
@@ -167,7 +167,7 @@ class ArchonFacebookUser < ArchonBase
             "userName": "", #string 姓名"
           }
         ],
-        "shareTime": (Time.at(x.created_time).strftime("%Y%m%dT%H%M") rescue null), #分享时间
+        "shareTime": (Time.at(x.created_time).strftime("%Y%m%dT%H%M") rescue nil), #分享时间
         "location": {#分享位置
                      "latitude": nil,
                      "longitude": nil,
