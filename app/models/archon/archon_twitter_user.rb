@@ -52,7 +52,7 @@ class ArchonTwitterUser < ArchonBase
         timeout_second: 10,
         task_type: 2,
         is_split: false,
-        additional_function: [{ 'by_screen_name' => '1' }, { 'has_friends' => '0' }]
+        additional_function: [{'by_screen_name' => '1'}, {'has_friends' => '0'}]
       )
       spider_task.special_tag_transfor_id
       spider_task.save_with_spilt_keywords
@@ -91,4 +91,91 @@ class ArchonTwitterUser < ArchonBase
 
     out
   end
+
+  def dump_data_to_json
+    tag = get_tag
+    datas = []
+    unknow_hash = self.unknow_hash
+    count = 0
+    ArchonTwitterUser.last(100).each do |user|
+      basic = user.get_twitter_basic
+      post = ArchonTwitter.get_twitter_post(user.id, tag)
+      next if post.blank?
+      oids = post.map{|x| x[:tweetID] }
+      postReply = ArchonTwitter.get_twittwer_post_reply(oids)
+      postForward = ArchonTwitter.get_twittwer_post_forward(oids)
+      follower = ArchonTwitterFriend.get_twittwer_followers(user.id)
+      count += 1
+      break if count > 10
+      data = {twittwer: {}}
+      twittwer = {}
+      twittwer["basic"] = basic
+      twittwer["post"] = post
+      twittwer["postReply"] = postReply
+      twittwer["postForward"] = postForward
+      twittwer["follower"] = follower
+      data[:twittwer] = twittwer.merge(unknow_hash)
+      datas << data.to_json
+    end
+    File.open("#{json_file_path}/twitter_data.json", "a+") {|f| f.puts datas}
+  end
+
+  def get_facebook_basic
+    twitter_basic = {
+      "userId": self.id, #int
+      "userName": self.name, #string    名称
+      "userScreenName": self.screen_name, #string    用户昵称
+      "headUrl": self.profile_image_url, #string    头像
+      "bkgdUrl": nil, #string    背景图片
+      "website": "https://twitter.com/#{self.screen_name}", #string    个人twitter页面地址
+      "description": self.description, #string    简介
+      "location": self.location, #string                    #位置
+      "createdAt": (self.created_at.strftime("%Y%m%d%H%M%S") rescue nil), #string  #加入时间
+      "birthday": "", #string 出生日期
+      "timelineCount": self.status_count, #int       推文数目
+      "friendCount": self.friend_count, #int       关注的人数目
+      "followerCount": self.follower_count, #int       被关注的人数目
+      "likeCount": self.favourite_count, #int       点赞的推文数目
+      "phone": "", #电话      （预留）
+      "userEmail": self.email #用户邮箱  （预留）
+    }
+  end
+
+  def self.unknow_hash
+    {
+      #被关注人列表  暂时没有
+      "followedBy": [#主userId见basic部分
+        {
+          "userId": "", #Followed ID，即当前操作者ID（用于标定follower和操作者的关系）
+          "userName": "", #Followed Name，即当前操作者名称
+          "userScreen": "", #Followed Screen Name，即当前操作者昵称
+          "userPhoto": "", #Follower头像
+        }
+      ],
+      #其他信息
+      "others": []
+    }
+  end
+
+  def self.get_tag
+    252
+  end
+
+  # 存储
+  def self.tag_post_ids(tag = 252)
+    ArchonTwitterTag.where(tag: tag).find_each do |x|
+      $redis.sadd("archon_center_#{tag}_twitter_post_ids", x.pid)
+    end
+  end
+
+  # 文件存储路径
+  def self.json_file_path
+    path = "#{Rails.root}/public/json_datas"
+    unless Dir.exists? path
+      FileUtils.mkdir_p path
+    end
+    return path
+  end
+
+
 end
