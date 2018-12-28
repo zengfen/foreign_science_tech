@@ -68,7 +68,7 @@ class ArchonFacebookUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonFacebookUser.last(1000).each do |user|
+    ArchonFacebookUser.last(10000).each do |user|
       count += 1
       break if count > 10
       facebook_basic = user.get_facebook_basic
