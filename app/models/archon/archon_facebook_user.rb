@@ -82,7 +82,7 @@ class ArchonFacebookUser < ArchonBase
 
   def get_facebook_basic
     hometown = JSON.parse(self.hometown) rescue ""
-    honmetown = hometown.class == Hash ? hometown["name"] : hometown
+    hometown = hometown.class == Hash ? hometown["name"] : hometown
     education = JSON.parse(self.education).map{|x|
       {
         "startTime": "", #起始时间
@@ -96,8 +96,8 @@ class ArchonFacebookUser < ArchonBase
     }
     work = JSON.parse(self.work).map{|x|
       {
-        "startTime": (Time.parse(x["start_date"]).strftime("%Y%m%dT%H%M") rescue nil), #起始时间
-        "endTime": (Time.parse(x["end_date"]).strftime("%Y%m%dT%H%M") rescue nil), #结束时间
+        "startTime": (Time.parse(x["start_date"]).strftime("%Y%m%d%H%M%S") rescue nil), #起始时间
+        "endTime": (Time.parse(x["end_date"]).strftime("%Y%m%d%H%M%S") rescue nil), #结束时间
         "name": (x["employer"]["name"] rescue nil), #公司名称
         "url": "", #公司链接    (预留)
         "position": (x["position"]["name"] rescue nil), #职位
@@ -146,7 +146,7 @@ class ArchonFacebookUser < ArchonBase
     tag = get_tag
     facebook_post = []
     count = 0
-    self.archon_facebook_post.find_each do |x|
+    ArchonFacebookPost.where(user_id: self.id).archon_facebook_posts.find_each do |x|
       # 若这条post的tag不为指定tag 则取下一条数据
       next if !$redis.sismember("archon_center_#{tag}_facebbok_post_ids", x.id)
       count += 1
@@ -167,7 +167,7 @@ class ArchonFacebookUser < ArchonBase
             "userName": "", #string 姓名"
           }
         ],
-        "shareTime": (Time.at(x.created_time).strftime("%Y%m%dT%H%M") rescue nil), #分享时间
+        "shareTime": (Time.at(x.created_time).strftime("%Y%m%d%H%M%S") rescue nil), #分享时间
         "location": {#分享位置
                      "latitude": nil,
                      "longitude": nil,
