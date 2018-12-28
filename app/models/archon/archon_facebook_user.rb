@@ -74,7 +74,6 @@ class ArchonFacebookUser < ArchonBase
       next if facebook_post.blank?
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
-      next if facebook_postReply.blank?
       count += 1
       break if count > 10
       data = {facebook: {}}
