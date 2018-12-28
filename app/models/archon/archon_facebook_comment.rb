@@ -3,7 +3,7 @@ class ArchonFacebookComment < ArchonBase
 
   def self.get_facebook_post_reply(oids)
     facebook_postReply = []
-    ArchonFacebookTComment.where(post_oid:oids).limit(20).each do |x|
+    self.where(post_oid:oids).limit(20).each do |x|
       facebook_postReply << {
         "shareId": x.oid, #分享ID （唯一标定回复信息）
         "parentID": x.post_oid, #回复父ID，用于采集回复的回复

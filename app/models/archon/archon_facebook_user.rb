@@ -66,7 +66,7 @@ class ArchonFacebookUser < ArchonBase
   def self.dump_data_to_json
     tag = get_tag
     datas = []
-    ArchonFacebookUser.where("education <> ''").limit(10).each do |user|
+    ArchonFacebookUser.where("education <> ''").last(10).each do |user|
       facebook_basic = get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       oids = facebook_post.map{|x| x[:shareId]}
@@ -74,8 +74,9 @@ class ArchonFacebookUser < ArchonBase
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
-      facebook["pos"] = facebook_pos
+      facebook["pos"] = facebook_post
       facebook["postReply"] = facebook_postReply
+      data[:facebook] = facebook
       datas << data.to_json
     end
     File.open("#{json_file_path}/facebook_data.json", "a+") {|f| f.puts datas}
@@ -94,7 +95,7 @@ class ArchonFacebookUser < ArchonBase
         "others": "", #其他字段
         "fullText": "" #教育情况全文
       }
-    }
+    } rescue nil
     work = JSON.parse(self.work).map{|x|
       {
         "startTime": (Time.parse(x["start_date"]).strftime("%Y%m%d%H%M%S") rescue nil), #起始时间
@@ -106,7 +107,7 @@ class ArchonFacebookUser < ArchonBase
         "other": "", #其他字段
         "fullText": "" #工作情况全文
       }
-    }
+    } rescue nil
     facebook_basic = {
       "userId": self.id, #用户ID，facebook id
       "userName": self.name, #用户名
@@ -142,6 +143,7 @@ class ArchonFacebookUser < ArchonBase
       "work": work,
     }
   end
+
 
 
   def get_tag
