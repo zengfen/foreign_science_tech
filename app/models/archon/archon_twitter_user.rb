@@ -99,7 +99,7 @@ class ArchonTwitterUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonTwitterUser.last(100).each do |user|
+    ArchonTwitterUser.last(1000).each do |user|
       basic = user.get_twitter_basic
       post = ArchonTwitter.get_twitter_post(user.id, user.name, user.screen_name, tag)
       next if post.blank?
