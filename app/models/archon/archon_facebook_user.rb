@@ -146,7 +146,7 @@ class ArchonFacebookUser < ArchonBase
 
 
 
-  def get_tag
+  def self.get_tag
     252
   end
 
