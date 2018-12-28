@@ -66,17 +66,23 @@ class ArchonFacebookUser < ArchonBase
   def self.dump_data_to_json
     tag = get_tag
     datas = []
-    ArchonFacebookUser.last(10).each do |user|
+    unknow_hash = unknow_hash
+    count = 0
+    ArchonFacebookUser.last(1000).each do |user|
+      count += 1
+      break if count > 10
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
+      next if facebook_post.blank?
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
+      next if facebook_postReply.blank?
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
       facebook["post"] = facebook_post
       facebook["postReply"] = facebook_postReply
-      data[:facebook] = facebook
+      data[:facebook] = facebook.merge(unknow_hash)
       datas << data.to_json
     end
     File.open("#{json_file_path}/facebook_data.json", "a+") {|f| f.puts datas}
@@ -141,6 +147,225 @@ class ArchonFacebookUser < ArchonBase
       "education": education,
       #工作情况（起始时间、结束时间、公司名称、公司链接、公司图标链接、职位、工作地点、说明、其他字段（工作情况所有描述信息）
       "work": work,
+      #除了现居地和家乡，其他居住过的地方(起始时间、结束时间、生活过的地方名称、生活过的地方链接、生活过的地方图标链接、生活过的地方说明)
+      "living": [
+        {
+          "startTime": "", #起始时间
+          "endTime": "", #结束时间
+          "name": "", #生活过的地方名称
+          "other": "", #其他字段
+          "fullText": "" #生活情况全文
+        }
+      ],
+    }
+  end
+
+  def self.unknow_hash
+    {# 家庭成员列表
+     "familyMember": [
+       {
+         "userId": "", # int facebook用户ID
+         "userName": "", #string 姓名
+         "profileImage": "", #头像
+         "relationship": "" #string 家庭关系
+       },
+     ],
+     "friends": [
+       #好友列表
+       {
+         "userId": "", # int facebook用户ID
+         "userName": "", #string 姓名
+         "profileImage": "", #头像
+         "friendTag": [""], #好友标签
+       }
+     ],
+     #关注
+     "followerUser": [#被追随人的ID见basic部分
+       {
+         "userId": "", #追随者ID（用于标定用户与追随者的关系）
+         "userName": "", #追随者名称
+         "userScreenName": "", #追随者昵称
+         "headPhoto": "", #追随者头像内容
+       }
+     ],
+     #粉丝
+     "followedUser": [#被追随人的ID见basic部分
+       {
+         "userId": "", #追随者ID（用于标定用户与追随者的关系）
+         "userName": "", #追随者名称
+         "userScreenName": "", #追随者昵称
+         "headPhoto": "", #追随者头像内容
+       }
+     ],
+     #分享的点赞信息   目前没有
+     "postLikes": [
+       {
+         "shareId": "", #分享ID （唯一标定分享内容)
+         "userId": "", #点赞者ID（用于标定点赞者与分享的关系）
+         "userScreenName": "", #点赞者昵称
+         "headUrl": "", #点赞者头像
+         "pubTime": "" #点赞时间
+       }
+     ],
+     #群组成员  目前没有
+     "groupsMember": [
+       {
+         "groupId": "", #群组ID（用于标定群组与群组成员的关系）
+         "groupName": "", #群组名称
+         "userId": "", #群组成员ID（用于标定群组与群组成员的关系）
+         "userName": "", #群组成员名称
+         "userScreen": "", #群组成员昵称
+         "headUrl": "", #群组成员头像内容
+         "createTime": "" #邀请时间
+       }
+     ],
+     #群组内发表的分享  目前没有
+     "groupsPost": [
+       {
+         "groupId": "", #群组ID（用于标定分享内容与群组的关系）
+         "groupName": "", #群组名称
+         "shareId": "", #分享ID（用于标定分享内容与分享者的关系）
+         "shareContent": "", #分享内容
+         "mediaUrl": "", #分享的照片/视频URL
+         "shareType": "", #分享类型
+         "userId": "", #分享者ID（用于标定分享内容与分享者的关系）
+         "userName": "", #分享者名称
+         "headUrl": "", #群组成员头像内容
+         "createTime": "", #分享时间
+         "location": "" #分享位置
+       }
+     ],
+     #点赞    目前没有
+     "like": [#被点赞人的ID见basic部分
+       {
+         "userId": "", #点赞者ID（用于标定用户与追随者的关系）
+         "userName": "", #点赞者名称
+         "userScreenName": "", #点赞者昵称
+         "headPhoto": "", #点赞者头像内容
+       }
+     ],
+     #活动    目前没有
+     "event": [
+       {
+         "eventId": "", #活动ID（用于标定活动与创建者的关系）
+         "eventName": "", #活动名称
+         "userId": "", #创建用户ID（用于标定活动与创建者的关系）
+         "userName": "", #创建用户名称
+         "userScreenName": "", #创建用户昵称
+         "startTime": "", #活动开始日期和时间
+         "eventBody": "", #活动内容
+         "eventLocation": "" #活动地点
+       }
+     ],
+     #活动成员  目前没有
+     "eventMember": [
+       {
+         "eventId": "", #活动ID（唯一标定活动）
+         "userId": "", #活动成员ID（用于标定活动与成员的关系）
+         "userName": "", #成员名称
+         "userPhoto": "", #活动成员头像内容
+       }
+     ],
+     #活动分享  目前没有
+     "eventPost": [
+       {
+         "eventId": "", #分享处的活动ID（用于标定分享与活动的关系）
+         "shareId": "", #分享ID（用于标定分享与分享者的关系）
+         "shareType": "", #分享类型
+         "shareContent": "", #分享内容
+         "mediaUrl": "", #分享的照片/视频URL
+         "location": "", #分享位置
+         "userId": "", #分享者ID（用于标定分享与分享者的关系）
+         "userName": "", #分享者名称
+         "replyCount": "", #评论次数
+         "forwardCount": "", #转发次数
+         "likeCount": "", #赞次数
+         "createTime": "", #分享时间
+       }
+     ],
+     #签到    目前没有
+     "checkIn": [
+       {
+         "url": nil, #string 地址
+         "location": {#经纬度和地址
+                      "latitude": nil,
+                      "longitude": nil,
+                      "address": nil
+         },
+         "checkInTime": nil, #签到时间
+       }
+     ],
+     # 部分有 user
+     "others": {
+       #其他非重要信息，属于预留字段；比如movies,music,videos,book,game,game_score。
+       #电影
+       "movies": [
+         {
+           "name": "", #电影名称
+           "url": "", #电影链接
+           "url_profile_image": "", #封面图片url
+           "publish_time": "" #上映时间
+         }
+       ],
+       #音乐
+       "music": [
+         {
+           "name": "", #音乐名称
+           "url": "", #音乐链接
+           "url_profile_image": "", #封面图片url
+           "type": "" #类别名称
+         }
+       ],
+       #视频
+       "videos": [
+         {
+           "name": "", #视频名称
+           "url": "", #视频链接
+           "url_profile_image": "", #封面图片url
+           "length": "" #视频时长
+         }
+       ],
+       #书籍
+       "book": [
+         {
+           "created_time": nil,
+           "created_t": nil,
+           "category": nil,
+           "id": nil,
+           "head_url": nil,
+           "name": nil
+         }
+       ],
+       #游戏
+       "game": [
+         {
+           "created_time": nil,
+           "created_t": nil,
+           "category": nil,
+           "id": nil,
+           "head_url": nil,
+           "name": nil
+         }
+       ],
+       #游戏得分
+       "game_score": [
+         {
+           "application": {
+             "category": nil, #string 类别
+             "namespace": nil, #string 游戏子类
+             "link": nil, #string游戏链接
+             "name": nil, #游戏名
+             "id": nil, #id 游戏id
+             "head_url": nil,
+           },
+           "score": nil, #int 得分
+           "user": {
+             "name": nil,
+             "id": nil
+           }
+         }
+       ]
+     }
     }
   end
 
