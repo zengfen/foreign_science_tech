@@ -68,15 +68,15 @@ class ArchonFacebookUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonFacebookUser.last(10000).each do |user|
-      count += 1
-      break if count > 10
+    ArchonFacebookUser.last(100).each do |user|
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       next if facebook_post.blank?
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
       next if facebook_postReply.blank?
+      count += 1
+      break if count > 10
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
