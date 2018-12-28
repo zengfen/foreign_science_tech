@@ -92,7 +92,9 @@ class ArchonTwitterUser < ArchonBase
     out
   end
 
-  def dump_data_to_json
+
+  # ArchonTwitterUser.dump_data_to_json
+  def self.dump_data_to_json
     tag = get_tag
     datas = []
     unknow_hash = self.unknow_hash
