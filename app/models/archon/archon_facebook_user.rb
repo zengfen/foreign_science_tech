@@ -66,7 +66,7 @@ class ArchonFacebookUser < ArchonBase
   def self.dump_data_to_json
     tag = get_tag
     datas = []
-    ArchonFacebookUser.where("education <> ''").last(10).each do |user|
+    ArchonFacebookUser.last(10).each do |user|
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       oids = facebook_post.map{|x| x[:shareId]}
