@@ -66,7 +66,7 @@ class ArchonFacebookUser < ArchonBase
   def self.dump_data_to_json
     tag = get_tag
     datas = []
-    unknow_hash = unknow_hash
+    unknow_hash = self.unknow_hash
     count = 0
     ArchonFacebookUser.last(1000).each do |user|
       count += 1
