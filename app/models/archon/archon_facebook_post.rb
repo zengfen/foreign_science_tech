@@ -49,9 +49,9 @@ class ArchonFacebookPost < ArchonBase
         "forwardCount": x.repost_count, #转发次数
         "shareType": x.post_type, #分享类型
         "visitUrl": x.source_url, #原文信息URL
-        "publishTime": "", #发布时间，格式：yyyyMMddHHmmss
-        "updatedTime": "", #更新时间，格式：yyyyMMddHHmmss
-        "tags": [tag] #文章的标签
+        "publishTime": (Time.at(x.created_time).strftime("%Y%m%d%H%M%S") rescue nil), #发布时间，格式：yyyyMMddHHmmss
+        "updatedTime": (Time.at(x.updated_at).strftime("%Y%m%d%H%M%S") rescue nil), #更新时间，格式：yyyyMMddHHmmss
+        "tags": nil #文章的标签
       }
     end
     return facebook_post

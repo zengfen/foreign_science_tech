@@ -74,7 +74,7 @@ class ArchonFacebookUser < ArchonBase
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
-      facebook["pos"] = facebook_post
+      facebook["post"] = facebook_post
       facebook["postReply"] = facebook_postReply
       data[:facebook] = facebook
       datas << data.to_json
