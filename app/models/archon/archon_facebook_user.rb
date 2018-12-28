@@ -67,7 +67,7 @@ class ArchonFacebookUser < ArchonBase
     tag = get_tag
     datas = []
     ArchonFacebookUser.where("education <> ''").last(10).each do |user|
-      facebook_basic = get_facebook_basic
+      facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
