@@ -146,7 +146,7 @@ class ArchonFacebookUser < ArchonBase
     tag = get_tag
     facebook_post = []
     count = 0
-    ArchonFacebookPost.where(user_id: self.id).archon_facebook_posts.find_each do |x|
+    ArchonFacebookPost.where(user_id: self.id).find_each do |x|
       # 若这条post的tag不为指定tag 则取下一条数据
       next if !$redis.sismember("archon_center_#{tag}_facebbok_post_ids", x.id)
       count += 1
