@@ -93,7 +93,7 @@ class ArchonLinkedinUser < ArchonBase
   end
 
 
-  # ArchonLinkedinUser.dump_data_to_json
+  # nohup rails r ArchonLinkedinUser.dump_data_to_json &
   def self.dump_data_to_json
     datas = []
     unknow_hash = self.unknow_hash
@@ -121,11 +121,11 @@ class ArchonLinkedinUser < ArchonBase
 
   end
 
-  # ArchonLinkedinUser.read_redis_to_file
+  # nohup rails r ArchonLinkedinUser.read_redis_to_file &
   def self.read_redis_to_file
     while true
       datas = []
-      200.times each do
+      200.times do
         data = $redis.spop("archon_center_linkedin_datas")
         datas << data
         break if datas.blank?

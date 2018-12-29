@@ -87,11 +87,11 @@ class ArchonFacebookUser < ArchonBase
     end
   end
 
-  # ArchonFacebookUser.read_redis_to_file
+  # nohup rails r ArchonFacebookUser.read_redis_to_file &
   def self.read_redis_to_file
     while true
       datas = []
-      200.times each do
+      200.times do
         data = $redis.spop("archon_center_facebook_datas")
         datas << data
         break if datas.blank?

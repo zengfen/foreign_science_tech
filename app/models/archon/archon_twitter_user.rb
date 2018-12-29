@@ -124,10 +124,11 @@ class ArchonTwitterUser < ArchonBase
 
   end
 
+  # nohup rails r ArchonTwitterUser.read_redis_to_file &
   def self.read_redis_to_file
     while true
       datas = []
-      200.times each do
+      200.times do
         data = $redis.spop("archon_center_twitter_datas")
         datas << data
         break if datas.blank?
