@@ -1,3 +1,4 @@
+# encoding: utf-8
 class ArchonLinkedinUser < ArchonBase
   def self.dump_user(name)
     user = ArchonLinkedinUser.find(name)
