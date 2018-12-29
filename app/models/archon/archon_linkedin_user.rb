@@ -187,7 +187,6 @@ class ArchonLinkedinUser < ArchonBase
         "achievementFile": [] # str代表作，成就文件
       }
     end
-
   end
 
   def self.json_file_path
