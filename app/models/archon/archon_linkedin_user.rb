@@ -86,4 +86,202 @@ class ArchonLinkedinUser < ArchonBase
       end
     end
   end
+
+
+  # ArchonLinkedinUser.dump_data_to_json
+  def self.dump_data_to_json
+    datas = []
+    unknow_hash = self.unknow_hash
+    count = 0
+    ArchonLinkedinUser.find_each do |user|
+      user = user.get_linkedin_user
+      userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
+      next if userSkill.blank?
+      userAchievement = []
+      education = user.get_linkedin_education
+      career = user.get_linkedin_career
+      count += 1
+      break if count > 10
+      data = {linkedIn: {}}
+      linkedin = {}
+      linkedin["user"] = user
+      linkedin["userSkill"] = userSkill
+      linkedin["userAchievement"] = userAchievement
+      linkedin["education"] = education
+      linkedin["career"] = career
+      data[:linkedIn] = linkedin.merge(unknow_hash)
+      datas << data.to_json
+    end
+    File.open("#{json_file_path}/linkedin_data.json", "a+") {|f| f.puts datas}
+
+  end
+
+  def self.get_linkedin_user
+    latest_experience = JSON.parse(self.experience).sort_by{|x| x["入职日期"]}.last rescue {}
+    {
+      "userId": self.id, #用户ID（用于唯一标定用户）
+      "userName": self.name, #用户名称
+      "userJob": "", #用户职业
+      "userTitle": "", #用户头衔
+      "userLocation": "", #用户地址
+      "userTrade": "", #用户所属行业
+      "userOrgId": "", #用户所属公司ID
+      "userOrgName": latest_experience["Company Name"], #用户公司
+      "userIntroduction": self.desp, #用户简介
+      "website": nil, #string 个人linkedin页面地址
+    }
+  end
+
+
+  def self.get_linkedin_education
+    educations = JSON.parse(self.education) rescue []
+    linkedin_education = []
+    educations.each do |x|
+      if x["Dates attended or expected graduation"].present?
+        startDate, endDate = x["Dates attended or expected graduation"].split("-")
+      elsif x["在读时间或预计毕业时间"].present?
+        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
+      elsif x["degreeInfo"]["timePeriod"].present?
+        timePeriod = JSON.parse(x["degreeInfo"]["timePeriod"]["Raw"]) rescue {}
+        startDate = timePeriod["startDate"]["year"] rescue nil
+        endDate = timePeriod["endDate"]["year"] rescue nil
+      else
+        startDate, endDate = nil, nil
+      end
+      if x["degreeName"].present?
+        degreeName = x["degreeName"]
+      else
+        degreeName = x["degreeInfo"]["学位"] rescue nil
+      end
+      if x["fieldOfStudy"].present?
+        fieldOfStudy = x["fieldOfStudy"]
+      else
+        fieldOfStudy = x["degreeInfo"]["专业"] rescue nil
+      end
+      linkedin_education << {
+        "schoolName": x["schoolName"], # str 学校
+        "logo": x["schoolPic"], # str学校logo
+        "degreeName": degreeName, # str学位
+        "fieldOfStudy": fieldOfStudy, # str专业
+        "startDate": startDate, # str入学时间
+        "endDate": endDate, # str毕业时间
+        "score": "", # str成绩
+        "activities": "", # str活动社团
+        "description": x["description"], # str说明
+      }
+    end
+    return linkedin_education
+  end
+
+  # ArchonLinkedinUser
+  def self.get_linkedin_career
+    linkedin_career = []
+    experience = JSON.parse(self.experience) rescue []
+    experience.each do |x|
+      if x["timePeriod"].present?
+        startDate, endDate = x["Dates attended or expected graduation"].split("-")
+      elsif x["在读时间或预计毕业时间"].present?
+        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
+      elsif x["degreeInfo"]["timePeriod"].present?
+        timePeriod = JSON.parse(x["timePeriod"]["Raw"]) rescue {}
+        start_year = timePeriod["startDate"]["year"] rescue ''
+        start_month = timePeriod["startDate"]["month"] rescue ''
+        startDate = start_year + start_month
+        end_year = timePeriod["endDate"]["year"] rescue ''
+        end_month = timePeriod["endDate"]["month"] rescue ''
+        endDate = end_year + end_month
+      else
+        startDate, endDate = nil, nil
+      end
+      linkedin_career << {
+        "companyName": (x["companyName"]["Str"] rescue nil), # str 公司名称
+        "logo ": '', # str公司logo
+        "locationName": (x["locationName"]["Str"] rescue nil), # str公司位置
+        "title": (x["title"]["Str"] rescue nil), # str头衔
+        "job": nil, # str职位
+        "startDate": startDate,  # str入职时间
+        "endDate": endDate, # str 离职时间
+        "description": nil, # str职位描述
+        "achievementFile": [] # str代表作，成就文件
+      }
+    end
+
+  end
+
+
+  def self.unknow_hash
+    {
+      #机构信息
+      "organization": [
+        {
+          "orgId": "", #机构ID（用于唯一标定机构）
+          "orgName": "", #机构名称
+          "orgField": "", #机构领域
+          "orgIndustry": "", #机构行业
+          "orgSize": "", #机构规模
+          "orgIntruduction": "", #机构简介
+          "orgWebsite": "", #机构网站
+          "orgLocation": "", #机构总部
+          "orgType": "" #机构类型
+        },
+
+      ],
+      #人员机构关系
+      "member": [
+        {
+          "orgId": "", #机构ID（用于标定机构和用户关系）
+          "orgName": "", #机构名称
+          "userId": "", #用户ID（用于标定机构和用户关系）
+          "userName": "", #用户名称
+        }
+      ],
+      #动态发布
+      "post": [
+        {
+          "shareId": "", #动态id（唯一标定动态）
+          "shareContent": "", #动态内容
+          "userId": "", #发布者ID（用于标定动态和发布者关系）
+          "userName": "", #发布者名称
+          "shareTime": "", #发布时间
+          "likeNum": "", #点赞个数
+          "replayNum": "", #评论个数
+          "visitUrl": nil, #原文信息URL
+        }
+      ],
+      #动态评论
+      "comment": [#被评论动态(回复)的作者ID
+        {
+          "shareId": "", #被评论主动态(回复)的id（用于标定被回复与被回复动态关系）
+          "parentId": "", #被回复ID，用于回复的回复。
+          "replyId": "", #回复id（唯一标定回复）
+          "replyRecontent": "", #回复内容
+          "userId": "", #回复者ID（用于标定回复与回复者关系）
+          "userName": "", #回复者名称
+          "replyTime": "", #回复时间
+          "replyLinkNum": "", #回复的点赞数量
+          "replyReplyNum": "", #回复的回复数量
+        }
+      ],
+      #关注的人
+      "followerMember": [
+        {
+          "userId": "", #被关注者ID（用于标定被关注者与关注者关系）
+          "userName": "", #被关注者名称
+
+        }
+
+      ],
+      #关注的机构、学校
+      "followOrg": [
+        {
+          "orgId": "", #机构ID（用于标定被关注机构与关注者关系）
+          "orgName": "", #机构名称
+        }
+      ],
+
+      "others": {}
+    }
+  end
+
+
 end
