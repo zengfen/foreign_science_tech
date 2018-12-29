@@ -25,6 +25,7 @@ class TwitterEmotionAnalysis
         end
       end
 
+
     end
 
 
@@ -76,6 +77,8 @@ class TwitterEmotionAnalysis
     # 读取 ArchonTwitterTag 表的数据，存储tag
     # nohup rails r TwitterEmotionAnalysis.read_archon_twitter_tags &
     def read_archon_twitter_tags
+      # 清除上一次跑完的tag
+      # $redis.del(tags_key)
       # 获取上次 ArchonTwitterTag 表读到的数据偏移id
       offset_id = $redis.get(archon_titter_tag_offset_id_key) || 0
       # 获取最新的数据id
