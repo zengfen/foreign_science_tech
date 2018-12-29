@@ -107,18 +107,17 @@ class ArchonTwitter < ArchonBase
     count = 0
     self.where(user_id: user_id).find_each do |x|
       # 若这条post的tag不为指定tag 则取下一条数据
-      puts "=======#{$redis.sismember("archon_center_#{tag}_twitter_post_ids", x.id)}====="
       next if !$redis.sismember("archon_center_#{tag}_twitter_post_ids", x.id)
       count += 1
       # 只取10条数据
-      break if count > 10
+      break if count > twittwer_post_size
       twitter_post << {
         "tweetID": x.id, #推文ID （唯一标定推文）
         "userId": user_id, #int 发帖人ID
         "userName": user_name, #string    发帖人名称
         "userScreenName": user_screen_name, #string    发帖人昵称
         "content": x.title, #推文内容
-        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []), #视频或图片的URL
+        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []) + (JSON.parse(x.links) rescue []), #视频或图片的URL
         "location": {#经纬度和地址
                      "latitude": nil,
                      "longitude": nil,
@@ -140,13 +139,13 @@ class ArchonTwitter < ArchonBase
   # ArchonTwitter
   def self.get_twittwer_post_reply(oids)
     postReply = []
-    self.where(in_reply_to_status_id: oids).limit(20).each do |x|
+    self.where(in_reply_to_status_id: oids).limit(twittwer_reply_size).each do |x|
       postReply << {
         "tweetId": x.in_reply_to_status_id, #被回复主推文ID（唯一标定推文）
         "parentId": "", #被回复ID，用于回复的回复。
         "replyId": x.id, #回复ID
         "replyContent": x.title, #回复内容
-        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []),  #视频或图片的URL
+        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []) + (JSON.parse(x.links) rescue []),  #视频或图片的URL
         "replyTime": (Time.at(x.created_time).strftime("%Y%m%d%H%M%S") rescue null), #回复时间
         "userId": x.in_reply_to_user_id, #回复者ID（用于标定推文与发布者的关系）
         "userName": "", #回复者名称
@@ -172,11 +171,11 @@ class ArchonTwitter < ArchonBase
   # ArchonTwitter
   def self.get_twittwer_post_forward(oids)
     postForward = []
-    self.where(retweeted_status_id: oids).limit(20).each do |x|
+    self.where(retweeted_status_id: oids).limit(twittwer_forward_size).each do |x|
       postForward << {
         "tweetId": x.retweeted_status_id, #被转发推文ID （唯一标定推文）
         "forwardContent": x.retweeted_status_text, #转发内容
-        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []), #视频或图片的URL
+        "mediaUrl": (JSON.parse(x.images) rescue []) + (JSON.parse(x.videos) rescue []) + (JSON.parse(x.links) rescue []), #视频或图片的URL
         "userId": x.retweet_user_id, #转发者ID（用于标定推文与发布者的关系）
         "userName": "", #转发者名称
         "userScreen": "", #转发者昵称
@@ -199,5 +198,17 @@ class ArchonTwitter < ArchonBase
     return postForward
   end
 
+
+  def self.twittwer_post_size
+    50
+  end
+
+  def self.twittwer_reply_size
+    50
+  end
+
+  def self.twittwer_forward_size
+    50
+  end
 
 end

@@ -68,14 +68,14 @@ class ArchonFacebookUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonFacebookUser.last(100).each do |user|
+    ArchonFacebookUser.find_each do |user|
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       next if facebook_post.blank?
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
       count += 1
-      break if count > 10
+      break if count > facebook_user_size
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
@@ -388,5 +388,9 @@ class ArchonFacebookUser < ArchonBase
       FileUtils.mkdir_p path
     end
     return path
+  end
+
+  def self.facebook_user_size
+    2000
   end
 end

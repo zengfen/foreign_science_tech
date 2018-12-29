@@ -88,6 +88,10 @@ class ArchonLinkedinUser < ArchonBase
     end
   end
 
+  def self.linkedin_user_size
+    10
+  end
+
 
   # ArchonLinkedinUser.dump_data_to_json
   def self.dump_data_to_json
@@ -95,6 +99,11 @@ class ArchonLinkedinUser < ArchonBase
     unknow_hash = self.unknow_hash
     count = 0
     ArchonLinkedinUser.find_each do |user|
+      puts "===user_info_id=====#{user.attributes}==="
+      puts "===user_info_id=====#{user.id}==="
+
+      puts "===user_info_id=====#{user.attributes["id"]}==="
+      puts "===user_info=====#{user_info}==="
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       next if userSkill.blank?
@@ -102,7 +111,7 @@ class ArchonLinkedinUser < ArchonBase
       education = user.get_linkedin_education
       career = user.get_linkedin_career
       count += 1
-      break if count > 10
+      break if count > linkedin_user_size
       data = {linkedIn: {}}
       linkedin = {}
       linkedin["user"] = user_info
@@ -131,11 +140,6 @@ class ArchonLinkedinUser < ArchonBase
       "userIntroduction": self.desp, #用户简介
       "website": nil, #string 个人linkedin页面地址
     }
-    puts "===user_info_id=====#{self.attributes}==="
-    puts "===user_info_id=====#{self.id}==="
-
-    puts "===user_info_id=====#{self.attributes["id"]}==="
-    puts "===user_info=====#{user_info}==="
     return user_info
   end
 

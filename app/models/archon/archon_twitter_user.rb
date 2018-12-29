@@ -109,7 +109,7 @@ class ArchonTwitterUser < ArchonBase
       postForward = ArchonTwitter.get_twittwer_post_forward(oids)
       follower = ArchonTwitterFriend.get_twittwer_followers(user.id)
       count += 1
-      break if count > 10
+      break if count > twitter_user_size
       data = {twittwer: {}}
       twittwer = {}
       twittwer["basic"] = basic
@@ -180,5 +180,9 @@ class ArchonTwitterUser < ArchonBase
     return path
   end
 
+
+  def self.twitter_user_size
+    2000
+  end
 
 end
