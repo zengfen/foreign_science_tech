@@ -123,7 +123,7 @@ class ArchonLinkedinUser < ArchonBase
       "userName": self.name, #用户名称
       "userJob": "", #用户职业
       "userTitle": "", #用户头衔
-      "userLocation": "", #用户地址
+      "userLocation": self.location, #用户地址
       "userTrade": "", #用户所属行业
       "userOrgId": "", #用户所属公司ID
       "userOrgName": latest_experience["Company Name"], #用户公司
@@ -139,12 +139,18 @@ class ArchonLinkedinUser < ArchonBase
     educations.each do |x|
       if x["Dates attended or expected graduation"].present?
         startDate, endDate = x["Dates attended or expected graduation"].split("-")
-      elsif x["在读时间或预计毕业时间"].present?
-        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
-      elsif x["degreeInfo"]["timePeriod"].present?
-        timePeriod = JSON.parse(x["degreeInfo"]["timePeriod"]["Raw"]) rescue {}
+      elsif x["timePeriod"].present?
+        timePeriod = JSON.parse(x["timePeriod"]["Raw"]) rescue {}
         startDate = timePeriod["startDate"]["year"] rescue nil
         endDate = timePeriod["endDate"]["year"] rescue nil
+      elsif x["在读时间或预计毕业时间"].present?
+        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
+      elsif x["degreeInfo"].present?
+        if x["degreeInfo"]["timePeriod"].present?
+          timePeriod = JSON.parse(x["degreeInfo"]["timePeriod"]["Raw"]) rescue {}
+          startDate = timePeriod["startDate"]["year"] rescue nil
+          endDate = timePeriod["endDate"]["year"] rescue nil
+        end
       else
         startDate, endDate = nil, nil
       end
