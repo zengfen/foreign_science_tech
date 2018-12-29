@@ -94,7 +94,7 @@ class ArchonLinkedinUser < ArchonBase
     unknow_hash = self.unknow_hash
     count = 0
     ArchonLinkedinUser.find_each do |user|
-      user = user.get_linkedin_user
+      user_info = user.get_linkedin_user
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       next if userSkill.blank?
       userAchievement = []
@@ -104,7 +104,7 @@ class ArchonLinkedinUser < ArchonBase
       break if count > 10
       data = {linkedIn: {}}
       linkedin = {}
-      linkedin["user"] = user
+      linkedin["user"] = user_info
       linkedin["userSkill"] = userSkill
       linkedin["userAchievement"] = userAchievement
       linkedin["education"] = education
@@ -116,7 +116,7 @@ class ArchonLinkedinUser < ArchonBase
 
   end
 
-  def self.get_linkedin_user
+  def get_linkedin_user_info
     latest_experience = JSON.parse(self.experience).sort_by{|x| x["入职日期"]}.last rescue {}
     {
       "userId": self.id, #用户ID（用于唯一标定用户）
@@ -133,7 +133,7 @@ class ArchonLinkedinUser < ArchonBase
   end
 
 
-  def self.get_linkedin_education
+  def get_linkedin_education
     educations = JSON.parse(self.education) rescue []
     linkedin_education = []
     educations.each do |x|
@@ -174,7 +174,7 @@ class ArchonLinkedinUser < ArchonBase
   end
 
   # ArchonLinkedinUser
-  def self.get_linkedin_career
+  def get_linkedin_career
     linkedin_career = []
     experience = JSON.parse(self.experience) rescue []
     experience.each do |x|
@@ -206,6 +206,14 @@ class ArchonLinkedinUser < ArchonBase
       }
     end
 
+  end
+
+  def self.json_file_path
+    path = "#{Rails.root}/public/json_datas"
+    unless Dir.exists? path
+      FileUtils.mkdir_p path
+    end
+    return path
   end
 
 
