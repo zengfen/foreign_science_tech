@@ -103,7 +103,6 @@ class ArchonLinkedinUser < ArchonBase
       puts "===user_info_id=====#{user.id}==="
 
       puts "===user_info_id=====#{user.attributes["id"]}==="
-      puts "===user_info=====#{user_info}==="
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       next if userSkill.blank?
