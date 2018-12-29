@@ -2,7 +2,7 @@ class ArchonTwitterFriend < ArchonBase
 
   def self.get_twittwer_followers(user_id)
     follower = []
-    friend_ids = ArchonTwitterFriend.find(id: user_id).friend_ids.split(",") rescue []
+    friend_ids = ArchonTwitterFriend.find(user_id).friend_ids.split(",") rescue []
     return [] if friend_ids.blank?
     ArchonTwitterUser.where(id: friend_ids).each do |x|
       follower << {
