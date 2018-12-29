@@ -166,12 +166,12 @@ class ArchonLinkedinUser < ArchonBase
     experience.each do |x|
       if x["timePeriod"].present?
         timePeriod = JSON.parse(x["timePeriod"]["Raw"]) rescue {}
-        start_year = timePeriod["startDate"]["year"] rescue ''
-        start_month = timePeriod["startDate"]["month"] rescue ''
-        startDate = start_year + start_month
-        end_year = timePeriod["endDate"]["year"] rescue ''
-        end_month = timePeriod["endDate"]["month"] rescue ''
-        endDate = end_year + end_month
+        start_year = timePeriod["startDate"]["year"] rescue nil
+        start_month = timePeriod["startDate"]["month"] rescue nil
+        startDate = start_month.present? ? start_year.to_s + ("%02d" % start_month) : start_year.to_s
+        end_year = timePeriod["endDate"]["year"] rescue nil
+        end_month = timePeriod["endDate"]["month"] rescue nil
+        endDate = end_month.present? ?  end_year.to_s +  ("%02d" % end_month) : end_year.to_s
       else
         startDate, endDate = nil, nil
       end
@@ -187,6 +187,7 @@ class ArchonLinkedinUser < ArchonBase
         "achievementFile": [] # str代表作，成就文件
       }
     end
+    return linkedin_career
   end
 
   def self.json_file_path
