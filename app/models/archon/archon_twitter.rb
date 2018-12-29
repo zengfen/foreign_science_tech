@@ -211,4 +211,36 @@ class ArchonTwitter < ArchonBase
     50
   end
 
+
+
+  def self.temp_dump_twitters
+    ids0 = ArchonTwitter.select("id,retweet_user_id").where("retweeted_status_id > 0").limit(300000).reorder('').collect{|x| [x.id, x.retweet_user_id]}
+
+    ids00 = {}
+    ids0.each do |x|
+      ids00[x[1]] ||= []
+      ids00[x[1]] << x[0]
+    end
+    ids1 = ArchonTwitter.select("id,in_reply_to_user_id").where("in_reply_to_status_id > 0").limit(300000).reorder('').collect{|x| [x.id, x.in_reply_to_user_id]}
+    ids11 = {}
+    ids1.each do |x|
+      ids11[x[1]] ||= []
+      ids11[x[1]] << x[0]
+    end
+
+    ids2 = ids0.collect{|x| x[1]} & ids1.collect{|x| x[1]}
+
+    exist_uids = ArchonTwitterUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
+
+
+    f = File.open("dump_1123123.txt", "w")
+
+    exist_uids[0,2000].each do |x|
+      post_ids = ArchonTwitter.select("id").where(user_id: x.id).reorder(nil).limit(50).collect(&:id)
+      line = {userid: x, reply_ids: ids11[x], retweet_ids: ids00[x], post_ids: post_ids}
+      f.puts line.to_json
+    end
+
+    f.close
+  end
 end
