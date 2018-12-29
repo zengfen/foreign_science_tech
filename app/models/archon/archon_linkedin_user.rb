@@ -99,10 +99,8 @@ class ArchonLinkedinUser < ArchonBase
     unknow_hash = self.unknow_hash
     count = 0
     ArchonLinkedinUser.find_each do |user|
-      puts "===user_info_id=====#{user.attributes}==="
-      puts "===user_info_id=====#{user.id}==="
+      puts "===user_info_id=====#{user.id.is_utf8?}==="
 
-      puts "===user_info_id=====#{user.attributes["id"]}==="
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       next if userSkill.blank?
