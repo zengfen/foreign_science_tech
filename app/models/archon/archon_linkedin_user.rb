@@ -176,8 +176,8 @@ class ArchonLinkedinUser < ArchonBase
         startDate, endDate = nil, nil
       end
       linkedin_career << {
-        "companyName":  (JSON.parse(x["companyName"]["Raw"]) rescue nil) , # str 公司名称
-        "logo ": '', # str公司logo
+        "companyName":  (JSON.parse(x["companyName"]["Raw"]) rescue nil), # str 公司名称
+        "logo": '', # str公司logo
         "locationName": (JSON.parse(x["locationName"]["Raw"]) rescue nil), # str公司位置
         "title": (JSON.parse(x["title"]["Raw"]) rescue nil), # str头衔
         "job": nil, # str职位
