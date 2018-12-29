@@ -89,7 +89,7 @@ class ArchonLinkedinUser < ArchonBase
   end
 
   def self.linkedin_user_size
-    10
+    2000
   end
 
 

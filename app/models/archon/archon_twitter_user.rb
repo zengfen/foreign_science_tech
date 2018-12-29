@@ -93,7 +93,7 @@ class ArchonTwitterUser < ArchonBase
   end
 
 
-  # ArchonTwitterUser.dump_data_to_json
+  # nohup rails r ArchonTwitterUser.dump_data_to_json &
   def self.dump_data_to_json
     tag = get_tag
     datas = []
