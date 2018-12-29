@@ -118,7 +118,7 @@ class ArchonLinkedinUser < ArchonBase
 
   def get_linkedin_user_info
     latest_experience = JSON.parse(self.experience).sort_by{|x| x["timePeriod"]}.last rescue {}
-    {
+    user_info = {
       "userId": self.id, #用户ID（用于唯一标定用户）
       "userName": self.name, #用户名称
       "userJob": "", #用户职业
@@ -130,6 +130,8 @@ class ArchonLinkedinUser < ArchonBase
       "userIntroduction": self.desp, #用户简介
       "website": nil, #string 个人linkedin页面地址
     }
+    puts "===user_info=====#{user_info}==="
+    return user_info
   end
 
 
