@@ -130,6 +130,7 @@ class ArchonLinkedinUser < ArchonBase
       "userIntroduction": self.desp, #用户简介
       "website": nil, #string 个人linkedin页面地址
     }
+    puts "===user_info_id=====#{self.id}==="
     puts "===user_info=====#{user_info}==="
     return user_info
   end
