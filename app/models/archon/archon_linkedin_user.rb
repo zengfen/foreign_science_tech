@@ -99,8 +99,6 @@ class ArchonLinkedinUser < ArchonBase
     unknow_hash = self.unknow_hash
     count = 0
     ArchonLinkedinUser.find_each do |user|
-      puts "===user_info_id=====#{user.id.is_utf8?}==="
-
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       next if userSkill.blank?
@@ -117,10 +115,23 @@ class ArchonLinkedinUser < ArchonBase
       linkedin["education"] = education
       linkedin["career"] = career
       data[:linkedIn] = linkedin.merge(unknow_hash)
-      datas << data.to_json
+      # datas << data.to_json
+      $redis.sadd("archon_center_linkedin_datas", data.to_json)
     end
-    File.open("#{json_file_path}/linkedin_data.json", "a+") {|f| f.puts datas}
 
+  end
+
+  # ArchonLinkedinUser.read_redis_to_file
+  def self.read_redis_to_file
+    while true
+      datas = []
+      200.times each do
+        data = $redis.spop("archon_center_linkedin_datas")
+        datas << data
+        break if datas.blank?
+      end
+      File.open("#{json_file_path}/linkedin_data.json", "a+") {|f| f.puts datas}
+    end
   end
 
   def get_linkedin_user_info
@@ -135,7 +146,7 @@ class ArchonLinkedinUser < ArchonBase
       "userOrgId": "", #用户所属公司ID
       "userOrgName": (JSON.parse(latest_experience["companyName"]["Raw"]) rescue nil), #用户公司
       "userIntroduction": self.desp, #用户简介
-      "website": nil, #string 个人linkedin页面地址
+      "website": "https://www.linkedin.com/in/" + self.id, #string 个人linkedin页面地址
     }
     return user_info
   end

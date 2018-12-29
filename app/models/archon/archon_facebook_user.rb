@@ -82,9 +82,22 @@ class ArchonFacebookUser < ArchonBase
       facebook["post"] = facebook_post
       facebook["postReply"] = facebook_postReply
       data[:facebook] = facebook.merge(unknow_hash)
-      datas << data.to_json
+      # datas << data.to_json
+      $redis.sadd("archon_center_facebook_datas", data.to_json)
     end
-    File.open("#{json_file_path}/facebook_data.json", "a+") {|f| f.puts datas}
+  end
+
+  # ArchonFacebookUser.read_redis_to_file
+  def self.read_redis_to_file
+    while true
+      datas = []
+      200.times each do
+        data = $redis.spop("archon_center_facebook_datas")
+        datas << data
+        break if datas.blank?
+      end
+      File.open("#{json_file_path}/facebook_data.json", "a+") {|f| f.puts datas}
+    end
   end
 
   def get_facebook_basic
