@@ -99,17 +99,29 @@ class ArchonTwitterUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonTwitterUser.find_each do |user|
+
+    file_path = "dump_1123123.txt"
+    user_id_datas = []
+    count = 0
+    File.open(file_path, "r") do |f|
+      while data  = f.gets
+        count += 1
+        break if count > 10
+        user_id_datas << JSON.parse(data)
+      end
+    end
+    user_ids = user_id_datas.map{|x| x["userid"]}
+    ArchonTwitterUser.where(id: user_ids).each do |user|
+      ids_data = user_id_datas.find{|x| x["userid"] == user.id}
+      post_ids = ids_data["post_ids"]
+      reply_ids = ids_data["reply_ids"]
+      retweet_ids = ids_data["retweet_ids"]
+
       basic = user.get_twitter_basic
-      post = ArchonTwitter.get_twitter_post(user.id, user.name, user.screen_name, tag)
-      puts "=========#{post.count}"
-      next if post.blank?
-      oids = post.map{|x| x[:tweetID] }
-      postReply = ArchonTwitter.get_twittwer_post_reply(oids)
-      postForward = ArchonTwitter.get_twittwer_post_forward(oids)
+      post = ArchonTwitter.get_twitter_post_datas(post_ids)
+      postReply = ArchonTwitter.get_twittwer_post_reply_datas(reply_ids)
+      postForward = ArchonTwitter.get_twittwer_post_forward_datas(retweet_ids)
       follower = ArchonTwitterFriend.get_twittwer_followers(user.id)
-      count += 1
-      break if count > twitter_user_size
       data = {twittwer: {}}
       twittwer = {}
       twittwer["basic"] = basic
@@ -120,6 +132,27 @@ class ArchonTwitterUser < ArchonBase
       data[:twittwer] = twittwer.merge(unknow_hash)
       # datas << data.to_json
       $redis.sadd("archon_center_twitter_datas", data.to_json)
+
+
+      # basic = user.get_twitter_basic
+      # post = ArchonTwitter.get_twitter_post(user.id, user.name, user.screen_name, tag)
+      # next if post.blank?
+      # oids = post.map{|x| x[:tweetID] }
+      # postReply = ArchonTwitter.get_twittwer_post_reply(oids)
+      # postForward = ArchonTwitter.get_twittwer_post_forward(oids)
+      # follower = ArchonTwitterFriend.get_twittwer_followers(user.id)
+      # count += 1
+      # break if count > twitter_user_size
+      # data = {twittwer: {}}
+      # twittwer = {}
+      # twittwer["basic"] = basic
+      # twittwer["post"] = post
+      # twittwer["postReply"] = postReply
+      # twittwer["postForward"] = postForward
+      # twittwer["follower"] = follower
+      # data[:twittwer] = twittwer.merge(unknow_hash)
+      # # datas << data.to_json
+      # $redis.sadd("archon_center_twitter_datas", data.to_json)
     end
 
   end
@@ -130,6 +163,7 @@ class ArchonTwitterUser < ArchonBase
       datas = []
       200.times do
         data = $redis.spop("archon_center_twitter_datas")
+        break if data.blank?
         datas << data
         break if datas.blank?
       end

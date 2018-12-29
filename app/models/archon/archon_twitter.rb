@@ -100,17 +100,36 @@ class ArchonTwitter < ArchonBase
     nil
   end
 
-
-  # ArchonTwitter
-  def self.get_twitter_post(user_id, user_name, user_screen_name, tag)
-    twitter_post = []
-    count = 0
-    self.where(user_id: user_id).find_each do |x|
+  # ArchonTwitter.dump_twitter_user_ids
+  def self.dump_twitter_user_ids
+    tag = 252
+    ArchonTwitter.find_each do |x|
       # 若这条post的tag不为指定tag 则取下一条数据
       next if !$redis.sismember("archon_center_#{tag}_twitter_post_ids", x.id)
-      count += 1
-      # 只取10条数据
-      break if count > twittwer_post_size
+      # 若用户id到达2000 则退出
+      break if $redis.scard("archon_center_twitter_user_ids") > 2000
+      $redis.sadd("archon_center_twitter_user_ids", x.user_id)
+    end
+  end
+
+  def self.test
+    $redis.spop("archon_center_twitter_user_ids")
+  end
+
+
+
+
+  # ArchonTwitter
+  # def self.get_twitter_post(user_id, user_name, user_screen_name, tag)
+  def self.get_twittwer_post_datas(post_ids)
+    twitter_post = []
+    count = 0
+    self.where(id: post_ids).limit(twittwer_post_size).each do |x|
+      # 若这条post的tag不为指定tag 则取下一条数据
+      # next if !$redis.sismember("archon_center_#{tag}_twitter_post_ids", x.id)
+      # count += 1
+      # # 只取10条数据
+      # break if count > twittwer_post_size
       twitter_post << {
         "tweetID": x.id, #推文ID （唯一标定推文）
         "userId": user_id, #int 发帖人ID
@@ -137,9 +156,10 @@ class ArchonTwitter < ArchonBase
   end
 
   # ArchonTwitter
-  def self.get_twittwer_post_reply(oids)
+  # def self.get_twittwer_post_reply(oids)
+  def self.get_twittwer_post_reply_datas(reply_ids)
     postReply = []
-    self.where(in_reply_to_status_id: oids).limit(twittwer_reply_size).each do |x|
+    self.where(in_reply_to_status_id: reply_ids).limit(twittwer_reply_size).each do |x|
       postReply << {
         "tweetId": x.in_reply_to_status_id, #被回复主推文ID（唯一标定推文）
         "parentId": "", #被回复ID，用于回复的回复。
@@ -169,9 +189,11 @@ class ArchonTwitter < ArchonBase
   end
 
   # ArchonTwitter
-  def self.get_twittwer_post_forward(oids)
-    postForward = []
-    self.where(retweeted_status_id: oids).limit(twittwer_forward_size).each do |x|
+  # def self.get_twittwer_post_forward(oids)
+  def self.get_twittwer_post_forward_datas(retweet_ids)
+
+  postForward = []
+    self.where(retweeted_status_id: retweet_ids).limit(twittwer_forward_size).each do |x|
       postForward << {
         "tweetId": x.retweeted_status_id, #被转发推文ID （唯一标定推文）
         "forwardContent": x.retweeted_status_text, #转发内容
