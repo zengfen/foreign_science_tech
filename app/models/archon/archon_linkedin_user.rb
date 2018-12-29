@@ -117,16 +117,16 @@ class ArchonLinkedinUser < ArchonBase
   end
 
   def get_linkedin_user_info
-    latest_experience = JSON.parse(self.experience).sort_by{|x| x["入职日期"]}.last rescue {}
+    latest_experience = JSON.parse(self.experience).sort_by{|x| x["timePeriod"]}.last rescue {}
     {
       "userId": self.id, #用户ID（用于唯一标定用户）
       "userName": self.name, #用户名称
       "userJob": "", #用户职业
-      "userTitle": "", #用户头衔
+      "userTitle": self.sub_desp, #用户头衔
       "userLocation": self.location, #用户地址
-      "userTrade": "", #用户所属行业
+      "userTrade": (JSON.parse(self.contact)["industryName"] rescue nil), #用户所属行业
       "userOrgId": "", #用户所属公司ID
-      "userOrgName": latest_experience["Company Name"], #用户公司
+      "userOrgName": (JSON.parse(latest_experience["companyName"]["Raw"]) rescue nil), #用户公司
       "userIntroduction": self.desp, #用户简介
       "website": nil, #string 个人linkedin页面地址
     }
@@ -137,43 +137,23 @@ class ArchonLinkedinUser < ArchonBase
     educations = JSON.parse(self.education) rescue []
     linkedin_education = []
     educations.each do |x|
-      if x["Dates attended or expected graduation"].present?
-        startDate, endDate = x["Dates attended or expected graduation"].split("-")
-      elsif x["timePeriod"].present?
+      if x["timePeriod"].present?
         timePeriod = JSON.parse(x["timePeriod"]["Raw"]) rescue {}
         startDate = timePeriod["startDate"]["year"] rescue nil
         endDate = timePeriod["endDate"]["year"] rescue nil
-      elsif x["在读时间或预计毕业时间"].present?
-        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
-      elsif x["degreeInfo"].present?
-        if x["degreeInfo"]["timePeriod"].present?
-          timePeriod = JSON.parse(x["degreeInfo"]["timePeriod"]["Raw"]) rescue {}
-          startDate = timePeriod["startDate"]["year"] rescue nil
-          endDate = timePeriod["endDate"]["year"] rescue nil
-        end
       else
         startDate, endDate = nil, nil
       end
-      if x["degreeName"].present?
-        degreeName = x["degreeName"]
-      else
-        degreeName = x["degreeInfo"]["学位"] rescue nil
-      end
-      if x["fieldOfStudy"].present?
-        fieldOfStudy = x["fieldOfStudy"]
-      else
-        fieldOfStudy = x["degreeInfo"]["专业"] rescue nil
-      end
       linkedin_education << {
-        "schoolName": x["schoolName"], # str 学校
+        "schoolName": x["schoolName"]["Str"], # str 学校
         "logo": x["schoolPic"], # str学校logo
-        "degreeName": degreeName, # str学位
-        "fieldOfStudy": fieldOfStudy, # str专业
+        "degreeName": (JSON.parse(x["degreeName"]["Raw"]) rescue nil), # str学位
+        "fieldOfStudy": (JSON.parse(x["fieldOfStudy"]["Raw"]) rescue nil), # str专业
         "startDate": startDate, # str入学时间
         "endDate": endDate, # str毕业时间
         "score": "", # str成绩
         "activities": "", # str活动社团
-        "description": x["description"], # str说明
+        "description": (x["description"] rescue nil), # str说明
       }
     end
     return linkedin_education
@@ -185,10 +165,6 @@ class ArchonLinkedinUser < ArchonBase
     experience = JSON.parse(self.experience) rescue []
     experience.each do |x|
       if x["timePeriod"].present?
-        startDate, endDate = x["Dates attended or expected graduation"].split("-")
-      elsif x["在读时间或预计毕业时间"].present?
-        startDate, endDate = x["在读时间或预计毕业时间"].split("-")
-      elsif x["degreeInfo"]["timePeriod"].present?
         timePeriod = JSON.parse(x["timePeriod"]["Raw"]) rescue {}
         start_year = timePeriod["startDate"]["year"] rescue ''
         start_month = timePeriod["startDate"]["month"] rescue ''
@@ -200,10 +176,10 @@ class ArchonLinkedinUser < ArchonBase
         startDate, endDate = nil, nil
       end
       linkedin_career << {
-        "companyName": (x["companyName"]["Str"] rescue nil), # str 公司名称
+        "companyName":  (JSON.parse(x["companyName"]["Raw"]) rescue nil) , # str 公司名称
         "logo ": '', # str公司logo
-        "locationName": (x["locationName"]["Str"] rescue nil), # str公司位置
-        "title": (x["title"]["Str"] rescue nil), # str头衔
+        "locationName": (JSON.parse(x["locationName"]["Raw"]) rescue nil), # str公司位置
+        "title": (JSON.parse(x["title"]["Raw"]) rescue nil), # str头衔
         "job": nil, # str职位
         "startDate": startDate,  # str入职时间
         "endDate": endDate, # str 离职时间
