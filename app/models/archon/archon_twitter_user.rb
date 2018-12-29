@@ -115,7 +115,7 @@ class ArchonTwitterUser < ArchonBase
       retweet_ids = ids_data["retweet_ids"]
 
       basic = user.get_twitter_basic
-      post = ArchonTwitter.get_twitter_post_datas(post_ids)
+      post = ArchonTwitter.get_twitter_post_datas(post_ids, user.id, user.name, user.screen_name)
       postReply = ArchonTwitter.get_twittwer_post_reply_datas(reply_ids)
       postForward = ArchonTwitter.get_twittwer_post_forward_datas(retweet_ids)
       follower = ArchonTwitterFriend.get_twittwer_followers(user.id)

@@ -121,7 +121,7 @@ class ArchonTwitter < ArchonBase
 
   # ArchonTwitter
   # def self.get_twitter_post(user_id, user_name, user_screen_name, tag)
-  def self.get_twitter_post_datas(post_ids)
+  def self.get_twitter_post_datas(post_ids, user_id, user_name, user_screen_name)
     twitter_post = []
     count = 0
     self.where(id: post_ids).limit(twittwer_post_size).each do |x|
