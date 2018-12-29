@@ -102,11 +102,8 @@ class ArchonTwitterUser < ArchonBase
 
     file_path = "dump_1123123.txt"
     user_id_datas = []
-    count = 0
     File.open(file_path, "r") do |f|
       while data  = f.gets
-        count += 1
-        break if count > 10
         user_id_datas << JSON.parse(data)
       end
     end
