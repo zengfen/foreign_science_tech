@@ -280,10 +280,10 @@ class ArchonTwitter < ArchonBase
       post_ids.uniq!
 
       ids = ArchonTwitter.select("id").where(retweeted_status_id: post_ids).collect(&:id)
-      source_twitters_id_map[v][:retweet_ids] = ids
+      source_twitters_id_map[k][:retweet_ids] = ids
 
       ids = ArchonTwitter.select("id").where(in_reply_to_status_id: post_ids).collect(&:id)
-      source_twitters_id_map[v][:reply_ids] = ids
+      source_twitters_id_map[k][:reply_ids] = ids
     end
 
     File.open("dump_20_56.txt", "w") do |f|
