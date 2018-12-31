@@ -127,6 +127,7 @@ class ArchonLinkedinUser < ArchonBase
 
   # nohup rails r ArchonLinkedinUser.read_redis_to_file &
   def self.read_redis_to_file
+    time = Time.now.strftime("%Y%m%d%H%M%S")
     while true
       datas = []
       200.times do
@@ -135,7 +136,7 @@ class ArchonLinkedinUser < ArchonBase
         datas << data
         break if datas.blank?
       end
-      File.open("#{json_file_path}/#{Time.now.strftime("%Y%m%d%H%M%S")}_linkedin_data.json", "a+") {|f| f.puts datas}
+      File.open("#{json_file_path}/#{time}_linkedin_data.json", "a+") {|f| f.puts datas}
     end
   end
 
