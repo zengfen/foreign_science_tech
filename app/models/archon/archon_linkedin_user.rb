@@ -102,7 +102,7 @@ class ArchonLinkedinUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonLinkedinUser.where(id:user_names) do |user|
+    ArchonLinkedinUser.where(id:user_names).each do |user|
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       # next if userSkill.blank?
