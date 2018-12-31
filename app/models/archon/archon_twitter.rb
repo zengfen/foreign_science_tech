@@ -265,4 +265,33 @@ class ArchonTwitter < ArchonBase
 
     f.close
   end
+
+  def self.dump_by_tags(tag_id)
+    source_twitters = ArchonTwitter.select("id,user_id").where(id: ArchonTwitterTag.where(tag: tag_id).reorder(nil).collect(&:pid))
+    source_twitters_id_map = {}
+    source_twitters.each do |x|
+      source_twitters_id_map[x.user_id] ||= {}
+      source_twitters_id_map[x.user_id][:post_ids] ||= []
+      source_twitters_id_map[x.user_id][:post_ids] << x.id
+    end
+
+    source_twitters_id_map.each do |k, v|
+      post_ids = v[:post_ids]
+      post_ids.uniq!
+
+      ids = ArchonTwitter.select("id").where(retweeted_status_id: post_ids).collect(&:id)
+      source_twitters_id_map[v][:retweet_ids] = ids
+
+      ids = ArchonTwitter.select("id").where(in_reply_to_status_id: post_ids).collect(&:id)
+      source_twitters_id_map[v][:reply_ids] = ids
+    end
+
+    File.open("dump_20_56.txt", "w") do |f|
+      source_twitters_id_map.each do |k, v|
+        v[:userid] = k
+        f.puts v.to_json
+      end
+    end
+
+  end
 end
