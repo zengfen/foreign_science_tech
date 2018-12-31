@@ -162,6 +162,7 @@ class ArchonTwitterUser < ArchonBase
 
   # nohup rails r ArchonTwitterUser.read_redis_to_file &
   def self.read_redis_to_file
+    time = Time.now.strftime("%Y%m%d%H%M%S")
     while true
       datas = []
       200.times do
@@ -170,7 +171,7 @@ class ArchonTwitterUser < ArchonBase
         datas << data
       end
       break if datas.blank?
-      File.open("#{json_file_path}/twitter_data.json", "a+") {|f| f.puts datas}
+      File.open("#{json_file_path}/#{time}_twitter_data.json", "a+") {|f| f.puts datas}
     end
   end
 

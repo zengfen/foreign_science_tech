@@ -60,15 +60,20 @@ class ArchonFacebookUser < ArchonBase
     out
   end
 
+  def user_names
+    "aleksandra.pitner,ronald.l.moolenaar,cynthia.a.griffin.7,adrienne.p.fuentes,terry.pitner,TerryBranstad,robert.forden,miles.toder,shane.krohne,ben.glerum.5,zach.alger,ory.abramowicz,jimmullinax,clark.ledger,keithlommel,gbenelisha,cannon.smith,lizzie,18803355,drew.wind,being.alan.clark,nathaniel.tishman,levin.flake,jenniferkallen,JustinWalls,100005248428114,vicki.ting.56,danielle.koschil,boolbada,danchops,baylor.duncan,roseanne.freese,joe.plunkett,chelsea.chris.fisher,jfouss,michael.dubray,luke.donohue.754,Jesse.Curtis.702,ryan.mckean,mark.petry,russell.caplen,carla.hitchcock,chris.miller.127648,jing.w.edwards,christian.marchant.12,shelby.p.martin.5,james.cunningham.771282,100009568373676,dante.paradiso.50,kurt.tong.3,darragh.paradiso,brittanie.lakemaffeo,jeffrey.shrader".split(",")
+  end
+
 
 
   # ArchonFacebookUser.dump_data_to_json
   def self.dump_data_to_json
+    user_names = user_names
     tag = get_tag
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonFacebookUser.find_each do |user|
+    ArchonFacebookUser.where(screen_name: user_names) do |user|
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
       next if facebook_post.blank?
@@ -89,14 +94,16 @@ class ArchonFacebookUser < ArchonBase
 
   # nohup rails r ArchonFacebookUser.read_redis_to_file &
   def self.read_redis_to_file
+    time = Time.now.strftime("%Y%m%d%H%M%S")
     while true
       datas = []
       200.times do
         data = $redis.spop("archon_center_facebook_datas")
+        break if data.blank?
         datas << data
-        break if datas.blank?
       end
-      File.open("#{json_file_path}/facebook_data.json", "a+") {|f| f.puts datas}
+      break if datas.blank?
+      File.open("#{json_file_path}/#{time}_facebook_data.json", "a+") {|f| f.puts datas}
     end
   end
 
