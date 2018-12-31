@@ -92,6 +92,10 @@ class ArchonTwitterUser < ArchonBase
     out
   end
 
+  def user_names
+    "CynthiaAGriffin,TerryBranstad,johnsonrc01,mattmurray8,PetersFrancisM,jiminjava,clarkledger,KeithLommel,cannonsmith,ngraytishman,sean_stein,Boolbada,daphelps,Hokaheyhockey,Carlahitch,paradisoDX,tongkurt,tahinman".split(",")
+  end
+
 
   # nohup rails r ArchonTwitterUser.dump_data_to_json &
   def self.dump_data_to_json
@@ -100,7 +104,8 @@ class ArchonTwitterUser < ArchonBase
     unknow_hash = self.unknow_hash
     count = 0
 
-    file_path = "dump_1123123.txt"
+    # file_path = "dump_1123123.txt"
+    file_path = "#{Rails.root}/public/json_datas/dump_20_56.txt"
     user_id_datas = []
     File.open(file_path, "r") do |f|
       while data  = f.gets
@@ -108,7 +113,8 @@ class ArchonTwitterUser < ArchonBase
       end
     end
     user_ids = user_id_datas.map{|x| x["userid"]}
-    ArchonTwitterUser.where(id: user_ids).each do |user|
+    # ArchonTwitterUser.where(id: user_ids).find_each do |user|
+    ArchonTwitterUser.where(screen_name: user_ids).find_each do |user|
       ids_data = user_id_datas.find{|x| x["userid"] == user.id}
       post_ids = ids_data["post_ids"]
       reply_ids = ids_data["reply_ids"]
@@ -162,8 +168,8 @@ class ArchonTwitterUser < ArchonBase
         data = $redis.spop("archon_center_twitter_datas")
         break if data.blank?
         datas << data
-        break if datas.blank?
       end
+      break if datas.blank?
       File.open("#{json_file_path}/twitter_data.json", "a+") {|f| f.puts datas}
     end
   end

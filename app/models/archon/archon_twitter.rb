@@ -142,7 +142,7 @@ class ArchonTwitter < ArchonBase
                      "longitude": nil,
                      "address": ""
         }, #地理位置
-        "pubTme": (Time.at(x.created_time).strftime("%Y%m%d%H%M%S") rescue null), #发布时间
+        "pubTime": (Time.at(x.created_time).strftime("%Y%m%d%H%M%S") rescue null), #发布时间
         "mentionID": [
           {
             "userId": nil, #int 发帖人ID

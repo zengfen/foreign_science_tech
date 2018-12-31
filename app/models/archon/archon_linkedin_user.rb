@@ -134,8 +134,8 @@ class ArchonLinkedinUser < ArchonBase
         data = $redis.spop("archon_center_linkedin_datas")
         break if data.blank?
         datas << data
-        break if datas.blank?
       end
+      break if datas.blank?
       File.open("#{json_file_path}/#{time}_linkedin_data.json", "a+") {|f| f.puts datas}
     end
   end
