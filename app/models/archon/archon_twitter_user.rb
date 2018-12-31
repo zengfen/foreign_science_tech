@@ -114,7 +114,7 @@ class ArchonTwitterUser < ArchonBase
     end
     user_ids = user_id_datas.map{|x| x["userid"]}
     # ArchonTwitterUser.where(id: user_ids).find_each do |user|
-    ArchonTwitterUser.where(screen_name: user_ids).find_each do |user|
+    ArchonTwitterUser.where(id: user_ids).each do |user|
       ids_data = user_id_datas.find{|x| x["userid"] == user.id}
       post_ids = ids_data["post_ids"]
       reply_ids = ids_data["reply_ids"]
