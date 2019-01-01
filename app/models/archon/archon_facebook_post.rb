@@ -20,10 +20,10 @@ class ArchonFacebookPost < ArchonBase
     count = 0
     self.where(user_id: user_id).each do |x|
       # 若这条post的tag不为指定tag 则取下一条数据
-      next if !$redis.sismember("archon_center_#{tag}_facebbok_post_ids", x.id)
-      count += 1
+      # next if !$redis.sismember("archon_center_#{tag}_facebbok_post_ids", x.id)
+      # count += 1
       # 只取10条数据
-      break if count > facebook_post_size
+      # break if count > facebook_post_size
       facebook_post << {
         #发布者信息
         "userId": x.user_id, #分享者ID（用来进行关联）
