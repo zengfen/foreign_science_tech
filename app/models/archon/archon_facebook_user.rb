@@ -205,6 +205,7 @@ class ArchonFacebookUser < ArchonBase
           "friendTag": [""], #好友标签
         }
     end
+    return friends
   end
 
   def self.unknow_hash
