@@ -73,17 +73,31 @@ class ArchonFacebookUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonFacebookUser.where(screen_name: user_names) do |user|
+
+    file_path = "#{Rails.root}/public/json_datas/201901010129_facebook_source_data.json"
+    user_id_datas = []
+    File.open(file_path, "r") do |f|
+      while data  = f.gets
+        user_id_datas << JSON.parse(data)
+      end
+    end
+    user_ids = user_id_datas.map{|x| x["uid"]}
+
+    # ArchonFacebookUser.where(screen_name: user_names) do |user|
+    ArchonFacebookUser.where(id: user_ids).each do |user|
+      friend_ids = user_id_datas.find{|x| x["uid"].to_i == user.id}["friends"].map{|x| x["id"]} rescue []
+      friends = get_friends(friend_ids)
       facebook_basic = user.get_facebook_basic
       facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
-      next if facebook_post.blank?
+      # next if facebook_post.blank?
       oids = facebook_post.map{|x| x[:shareId]}
       facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
-      count += 1
-      break if count > facebook_user_size
+      # count += 1
+      # break if count > facebook_user_size
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
+      facebook["friends"] = friends
       facebook["post"] = facebook_post
       facebook["postReply"] = facebook_postReply
       data[:facebook] = facebook.merge(unknow_hash)
@@ -179,6 +193,20 @@ class ArchonFacebookUser < ArchonBase
     }
   end
 
+  def self.get_friends(user_ids)
+    friends = []
+    self.where(id:user_ids).each do |x|
+      #好友列表
+      friends <<
+        {
+          "userId": x.id, # int facebook用户ID
+          "userName": x.name, #string 姓名
+          "profileImage": "", #头像
+          "friendTag": [""], #好友标签
+        }
+    end
+  end
+
   def self.unknow_hash
     {# 家庭成员列表
      "familyMember": [
@@ -188,15 +216,6 @@ class ArchonFacebookUser < ArchonBase
          "profileImage": "", #头像
          "relationship": "" #string 家庭关系
        },
-     ],
-     "friends": [
-       #好友列表
-       {
-         "userId": "", # int facebook用户ID
-         "userName": "", #string 姓名
-         "profileImage": "", #头像
-         "friendTag": [""], #好友标签
-       }
      ],
      #关注
      "followerUser": [#被追随人的ID见basic部分
