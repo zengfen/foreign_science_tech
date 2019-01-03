@@ -4,6 +4,7 @@
     <%additional_function.each do |n|%>
       <%n.each do |k,v|%>
         <%=select_tag("cate_#{k}",options_for_select(v,params["cate_#{k}"]),include_blank: "#{k}",:class=>"form-control")%>
+        <%=text_field "cate_#{k}",:placeholder=>"#{k}",:class=>"form-control"%>
       <%end%>
     <%end %>
   </div>

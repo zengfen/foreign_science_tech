@@ -10,4 +10,24 @@ class ArchonTwitterList < ArchonBase
       File.open("twitter_list_1229.json","a+"){|f| f.puts jdoc.to_json}
     end
   end
+
+  def self.import
+    reply_ids = []
+    ArchonTwitter.select("in_reply_to_user_id").where("in_reply_to_status_id != 0").each_with_index do |n,i|
+      reply_ids << n.in_reply_to_user_id
+    end
+
+    puts reply_ids.uniq.inspect
+    puts "1"
+    i=0
+    zids = []
+    yids = []
+    while i < 772725
+      puts "........i#{i}"
+      #zids += ArchonTwitterUser.select("id").where(:id=>uids[i..i+10000]).collect{|x| x.id}
+      yids += ArchonTwitter.select("retweet_user_id").where(:retweet_user_id=>uids[i..i+10000]).collect{|x| x.retweet_user_id}.uniq
+      puts yids.count
+      i+=10000
+    end
+  end
 end
