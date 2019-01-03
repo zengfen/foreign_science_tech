@@ -22,7 +22,11 @@ class SpiderTasksController < ApplicationController
     add_funs = []
     params.keys.each do |key|
       if key.to_s =~ /cate_/
-        add_funs << { key.gsub('cate_', '').to_s => params[key.to_sym] }
+        if key.match("special_tags")
+          add_funs << { key.gsub('cate_', '').to_s => SpiderTask.special_tag_transfor_id(params[key.to_sym])}
+        else
+          add_funs << { key.gsub('cate_', '').to_s => params[key.to_sym] }
+        end
       end
     end
 

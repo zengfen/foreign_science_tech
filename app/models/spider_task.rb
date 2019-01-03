@@ -113,10 +113,10 @@ class SpiderTask < ApplicationRecord
     tag_names = []
     special_tag.split(',').each do |x|
       st = begin
-             SpecialTag.find(x)
-           rescue StandardError
-             nil
-           end
+        SpecialTag.find(x)
+      rescue StandardError
+        nil
+      end
       tag_names << st.tag if st
     end
     tag_names
@@ -127,6 +127,11 @@ class SpiderTask < ApplicationRecord
 
     specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
     self.special_tag = specital_tags_ids
+  end
+
+  def self.special_tag_transfor_id(special_tag)
+    specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
+    return specital_tags_ids
   end
 
   def tidb_table_name
