@@ -96,7 +96,7 @@
         </ul>
       </li>
       <li class="<%= is_active_controller('service_codes,service_code_versions') %>">
-        <a href=""><i class="fa fa-camera"></i> <span class="nav-label">代码版本控制</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-code-fork"></i> <span class="nav-label">代码版本控制</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('service_codes,service_code_versions') %>">
           <li class="<%= is_active_action("index", "service_codes") %>"><%= link_to "代码管理", "/service_codes" %></li>
           <li class="<%= is_active_action("block_ips", "service_code_versions") %>"><%= link_to "代码打包", "/service_code_versions" %></li>
