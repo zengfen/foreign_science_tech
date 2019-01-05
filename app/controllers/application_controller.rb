@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   private
   # 确保用户已登录
   def logged_in_user
-    @current_user = User.first
     # unless logged_in?
     #   store_location
     #   flash[:notice] = "请先登录！"
