@@ -98,7 +98,6 @@ gem 'aliyun-sdk'
 
 # 批量插入
 gem 'bulk_insert'
-gem 'scout_apm'
 
 
 
