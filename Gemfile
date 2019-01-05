@@ -99,3 +99,14 @@ gem 'aliyun-sdk'
 # 批量插入
 gem 'bulk_insert'
 gem 'scout_apm'
+
+
+
+
+
+# profiler
+#
+gem 'rack-mini-profiler'
+gem 'flamegraph'
+gem 'stackprof'
+gem 'memory_profiler'
