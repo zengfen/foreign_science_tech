@@ -1,0 +1,3 @@
+class ArchonTwitterListTag < ArchonBase
+
+end
