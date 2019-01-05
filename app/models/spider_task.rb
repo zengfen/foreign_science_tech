@@ -753,7 +753,7 @@ class SpiderTask < ApplicationRecord
 
 
   def self.clear_all
-    SpiderTask.where("status = 2 and created_at < '#{1.days.ago}'").each do |x|
+    SpiderTask.where("status = 2 and created_at < '#{3.days.ago}'").each do |x|
       x.virtual_destroy
     end
   end
