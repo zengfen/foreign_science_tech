@@ -2,8 +2,7 @@ class RefreshTaskStatusJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    SpiderTask.clear_all
-
-    RefreshTaskStatusJob.set(wait_until: Date.tomorrow).perform_later
+  	SpiderTask.refresh_task_status
+    Account.check_invalid_accounts
   end
 end

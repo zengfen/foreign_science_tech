@@ -725,6 +725,10 @@ class SpiderTask < ApplicationRecord
     end
   end
 
+  def missing_tasks
+    DispatcherSubtask.select("id").where(task_id: self.id).collect(&:id) - DispatcherSubtaskStatus.select("id").where(task_id: self.id).collect(&:id)
+  end
+
 
   def virtual_destroy
     return if self.status != 2
