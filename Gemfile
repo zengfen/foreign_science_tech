@@ -105,7 +105,11 @@ gem 'bulk_insert'
 
 # profiler
 #
-gem 'rack-mini-profiler'
-gem 'flamegraph'
-gem 'stackprof'
-gem 'memory_profiler'
+# gem 'rack-mini-profiler'
+# gem 'flamegraph'
+# gem 'stackprof'
+# gem 'memory_profiler'
+
+
+gem 'derailed_benchmarks', group: :development
+gem 'stackprof', group: :development
