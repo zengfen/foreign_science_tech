@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  # before_action :logged_in_user
+  before_action :logged_in_user
   before_action :get_spider_task ,:only=>[:fail_tasks,:retry_fail_task,:destroy_fail_task,:retry_all_fail_task]
 
   def index
