@@ -400,7 +400,7 @@ function output_csd(id, spider_id) {
     tags.forEach(function(tag){
       str += '<option value="' + tag[0] + '">' + tag[1] + '</option>'
     })
-    $("#dp_tag_ids").html(str);
+    $("#dp_tag_ids").html(str).trigger("chosen:updated");
     $("#modal-form-output").modal("show");
   })
 }
