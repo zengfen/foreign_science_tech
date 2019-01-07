@@ -66,7 +66,8 @@ class SpiderTasksController < ApplicationController
   # 导出
   def output
     @spider_task = SpiderTask.find_by(id: params[:id])
-    tag = @spider_task.dump_crowed_file
+    @spider_task.dump_crowed_file
+    render json: { type: 'success', message: '导出成功！' }
   end
 
   private
