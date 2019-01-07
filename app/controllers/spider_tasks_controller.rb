@@ -72,6 +72,15 @@ class SpiderTasksController < ApplicationController
     redirect_back(fallback_location: tasks_path)
   end
 
+
+  def output_csd
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    @spider_task.dump_crowed_file(params[:name], params[:tag_ids])
+    flash['success'] = '导出成功'
+
+    redirect_back(fallback_location: tasks_path)
+  end
+
   private
 
   def spider_task_params

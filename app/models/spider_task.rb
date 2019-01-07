@@ -768,7 +768,7 @@ class SpiderTask < ApplicationRecord
   end
 
   # 导出文件
-  def dump_crowed_file
+  def dump_crowed_file(name, tag_ids)
     list_ids = ArchonTwitterListTag.where(tag:self.special_tag).pluck(:pid)
     user_ids = ArchonTwitterList.where(id:list_ids).pluck(:user_ids).map{|x| x.split(",")}.flatten
     screen_names = {}
@@ -779,6 +779,14 @@ class SpiderTask < ApplicationRecord
       screen_names[x.id] << x.wikipedia if x.wikipedia.present?
       screen_names[x.id] << x.instagram if x.instagram.present?
     end
+
+    tag_ids ||= ""
+    tag_ids = tag_ids.split(",").collect(&:strip)
+    tag_ids.delete(nil)
+    tag_ids.delete("")
+    tag_ids.uniq!
+
+
     datas = []
     ArchonTwitterUser.where(id:user_ids).each do |x|
       data = {}
@@ -811,6 +819,7 @@ class SpiderTask < ApplicationRecord
         "freebase_id": nil,
         "quora_topic_id": nil,
         "site": nil,
+        "tags": tag_ids,
         "account_hash": {
           "twitter_screen_name": [x.screen_name],
           "facebook_screen_name": nil,
@@ -828,21 +837,21 @@ class SpiderTask < ApplicationRecord
       data["person_party"] = nil
       data["person_education"] = nil
       data["person_work"] = nil
-      user_screen_names.each_with_index do |name, index|
-        data["all_medias.#{index}.media_url"] = name
+      user_screen_names.each_with_index do |current_name, index|
+        data["all_medias.#{index}.media_url"] = current_name
       end
       datas << data.to_json
     end
 
     file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_twitter_list_output.json"
     File.open("#{Rails.root}/public/#{file_name}", "w") {|f| f.puts datas}
-    crowed_export_load_data(file_name)
+    crowed_export_load_data(name, file_name)
   end
 
   # 创建众包任务
-  def crowed_export_load_data(file_name)
+  def crowed_export_load_data(name, file_name)
     template,result_name  = {}, []
-    template["name"] = file_name.split(".")[0]
+    template["name"] = name
     template["record_count"] = 10
     template["replica_task_count"] = 0
     template["reward"] = 0
