@@ -752,4 +752,110 @@ class SpiderTask < ApplicationRecord
       x.virtual_destroy
     end
   end
+
+  # 能导出的模板id
+  def self.output_spider_ids
+    [146]
+  end
+
+  # 导出文件
+  def dump_crowed_file
+    list_ids = ArchonTwitterListTag.where(tag:self.special_tag).pluck(:pid)
+    user_ids = ArchonTwitterList.where(id:list_ids).pluck(:user_ids).map{|x| x.split(",")}.flatten
+    screen_names = {}
+    ArchonTwitterListBing.where(id:user_ids).each do |x|
+      screen_names[x.id] ||= []
+      screen_names[x.id] << x.facebook if x.facebook.present?
+      screen_names[x.id] << x.linkedin if x.linkedin.present?
+      screen_names[x.id] << x.wikipedia if x.wikipedia.present?
+      screen_names[x.id] << x.instagram if x.instagram.present?
+    end
+    datas = []
+    ArchonTwitterUser.where(id:user_ids).each do |x|
+      data = {}
+      user_screen_names = screen_names[x.id].to_a
+      data["twitter_screen_name"] = x.screen_name
+      data["crunchbase_id"] = nil
+      data["person_contact"] = nil
+      person_name = {
+        name: x.name,
+        aliases: x.name,
+        is_default: "1",
+        language_id: "en"
+      }
+      data["person_name"] = {}
+      data["person_name"][0] = person_name
+      data["person_image"] = nil
+      person =  {
+        "name": x.name,
+        "gender": nil,
+        "country_id": nil,
+        "born_date": nil,
+        "born_place": nil,
+        "is_married": nil,
+        "height": nil,
+        "weight": nil,
+        "blood_type": nil,
+        "youtube_channel_id": nil,
+        "youtube_screen_name": nil,
+        "googleplus_id": nil,
+        "freebase_id": nil,
+        "quora_topic_id": nil,
+        "site": nil,
+        "account_hash": {
+          "twitter_screen_name": [x.screen_name],
+          "facebook_screen_name": nil,
+          "instagram_screen_name": nil,
+          "linkedin_screen_name": nil,
+          "wikidata_id": nil,
+          "facebook_id": nil,
+          "crunchbase_id": nil,
+        },
+      }
+      data["person"] = person
+      data["person_address"] = nil
+      data["person_description"] = nil
+      data["person_relation"] = nil
+      data["person_party"] = nil
+      data["person_education"] = nil
+      data["person_work"] = nil
+      user_screen_names.each_with_index do |name, index|
+        data["all_medias.#{index}.media_url"] = name
+      end
+      datas << data.to_json
+    end
+
+    file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_twitter_list_output.json"
+    File.open("#{Rails.root}/public/#{file_name}", "w") {|f| f.puts datas}
+    crowed_export_load_data(file_name)
+  end
+
+  # 创建众包任务
+  def crowed_export_load_data(file_name)
+    template,result_name  = {}, []
+    template["name"] = file_name.split(".")[0]
+    template["record_count"] = 10
+    template["replica_task_count"] = 0
+    template["reward"] = 0
+    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id", "tags"]
+    result_values = result_name.count.times.map{"must"}
+    params = {}
+    params[:template] = template
+    params[:result_name] = result_name
+    params[:result_values] = result_values
+    params[:user_id] = 20
+    (2..(result_name.count + 1)).to_a.each do |index|
+      params["name#{index}_type".to_sym] = "input"
+    end
+    params[:file_path] = "#{Rails.root}/public/#{file_name}"
+    url = "#{crowed_api_url}/export_load_data"
+    res = RestClient.post(url, params)
+    res = JSON.parse(res)
+  end
+
+  def crowed_api_url
+    "http://csd.aggso.com/api"
+  end
+
+
 end

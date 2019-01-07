@@ -42,5 +42,10 @@
     <li>
       <%=link_to(spider_spider_task_path(spider_task.spider, spider_task),:class=>"remove-line") do%>删除<%end%>
     </li>
+    <% if SpiderTask.output_spider_ids.include?(spider_task.spider_id) %>
+      <li>
+        <%=link_to(output_spider_spider_task_path(spider_task.spider, spider_task),:remote=>"true") do%>导出<%end%>
+      </li>
+    <% end %>
   </ul>
 </td>

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       member do
         get 'start'
         get 'stop'
+        get 'output'
       end
       collection do
       end

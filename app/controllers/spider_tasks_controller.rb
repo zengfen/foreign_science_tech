@@ -59,6 +59,12 @@ class SpiderTasksController < ApplicationController
     render json: { type: 'success', message: '删除成功！' }
   end
 
+  # 导出
+  def output
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    tag = @spider_task.dump_crowed_file
+  end
+
   private
 
   def spider_task_params
