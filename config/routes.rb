@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         get 'start'
         get 'stop'
         get 'output'
+        get 'dp_tags'
       end
       collection do
       end

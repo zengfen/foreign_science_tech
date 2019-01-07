@@ -63,6 +63,14 @@ class SpiderTasksController < ApplicationController
     render json: { type: 'success', message: '删除成功！' }
   end
 
+  # 获取dp标签
+  def dp_tags
+    dp_api_url = "https://dp.aggso.com/api/query_person_tags"
+    res = RestClient.get(dp_api_url)
+    tags = JSON.parse(res).map{|x| [x["id"],x["name"]]}
+    render :json => {tags: tags}
+  end
+
   # 导出
   def output
     @spider_task = SpiderTask.find_by(id: params[:id])
