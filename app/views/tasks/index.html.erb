@@ -392,8 +392,7 @@ function output_csd(id, spider_id) {
   $("#modal-form-output #output_spider_task_id").val(id);
   $("#modal-form-output #output_spider_id").val(spider_id);
   $.ajax({
-    url: "/spiders/:spider_id/spider_tasks/"+ id + "/dp_tags",
-    data:{spider_id:spider_id},
+    url: "/spiders/"+ spider_id +"/spider_tasks/"+ id + "/dp_tags",
     dataType: 'json'
   }).done(function(res){
     var tags = res.tags;
