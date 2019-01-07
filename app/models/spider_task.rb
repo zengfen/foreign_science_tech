@@ -855,7 +855,8 @@ class SpiderTask < ApplicationRecord
     template["record_count"] = 10
     template["replica_task_count"] = 0
     template["reward"] = 0
-    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id", "tags"]
+    # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id", "tags"]
+    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id"]
     result_values = result_name.count.times.map{"must"}
     params = {}
     params[:template] = template
