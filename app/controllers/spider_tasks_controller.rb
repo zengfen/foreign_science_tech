@@ -67,7 +67,9 @@ class SpiderTasksController < ApplicationController
   def output
     @spider_task = SpiderTask.find_by(id: params[:id])
     @spider_task.dump_crowed_file
-    render json: { type: 'success', message: '导出成功！' }
+    flash['success'] = '导出成功'
+
+    redirect_back(fallback_location: tasks_path)
   end
 
   private
