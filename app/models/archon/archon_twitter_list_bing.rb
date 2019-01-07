@@ -1,0 +1,3 @@
+class ArchonTwitterListBing < ArchonBase
+
+end

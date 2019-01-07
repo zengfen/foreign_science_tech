@@ -1,0 +1,2 @@
+class ArchonVkTag < ArchonBase
+end

@@ -8,10 +8,11 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
+gem 'sprockets', '>= 3.7.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '3.12.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -98,3 +99,18 @@ gem 'aliyun-sdk'
 
 # 批量插入
 gem 'bulk_insert'
+
+
+
+
+
+# profiler
+#
+# gem 'rack-mini-profiler'
+# gem 'flamegraph'
+# gem 'stackprof'
+# gem 'memory_profiler'
+
+
+# gem 'derailed_benchmarks', group: :development
+# gem 'stackprof', group: :development
