@@ -780,11 +780,11 @@ class SpiderTask < ApplicationRecord
       screen_names[x.id] << x.instagram if x.instagram.present?
     end
 
-    tag_ids ||= ""
-    tag_ids = tag_ids.split(",").collect(&:strip)
-    tag_ids.delete(nil)
-    tag_ids.delete("")
-    tag_ids.uniq!
+    # tag_ids ||= ""
+    # tag_ids = tag_ids.split(",").collect(&:strip)
+    # tag_ids.delete(nil)
+    # tag_ids.delete("")
+    # tag_ids.uniq!
 
 
     datas = []
@@ -819,7 +819,7 @@ class SpiderTask < ApplicationRecord
         "freebase_id": nil,
         "quora_topic_id": nil,
         "site": nil,
-        "tags": tag_ids,
+        # "tags": tag_ids,
         "account_hash": {
           "twitter_screen_name": [x.screen_name],
           "facebook_screen_name": nil,
@@ -840,6 +840,7 @@ class SpiderTask < ApplicationRecord
       user_screen_names.each_with_index do |current_name, index|
         data["all_medias.#{index}.media_url"] = current_name
       end
+      data["reference.person.tags"] = tag_ids.to_s
       datas << data.to_json
     end
 
@@ -856,7 +857,7 @@ class SpiderTask < ApplicationRecord
     template["replica_task_count"] = 0
     template["reward"] = 0
     # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id", "tags"]
-    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id"]
+    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
     result_values = result_name.count.times.map{"must"}
     params = {}
     params[:template] = template
