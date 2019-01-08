@@ -876,6 +876,7 @@ class SpiderTask < ApplicationRecord
 
     params = {}
     params[:template] = template
+    params[:user_id] = 20
     params[:file_path] = "#{crowed_path}/#{file_name}"
     url = "#{crowed_api_url}/export_load_data"
     res = RestClient.post(url, params)
