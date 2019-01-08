@@ -44,6 +44,7 @@ class ApiController < ApplicationController
     return render json: { msg: 'error spider_id' } if params[:spider_id].blank?
     return render json: { msg: 'error keyword' } if params[:keyword].blank?
 
+    additional_function = JSON.parse(params[:additional_function]) rescue []
     @spider_task = SpiderTask.new(
       spider_id: params[:spider_id],
       level: 1,
@@ -53,7 +54,7 @@ class ApiController < ApplicationController
       status: 0,
       task_type: 2,
       is_split: false,
-      additional_function: params[:additional_function],
+      additional_function: additional_function,
     )
     Rails.logger.info "====params[:additional_function]===#{params[:additional_function]}"
     @spider_task.special_tag_transfor_id
