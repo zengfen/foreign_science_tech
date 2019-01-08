@@ -844,8 +844,10 @@ class SpiderTask < ApplicationRecord
       datas << data.to_json
     end
 
-    file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_twitter_list_output.json"
-    File.open("#{Rails.root}/public/#{file_name}", "w") {|f| f.puts datas}
+    file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_#{name}.json"
+    file_path = crowed_path
+    Dir.mkdir(file_path) if !Dir.exists?(file_path)
+    File.open("#{file_path}/#{file_name}", "w") {|f| f.puts datas}
     crowed_export_load_data(name, file_name)
   end
 
@@ -856,7 +858,6 @@ class SpiderTask < ApplicationRecord
     template["record_count"] = 10
     template["replica_task_count"] = 0
     template["reward"] = 0
-    # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id", "tags"]
     result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
     result_values = result_name.count.times.map{"must"}
     params = {}
@@ -875,6 +876,10 @@ class SpiderTask < ApplicationRecord
 
   def crowed_api_url
     "http://csd.aggso.com/api"
+  end
+
+  def crowed_path
+    "#{Rails.root}/public/crowed"
   end
 
 
