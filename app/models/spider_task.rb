@@ -792,6 +792,11 @@ class SpiderTask < ApplicationRecord
       data = {}
       user_screen_names = screen_names[x.id].to_a
       data["twitter_screen_name"] = x.screen_name
+      data["facebook_screen_name"] = x.screen_name
+      data["facebook_id"] = x.screen_name
+      data["instagram_screen_name"] = x.screen_name
+      data["linkedin_screen_name"] = x.screen_name
+      data["wikidata_id"] = x.screen_name
       data["crunchbase_id"] = nil
       data["person_contact"] = nil
       person_name = {
@@ -819,7 +824,7 @@ class SpiderTask < ApplicationRecord
         "freebase_id": nil,
         "quora_topic_id": nil,
         "site": nil,
-        # "tags": tag_ids,
+        "tags": tag_ids,
         "account_hash": {
           "twitter_screen_name": [x.screen_name],
           "facebook_screen_name": nil,
@@ -858,16 +863,19 @@ class SpiderTask < ApplicationRecord
     template["record_count"] = 10
     template["replica_task_count"] = 0
     template["reward"] = 0
-    result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
-    result_values = result_name.count.times.map{"must"}
+    # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
+    # result_values = result_name.count.times.map{"must"}
+    # params = {}
+    # params[:template] = template
+    # params[:result_name] = result_name
+    # params[:result_values] = result_values
+    # params[:user_id] = 20
+    # (2..(result_name.count + 1)).to_a.each do |index|
+    #   params["name#{index}_type".to_sym] = "input"
+    # end
+
     params = {}
     params[:template] = template
-    params[:result_name] = result_name
-    params[:result_values] = result_values
-    params[:user_id] = 20
-    (2..(result_name.count + 1)).to_a.each do |index|
-      params["name#{index}_type".to_sym] = "input"
-    end
     params[:file_path] = "#{crowed_path}/#{file_name}"
     url = "#{crowed_api_url}/export_load_data"
     res = RestClient.post(url, params)
