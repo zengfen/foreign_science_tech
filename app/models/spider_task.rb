@@ -792,11 +792,11 @@ class SpiderTask < ApplicationRecord
       data = {}
       user_screen_names = screen_names[x.id].to_a
       data["twitter_screen_name"] = x.screen_name
-      data["facebook_screen_name"] = x.screen_name
-      data["facebook_id"] = x.screen_name
-      data["instagram_screen_name"] = x.screen_name
-      data["linkedin_screen_name"] = x.screen_name
-      data["wikidata_id"] = x.screen_name
+      data["facebook_screen_name"] = nil
+      data["facebook_id"] = nil
+      data["instagram_screen_name"] = nil
+      data["linkedin_screen_name"] = nil
+      data["wikidata_id"] = nil
       data["crunchbase_id"] = nil
       data["person_contact"] = nil
       person_name = {
