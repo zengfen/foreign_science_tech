@@ -845,7 +845,7 @@ class SpiderTask < ApplicationRecord
       user_screen_names.each_with_index do |current_name, index|
         data["all_medias.#{index}.media_url"] = current_name
       end
-      data["reference.person.tags"] = tag_ids.to_s
+      # data["reference.person.tags"] = tag_ids.to_s
       datas << data.to_json
     end
 
