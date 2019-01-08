@@ -868,7 +868,7 @@ class SpiderTask < ApplicationRecord
     (2..(result_name.count + 1)).to_a.each do |index|
       params["name#{index}_type".to_sym] = "input"
     end
-    params[:file_path] = "#{Rails.root}/public/#{file_name}"
+    params[:file_path] = "#{crowed_path}/#{file_name}"
     url = "#{crowed_api_url}/export_load_data"
     res = RestClient.post(url, params)
     res = JSON.parse(res)
