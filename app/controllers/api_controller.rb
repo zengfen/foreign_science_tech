@@ -46,12 +46,13 @@ class ApiController < ApplicationController
 
     additional_function = JSON.parse(params[:additional_function]) rescue []
     begin_time = params[:begin_time].to_time rescue nil
+    special_tag = params[:special_tag]||""
     @spider_task = SpiderTask.new(
         spider_id:           params[:spider_id],
         level:               1,
         max_retry_count:     0,
         keyword:             params[:keyword],
-        special_tag:         params[:special_tag],
+        special_tag:         special_tag,
         status:              0,
         task_type:           2,
         is_split:            false,
