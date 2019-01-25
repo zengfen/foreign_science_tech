@@ -183,7 +183,6 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">任务名称</label>
                 <div class="col-sm-10">
-                  <div id="iconrange_spider_task_timeout_second"></div>
                   <input type="text" value="" name="name" class="form-control"/>
                 </div>
               </div>
@@ -192,7 +191,6 @@
                 <label class="col-sm-2 control-label">标签ID列表</label>
                 <div class="col-sm-10">
                   <select name="tag_ids[]" class="chosen-select form-control" multiple tabindex="2" data-placeholder="请选择标签" id="dp_tag_ids">
-
                   </select>
 
                 </div>
@@ -203,25 +201,24 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">数据切割</label>
                 <div class="col-sm-10">
-                  <div id="iconrange_spider_task_timeout_second"></div>
                   <input placeholder="每条切片对应的数据条数" class="form-control" required="required" type="text" name="record_count" id="task_release_record_count">
                 </div>
               </div>
               <div class="hr-line-dashed"></div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">副本数</label>
-                <div id="iconrange_spider_task_timeout_second"></div>
-                <select class="form-control m-b" name="replica_task_count" id="task_release_replica_task_count"><option value="0">0</option>
+                <div class="col-sm-10">
+                  <select class="form-control m-b" name="replica_task_count" id="task_release_replica_task_count"><option value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option></select>
+                </div>
               </div>
               <div class="hr-line-dashed"></div>
 
               <div class="form-group">
                 <label class="col-sm-2 control-label">任务报酬</label>
                 <div class="col-sm-10">
-                  <div id="iconrange_spider_task_timeout_second"></div>
                   <input class="form-control" required="required" type="text" name="reward" id="task_release_reward">
                 </div>
               </div>
