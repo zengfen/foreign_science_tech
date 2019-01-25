@@ -760,6 +760,10 @@ class SpiderTask < ApplicationRecord
     SpiderTask.where("status = 2 and created_at < '#{3.days.ago}'").each do |x|
       x.virtual_destroy
     end
+
+    SpiderTask.where("status = 2 and created_at < '#{2.weeks.ago}'").each do |x|
+      x.destroy
+    end
   end
 
   # 能导出的模板id
