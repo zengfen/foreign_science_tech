@@ -181,7 +181,7 @@
               <input type="hidden" value="" name="id" id="output_spider_task_id"/>
               <input type="hidden" value="" name="spider_id" id="output_spider_id"/>
               <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
+                <label class="col-sm-2 control-label">任务名称</label>
                 <div class="col-sm-10">
                   <div id="iconrange_spider_task_timeout_second"></div>
                   <input type="text" value="" name="name" class="form-control"/>
@@ -196,11 +196,29 @@
                   </select>
 
                 </div>
-
-
               </div>
               <div class="hr-line-dashed"></div>
               <div class="tags_inputs"></div>
+
+              <div class="form-group"><label class="col-sm-2 control-label">数据切割</label>
+                <div class="col-sm-10">
+                  <input placeholder="每条切片对应的数据条数" class="form-control" required="required" type="text" name="record_count" id="task_release_record_count">
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group"><label class="col-sm-2 control-label">副本数</label>
+                <select class="form-control m-b" name="replica_task_count" id="task_release_replica_task_count"><option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option></select>
+              </div>
+              <div class="hr-line-dashed"></div>
+
+              <div class="form-group"><label class="col-sm-2 control-label">任务报酬</label>
+                <input class="form-control" required="required" type="text" name="reward" id="task_release_reward">
+              </div>
+
+
               <div class="form-group">
                 <div class="col-sm-2 col-sm-offset-10">
                   <button class="btn btn-primary submit_btn" type="submit">导出</button>
@@ -214,6 +232,22 @@
   </div>
 </div>
 
+
+<div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">任务添加</h4>
+      </div>
+      <div class="modal-body">
+        <!-- modal-body -->
+        <%= render "crowdsouring_form_body" %>
+      </div>
+    </div>
+  </div>
+</div>
 
   <% content_for :javascript do %>
     <script>
@@ -319,6 +353,12 @@ $(".submit_btn").on('click', function (e) {
       $form.submit();
     }
 });
+
+$('.add-sql').on('click', function (e) {
+  e.preventDefault();
+  var $modal = $('#modal-form-add-sql');
+  $modal.modal("show");
+})
 
 window.setInterval(function(){
   var current_url = $("#current_url").val();
