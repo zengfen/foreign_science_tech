@@ -772,7 +772,10 @@ class SpiderTask < ApplicationRecord
   end
 
   # 导出文件
-  def dump_crowed_file(name, tag_ids)
+  def dump_crowed_file(params)
+    tag_ids = params[:tag_ids]
+    name = params[:name]
+
     list_ids = ArchonTwitterListTag.where(tag:self.special_tag).pluck(:pid)
     user_ids = ArchonTwitterList.where(id:list_ids).pluck(:user_ids).map{|x| x.split(",")}.flatten
     screen_names = {}
@@ -857,16 +860,16 @@ class SpiderTask < ApplicationRecord
     file_path = crowed_path
     Dir.mkdir(file_path) if !Dir.exists?(file_path)
     File.open("#{file_path}/#{file_name}", "w") {|f| f.puts datas}
-    crowed_export_load_data(name, file_name)
+    message = crowed_export_load_data(params, file_name)
   end
 
   # 创建众包任务
-  def crowed_export_load_data(name, file_name)
+  def crowed_export_load_data(params, file_name)
     template,result_name  = {}, []
-    template["name"] = name
-    template["record_count"] = 10
-    template["replica_task_count"] = 0
-    template["reward"] = 0
+    template["name"] = params[:name]
+    template["record_count"] = params[:record_count]
+    template["replica_task_count"] = params[:replica_task_count]
+    template["reward"] = params[:reward]
     # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
     # result_values = result_name.count.times.map{"must"}
     # params = {}
@@ -883,8 +886,14 @@ class SpiderTask < ApplicationRecord
     params[:user_id] = 20
     params[:file_path] = "#{crowed_path}/#{file_name}"
     url = "#{crowed_api_url}/export_load_data"
-    res = RestClient.post(url, params)
-    res = JSON.parse(res)
+    message = {}
+    begin
+      res = RestClient.post(url, params)
+      message = {type: "success", message:"导出成功"}
+    rescue Exception => e
+      message = {type: "error", message:"导出失败"}
+    end
+    return message
   end
 
   def crowed_api_url
