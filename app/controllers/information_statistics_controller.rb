@@ -3,6 +3,7 @@ class InformationStatisticsController < ApplicationController
 
   def index
   	opt = {}
+  	@countries = InformationExcel.new.countries_json
   	a = InformationStatistics.new
   	@redis_key = a.redis_key
   	@day = 0

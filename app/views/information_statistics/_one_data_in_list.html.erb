@@ -1,7 +1,7 @@
 <tr>
   <td><%= i%></td>
   <td><a href="<%=obj.site%>" target="_blank"><%= obj.ch_name %></a></td>
-  <td><%= obj.country_code %></td>
+  <td><%= @countries[obj.country_code] %></td>
   <td><%= obj.data_source %></td>
   <td><%= obj.level %></td>
   <td><%= $redis.hget(@redis_key,"#{obj.domain}_#{@day}") %></td>

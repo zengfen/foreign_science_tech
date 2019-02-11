@@ -102,6 +102,15 @@ class InformationExcel
     return data	
 	end
 
+	def countries_json
+		data = {}
+    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+      doc = JSON.parse(line)
+      data.merge!({doc['country_code']=>doc['cname']})
+    end	
+    return data			
+	end
+
 	def default_column_size
 		return 10
 	end
