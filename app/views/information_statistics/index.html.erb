@@ -14,7 +14,7 @@
 
                 <div class="col-md-3">
                   <div class="form-group mb0">
-                  <select class="form-control chosen-select">
+                  <select class="form-control chosen-select" data-placeholder="请选择国家">
                     <option></option>
                     <%@countries.each do |k,v|%>
                       <option value="<%=k%>"><%=v%></option>
@@ -198,6 +198,7 @@ $('.add-sql').on('click', function (e) {
   $modal.modal("show");
 })
 
+$('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000});
     </script>
   <% end %>
 
