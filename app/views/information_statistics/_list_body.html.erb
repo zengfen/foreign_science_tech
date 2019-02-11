@@ -12,6 +12,7 @@
     </thead>
     <tbody class="text-center">
     <%i = params[:page].to_i * 20%>
+    <%i = i - 20 if i > 20%>
       <% @lists.each do |obj| %>
         <%i += 1%>
        <%=render :partial=>"one_data_in_list",:locals=>{:obj=>obj,:i=>i}%>
