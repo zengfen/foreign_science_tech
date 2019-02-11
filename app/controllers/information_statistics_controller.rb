@@ -44,5 +44,12 @@ class InformationStatisticsController < ApplicationController
 			end
 		end
   	return render 'index'
-  end
+	end
+
+  def update_statistic
+		InformationStatisticsWorker.perform_async
+		flash[:status] = "发布成功"
+		redirect_to information_statistics_path
+	end
+
 end
