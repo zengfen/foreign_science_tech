@@ -24,6 +24,7 @@
 !/public/apple-touch-icon.png
 !/public/favicon.ico
 !/public/robots.txt
+!/public/countrys
 .idea
 db/schema.rb
 
