@@ -49,7 +49,7 @@
                     <select name="hav_infos" class="form-control chosen-select" data-placeholder="有无新闻">
                       <option value="">有无新闻</option>
                       <%@hav_infos.each do |k,v|%>
-                          <option value="<%=k%>"  <%= 'selected' if k==params[:hav_infos] %>><%=v%></option>
+                          <option value="<%=k%>" <%= 'selected' if k==params[:hav_infos] %>><%=v%></option>
                       <%end%>
                     </select>
                   </div>
@@ -59,7 +59,7 @@
                   <div class="form-group mb0">
                   <select name="start_date" class="form-control" data-placeholder="请选择日期">
                     <%15.times.each do |x|%>
-                      <option value="<%=x%>"><%=(Time.now - x.day).strftime("%F")%></option>
+                      <option value="<%=x%>" <%= 'selected' if x.to_s==params[:start_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
                     <%end%>
                   </select>
                   </div>
@@ -68,7 +68,7 @@
                   <div class="form-group mb0">
                     <select name="end_date" class="form-control" data-placeholder="请选择日期">
                       <%15.times.each do |x|%>
-                          <option value="<%=x%>"><%=(Time.now - x.day).strftime("%F")%></option>
+                          <option value="<%=x%>" <%= 'selected' if x.to_s==params[:end_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
                       <%end%>
                     </select>
                   </div>
