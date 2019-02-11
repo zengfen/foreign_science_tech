@@ -23,6 +23,16 @@
                   </div>
                 </div>
 
+                <div class="col-md-3">
+                  <div class="form-group mb0">
+                  <select class="form-control chosen-select" data-placeholder="请选择来源">
+                    <option></option>
+                    <%@data_sources.each do |x|%>
+                      <option value="<%=x%>"><%=x%></option>
+                    <%end%>
+                  </select>
+                  </div>
+                </div>
 
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">

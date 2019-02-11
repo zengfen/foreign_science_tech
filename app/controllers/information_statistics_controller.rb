@@ -4,6 +4,7 @@ class InformationStatisticsController < ApplicationController
   def index
   	opt = {}
   	@countries = InformationExcel.new.countries_json
+  	@data_sources = MediaInfo.data_sources 
   	a = InformationStatistics.new
   	@redis_key = a.redis_key
   	@day = 0
@@ -13,6 +14,7 @@ class InformationStatisticsController < ApplicationController
   def govern
   	opt = {}
   	@countries = InformationExcel.new.countries_json
+  	@data_sources = GovernmentInfo.data_sources
   	a = InformationStatistics.new
   	@redis_key = a.redis_key
   	@day = 0
