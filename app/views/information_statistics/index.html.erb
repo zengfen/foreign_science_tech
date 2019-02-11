@@ -117,26 +117,26 @@
 
 $(document)
 .on("click",".tab-li a",function(e){
-  e.preventDefault();
-  var $this = $(this);
-  if ($this.find('.icon-result').length > 0) return;
-  var targetClass = $this.data('target');
-  var $thisP = $this.closest('.ibox-content');
-  $this.closest('li').addClass('active').siblings('li').removeClass('active');
-  $thisP.children('.ibox-content').addClass('dn');
-  $thisP.children('.' + targetClass).removeClass('dn');
-  $('.more-ul').addClass('dn');
+  // e.preventDefault();
+  // var $this = $(this);
+  // if ($this.find('.icon-result').length > 0) return;
+  // var targetClass = $this.data('target');
+  // var $thisP = $this.closest('.ibox-content');
+  // $this.closest('li').addClass('active').siblings('li').removeClass('active');
+  // $thisP.children('.ibox-content').addClass('dn');
+  // $thisP.children('.' + targetClass).removeClass('dn');
+  // $('.more-ul').addClass('dn');
 
-  if (targetClass) {
-    var url = $this.attr("href");
-    if (url != "##") {
-      $("#current_url").val(url);
-      $.get(url, function (data) {
-        $("." + targetClass).html(data);
-      })
-      return false;
-    }
-  }
+  // if (targetClass) {
+  //   var url = $this.attr("href");
+  //   if (url != "##") {
+  //     $("#current_url").val(url);
+  //     $.get(url, function (data) {
+  //       $("." + targetClass).html(data);
+  //     })
+  //     return false;
+  //   }
+  // }
 })
 .on("click",'.icon-more',function(e){
    e.preventDefault();
