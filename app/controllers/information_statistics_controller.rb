@@ -9,4 +9,8 @@ class InformationStatisticsController < ApplicationController
   	@day = 0
   	@lists = MediaInfo.where(opt).page(params[:page]).per(20)
   end
+
+  def govern
+  	
+  end
 end
