@@ -1,0 +1,3 @@
+class MediaInfo < ApplicationRecord
+
+end

@@ -1,0 +1,3 @@
+class GovernmentInfo < ApplicationRecord
+
+end
