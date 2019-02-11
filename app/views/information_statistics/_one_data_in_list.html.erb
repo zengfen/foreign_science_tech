@@ -1,21 +1,8 @@
 <tr>
-  <td><%= obj[0]%></td>
-  <td><%= obj[1] %></td>
-  <td><%= obj[2] %></td>
-  <td><%= obj[3] %></td>
-  <td><%= obj[4] %></td>
-  <td><%= obj[5] %></td>
-  <td class="pos-r">
-    <a href="##">
-      <i class="icon_data_analysis icon-more"></i>
-    </a>
-    <ul class="more-ul dn">
-      <li class="bor-b"><a href="#">详情</a></li>
-      <li class="bor-b"><a href="#" class="remove-line">删除</a></li>
-       <li>
-       <li>
-       <%= link_to({:action => 'load_edit_form',:id=>rand(0..1000)},:class=>"edit",:remote=>true) do%>编辑<%end%></li>
-       </li>
-    </ul>
-  </td>
+  <td><%= i%></td>
+  <td><%= obj.ch_name %></td>
+  <td><%= obj.country_code %></td>
+  <td><%= obj.data_source %></td>
+  <td><%= obj.level %></td>
+  <td><%= $redis.hget(@redis_key,"#{obj.domain}_#{@day}") %></td>
 </tr>

@@ -2,19 +2,19 @@
   <table class="table table-striped table-bordered table-hover table-vcenter">
     <thead>
       <tr>
-        <th class="text-center">表头1</th>
-        <th class="text-center">表头2</th>
-        <th class="text-center">表头3</th>
-        <th class="text-center">表头4</th>
-        <th class="text-center">表头5</th>
-        <th class="text-center">表头6</th>
-        <th colspan="5" class="text-center">操作</th>
+        <th class="text-center">序号</th>
+        <th class="text-center">名称</th>
+        <th class="text-center">国家</th>
+        <th class="text-center">来源</th>
+        <th class="text-center">等级</th>
+        <th class="text-center">新闻量</th>
       </tr>
     </thead>
     <tbody class="text-center">
-
+    <%i = 0%>
       <% @lists.each do |obj| %>
-       <%=render :partial=>"one_data_in_list",:locals=>{:obj=>obj}%>
+        <%i += 1%>
+       <%=render :partial=>"one_data_in_list",:locals=>{:obj=>obj,:i=>i}%>
       <% end %>
     </tbody>
   </table>
