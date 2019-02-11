@@ -75,14 +75,14 @@ class InformationExcel
 	end
 
 	def parse_row(query)
-		return {type:'success',message:'跳过空行'} if query[:site].blank?
-		
+		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
+
 		k = Object.const_get modelclass	
 		new_data = k.where({domain:query[:domain]}).first
 		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
 		
 		query[:country_code] = countries[query[:country_code]]
-		return {type:'error',message:'国家不能为空'} if query[:country_code].blank?
+		return {type:'error',message:'国家不能为空',query:query} if query[:country_code].blank?
 		
 		new_data = k.new(query)
 		unless new_data.save
