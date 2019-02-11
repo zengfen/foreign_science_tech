@@ -139,6 +139,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :information_statistics do
+    collection do
+      get 'update_statistic'
+    end
+  end
+
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/sidekiq'
