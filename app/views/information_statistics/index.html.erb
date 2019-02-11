@@ -9,7 +9,7 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:post do%>
+          <%=form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
                 <div class="col-md-2">
@@ -49,7 +49,7 @@
                     <select name="hav_infos" class="form-control chosen-select" data-placeholder="有无新闻">
                       <option value="">有无新闻</option>
                       <%@hav_infos.each do |k,v|%>
-                          <option value="<%=k%>" <%= 'selected' if k==params[:hav_infos] %>><%=v%></option>
+                          <option value="<%=k%>" <%= 'selected' if k.to_s==params[:hav_infos] %>><%=v%></option>
                       <%end%>
                     </select>
                   </div>
@@ -57,9 +57,9 @@
 
                 <div class="col-md-4">
                   <div class="input-daterange input-group js-daterange">
-                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
+                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] || Date.today %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
                     <span class="input-group-addon">~</span>
-                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
+                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] || Date.today %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
                   </div>
                 </div>
 
