@@ -55,22 +55,11 @@
                   </div>
                 </div>
 
-                <div class="col-md-2">
-                  <div class="form-group mb0">
-                  <select name="start_date" class="form-control chosen-select" data-placeholder="开始时间">
-                    <%15.times.each do |x|%>
-                      <option value="<%=x%>" <%= 'selected' if x.to_s==params[:start_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
-                    <%end%>
-                  </select>
-                  </div>
-                </div>~
-                <div class="col-md-2">
-                  <div class="form-group mb0">
-                    <select name="end_date" class="form-control chosen-select" data-placeholder="结束时间">
-                      <%15.times.each do |x|%>
-                          <option value="<%=x%>" <%= 'selected' if x.to_s==params[:end_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
-                      <%end%>
-                    </select>
+                <div class="col-md-4">
+                  <div class="input-daterange input-group">
+                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] %>" placeholder="开始时间" onfocus="this.blur()">
+                    <span class="input-group-addon">~</span>
+                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] %>" placeholder="结束时间" onfocus="this.blur()">
                   </div>
                 </div>
 
