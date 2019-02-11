@@ -141,7 +141,8 @@ Rails.application.routes.draw do
 
   resources :information_statistics do
     collection do
-      get 'update_statistic'
+      get :update_statistic
+      get :govern
     end
   end
 
