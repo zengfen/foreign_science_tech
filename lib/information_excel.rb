@@ -5,7 +5,7 @@ class InformationExcel
 	def initialize(opt={})
 		@file_path = opt[:file_path]
 		@sheet_name = opt[:sheet_name]
-		@column_size = opt[:column_size]
+		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
 	end
 
