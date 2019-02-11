@@ -75,6 +75,8 @@ class InformationExcel
 	end
 
 	def parse_row(query)
+		return {type:'success',message:'跳过空行'} if query[:site].blank?
+		
 		k = Object.const_get modelclass	
 		new_data = k.where({domain:query[:domain]}).first
 		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
