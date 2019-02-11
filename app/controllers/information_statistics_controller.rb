@@ -18,7 +18,7 @@ class InformationStatisticsController < ApplicationController
 		@lists.each do |obj|
 			@info_count[obj.id] ||= 0
 			(params[:end_date].to_i..params[:start_date].to_i).each do |day|
-				@info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}") || 0
+				@info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
 			end
 		end
   end
@@ -40,7 +40,7 @@ class InformationStatisticsController < ApplicationController
 		@lists.each do |obj|
 			@info_count[obj.id] ||= 0
 			(params[:end_date].to_i..params[:start_date].to_i).each do |day|
-				@info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}") || 0
+				@info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
 			end
 		end
   	return render 'index'
