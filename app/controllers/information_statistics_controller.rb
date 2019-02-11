@@ -11,6 +11,12 @@ class InformationStatisticsController < ApplicationController
   end
 
   def govern
-  	
+  	opt = {}
+  	@countries = InformationExcel.new.countries_json
+  	a = InformationStatistics.new
+  	@redis_key = a.redis_key
+  	@day = 0
+  	@lists = GovernmentInfo.where(opt).page(params[:page]).per(20)  	
+  	return render index
   end
 end
