@@ -57,7 +57,7 @@
 
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                  <select name="start_date" class="form-control" data-placeholder="请选择日期">
+                  <select name="start_date" class="form-control chosen-select" data-placeholder="开始时间">
                     <%15.times.each do |x|%>
                       <option value="<%=x%>" <%= 'selected' if x.to_s==params[:start_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
                     <%end%>
@@ -66,7 +66,7 @@
                 </div>~
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <select name="end_date" class="form-control" data-placeholder="请选择日期">
+                    <select name="end_date" class="form-control chosen-select" data-placeholder="结束时间">
                       <%15.times.each do |x|%>
                           <option value="<%=x%>" <%= 'selected' if x.to_s==params[:end_date] %>><%=(Time.now - x.day).strftime("%F")%></option>
                       <%end%>
