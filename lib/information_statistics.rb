@@ -11,7 +11,7 @@ class InformationStatistics
 		
 		$redis.del(redis_key)
 		
-		ArchonNews.where({id:pids}).find_each do |x|
+		ArchonNews.where({id:pids}).each do |x|
 			source_url = x.source_url
 			domain = source_url.split('://').last.split('/').first rescue ''
 			domain = domain.gsub('www.','') rescue ''
