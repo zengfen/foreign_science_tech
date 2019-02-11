@@ -1,0 +1,247 @@
+{"country_code":"AF","name":"Afghanistan","cname":"阿富汗","flag":"imgs/AF.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AX","name":"Aland Islands","cname":"奥兰群岛","flag":"imgs/AX.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AL","name":"Albania","cname":"阿尔巴尼亚","flag":"imgs/AL.jpg","prefix_letter":"ABCDE"}
+{"country_code":"DZ","name":"Algeria","cname":"阿尔及利亚","flag":"imgs/DZ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AS","name":"American Samoa","cname":"美属萨摩亚群岛","flag":"imgs/AS.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AD","name":"Andorra","cname":"安道尔","flag":"imgs/AD.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AO","name":"Angola","cname":"安哥拉","flag":"imgs/AO.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AI","name":"Anguilla","cname":"安圭拉","flag":"imgs/AI.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AQ","name":"Antarctica","cname":"南极洲","flag":"imgs/AQ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AG","name":"Antigua and Barbuda","cname":"安提瓜和巴布达","flag":"imgs/AG.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AR","name":"Argentina","cname":"阿根廷","flag":"imgs/AR.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AM","name":"Armenia","cname":"亚美尼亚","flag":"imgs/AM.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AW","name":"Aruba","cname":"阿鲁巴","flag":"imgs/AW.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AU","name":"Australia","cname":"澳大利亚","flag":"imgs/AU.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AT","name":"Austria","cname":"奥地利","flag":"imgs/AT.jpg","prefix_letter":"ABCDE"}
+{"country_code":"AZ","name":"Azerbaijan","cname":"阿塞拜疆","flag":"imgs/AZ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BS","name":"Bahamas","cname":"巴哈马","flag":"imgs/BS.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BH","name":"Bahrain","cname":"巴林","flag":"imgs/BH.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BD","name":"Bangladesh","cname":"孟加拉国","flag":"imgs/BD.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BB","name":"Barbados","cname":"巴巴多斯","flag":"imgs/BB.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BY","name":"Belarus","cname":"白俄罗斯","flag":"imgs/BY.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BE","name":"Belgium","cname":"比利时","flag":"imgs/BE.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BZ","name":"Belize","cname":"伯利兹","flag":"imgs/BZ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BJ","name":"Benin","cname":"贝宁","flag":"imgs/BJ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BM","name":"Bermuda","cname":"百慕大","flag":"imgs/BM.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BT","name":"Bhutan","cname":"不丹","flag":"imgs/BT.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BO","name":"Bolivia","cname":"玻利维亚","flag":"imgs/BO.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BQ","name":"Bonaire, Sint Eustatius and Saba","cname":"波内赫、圣尤斯特歇斯和萨巴","flag":"imgs/BQ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BA","name":"Bosnia and Herzegovina","cname":"波斯尼亚和黑塞哥维那","flag":"imgs/BA.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BW","name":"Botswana","cname":"博茨瓦纳","flag":"imgs/BW.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BV","name":"Bouvet Island","cname":"布韦岛","flag":"imgs/BV.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BR","name":"Brazil","cname":"巴西","flag":"imgs/BR.jpg","prefix_letter":"ABCDE"}
+{"country_code":"IO","name":"British Indian Ocean Territory","cname":"英属印度洋领地","flag":"imgs/IO.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BN","name":"Brunei","cname":"文莱","flag":"imgs/BN.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BG","name":"Bulgaria","cname":"保加利亚","flag":"imgs/BG.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BF","name":"Burkina Faso","cname":"布基纳法索","flag":"imgs/BF.jpg","prefix_letter":"ABCDE"}
+{"country_code":"BI","name":"Burundi","cname":"布隆迪","flag":"imgs/BI.jpg","prefix_letter":"ABCDE"}
+{"country_code":"KH","name":"Cambodia","cname":"柬埔寨","flag":"imgs/KH.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CM","name":"Cameroon","cname":"喀麦隆","flag":"imgs/CM.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CA","name":"Canada","cname":"加拿大","flag":"imgs/CA.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CV","name":"Cape Verde","cname":"佛得角","flag":"imgs/CV.jpg","prefix_letter":"ABCDE"}
+{"country_code":"KY","name":"Cayman Islands","cname":"开曼群岛","flag":"imgs/KY.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CF","name":"Central African Republic","cname":"中非共和国","flag":"imgs/CF.jpg","prefix_letter":"ABCDE"}
+{"country_code":"TD","name":"Chad","cname":"乍得","flag":"imgs/TD.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CL","name":"Chile","cname":"智利","flag":"imgs/CL.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CN","name":"China","cname":"中国","flag":"imgs/CN.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CX","name":"Christmas Island","cname":"圣诞岛","flag":"imgs/CX.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CC","name":"Cocos (Keeling) Islands","cname":"科科斯（基林）群岛","flag":"imgs/CC.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CO","name":"Colombia","cname":"哥伦比亚","flag":"imgs/CO.jpg","prefix_letter":"ABCDE"}
+{"country_code":"KM","name":"Comoros","cname":"科摩罗","flag":"imgs/KM.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CG","name":"Republic of the Congo","cname":"刚果共和国","flag":"imgs/CG.jpg","prefix_letter":"PQRST"}
+{"country_code":"CD","name":"The Democratic Republic of the Congo","cname":"刚果民主共和国","flag":"imgs/CD.jpg","prefix_letter":"PQRST"}
+{"country_code":"CK","name":"Cook Islands","cname":"库克群岛","flag":"imgs/CK.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CR","name":"Costa Rica","cname":"哥斯达黎加","flag":"imgs/CR.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CI","name":"Ivory Coast","cname":"科特迪瓦","flag":"imgs/CI.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"HR","name":"Croatia","cname":"克罗地亚","flag":"imgs/HR.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CU","name":"Cuba","cname":"古巴","flag":"imgs/CU.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CW","name":"Curaçao","cname":"库拉索","flag":"imgs/CW.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CY","name":"Cyprus","cname":"塞浦路斯","flag":"imgs/CY.jpg","prefix_letter":"ABCDE"}
+{"country_code":"CZ","name":"Czech Republic","cname":"捷克共和国","flag":"imgs/CZ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"DK","name":"Denmark","cname":"丹麦","flag":"imgs/DK.jpg","prefix_letter":"ABCDE"}
+{"country_code":"DJ","name":"Djibouti","cname":"吉布提","flag":"imgs/DJ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"DM","name":"Dominica","cname":"多米尼加","flag":"imgs/DM.jpg","prefix_letter":"ABCDE"}
+{"country_code":"DO","name":"Dominican Republic","cname":"多明尼加共和国","flag":"imgs/DO.jpg","prefix_letter":"ABCDE"}
+{"country_code":"EC","name":"Ecuador","cname":"厄瓜多尔","flag":"imgs/EC.jpg","prefix_letter":"ABCDE"}
+{"country_code":"EG","name":"Egypt","cname":"埃及","flag":"imgs/EG.jpg","prefix_letter":"ABCDE"}
+{"country_code":"SV","name":"El Salvador","cname":"萨尔瓦多","flag":"imgs/SV.jpg","prefix_letter":"ABCDE"}
+{"country_code":"GQ","name":"Equatorial Guinea","cname":"赤道几内亚","flag":"imgs/GQ.jpg","prefix_letter":"ABCDE"}
+{"country_code":"ER","name":"Eritrea","cname":"厄立特里亚","flag":"imgs/ER.jpg","prefix_letter":"ABCDE"}
+{"country_code":"EE","name":"Estonia","cname":"爱沙尼亚","flag":"imgs/EE.jpg","prefix_letter":"ABCDE"}
+{"country_code":"ET","name":"Ethiopia","cname":"埃塞俄比亚","flag":"imgs/ET.jpg","prefix_letter":"ABCDE"}
+{"country_code":"FK","name":"Falkland Islands","cname":"福克兰群岛","flag":"imgs/FK.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"FO","name":"Faroe Islands","cname":"法罗群岛","flag":"imgs/FO.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"FJ","name":"Fiji","cname":"斐济","flag":"imgs/FJ.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"FI","name":"Finland","cname":"芬兰","flag":"imgs/FI.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"FR","name":"France","cname":"法国","flag":"imgs/FR.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GF","name":"French Guiana","cname":"法属圭亚那","flag":"imgs/GF.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"PF","name":"French Polynesia","cname":"法属波利尼西亚","flag":"imgs/PF.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"TF","name":"French Southern Territories","cname":"法属南部领地","flag":"imgs/TF.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GA","name":"Gabon","cname":"加蓬","flag":"imgs/GA.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GM","name":"Gambia","cname":"冈比亚","flag":"imgs/GM.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GE","name":"Georgia","cname":"格鲁吉亚","flag":"imgs/GE.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"DE","name":"Germany","cname":"德国","flag":"imgs/DE.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GH","name":"Ghana","cname":"加纳","flag":"imgs/GH.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GI","name":"Gibraltar","cname":"直布罗陀","flag":"imgs/GI.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GR","name":"Greece","cname":"希腊","flag":"imgs/GR.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GL","name":"Greenland","cname":"格陵兰岛","flag":"imgs/GL.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GD","name":"Grenada","cname":"格林纳达","flag":"imgs/GD.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GP","name":"Guadeloupe","cname":"瓜德罗普岛","flag":"imgs/GP.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GU","name":"Guam","cname":"关岛","flag":"imgs/GU.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GT","name":"Guatemala","cname":"危地马拉","flag":"imgs/GT.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GG","name":"Guernsey","cname":"根西岛","flag":"imgs/GG.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GN","name":"Guinea","cname":"几内亚","flag":"imgs/GN.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GW","name":"Guinea-Bissau","cname":"几内亚比绍","flag":"imgs/GW.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"GY","name":"Guyana","cname":"圭亚那","flag":"imgs/GY.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"HT","name":"Haiti","cname":"海地","flag":"imgs/HT.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"HM","name":"Heard Island and McDonald Islands","cname":"赫德岛和麦克唐纳群岛","flag":"imgs/HM.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"VA","name":"Vatican City","cname":"梵蒂冈城","flag":"imgs/VA.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"HN","name":"Honduras","cname":"洪都拉斯","flag":"imgs/HN.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"HK","name":"Hong Kong","cname":"香港","flag":"imgs/HK.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"HU","name":"Hungary","cname":"匈牙利","flag":"imgs/HU.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IS","name":"Iceland","cname":"冰岛","flag":"imgs/IS.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IN","name":"India","cname":"印度","flag":"imgs/IN.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"ID","name":"Indonesia","cname":"印度尼西亚","flag":"imgs/ID.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IR","name":"Iran","cname":"伊朗","flag":"imgs/IR.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IQ","name":"Iraq","cname":"伊拉克","flag":"imgs/IQ.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IE","name":"Ireland","cname":"爱尔兰","flag":"imgs/IE.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IM","name":"Isle of Man","cname":"马恩岛","flag":"imgs/IM.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IL","name":"Israel","cname":"以色列","flag":"imgs/IL.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"IT","name":"Italy","cname":"意大利","flag":"imgs/IT.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"JM","name":"Jamaica","cname":"牙买加","flag":"imgs/JM.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"JP","name":"Japan","cname":"日本","flag":"imgs/JP.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"JE","name":"Jersey","cname":"新泽西","flag":"imgs/JE.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"JO","name":"Jordan","cname":"约旦","flag":"imgs/JO.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"KZ","name":"Kazakhstan","cname":"哈萨克斯坦","flag":"imgs/KZ.jpg","prefix_letter":"KLMNO"}
+{"country_code":"KE","name":"Kenya","cname":"肯尼亚","flag":"imgs/KE.jpg","prefix_letter":"KLMNO"}
+{"country_code":"KI","name":"Kiribati","cname":"吉里巴斯","flag":"imgs/KI.jpg","prefix_letter":"KLMNO"}
+{"country_code":"KP","name":"North Korea","cname":"朝鲜","flag":"imgs/KP.jpg","prefix_letter":"KLMNO"}
+{"country_code":"KR","name":"South Korea","cname":"韩国","flag":"imgs/KR.jpg","prefix_letter":"PQRST"}
+{"country_code":"KW","name":"Kuwait","cname":"科威特","flag":"imgs/KW.jpg","prefix_letter":"KLMNO"}
+{"country_code":"KG","name":"Kyrgyzstan","cname":"吉尔吉斯斯坦","flag":"imgs/KG.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LA","name":"Laos","cname":"老挝","flag":"imgs/LA.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LV","name":"Latvia","cname":"拉脱维亚","flag":"imgs/LV.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LB","name":"Lebanon","cname":"黎巴嫩","flag":"imgs/LB.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LS","name":"Lesotho","cname":"莱索托","flag":"imgs/LS.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LR","name":"Liberia","cname":"利比里亚","flag":"imgs/LR.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LY","name":"Libya","cname":"利比亚","flag":"imgs/LY.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LI","name":"Liechtenstein","cname":"列支敦士登","flag":"imgs/LI.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LT","name":"Lithuania","cname":"立陶宛","flag":"imgs/LT.jpg","prefix_letter":"KLMNO"}
+{"country_code":"LU","name":"Luxembourg","cname":"卢森堡","flag":"imgs/LU.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MK","name":"Macedonia","cname":"马其顿","flag":"imgs/MK.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MG","name":"Madagascar","cname":"马达加斯加","flag":"imgs/MG.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MW","name":"Malawi","cname":"马拉维","flag":"imgs/MW.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MY","name":"Malaysia","cname":"马来西亚","flag":"imgs/MY.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MV","name":"Maldives","cname":"马尔代夫","flag":"imgs/MV.jpg","prefix_letter":"KLMNO"}
+{"country_code":"ML","name":"Mali","cname":"马里","flag":"imgs/ML.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MT","name":"Malta","cname":"马耳他","flag":"imgs/MT.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MH","name":"Marshall Islands","cname":"马绍尔群岛","flag":"imgs/MH.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MQ","name":"Martinique","cname":"马丁尼克","flag":"imgs/MQ.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MR","name":"Mauritania","cname":"毛里塔尼亚","flag":"imgs/MR.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MU","name":"Mauritius","cname":"毛里求斯","flag":"imgs/MU.jpg","prefix_letter":"KLMNO"}
+{"country_code":"YT","name":"Mayotte","cname":"马约特","flag":"imgs/YT.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MX","name":"Mexico","cname":"墨西哥","flag":"imgs/MX.jpg","prefix_letter":"KLMNO"}
+{"country_code":"FM","name":"Federated States of Micronesia","cname":"密克罗尼西亚联邦","flag":"imgs/FM.jpg","prefix_letter":"FGHIJ"}
+{"country_code":"MD","name":"Moldova","cname":"摩尔多瓦","flag":"imgs/MD.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MC","name":"Monaco","cname":"摩纳哥","flag":"imgs/MC.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MN","name":"Mongolia","cname":"蒙古国","flag":"imgs/MN.jpg","prefix_letter":"KLMNO"}
+{"country_code":"ME","name":"Montenegro","cname":"黑山","flag":"imgs/ME.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MS","name":"Montserrat","cname":"蒙特塞拉特","flag":"imgs/MS.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MA","name":"Morocco","cname":"摩洛哥","flag":"imgs/MA.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MZ","name":"Mozambique","cname":"莫桑比克","flag":"imgs/MZ.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MM","name":"Myanmar","cname":"缅甸","flag":"imgs/MM.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NA","name":"Namibia","cname":"纳米比亚","flag":"imgs/NA.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NR","name":"Nauru","cname":"瑙鲁","flag":"imgs/NR.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NP","name":"Nepal","cname":"尼泊尔","flag":"imgs/NP.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NL","name":"Netherlands","cname":"荷兰","flag":"imgs/NL.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NC","name":"New Caledonia","cname":"新喀里多尼亚","flag":"imgs/NC.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NZ","name":"New Zealand","cname":"新西兰","flag":"imgs/NZ.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NI","name":"Nicaragua","cname":"尼加拉瓜","flag":"imgs/NI.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NE","name":"Niger","cname":"尼日尔","flag":"imgs/NE.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NG","name":"Nigeria","cname":"尼日利亚","flag":"imgs/NG.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NU","name":"Niue","cname":"纽埃","flag":"imgs/NU.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NF","name":"Norfolk Island","cname":"诺福克岛","flag":"imgs/NF.jpg","prefix_letter":"KLMNO"}
+{"country_code":"MP","name":"Northern Mariana Islands","cname":"北马里亚纳群岛","flag":"imgs/MP.jpg","prefix_letter":"KLMNO"}
+{"country_code":"NO","name":"Norway","cname":"挪威","flag":"imgs/NO.jpg","prefix_letter":"KLMNO"}
+{"country_code":"OM","name":"Oman","cname":"阿曼","flag":"imgs/OM.jpg","prefix_letter":"KLMNO"}
+{"country_code":"PK","name":"Pakistan","cname":"巴基斯坦","flag":"imgs/PK.jpg","prefix_letter":"PQRST"}
+{"country_code":"PW","name":"Palau","cname":"帕劳群岛","flag":"imgs/PW.jpg","prefix_letter":"PQRST"}
+{"country_code":"PS","name":"Palestine","cname":"巴勒斯坦","flag":"imgs/PS.jpg","prefix_letter":"PQRST"}
+{"country_code":"PA","name":"Panama","cname":"巴拿马","flag":"imgs/PA.jpg","prefix_letter":"PQRST"}
+{"country_code":"PG","name":"Papua New Guinea","cname":"巴布亚新几内亚","flag":"imgs/PG.jpg","prefix_letter":"PQRST"}
+{"country_code":"PY","name":"Paraguay","cname":"巴拉圭","flag":"imgs/PY.jpg","prefix_letter":"PQRST"}
+{"country_code":"PE","name":"Peru","cname":"秘鲁","flag":"imgs/PE.jpg","prefix_letter":"PQRST"}
+{"country_code":"PH","name":"Philippines","cname":"菲律宾","flag":"imgs/PH.jpg","prefix_letter":"PQRST"}
+{"country_code":"PN","name":"Pitcairn","cname":"皮特克恩","flag":"imgs/PN.jpg","prefix_letter":"PQRST"}
+{"country_code":"PL","name":"Poland","cname":"波兰","flag":"imgs/PL.jpg","prefix_letter":"PQRST"}
+{"country_code":"PT","name":"Portugal","cname":"葡萄牙","flag":"imgs/PT.jpg","prefix_letter":"PQRST"}
+{"country_code":"PR","name":"Puerto Rico","cname":"波多黎各","flag":"imgs/PR.jpg","prefix_letter":"PQRST"}
+{"country_code":"QA","name":"Qatar","cname":"卡塔尔","flag":"imgs/QA.jpg","prefix_letter":"PQRST"}
+{"country_code":"RE","name":"Reunion","cname":"留尼汪","flag":"imgs/RE.jpg","prefix_letter":"PQRST"}
+{"country_code":"RO","name":"Romania","cname":"罗马尼亚","flag":"imgs/RO.jpg","prefix_letter":"PQRST"}
+{"country_code":"RU","name":"Russia","cname":"俄罗斯","flag":"imgs/RU.jpg","prefix_letter":"PQRST"}
+{"country_code":"RW","name":"Rwanda","cname":"卢旺达","flag":"imgs/RW.jpg","prefix_letter":"PQRST"}
+{"country_code":"BL","name":"Saint Barthélemy","cname":"圣巴泰勒米","flag":"imgs/BL.jpg","prefix_letter":"PQRST"}
+{"country_code":"SH","name":"Saint Helena","cname":"圣巴托洛缪岛","flag":"imgs/SH.jpg","prefix_letter":"PQRST"}
+{"country_code":"KN","name":"Saint Kitts and Nevis","cname":"圣克里斯托弗和尼维斯岛","flag":"imgs/KN.jpg","prefix_letter":"PQRST"}
+{"country_code":"LC","name":"Saint Lucia","cname":"圣卢西亚","flag":"imgs/LC.jpg","prefix_letter":"PQRST"}
+{"country_code":"MF","name":"Saint Martin (French part)","cname":"圣马丁","flag":"imgs/MF.jpg","prefix_letter":"PQRST"}
+{"country_code":"PM","name":"Saint Pierre and Miquelon","cname":"圣皮埃尔和密克隆","flag":"imgs/PM.jpg","prefix_letter":"PQRST"}
+{"country_code":"VC","name":"Saint Vincent and the Grenadines","cname":"圣文森特和格林纳丁斯","flag":"imgs/VC.jpg","prefix_letter":"PQRST"}
+{"country_code":"WS","name":"Samoa","cname":"萨摩亚","flag":"imgs/WS.jpg","prefix_letter":"PQRST"}
+{"country_code":"SM","name":"San Marino","cname":"圣马力诺","flag":"imgs/SM.jpg","prefix_letter":"PQRST"}
+{"country_code":"ST","name":"Sao Tome and Principe","cname":"圣多美和普林西比","flag":"imgs/ST.jpg","prefix_letter":"PQRST"}
+{"country_code":"SA","name":"Saudi Arabia","cname":"沙特阿拉伯","flag":"imgs/SA.jpg","prefix_letter":"PQRST"}
+{"country_code":"SN","name":"Senegal","cname":"塞内加尔","flag":"imgs/SN.jpg","prefix_letter":"PQRST"}
+{"country_code":"RS","name":"Serbia","cname":"塞尔维亚","flag":"imgs/RS.jpg","prefix_letter":"PQRST"}
+{"country_code":"SC","name":"Seychelles","cname":"塞舌尔","flag":"imgs/SC.jpg","prefix_letter":"PQRST"}
+{"country_code":"SL","name":"Sierra Leone","cname":"塞拉利昂","flag":"imgs/SL.jpg","prefix_letter":"PQRST"}
+{"country_code":"SG","name":"Singapore","cname":"新加坡","flag":"imgs/SG.jpg","prefix_letter":"PQRST"}
+{"country_code":"SX","name":"Sint Maarten (Dutch part)","cname":"圣马丁岛","flag":"imgs/SX.jpg","prefix_letter":"PQRST"}
+{"country_code":"SK","name":"Slovakia","cname":"斯洛伐克","flag":"imgs/SK.jpg","prefix_letter":"PQRST"}
+{"country_code":"SI","name":"Slovenia","cname":"斯洛文尼亚","flag":"imgs/SI.jpg","prefix_letter":"PQRST"}
+{"country_code":"SB","name":"Solomon Islands","cname":"所罗门群岛","flag":"imgs/SB.jpg","prefix_letter":"PQRST"}
+{"country_code":"SO","name":"Somalia","cname":"索马里","flag":"imgs/SO.jpg","prefix_letter":"PQRST"}
+{"country_code":"ZA","name":"South Africa","cname":"南非","flag":"imgs/ZA.jpg","prefix_letter":"PQRST"}
+{"country_code":"GS","name":"South Georgia and the South Sandwich Islands","cname":"南乔治亚岛和南桑威奇群岛","flag":"imgs/GS.jpg","prefix_letter":"PQRST"}
+{"country_code":"SS","name":"South Sudan","cname":"南苏丹","flag":"imgs/SS.jpg","prefix_letter":"PQRST"}
+{"country_code":"ES","name":"Spain","cname":"西班牙","flag":"imgs/ES.jpg","prefix_letter":"PQRST"}
+{"country_code":"LK","name":"Sri Lanka","cname":"斯里兰卡","flag":"imgs/LK.jpg","prefix_letter":"PQRST"}
+{"country_code":"SD","name":"Sudan","cname":"苏丹","flag":"imgs/SD.jpg","prefix_letter":"PQRST"}
+{"country_code":"SR","name":"Suriname","cname":"苏里南","flag":"imgs/SR.jpg","prefix_letter":"PQRST"}
+{"country_code":"SJ","name":"Svalbard and Jan Mayen","cname":"斯瓦尔巴和扬马延","flag":"imgs/SJ.jpg","prefix_letter":"PQRST"}
+{"country_code":"SZ","name":"Swaziland","cname":"斯威士兰","flag":"imgs/SZ.jpg","prefix_letter":"PQRST"}
+{"country_code":"SE","name":"Sweden","cname":"瑞典","flag":"imgs/SE.jpg","prefix_letter":"PQRST"}
+{"country_code":"CH","name":"Switzerland","cname":"瑞士","flag":"imgs/CH.jpg","prefix_letter":"PQRST"}
+{"country_code":"SY","name":"Syria","cname":"叙利亚","flag":"imgs/SY.jpg","prefix_letter":"PQRST"}
+{"country_code":"TW","name":"Taiwan","cname":"台湾","flag":"imgs/TW.jpg","prefix_letter":"PQRST"}
+{"country_code":"TJ","name":"Tajikistan","cname":"塔吉克斯坦","flag":"imgs/TJ.jpg","prefix_letter":"PQRST"}
+{"country_code":"TZ","name":"Tanzania","cname":"坦桑尼亚","flag":"imgs/TZ.jpg","prefix_letter":"PQRST"}
+{"country_code":"TH","name":"Thailand","cname":"泰国","flag":"imgs/TH.jpg","prefix_letter":"PQRST"}
+{"country_code":"TL","name":"East Timor","cname":"东帝汶民主共和国","flag":"imgs/TL.jpg","prefix_letter":"ABCDE"}
+{"country_code":"TG","name":"Togo","cname":"多哥","flag":"imgs/TG.jpg","prefix_letter":"PQRST"}
+{"country_code":"TK","name":"Tokelau","cname":"托克劳","flag":"imgs/TK.jpg","prefix_letter":"PQRST"}
+{"country_code":"TO","name":"Tonga","cname":"汤加","flag":"imgs/TO.jpg","prefix_letter":"PQRST"}
+{"country_code":"TT","name":"Trinidad and Tobago","cname":"特立尼达和多巴哥","flag":"imgs/TT.jpg","prefix_letter":"PQRST"}
+{"country_code":"TN","name":"Tunisia","cname":"突尼斯","flag":"imgs/TN.jpg","prefix_letter":"PQRST"}
+{"country_code":"TR","name":"Turkey","cname":"土耳其","flag":"imgs/TR.jpg","prefix_letter":"PQRST"}
+{"country_code":"TM","name":"Turkmenistan","cname":"土库曼斯坦","flag":"imgs/TM.jpg","prefix_letter":"PQRST"}
+{"country_code":"TC","name":"Turks and Caicos Islands","cname":"特克斯和凯科斯群岛","flag":"imgs/TC.jpg","prefix_letter":"PQRST"}
+{"country_code":"TV","name":"Tuvalu","cname":"图瓦卢","flag":"imgs/TV.jpg","prefix_letter":"PQRST"}
+{"country_code":"UG","name":"Uganda","cname":"乌干达","flag":"imgs/UG.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"UA","name":"Ukraine","cname":"乌克兰","flag":"imgs/UA.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"AE","name":"United Arab Emirates","cname":"阿拉伯联合酋长国","flag":"imgs/AE.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"GB","name":"United Kingdom","cname":"英国","flag":"imgs/GB.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"US","name":"United States","cname":"美国","flag":"imgs/US.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"UY","name":"Uruguay","cname":"乌拉圭","flag":"imgs/UY.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"UZ","name":"Uzbekistan","cname":"乌兹别克斯坦","flag":"imgs/UZ.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"VU","name":"Vanuatu","cname":"瓦努阿图","flag":"imgs/VU.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"VE","name":"Venezuela","cname":"委内瑞拉","flag":"imgs/VE.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"VN","name":"Vietnam","cname":"越南","flag":"imgs/VN.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"VG","name":"British Virgin Islands","cname":"英属维尔京群岛","flag":"imgs/VG.jpg","prefix_letter":"ABCDE"}
+{"country_code":"VI","name":"U.S. Virgin Islands","cname":"美属维尔京群岛","flag":"imgs/VI.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"WF","name":"Wallis and Futuna","cname":"瓦利斯和富图纳群岛","flag":"imgs/WF.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"EH","name":"Western Sahara","cname":"撒哈拉沙漠西部","flag":"imgs/EH.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"YE","name":"Yemen","cname":"也门","flag":"imgs/YE.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"ZM","name":"Zambia","cname":"赞比亚","flag":"imgs/ZM.jpg","prefix_letter":"UVWXYZ"}
+{"country_code":"ZW","name":"Zimbabwe","cname":"津巴布韦","flag":"imgs/ZW.jpg","prefix_letter":"UVWXYZ"}
