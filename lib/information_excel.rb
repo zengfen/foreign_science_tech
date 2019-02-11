@@ -1,11 +1,12 @@
 class InformationExcel
 	attr_accessor :file_path,:sheet_name,:column_size,:file_dir
-	attr_accessor :modelclass
+	attr_accessor :modelclass,:countries
 
 	def initialize(opt={})
 		@file_path = opt[:file_path]
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size]
+		@countries = init_countries
 	end
 
 	def media_info_from_excel
@@ -78,11 +79,21 @@ class InformationExcel
 		new_data = k.where({domain:query[:domain]}).first
 		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
 		
+		query[:country_code] = countries[query[:country_code]]
 		new_data = k.new(query)
 		unless new_data.save
 			return {type:'error',message:new_data.errors.full_messages.to_sentence,query:query}
 		end
 		return {type:'success',message:'添加成功',query:query}
+	end
+
+	def init_countries
+		data = {}
+    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+      doc = JSON.parse(line)
+      data.merge!({doc['cname']=>doc['country_code']})
+    end	
+    return data	
 	end
 
 	def default_column_size
