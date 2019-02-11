@@ -8,4 +8,8 @@ class MediaInfo < ApplicationRecord
 			'人工爬虫'
 		]
 	end
+
+	def self.levels
+		return [0,1,2,3]
+	end
 end

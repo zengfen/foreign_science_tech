@@ -8,4 +8,8 @@ class GovernmentInfo < ApplicationRecord
 			'人工爬虫'
 		]
 	end
+
+	def self.levels
+		return [1,2,3]
+	end	
 end

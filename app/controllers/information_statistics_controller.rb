@@ -5,6 +5,7 @@ class InformationStatisticsController < ApplicationController
   	opt = {}
   	@countries = InformationExcel.new.countries_json
   	@data_sources = MediaInfo.data_sources 
+  	@levels = MediaInfo.levels
   	a = InformationStatistics.new
   	@redis_key = a.redis_key
   	@day = 0
@@ -15,6 +16,7 @@ class InformationStatisticsController < ApplicationController
   	opt = {}
   	@countries = InformationExcel.new.countries_json
   	@data_sources = GovernmentInfo.data_sources
+  	@levels = GovernmentInfo.levels
   	a = InformationStatistics.new
   	@redis_key = a.redis_key
   	@day = 0
