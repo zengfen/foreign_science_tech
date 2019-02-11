@@ -17,6 +17,6 @@ class InformationStatisticsController < ApplicationController
   	@redis_key = a.redis_key
   	@day = 0
   	@lists = GovernmentInfo.where(opt).page(params[:page]).per(20)  	
-  	return render index
+  	return render 'index'
   end
 end
