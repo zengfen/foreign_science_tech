@@ -10,6 +10,10 @@ class GovernmentInfo < ApplicationRecord
 	end
 
 	def self.levels
-		return [1,2,3]
+		return {
+			1 => '一级',
+			2 => '二级',
+			3 => '三级',
+		}
 	end	
 end

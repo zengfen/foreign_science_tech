@@ -10,6 +10,11 @@ class MediaInfo < ApplicationRecord
 	end
 
 	def self.levels
-		return [0,1,2,3]
+		return {
+			0 => '重点',
+			1 => '一级',
+			2 => '二级',
+			3 => '三级',
+		}
 	end
 end
