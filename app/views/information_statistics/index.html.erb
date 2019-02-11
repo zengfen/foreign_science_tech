@@ -56,10 +56,10 @@
                 </div>
 
                 <div class="col-md-4">
-                  <div class="input-daterange input-group">
-                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] %>" placeholder="开始时间" onfocus="this.blur()">
+                  <div class="input-daterange input-group js-daterange">
+                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
                     <span class="input-group-addon">~</span>
-                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] %>" placeholder="结束时间" onfocus="this.blur()">
+                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
                   </div>
                 </div>
 
