@@ -114,4 +114,52 @@ class InformationExcel
 	def default_column_size
 		return 10
 	end
+
+	def update_hav_infos
+		begin
+			xlsx = Roo::Spreadsheet.open(file_path) 
+		rescue Exception => e
+			return {type:'error',message: e.message}
+		end		
+
+		msg = {}
+		i = 0 # 读取的行数
+		head = [] # 表头
+		n = column_size # 读取的列数
+		ActiveRecord::Base.transaction do
+			xlsx.sheet(sheet_name).each_row_streaming(pad_cells:true) do |row|
+				i += 1
+				if i == 1
+					n.times do |ii|
+						head << row[ii].to_s
+					end
+					head.delete(nil)
+					column_size = head.size
+					n = head.size					
+					next
+				end
+
+				query = {} # 当次循环的参数
+				n.times do |ii|
+					query[head[ii].to_sym] = row[ii].to_s rescue ''
+				end
+
+				query_values = query.values.uniq
+				query_values.delete(nil)
+				next if query_values.size == 1 # 跳过空行		
+				next if query[:hav_infos].blank?
+				data = []
+				data += MediaInfo.where({domain:query[:domain]}).to_a
+				data += GovernmentInfo.where({domain:query[:domain]}).to_a
+				data.each do |x|
+					if query[:hav_infos] == '是'
+						x.update({hav_infos:1})
+					else
+						x.update({hav_infos:0})
+					end 
+				end			
+			end
+		end
+		return {type:'success',message:'更新结束'}		
+	end
 end
