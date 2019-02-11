@@ -17,4 +17,12 @@ class MediaInfo < ApplicationRecord
 			3 => '三级',
 		}
 	end
+
+	def self.hav_infos
+		return {
+			1 => '有',
+			0 => '无',
+		}
+	end
+
 end

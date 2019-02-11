@@ -15,5 +15,12 @@ class GovernmentInfo < ApplicationRecord
 			2 => '二级',
 			3 => '三级',
 		}
-	end	
+	end
+
+	def self.hav_infos
+		return {
+			1 => '有',
+			0 => '无',
+		}
+	end
 end
