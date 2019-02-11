@@ -81,9 +81,11 @@ class InformationExcel
 		new_data = k.where({domain:query[:domain]}).first
 		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
 		
-		query[:country_code] = countries[query[:country_code]]
-		return {type:'error',message:'国家不能为空',query:query} if query[:country_code].blank?
-		
+		unless query[:country_code].blank?
+			query[:country_code] = countries[query[:country_code]]
+			return {type:'error',message:'国家不能为空',query:query} if query[:country_code].blank?			
+		end
+
 		new_data = k.new(query)
 		unless new_data.save
 			return {type:'error',message:new_data.errors.full_messages.to_sentence,query:query}
