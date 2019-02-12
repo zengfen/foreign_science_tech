@@ -25,7 +25,7 @@ class InformationStatistics
 					domain_key1 = "#{x.site}_#{day_key}"
 					$redis.hincrby(redis_key,domain_key,1)
 					if domain_key1 != domain_key
-						$redis.hincrby(redis_key.domain_key1,1)
+						$redis.hincrby(redis_key,domain_key1,1)
 					end
 				end
 			end			
