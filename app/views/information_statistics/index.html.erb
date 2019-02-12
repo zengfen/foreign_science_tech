@@ -87,13 +87,13 @@
                 <div class="col-md-4 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
                   <%if InformationStatistics.switch == 1%>
-                    <a href="###" class="btn btn-primary mb0 ml10" >更新中</a>
+                    <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
                   <%elsif InformationStatistics.switch == 2%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新结束</a>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新结束</a>
                   <%elsif InformationStatistics.switch == 3%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新失败</a>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新失败</a>
                   <%else%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新</a>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新</a>
                   <%end%>
                   
                 </div>
@@ -372,6 +372,40 @@ function initNumberRange($wrap) {
     $input.val(val);
     $input.trigger('numberChange', [val, isChangeEvent]);
   }
+}
+
+var currentSwitchStatus = <%== InformationStatistics.switch %>;
+
+if(currentSwitchStatus == 1) {
+  updateButtonStatus($('.js-btn-update'));
+}
+
+function updateButtonStatus($btn) {
+  var statusMap = {
+    '1': '更新中',
+    '2': '更新结束',
+    '3': '更新失败'
+  };
+  var url = '<%= update_statistic_information_statistics_path %>';
+  setTimeout(function() {
+    $.ajax({
+      method: 'get',
+      url: '/information_statistics/switch_status',
+      dataType: 'json'
+    }).done(function(res) {
+      if(statusMap[res.status]) {
+        $btn.prop('href', res.status == 1 ? 'javascript: void(0)' : url);
+        $btn.html(statusMap[res.status]);
+      } else {
+        $btn.prop('href', url);
+        $btn.html('更新');
+      }
+
+      if(res.status == 1) {
+        updateButtonStatus($btn);
+      }
+    });
+  }, 30000);
 }
     </script>
   <% end %>
