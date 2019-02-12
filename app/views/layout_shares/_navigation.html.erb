@@ -83,7 +83,7 @@
           <li class="<%= is_active_action(nil, "proxies") %>"><%= link_to "代理管理", proxies_path%></li>
         </ul>
       </li>
-      <li class="<%= is_active_controller('hosts,services') %>">
+      <li class="<%= is_active_controller('hosts,services,information_statistics') %>">
         <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,services,information_statistics') %>">
           <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
