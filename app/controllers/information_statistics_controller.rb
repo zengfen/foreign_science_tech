@@ -15,6 +15,7 @@ class InformationStatisticsController < ApplicationController
   	@data_sources = GovernmentInfo.data_sources
   	@levels = GovernmentInfo.levels
 		@hav_infos = GovernmentInfo.hav_infos
+		@custom_domains = MediaInfo.custom_domains
     search(params,GovernmentInfo)
   	return render 'index'
 	end
