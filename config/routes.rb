@@ -143,6 +143,7 @@ Rails.application.routes.draw do
     collection do
       get :update_statistic
       get :govern
+      get :all_info
     end
   end
 
