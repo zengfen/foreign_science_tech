@@ -144,6 +144,7 @@ Rails.application.routes.draw do
       get :update_statistic
       get :govern
       get :all_info
+      get :switch_status
     end
   end
 
