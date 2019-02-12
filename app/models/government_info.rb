@@ -5,6 +5,7 @@ class GovernmentInfo < ApplicationRecord
 			'Webhose',
 			'Newspaper',
 			'Googlenews',
+			'GDELT',
 			'人工爬虫'
 		]
 	end
