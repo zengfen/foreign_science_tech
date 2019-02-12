@@ -18,6 +18,15 @@ class InformationStatisticsController < ApplicationController
   	return render 'index'
 	end
 
+	def all_info
+  	@countries = InformationExcel.new.countries_json
+  	@data_sources = MediaInfo.data_sources 
+  	@levels = MediaInfo.levels
+		@hav_infos = MediaInfo.hav_infos
+    search(params,'')
+    return render 'index'		
+	end
+
   def update_statistic
 		UpdateInformationStatisticsJob.perform_later
     flash['success'] = "更新计算后台运行开始"
@@ -32,7 +41,13 @@ class InformationStatisticsController < ApplicationController
     opt[:country_code] = params[:country_code] if params[:country_code].present?
     opt[:level] = params[:level] if params[:level].present?
     opt[:hav_infos] = params[:hav_infos] if params[:hav_infos].present?
-    lists = model.where(opt).where(source_opt)
+    lists = []
+    if model.blank?
+    	lists += MediaInfo.where(opt).where(source_opt).to_a
+    	lists += GovernmentInfo.where(opt).where(source_opt).to_a
+    else
+    	lists = model.where(opt).where(source_opt)
+    end
     info_count = {}
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
     end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
