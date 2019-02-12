@@ -309,7 +309,7 @@ function initNumberRange($wrap) {
   function initNumberInput($minInput, $maxInput) {
     $minInput.on('numberChange', function(e, val, isChangeEvent) {
       if(isChangeEvent) {
-        var min = val == null ? '' : val;
+        var min = val == null ? '' : (val + '');
         var max = $maxInput.val() || '';
         if(min && max && Number(max) < Number(min)) {
           $maxInput.val(min);
@@ -320,7 +320,7 @@ function initNumberRange($wrap) {
     $maxInput.on('numberChange', function(e, val, isChangeEvent) {
       if(isChangeEvent) {
         var min = $minInput.val() || '';
-        var max = val == null ? '' : val;
+        var max = val == null ? '' : (val + '');
         if(min && max && Number(max) < Number(min)) {
           $minInput.val(max);
         }
