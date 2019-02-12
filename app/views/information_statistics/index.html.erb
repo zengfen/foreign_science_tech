@@ -307,21 +307,23 @@ function initNumberRange($wrap) {
   });
 
   function initNumberInput($minInput, $maxInput) {
-    $minInput.on('numberChange', function(e, val) {
-      console.log(e)
-      var min = Number(val || '');
-      var max = Number($maxInput.val() || '');
-      if(min && max && max < min) {
-        $maxInput.val(min);
+    $minInput.on('numberChange', function(e, val, isChangeEvent) {
+      if(isChangeEvent) {
+        var min = Number(val || '');
+        var max = Number($maxInput.val() || '');
+        if(min && max && max < min) {
+          $maxInput.val(min);
+        }
       }
     });
 
-    $maxInput.on('numberChange', function(e, val) {
-      console.log(e)
-      var min = Number($minInput.val() || '');
-      var max = Number(val || '');
-      if(min && max && max < min) {
-        $minInput.val(max);
+    $maxInput.on('numberChange', function(e, val, isChangeEvent) {
+      if(isChangeEvent) {
+        var min = Number($minInput.val() || '');
+        var max = Number(val || '');
+        if(min && max && max < min) {
+          $minInput.val(max);
+        }
       }
     });
   }
@@ -342,7 +344,7 @@ function initNumberRange($wrap) {
     }
 
     val = Number(val);
-    isNaN(val) ? $input.val($input.data('currentVal')) : setValue($input, val);
+    isNaN(val) ? $input.val($input.data('currentVal')) : setValue($input, val, e.type === 'change');
   }
 
   function init($input) {
@@ -356,10 +358,10 @@ function initNumberRange($wrap) {
     }
   }
 
-  function setValue($input, val) {
+  function setValue($input, val, isChangeEvent) {
     $input.data('currentVal', val);
     $input.val(val);
-    $input.trigger('numberChange', [val]);
+    $input.trigger('numberChange', [val, isChangeEvent]);
   }
 }
     </script>
