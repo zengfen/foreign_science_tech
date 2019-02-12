@@ -6,16 +6,6 @@ class InformationStatisticsController < ApplicationController
   	@data_sources = MediaInfo.data_sources 
   	@levels = MediaInfo.levels
 		@hav_infos = MediaInfo.hav_infos
-		# @lists = MediaInfo.where(opt).where(source_opt).page(params[:page]).per(20)
-		# @info_count = {}
-		# start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
-		# end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
-		# @lists.each do |obj|
-		# 	@info_count[obj.id] ||= 0
-		# 	((Date.today - end_date).to_i..(Date.today - start_date).to_i).each do |day|
-		# 		@info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
-		# 	end
-		# end
     search(params,MediaInfo)
 	end
 
