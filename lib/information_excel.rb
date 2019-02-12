@@ -78,7 +78,7 @@ class InformationExcel
 		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
 
 		k = Object.const_get modelclass	
-		new_data = k.where({domain:query[:domain]}).first
+		new_data = k.where({domain:query[:domain],ch_name:query[:ch_name]}).first
 		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
 		
 		unless query[:country_code].blank?
