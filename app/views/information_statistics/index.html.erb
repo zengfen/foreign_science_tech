@@ -86,7 +86,16 @@
 
                 <div class="col-md-4 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
-                  <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新</a>
+                  <%if InformationStatistics.switch == 1%>
+                    <a href="###" class="btn btn-primary mb0 ml10" >更新中</a>
+                  <%elsif InformationStatistics.switch == 2%>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新结束</a>
+                  <%elsif InformationStatistics.switch == 3%>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新失败</a>
+                  <%else%>
+                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新</a>
+                  <%end%>
+                  
                 </div>
               </div>
 
