@@ -309,9 +309,9 @@ function initNumberRange($wrap) {
   function initNumberInput($minInput, $maxInput) {
     $minInput.on('numberChange', function(e, val, isChangeEvent) {
       if(isChangeEvent) {
-        var min = Number(val || '');
-        var max = Number($maxInput.val() || '');
-        if(min && max && max < min) {
+        var min = val || '';
+        var max = $maxInput.val() || '';
+        if(min && max && Number(max) < Number(min)) {
           $maxInput.val(min);
         }
       }
@@ -319,9 +319,9 @@ function initNumberRange($wrap) {
 
     $maxInput.on('numberChange', function(e, val, isChangeEvent) {
       if(isChangeEvent) {
-        var min = Number($minInput.val() || '');
-        var max = Number(val || '');
-        if(min && max && max < min) {
+        var min = $minInput.val() || '';
+        var max = val || '';
+        if(min && max && Number(max) < Number(min)) {
           $minInput.val(max);
         }
       }
