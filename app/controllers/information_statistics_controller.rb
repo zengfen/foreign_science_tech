@@ -30,7 +30,7 @@ class InformationStatisticsController < ApplicationController
 
   def update_statistic
 		UpdateInformationStatisticsJob.perform_later
-		flash[:status] = "更新计算后台运行开始"
+		flash[:notice] = "更新计算后台运行开始"
 		redirect_to information_statistics_path
   end
 
