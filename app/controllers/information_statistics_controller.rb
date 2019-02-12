@@ -65,7 +65,7 @@ class InformationStatisticsController < ApplicationController
     # 按照最小值和最大值筛选并排序
     @info_count = info_count.select{|k,v| params[:max_count].present? ? (v >= min_count && v <= params[:max_count].to_i) : (v >= min_count)}.sort_by{|k,v| v}.reverse.to_h
     page = (params[:page] || 1).to_i
-    per_page = (params[:per] || 20).to_i
+    per_page = (params[:per] || 50).to_i
     start_index = (page - 1)*per_page
     end_index = start_index + per_page
     ids = @info_count.keys[start_index...end_index]
