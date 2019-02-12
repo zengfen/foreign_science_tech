@@ -23,9 +23,14 @@ class InformationStatistics
 					day_key = (Time.now.to_i - Time.parse(created_time).to_i)/86400
 					domain_key = "#{domain}_#{day_key}"
 					domain_key1 = "#{x.site}_#{day_key}"
+					domain_key2 = "#{x.site_url}_#{day_key}"
 					$redis.hincrby(redis_key,domain_key,1)
 					if domain_key1 != domain_key
 						$redis.hincrby(redis_key,domain_key1,1)
+					end
+
+					if !domain_key2.include?('/') && domain_key2 != domain_key && domain_key2 != domain_key1
+						$redis.hincrby(redis_key,domain_key2,1)
 					end
 				end
 			end			
