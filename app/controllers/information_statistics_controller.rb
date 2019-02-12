@@ -51,8 +51,8 @@ class InformationStatisticsController < ApplicationController
 	end
 
   def update_statistic
-		InformationStatisticsWorker.perform_async
-		flash[:status] = "发布成功"
+		UpdateInformationStatisticsJob.perform_later
+		flash[:status] = "更新计算后台运行开始"
 		redirect_to information_statistics_path
 	end
 
