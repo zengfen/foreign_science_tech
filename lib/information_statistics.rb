@@ -51,6 +51,6 @@ class InformationStatistics
 	end
 
 	def self.switch
-		return $redis.get(redis_switch_key).to_i rescue 0
+		return $redis.get(self.new.redis_switch_key).to_i rescue 0
 	end
 end
