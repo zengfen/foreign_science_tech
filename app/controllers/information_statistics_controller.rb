@@ -37,12 +37,14 @@ class InformationStatisticsController < ApplicationController
 
   def search(params,model)
     opt = {}
+    custom_domains = MediaInfo.custom_domains
     a = InformationStatistics.new
     @redis_key = a.redis_key
     source_opt =  params[:data_source].present? ? "data_source like '%#{params[:data_source]}%'" : {}
     opt[:country_code] = params[:country_code] if params[:country_code].present?
     opt[:level] = params[:level] if params[:level].present?
     opt[:hav_infos] = params[:hav_infos] if params[:hav_infos].present?
+    opt[:domain] = custom_domains[params[:custom_domains]] if params[:custom_domains].present?
     lists = []
     if model.blank?
     	lists += MediaInfo.where(opt).where(source_opt).to_a
