@@ -6,6 +6,7 @@ class InformationStatisticsController < ApplicationController
   	@data_sources = MediaInfo.data_sources 
   	@levels = MediaInfo.levels
 		@hav_infos = MediaInfo.hav_infos
+		@custom_domains = MediaInfo.custom_domains
     search(params,MediaInfo)
 	end
 

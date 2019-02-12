@@ -73,6 +73,17 @@
                   </div>
                 </div>
 
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <select name="custom_domains" class="form-control chosen-select" data-placeholder="请选择自定义site">
+                      <option value="">自定义site</option>
+                      <%@custom_domains.each do |k,v|%>
+                          <option value="<%=k%>" <%= 'selected' if k.to_s==params[:hav_infos] %>><%=k%></option>
+                      <%end%>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="col-md-4 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
                   <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10" >更新</a>

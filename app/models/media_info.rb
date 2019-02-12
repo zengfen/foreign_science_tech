@@ -25,4 +25,11 @@ class MediaInfo < ApplicationRecord
 		}
 	end
 
+	def self.custom_domains
+		return {
+			'太极重点媒体'=> ["indiatimes.com", "reuters.com", "forbes.com", "indianexpress.com", "thestar.com.my", "usatoday.com", "theguardian.com", "bloomberg.com", "independent.co.uk", "go.com", "cnn.com", "sputniknews.com", "scmp.com", "latimes.com", "newsweek.com", "jpost.com", "nytimes.com", "foxnews.com", "japantimes.co.jp", "timesofisrael.com", "rt.com", "upi.com", "voanews.com", "wsj.com", "bangkokpost.com", "bbc.com", "bangkokpost.com", "indianexpress.com", "fortune.com", "dawn.com", "afp.com", "time.com", "smh.com.au", "vancouversun.com", "arabnews.com", "straitstimes.com", "thesun.co.uk", "economist.com", "manilatimes.net", "thejakartapost.com", "arabnews.com", "mb.com.ph", "the-japan-news.com", "washingtonpost.com", "xinhuanet.com", "bloomberg.com"],
+			
+		}
+	end
+
 end
