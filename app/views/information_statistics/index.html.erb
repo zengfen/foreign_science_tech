@@ -234,6 +234,7 @@ $('.add-sql').on('click', function (e) {
 $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
 
 initStartEndDate($('.js-daterange'));
+initNumberRange($('.js-number-range'));
 
 function initStartEndDate($wrap) {
   $.fn.datepicker.dates['zh-cn'] = {
@@ -290,6 +291,73 @@ function initStartEndDate($wrap) {
         $start_date.datepicker('update', end);
       }
     });
+  }
+}
+
+function initNumberRange($wrap) {
+  $wrap.each(function(index, item) {
+    var $item = $(item);
+    var $input = $item.find('input');
+    var $minInput = $input.eq(0);
+    var $maxInput = $input.eq(1);
+
+    $input.on('input.number_input change.number_input', change);
+
+    initNumberInput($minInput, $maxInput);
+  });
+
+  function initNumberInput($minInput, $maxInput) {
+    $minInput.on('numberChange', function(e, val) {
+      var min = Number(val || '');
+      var max = Number($maxInput.val() || '');
+      if(min && max && max < min) {
+        $maxInput.val(min);
+      }
+    });
+
+    $maxInput.on('numberChange', function(e, val) {
+      var min = Number($minInput.val() || '');
+      var max = Number(val || '');
+      if(min && max && max < min) {
+        $minInput.val(max);
+      }
+    });
+  }
+
+  function change(e) {
+    var $input = $(e.target);
+    var val = ($input.val() || '').trim();
+    var isEmptyString = val.length === 0;
+
+    if(isEmptyString) {
+      return setValue($input, null);
+    }
+
+    if(e.type === 'input') {
+      if(val.match(/^(\-0?)$/)) {
+        return false;
+      }
+    }
+
+    val = Number(val);
+    isNaN(val) ? $input.val($input.data('currentVal')) : setValue($input, val);
+  }
+
+  function init($input) {
+    var val = $input.val();
+    $input.data('currentVal', val);
+    if(val.length === 0) {
+      setValue($input, null);
+    } else {
+      val = Number(val);
+      isNaN(val) ? $input.val($input.data('currentVal')) : setValue($input, val);
+    }
+  }
+
+  function setValue($input, val) {
+    $input.data('currentVal', val);
+    $input.val(val);
+    $input.trigger('numberChange', [val]);
   }
 }
     </script>
