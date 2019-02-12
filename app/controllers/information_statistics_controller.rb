@@ -73,4 +73,9 @@ class InformationStatisticsController < ApplicationController
     @lists = Kaminari.paginate_array(lists, total_count: @info_count.count).page(page).per(per_page)
   end
 
+  def switch_status
+    status = InformationStatistics.switch
+    return render json:{status:status}
+  end
+
 end
