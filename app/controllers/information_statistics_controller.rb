@@ -88,4 +88,41 @@ class InformationStatisticsController < ApplicationController
     return render json:{status:status}
   end
 
+  def remark
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      return render json:{type:'error',message:'数据类型不能为空'}
+    end
+    if id.blank?
+      return render json:{type:'error',message:'数据ID不能为空'}
+    end
+    k = Object.const_get model
+    data = k.where({id:id}).first
+    if data.blank?
+      return render json: {type:'error',message:'该数据不存在或已被删除'}
+    end
+    data.update({remark:params[:remark]})
+    return render json: {type:'success',message:'数据更新成功'}
+  end
+
+  def update_data_source
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      return render json:{type:'error',message:'数据类型不能为空'}
+    end
+    if id.blank?
+      return render json:{type:'error',message:'数据ID不能为空'}
+    end
+    k = Object.const_get model
+    data = k.where({id:id}).first
+    if data.blank?
+      return render json: {type:'error',message:'该数据不存在或已被删除'}
+    end    
+    data_source = params[:data_source].join(',') rescue ''
+    data.update({data_source:data_source})
+    return render json: {type:'success',message:'数据源更新成功'}
+  end
+
 end
