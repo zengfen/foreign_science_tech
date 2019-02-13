@@ -134,11 +134,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modal_edit_markLabel">编辑标注</h4>
       </div>
-      <div class="modal-body">
-        <%= form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:post do %>
+      <%= form_tag url_for(action: 'remark'),:class=>"-form-horizontal",:method=>:post do %>
+        <div class="modal-body">
 
-        <% end %>
-      </div>
+        </div>
+      <% end %>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary">保存</button>
@@ -154,9 +154,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modal_edit_resourceLabel">编辑来源</h4>
       </div>
-      <div class="modal-body">
-        
-      </div>
+      <%= form_tag url_for(action: 'update_data_source'),:class=>"-form-horizontal",:method=>:post do %>
+        <div class="modal-body">
+
+        </div>
+      <% end %>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary">保存</button>
