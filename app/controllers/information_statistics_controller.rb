@@ -8,6 +8,9 @@ class InformationStatisticsController < ApplicationController
 		@hav_infos = MediaInfo.hav_infos
 		@custom_domains = MediaInfo.custom_domains
     search(params,MediaInfo)
+    if request.xhr?
+     return render "_list_body.html.erb", layout: false
+    end
 	end
 
   def govern
@@ -17,6 +20,10 @@ class InformationStatisticsController < ApplicationController
 		@hav_infos = GovernmentInfo.hav_infos
 		@custom_domains = MediaInfo.custom_domains
     search(params,GovernmentInfo)
+    if request.xhr?
+     return render "_list_body.html.erb", layout: false
+    end
+        
   	return render 'index'
 	end
 

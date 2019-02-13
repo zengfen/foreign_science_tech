@@ -390,20 +390,22 @@ function updateButtonStatus($btn) {
   setTimeout(function() {
     $.ajax({
       method: 'get',
-      url: '/information_statistics/switch_status',
-      dataType: 'json'
+      // url: '/information_statistics/switch_status',
+      url: window.location.href,
+      // dataType: 'json'
     }).done(function(res) {
-      if(statusMap[res.status]) {
-        $btn.prop('href', res.status == 1 ? 'javascript: void(0)' : url);
-        $btn.html(statusMap[res.status]);
-      } else {
-        $btn.prop('href', url);
-        $btn.html('更新');
-      }
+      // if(statusMap[res.status]) {
+      //   $btn.prop('href', res.status == 1 ? 'javascript: void(0)' : url);
+      //   $btn.html(statusMap[res.status]);
+      // } else {
+      //   $btn.prop('href', url);
+      //   $btn.html('更新');
+      // }
 
-      if(res.status == 1) {
-        updateButtonStatus($btn);
-      }
+      // if(res.status == 1) {
+      //   updateButtonStatus($btn);
+      // }
+      $(".all-page").html(res)
     });
   }, 30000);
 }
