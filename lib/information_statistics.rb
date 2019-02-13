@@ -8,12 +8,13 @@ class InformationStatistics
 	def renew_statistics
 		$redis.del(redis_key)
 		$redis.set(redis_switch_key,1) # 更新中
+		now_time = Time.now
 		begin
 			@last_days.times.each do |i|
 				i += 1
-				start_time = (Time.now - i.day).to_i
-				end_time = (Time.now - i.day + 1.day).to_i
-				pids = ArchonNewsTag.where("created_at >= ?",start_time).where("created_at <= ?",end_time).pluck('pid')
+				start_time = (now_time - i.day).to_i
+				end_time = (now_time - i.day + 1.day).to_i
+				pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
 				
 				ArchonNews.where({id:pids}).each do |x|
 					source_url = x.source_url
