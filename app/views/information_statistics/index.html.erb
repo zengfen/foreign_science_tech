@@ -217,7 +217,7 @@ $(document)
   } else {
     $form.find('[name="data_source"]').val(val).trigger('chosen:updated');
   }
-  
+
   $modal.modal({backdrop: 'static', keybaord: false});
 
   $form.off('submit.edit').on('submit.edit', function(e) {
@@ -231,10 +231,12 @@ $(document)
     }).done(function(res) {
       if(res.type === 'success') {
         toastr.success(res.message);
+        setTimeout(function() {
+          location.reload();
+        }, 1500);
       } else {
         toastr.error(res.message);
       }
-      $modal.modal('hide');
     });
   });
 });
