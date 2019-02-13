@@ -12,10 +12,10 @@
 	  </a>  	
 	  <ul class="more-ul dn">
 	  	<li class="bor-b">
-	  		<a href="<%= remark_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-mark">标注</a>
+	  		<a href="<%= remark_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-remark">标注</a>
 	  	</li>
 	  	<li class="bor-b">
-	  		<a href="<%= remark_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-edit-resource">编辑来源</a>
+	  		<a href="<%= update_data_source_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-edit-data-source">编辑来源</a>
 	  	</li>
 	  </ul>
   </td>
