@@ -210,8 +210,25 @@ $(document)
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
-  $form.prop('action', url);
   $modal.modal({backdrop: 'static', keybaord: false});
+
+  $form.off('submit.edit').on('submit.edit', function(e) {
+    e.preventDefault();
+    $.ajax({
+      method: 'post',
+      url: url,
+      data: $form.serialize(),
+      processData: false,
+      dataType: 'json'
+    }).done(function(res) {
+      if(res.type === 'success') {
+        toastr.success(res.message);
+      } else {
+        toastr.error(res.message);
+      }
+      $modal.modal('hide');
+    });
+  });
 });
 
 $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
