@@ -5,6 +5,9 @@ class MediaInfo < ApplicationRecord
 			'Webhose',
 			'Newspaper',
 			'Googlenews',
+			'Googlenrss',
+			'Rss',
+			'Newslookup',
 			'GDELT',
 			'人工爬虫'
 		]
