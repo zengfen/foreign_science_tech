@@ -126,59 +126,45 @@
     </div>
     </div>
   </div>
-   <!--这里是提示框-->
-      <div id="modal-form-remove" class="modal fade in" aria-hidden="true">
-        <div class="modal-dialog" style="width: 460px;top: 190px;">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <h3 class="m-t-none m-b">提示</h3>
-                  <div class="hr-line-dashed"></div>
-                  <p class="text-center">
-                  <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
-                  <div class="hr-line-dashed"></div>
-                  <div>
-                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
-                                                                                           
-                      <strong>确定</strong></button>
-                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
-                                                                                            
-                      <strong>取消</strong></button>
-                  </div>
 
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="modal fade" id="modal_edit_mark" tabindex="-1" role="dialog" aria-labelledby="modal_edit_markLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modal_edit_markLabel">编辑标注</h4>
       </div>
-      <div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
-        <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">添加列表项</h4>
-            </div>
-            <div class="modal-body">
-              <!-- modal-body -->
-              <%=render "form_body"%>
-            </div>
-          </div>
-          </div>
+      <div class="modal-body">
+        <%= form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:post do %>
+
+        <% end %>
       </div>
-      <div id="modal-form-edit-obj" class="modal fade" aria-hidden="true">
-        <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">编辑列表项</h4>
-            </div>
-            <div class="modal-body" id="edit_obj">
-            </div>
-          </div>
-          </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">保存</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_edit_resource" tabindex="-1" role="dialog" aria-labelledby="modal_edit_resourceLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modal_edit_resourceLabel">编辑来源</h4>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <% content_for :javascript do %>
     <script>
 
@@ -199,46 +185,7 @@ $(document)
           $(document).off('click', moreShow);
         }
     })
-})
-.on("click",".remove-line",function(e){
-  
-    e.preventDefault();
-
-    //删除本行数据
-    //var _$this = $(this);
-    var $this = $(this),html = $this.closest('tr').find('td').first().html();
-    var $modal = $('#modal-form-remove');
-    $modal.find('.remove-html').html(html);
-    $modal.modal("show");
-
-    $('.sure-remove').off().on('click', function (e) {
-       e.preventDefault();
-      var _this=$(this);
-      //需要传到数据库中，需要后台传输数据，局部刷新页面
-      var url = $this.attr("href");
-      if (url != "##") {
-        //              alert(url);
-        $.get(url, function (data) {
-          if (data.message=="SUCCESS"){
-            _this.closest('.modal').modal("hide");
-            $this.closest('tr').remove();
-          }
-        })
-      }
-     
-    });
-  
-}).on("click",'.cancel-remove',function(e){
-   var $modal = $('#modal-form-remove');
-      $modal.modal("hide");
 });
-
-
-$('.add-sql').on('click', function (e) {
-  e.preventDefault();
-  var $modal = $('#modal-form-add-sql');
-  $modal.modal("show");
-})
 
 $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10});
 
