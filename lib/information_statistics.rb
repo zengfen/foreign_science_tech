@@ -2,7 +2,7 @@ class InformationStatistics
   attr_accessor :last_days
 
   def initialize(opt={})
-  	@last_days = opt[:last_days] || 15
+  	@last_days = opt[:last_days] || 16
   end
 
 	def renew_statistics
