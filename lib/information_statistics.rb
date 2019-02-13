@@ -21,7 +21,8 @@ class InformationStatistics
 					domain = domain.gsub('www.','') rescue ''
 					unless domain.blank?
 						created_time = Time.at(x.created_time).strftime("%F")
-						day_key = (Time.now.to_i - Time.parse(created_time).to_i)/86400
+						# day_key = (Time.now.to_i - Time.parse(created_time).to_i)/86400
+						day_key = created_time
 						domain_key = "#{domain}_#{day_key}"
 						domain_key1 = "#{x.site}_#{day_key}"
 						domain_key2 = "#{x.site_url}_#{day_key}"

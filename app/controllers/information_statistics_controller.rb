@@ -23,7 +23,7 @@ class InformationStatisticsController < ApplicationController
     if request.xhr?
      return render "_list_body.html.erb", layout: false
     end
-        
+
   	return render 'index'
 	end
 
@@ -64,8 +64,11 @@ class InformationStatisticsController < ApplicationController
     end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
     lists.each do |obj|
       info_count[obj.id] ||= 0
-      ((Date.today - end_date).to_i..(Date.today - start_date).to_i).each do |day|
-        info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
+      # ((Date.today - end_date).to_i..(Date.today - start_date).to_i).each do |day|
+      #   info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
+      # end
+      (start_date..end_date).each do |day|
+        info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day.strftime("%F")}").to_i
       end
     end
     min_count = params[:min_count].present? ? params[:min_count].to_i : 0
