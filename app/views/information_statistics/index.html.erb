@@ -134,15 +134,20 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modal_edit_markLabel">编辑标注</h4>
       </div>
-      <%= form_tag url_for(action: 'remark'),:class=>"-form-horizontal",:method=>:post do %>
+      <%= form_tag url_for(action: 'remark'),:class=>"form-horizontal",:method=>:post do %>
         <div class="modal-body">
-
+          <div class="form-group">
+            <label class="col-md-2 control-label">标注</label>
+            <div class="col-md-10">
+              <textarea name="remark" rows="10" placeholder="请添加标注" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">保存</button>
         </div>
       <% end %>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">保存</button>
-      </div>
     </div>
   </div>
 </div>
@@ -154,15 +159,25 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modal_edit_resourceLabel">编辑来源</h4>
       </div>
-      <%= form_tag url_for(action: 'update_data_source'),:class=>"-form-horizontal",:method=>:post do %>
+      <%= form_tag url_for(action: 'update_data_source'),:class=>"form-horizontal",:method=>:post do %>
         <div class="modal-body">
-
+          <div class="form-group">
+            <label class="col-md-2 control-label">来源</label>
+            <div class="col-md-10">
+              <select name="data_source" class="form-control chosen-select" data-placeholder="请选择来源">
+                <option value="">来源</option>
+                <%@data_sources.each do |x|%>
+                  <option value="<%=x%>" ><%=x%></option>
+                <%end%>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">保存</button>
         </div>
       <% end %>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">保存</button>
-      </div>
     </div>
   </div>
 </div>
