@@ -206,10 +206,18 @@ $(document)
 .on('click', '.js-remark, .js-edit-data-source', function(e) {
   e.preventDefault();
   var $this = $(this);
+  var val = $this.data('value') || '';
   var url = $this.prop('href');
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
+
+  if(isRemark) {
+    $form.find('[name="remark"]').val(val);
+  } else {
+    $form.find('[name="data_source"]').val(val).trigger('chosen:updated');
+  }
+  
   $modal.modal({backdrop: 'static', keybaord: false});
 
   $form.off('submit.edit').on('submit.edit', function(e) {
