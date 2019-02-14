@@ -249,15 +249,7 @@ $(document)
         
         var $tr = $this.closest('tr');
         if(isRemark) {
-          // $tr.find('td').eq(5).prop('title', $field.val());
-
-          if ($field.val() == "1") {
-            $tr.find('td').eq(5).html('有');
-          } else if ($field.val() == "0") {
-            $tr.find('td').eq(5).html('无');
-          } else {
-            $tr.find('td').eq(5).html('不确定');
-          }
+          $tr.find('td').eq(5).prop('title', $field.val());
           
         } else {
           $tr.find('td').eq(3).html(($field.val() || '').join(','));
