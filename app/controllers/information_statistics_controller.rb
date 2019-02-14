@@ -121,7 +121,7 @@ class InformationStatisticsController < ApplicationController
     if data.blank?
       return render json: {type:'error',message:'该数据不存在或已被删除'}
     end
-    data.update({hav_infos:params[:hav_infos]})
+    data.update({hav_infos:params[:hav_infos],remark:params[:remark]})
     return render json: {type:'success',message:'数据更新成功'}    
   end
 
