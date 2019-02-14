@@ -97,7 +97,7 @@ class ArchonTwitterUser < ArchonBase
   end
 
 
-  # nohup rails r ArchonTwitterUser.dump_data_to_json("#{Rails.root}/public/json_datas/dump_1123123.txt") &
+  # nohup rails r ArchonTwitterUser.dump_data_to_json("#{Rails.root}/dump_1123123.txt") &
   def self.dump_data_to_json(file_path)
     tag = get_tag
     datas = []

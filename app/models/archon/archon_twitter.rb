@@ -179,7 +179,7 @@ class ArchonTwitter < ArchonBase
       }
     end
     user_ids = postReply.map{|x| x[:userId]}.compact - ['']
-    users = ArchonTwitterUser.find(user_ids).map{|x| {userId: x.id, userName: x.name}}
+    users = ArchonTwitterUser.where(id:user_ids).map{|x| {userId: x.id, userName: x.name}}
     postReply.each do |x|
       user_info = users.find{|x| x[:userId] == x[:userId]}
       next if user_info.blank?
@@ -211,7 +211,7 @@ class ArchonTwitter < ArchonBase
       }
     end
     user_ids = postForward.map{|x| x[:userId]}.compact - ['']
-    users = ArchonTwitterUser.find(user_ids).map{|x| {userId: x.id, userName: x.name, userScreen: x.screen_name}}
+    users = ArchonTwitterUser.where(id:user_ids).map{|x| {userId: x.id, userName: x.name, userScreen: x.screen_name}}
     postForward.each do |x|
       user_info = users.find{|x| x[:userId] == x[:userId]}
       next if user_info.blank?
@@ -222,15 +222,15 @@ class ArchonTwitter < ArchonBase
 
 
   def self.twittwer_post_size
-    50
+    5
   end
 
   def self.twittwer_reply_size
-    50
+    5
   end
 
   def self.twittwer_forward_size
-    50
+    5
   end
 
 
