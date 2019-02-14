@@ -147,6 +147,7 @@ Rails.application.routes.draw do
       get :switch_status
       post :remark
       post :update_data_source
+      post :hav_infos
     end
   end
 
