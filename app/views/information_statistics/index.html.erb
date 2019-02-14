@@ -215,7 +215,7 @@ $(document)
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
-  var $field = isRemark ? $form.find('[name="remark"]') : $form.find('[name="data_source[]"]');
+  var $field = isRemark ? $form.find('[name="hav_infos"]') : $form.find('[name="data_source[]"]');
   if(isRemark) {
     $field.val(val);
   } else {
@@ -241,7 +241,8 @@ $(document)
         
         var $tr = $this.closest('tr');
         if(isRemark) {
-          $tr.find('td').eq(5).prop('title', $field.val());
+          // $tr.find('td').eq(5).prop('title', $field.val());
+          $tr.find('td').eq(5).html($field.val());
         } else {
           $tr.find('td').eq(3).html(($field.val() || '').join(','));
         }
