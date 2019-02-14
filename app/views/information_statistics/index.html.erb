@@ -164,8 +164,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">来源</label>
             <div class="col-md-10">
-              <select name="data_source" class="form-control chosen-select" data-placeholder="请选择来源">
-                <option value="">来源</option>
+              <select name="data_source" multiple class="form-control chosen-select" data-placeholder="请选择来源">
                 <%@data_sources.each do |x|%>
                   <option value="<%=x%>" ><%=x%></option>
                 <%end%>
@@ -211,12 +210,9 @@ $(document)
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
-
-  if(isRemark) {
-    $form.find('[name="remark"]').val(val);
-  } else {
-    $form.find('[name="data_source"]').val(val).trigger('chosen:updated');
-  }
+  var $field = isRemark ? $form.find('[name="remark"]') : $form.find('[name="data_source"]');
+  $field.val(val);
+  !isRemark && $field.trigger('chosen:updated');
 
   $modal.modal({backdrop: 'static', keybaord: false});
 
@@ -231,9 +227,14 @@ $(document)
     }).done(function(res) {
       if(res.type === 'success') {
         toastr.success(res.message);
-        setTimeout(function() {
-          location.reload();
-        }, 1500);
+        
+        var $tr = $this.closest('tr');
+        if(isRemark) {
+          $tr.find('td').eq(5).prop('title', $field.val());
+        } else {
+          $tr.find('td').eq(3).html(($field.val() || '').join(','));
+        }
+
       } else {
         toastr.error(res.message);
       }
