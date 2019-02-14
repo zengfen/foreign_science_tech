@@ -258,7 +258,7 @@ class ArchonTwitter < ArchonBase
     f = File.open("dump_1123123.txt", "w")
 
     exist_uids[0,1500].each do |x|
-      post_ids = ArchonTwitter.select("id").where(user_id: x).reorder(nil).limit(50).collect(&:id)
+      post_ids = ArchonTwitter.select("id").where(user_id: x).reorder(nil).limit(5).collect(&:id)
       line = {userid: x, reply_ids: ids11[x], retweet_ids: ids00[x], post_ids: post_ids}
       f.puts line.to_json
     end
