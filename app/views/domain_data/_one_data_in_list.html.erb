@@ -1,7 +1,7 @@
 <tr>
   <td><%= i%></td>
   <td><%=obj.domain%></td>
-  <td><%=truncate_utf(obj.rss_site,15,"...")%></td>
+  <td><%=truncate_utf(obj.rss_site.join(","),15,"...") rescue ""%></td>
   <td><%=obj.newslookup%></td>
 
 </tr>
