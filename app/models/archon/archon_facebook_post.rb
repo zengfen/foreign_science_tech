@@ -73,7 +73,7 @@ class ArchonFacebookPost < ArchonBase
     exist_uids = ArchonFacebookUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
 
 
-    f = File.open("#{Rails.root}/public/json_data/temp_facebook_users.txt", "w")
+    f = File.open("#{Rails.root}/public/json_datas/temp_facebook_users.txt", "w")
 
     exist_uids[0,1500].each do |x|
       line = {userid: x, reply_ids: ids11[x][0..4], post_ids: ids00[x][0..4]}
