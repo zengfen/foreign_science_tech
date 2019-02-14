@@ -107,6 +107,24 @@ class InformationStatisticsController < ApplicationController
     return render json: {type:'success',message:'数据更新成功'}
   end
 
+  def hav_infos
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      return render json:{type:'error',message:'数据类型不能为空'}
+    end
+    if id.blank?
+      return render json:{type:'error',message:'数据ID不能为空'}
+    end
+    k = Object.const_get model
+    data = k.where({id:id}).first
+    if data.blank?
+      return render json: {type:'error',message:'该数据不存在或已被删除'}
+    end
+    data.update({hav_infos:params[:hav_infos]})
+    return render json: {type:'success',message:'数据更新成功'}    
+  end
+
   def update_data_source
     model = params[:model]
     id = params[:id]
