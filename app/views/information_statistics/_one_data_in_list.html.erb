@@ -12,7 +12,7 @@
 	  </a>  	
 	  <ul class="more-ul dn">
 	  	<li class="bor-b">
-	  		<a href="<%= hav_infos_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-remark" data-value="<%=obj.hav_infos%>">标注</a>
+	  		<a href="<%= hav_infos_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-remark" data-value="<%=obj.hav_infos%>" data-remark="<%=obj.remark%>">标注</a>
 	  	</li>
 	  	<li class="bor-b">
 	  		<a href="<%= update_data_source_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-edit-data-source" data-value="<%=obj.data_source%>">编辑来源</a>

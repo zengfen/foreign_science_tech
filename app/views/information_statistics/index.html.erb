@@ -215,7 +215,8 @@ $(document)
 .on('click', '.js-remark, .js-edit-data-source', function(e) {
   e.preventDefault();
   var $this = $(this);
-  var val = $this.data('value') || '';
+  var val = $this.data('value');
+  var title = $this.data('title');
   var url = $this.prop('href');
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
@@ -223,8 +224,7 @@ $(document)
   var $field = isRemark ? $form.find('[name="hav_infos"]') : $form.find('[name="data_source[]"]');
   if(isRemark) {
     // $field.val(val);
-    console.log(val)
-    console.log("lalalala")
+    $form.find('[name="remark"]').val(title);
     $field.filter('[value="' + val + '"]').prop('checked',true);
   } else {
     (val || '').split(',').forEach(function(item) {
