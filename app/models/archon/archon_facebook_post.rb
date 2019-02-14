@@ -61,14 +61,15 @@ class ArchonFacebookPost < ArchonBase
       ids00[x[1]] ||= []
       ids00[x[1]] << x[0]
     end
-    ids1 = ArchonFacebookComment.select("id,user_id").limit(300000).reorder('').collect{|x| [x.id, x.user_id]}
-    ids11 = {}
-    ids1.each do |x|
-      ids11[x[1]] ||= []
-      ids11[x[1]] << x[0]
-    end
+    # ids1 = ArchonFacebookComment.select("id,user_id").limit(300000).reorder('').collect{|x| [x.id, x.user_id]}
+    # ids11 = {}
+    # ids1.each do |x|
+    #   ids11[x[1]] ||= []
+    #   ids11[x[1]] << x[0]
+    # end
 
-    ids2 = ids0.collect{|x| x[1]} & ids1.collect{|x| x[1]}
+    # ids2 = ids0.collect{|x| x[1]} & ids1.collect{|x| x[1]}
+    ids2 = ids0.collect{|x| x[1]}
 
     exist_uids = ArchonFacebookUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
 
@@ -76,7 +77,7 @@ class ArchonFacebookPost < ArchonBase
     f = File.open("#{Rails.root}/public/json_datas/temp_facebook_users.txt", "w")
 
     exist_uids[0,1500].each do |x|
-      line = {userid: x, reply_ids: ids11[x][0..4], post_ids: ids00[x][0..4]}
+      line = {userid: x, post_ids: ids00[x][0..4]}
       f.puts line.to_json
     end
 

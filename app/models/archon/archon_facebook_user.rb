@@ -83,9 +83,10 @@ class ArchonFacebookUser < ArchonBase
 
       ids_data = user_id_datas.find{|x| x["userid"] == user.id}
       post_ids = ids_data["post_ids"]
-      reply_ids = ids_data["reply_ids"]
       facebook_post = ArchonFacebookPost.get_facebook_post(post_ids)
-      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(reply_ids)
+      # oids = facebook_post.map{|x| x[:shareId]}
+      # facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
+      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(user.id)
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
