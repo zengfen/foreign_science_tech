@@ -37,6 +37,7 @@ class InformationStatisticsController < ApplicationController
 	end
 
   def update_statistic
+    InformationStatistics.start_renew
 		UpdateInformationStatisticsJob.perform_later
     flash['success'] = "更新计算后台运行开始"
 		redirect_to information_statistics_path

@@ -52,6 +52,10 @@ class InformationStatistics
 		return "archon_center_info_statistics_switch"
 	end
 
+	def self.start_renew
+		$redis.set(self.new.redis_switch_key,1)
+	end
+
 	def self.switch
 		return $redis.get(self.new.redis_switch_key).to_i rescue 0
 	end
