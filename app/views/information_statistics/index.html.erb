@@ -183,7 +183,7 @@
 
   <% content_for :javascript do %>
     <script>
-
+window.__lists__ = <%== @lists.to_json %>;
 $(document)
 .on("click",'.icon-more',function(e){
    e.preventDefault();
