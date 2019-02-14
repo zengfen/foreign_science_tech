@@ -78,8 +78,15 @@ class InformationExcel
 		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
 
 		k = Object.const_get modelclass	
-		new_data = k.where({domain:query[:domain],en_name:query[:en_name],ch_name:query[:ch_name]}).first
-		return {type:'success',message:'该网站已存在',query:query} unless new_data.blank?	
+		# new_data = k.where({domain:query[:domain],en_name:query[:en_name],ch_name:query[:ch_name]}).first
+		new_data = k.where({domain:query[:domain]}).first
+		unless new_data.blank?
+			levels = new_data.level.split(',') rescue []
+			level = query[:level]
+			levels << level
+			new_data.update({level:levels.uniq.join(',')})
+			return {type:'success',message:'该网站已存在',query:query}
+		end
 		
 		unless query[:country_code].blank?
 			query[:country_code] = countries[query[:country_code]]
