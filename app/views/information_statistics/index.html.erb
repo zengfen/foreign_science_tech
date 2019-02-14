@@ -218,7 +218,7 @@ $(document)
   var $field = isRemark ? $form.find('[name="hav_infos"]') : $form.find('[name="data_source[]"]');
   if(isRemark) {
     // $field.val(val);
-    $field.filter('[value="' + val + '"]').prop('selected',true);
+    $field.filter('[value="' + val + '"]').prop('checked',true);
   } else {
     (val || '').split(',').forEach(function(item) {
       $field.children().filter('[value="'+ item +'"]').prop('selected', true);
@@ -244,9 +244,9 @@ $(document)
         if(isRemark) {
           // $tr.find('td').eq(5).prop('title', $field.val());
 
-          if ($field.val() == '1') {
+          if ($field.val() == "1") {
             $tr.find('td').eq(5).html('有');
-          } else if ($field.val() == '0') {
+          } else if ($field.val() == "0") {
             $tr.find('td').eq(5).html('无');
           } else {
             $tr.find('td').eq(5).html('不确定');
