@@ -211,8 +211,14 @@ $(document)
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
   var $field = isRemark ? $form.find('[name="remark"]') : $form.find('[name="data_source"]');
-  $field.val(val);
-  !isRemark && $field.trigger('chosen:updated');
+  if(isRemark) {
+    $field.val(val);
+  } else {
+    (val || '').split(',').forEach(function(item) {
+      $field.children().filter('[value="'+ item +'"]').prop('selected', true);
+    });
+    $field.trigger('chosen:updated');
+  }
 
   $modal.modal({backdrop: 'static', keybaord: false});
 
