@@ -15,15 +15,9 @@ class ArchonFacebookPost < ArchonBase
   end
 
 
-  def self.get_facebook_post(user_id, tag)
+  def self.get_facebook_post(post_ids)
     facebook_post = []
-    count = 0
-    self.where(user_id: user_id).each do |x|
-      # 若这条post的tag不为指定tag 则取下一条数据
-      # next if !$redis.sismember("archon_center_#{tag}_facebbok_post_ids", x.id)
-      # count += 1
-      # 只取10条数据
-      # break if count > facebook_post_size
+    self.where(id:post_ids).each do |x|
       facebook_post << {
         #发布者信息
         "userId": x.user_id, #分享者ID（用来进行关联）
@@ -58,8 +52,37 @@ class ArchonFacebookPost < ArchonBase
     return facebook_post
   end
 
-  def self.facebook_post_size
-    50
+
+  def self.temp_dump_facebook_users
+    ids0 = ArchonFacebookPost.select("id,user_id").limit(300000).reorder('').collect{|x| [x.id, x.user_id]}
+
+    ids00 = {}
+    ids0.each do |x|
+      ids00[x[1]] ||= []
+      ids00[x[1]] << x[0]
+    end
+    ids1 = ArchonFacebookComment.select("id,user_id").limit(300000).reorder('').collect{|x| [x.id, x.in_reply_to_user_id]}
+    ids11 = {}
+    ids1.each do |x|
+      ids11[x[1]] ||= []
+      ids11[x[1]] << x[0]
+    end
+
+    ids2 = ids0.collect{|x| x[1]} & ids1.collect{|x| x[1]}
+
+    exist_uids = ArchonFacebookUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
+
+
+    f = File.open("#{Rails.root}/public/json_data/temp_facebook_users", "w")
+
+    exist_uids[0,1500].each do |x|
+      line = {userid: x, reply_ids: ids11[x][0..4], post_ids: ids00[x][0..4]}
+      f.puts line.to_json
+    end
+
+    f.close
   end
+
+
 
 end

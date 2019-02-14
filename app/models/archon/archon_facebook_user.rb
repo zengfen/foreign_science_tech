@@ -60,40 +60,32 @@ class ArchonFacebookUser < ArchonBase
     out
   end
 
-  def user_names
-    "aleksandra.pitner,ronald.l.moolenaar,cynthia.a.griffin.7,adrienne.p.fuentes,terry.pitner,TerryBranstad,robert.forden,miles.toder,shane.krohne,ben.glerum.5,zach.alger,ory.abramowicz,jimmullinax,clark.ledger,keithlommel,gbenelisha,cannon.smith,lizzie,18803355,drew.wind,being.alan.clark,nathaniel.tishman,levin.flake,jenniferkallen,JustinWalls,100005248428114,vicki.ting.56,danielle.koschil,boolbada,danchops,baylor.duncan,roseanne.freese,joe.plunkett,chelsea.chris.fisher,jfouss,michael.dubray,luke.donohue.754,Jesse.Curtis.702,ryan.mckean,mark.petry,russell.caplen,carla.hitchcock,chris.miller.127648,jing.w.edwards,christian.marchant.12,shelby.p.martin.5,james.cunningham.771282,100009568373676,dante.paradiso.50,kurt.tong.3,darragh.paradiso,brittanie.lakemaffeo,jeffrey.shrader".split(",")
-  end
 
-
-
-  # ArchonFacebookUser.dump_data_to_json
-  def self.dump_data_to_json
-    user_names = user_names
+  # ArchonFacebookUser.dump_data_to_json("#{Rails.root}/public/json_data/temp_facebook_users")
+  def self.dump_data_to_json(file_path)
     tag = get_tag
     datas = []
     unknow_hash = self.unknow_hash
-    count = 0
 
-    file_path = "#{Rails.root}/public/json_datas/201901010129_facebook_source_data.json"
+    # file_path = "#{Rails.root}/public/json_datas/201901010129_facebook_source_data.json"
     user_id_datas = []
     File.open(file_path, "r") do |f|
       while data  = f.gets
         user_id_datas << JSON.parse(data)
       end
     end
-    user_ids = user_id_datas.map{|x| x["uid"]}
+    user_ids = user_id_datas.map{|x| x["userid"]}
 
-    # ArchonFacebookUser.where(screen_name: user_names) do |user|
     ArchonFacebookUser.where(id: user_ids).each do |user|
       friend_ids = user_id_datas.find{|x| x["uid"].to_i == user.id}["friends"].map{|x| x["id"]} rescue []
       friends = get_friends(friend_ids)
       facebook_basic = user.get_facebook_basic
-      facebook_post = ArchonFacebookPost.get_facebook_post(user.id, tag)
-      # next if facebook_post.blank?
-      oids = facebook_post.map{|x| x[:shareId]}
-      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
-      # count += 1
-      # break if count > facebook_user_size
+
+      ids_data = user_id_datas.find{|x| x["userid"] == user.id}
+      post_ids = ids_data["post_ids"]
+      reply_ids = ids_data["reply_ids"]
+      facebook_post = ArchonFacebookPost.get_facebook_post(post_ids)
+      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(reply_ids)
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic

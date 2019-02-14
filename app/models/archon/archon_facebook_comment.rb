@@ -1,9 +1,9 @@
 class ArchonFacebookComment < ArchonBase
   belongs_to :user, foreign_key: :user_id, class_name: "ArchonFacebookUser"
 
-  def self.get_facebook_post_reply(oids)
+  def self.get_facebook_post_reply(reply_ids)
     facebook_postReply = []
-    self.where(post_oid:oids).each do |x|
+    self.where(id:reply_ids).each do |x|
       facebook_postReply << {
         "shareId": x.oid, #分享ID （唯一标定回复信息）
         "parentID": x.post_oid, #回复父ID，用于采集回复的回复
