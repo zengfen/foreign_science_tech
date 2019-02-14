@@ -8,6 +8,9 @@ class InformationStatisticsController < ApplicationController
 		@hav_infos = MediaInfo.hav_infos
 		@custom_domains = MediaInfo.custom_domains
     search(params,MediaInfo)
+    if request.xhr?
+     return render "_list_body.html.erb", layout: false
+    end
 	end
 
   def govern
@@ -17,6 +20,10 @@ class InformationStatisticsController < ApplicationController
 		@hav_infos = GovernmentInfo.hav_infos
 		@custom_domains = MediaInfo.custom_domains
     search(params,GovernmentInfo)
+    if request.xhr?
+     return render "_list_body.html.erb", layout: false
+    end
+
   	return render 'index'
 	end
 
@@ -57,8 +64,11 @@ class InformationStatisticsController < ApplicationController
     end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
     lists.each do |obj|
       info_count[obj.id] ||= 0
-      ((Date.today - end_date).to_i..(Date.today - start_date).to_i).each do |day|
-        info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
+      # ((Date.today - end_date).to_i..(Date.today - start_date).to_i).each do |day|
+      #   info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day}").to_i
+      # end
+      (start_date..end_date).each do |day|
+        info_count[obj.id] += $redis.hget(@redis_key,"#{obj.domain}_#{day.strftime("%F")}").to_i
       end
     end
     min_count = params[:min_count].present? ? params[:min_count].to_i : 0
@@ -71,6 +81,48 @@ class InformationStatisticsController < ApplicationController
     ids = @info_count.keys[start_index...end_index]
     lists = ids.present? ? lists.where(id:ids).order("find_in_set(id, '#{ids.join(",")}')") : []
     @lists = Kaminari.paginate_array(lists, total_count: @info_count.count).page(page).per(per_page)
+  end
+
+  def switch_status
+    status = InformationStatistics.switch
+    return render json:{status:status}
+  end
+
+  def remark
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      return render json:{type:'error',message:'数据类型不能为空'}
+    end
+    if id.blank?
+      return render json:{type:'error',message:'数据ID不能为空'}
+    end
+    k = Object.const_get model
+    data = k.where({id:id}).first
+    if data.blank?
+      return render json: {type:'error',message:'该数据不存在或已被删除'}
+    end
+    data.update({remark:params[:remark]})
+    return render json: {type:'success',message:'数据更新成功'}
+  end
+
+  def update_data_source
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      return render json:{type:'error',message:'数据类型不能为空'}
+    end
+    if id.blank?
+      return render json:{type:'error',message:'数据ID不能为空'}
+    end
+    k = Object.const_get model
+    data = k.where({id:id}).first
+    if data.blank?
+      return render json: {type:'error',message:'该数据不存在或已被删除'}
+    end    
+    data_source = params[:data_source].join(',') rescue ''
+    data.update({data_source:data_source})
+    return render json: {type:'success',message:'数据源更新成功'}
   end
 
 end

@@ -4,6 +4,19 @@
   <td><%= @countries[obj.country_code] %></td>
   <td><%= obj.data_source %></td>
   <td><%= @levels[obj.level] %></td>
-  <td><%= @hav_infos[obj.hav_infos] || '不确定' %></td>
+  <td title="<%=obj.remark%>"><%= @hav_infos[obj.hav_infos] || '不确定' %></td>
   <td><%= @info_count[obj.id] %></td>
+  <td class="pos-r">
+	  <a href="##">
+	    <i class="icon_data_analysis icon-more"></i>
+	  </a>  	
+	  <ul class="more-ul dn">
+	  	<li class="bor-b">
+	  		<a href="<%= remark_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-remark" data-value="<%=obj.remark%>">标注</a>
+	  	</li>
+	  	<li class="bor-b">
+	  		<a href="<%= update_data_source_information_statistics_path(id: obj.id, model: obj.class.to_s) %>" class="js-edit-data-source" data-value="<%=obj.data_source%>">编辑来源</a>
+	  	</li>
+	  </ul>
+  </td>
 </tr>
