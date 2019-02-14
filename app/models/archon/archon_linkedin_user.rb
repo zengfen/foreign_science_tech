@@ -102,7 +102,8 @@ class ArchonLinkedinUser < ArchonBase
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
-    ArchonLinkedinUser.where(id:user_names).each do |user|
+    # ArchonLinkedinUser.where(id:user_names).each do |user|
+    ArchonLinkedinUser.limit(1500).each do |user|
       user_info = user.get_linkedin_user_info
       userSkill = JSON.parse(user.skills).values.flatten.map{|x| x["skillName"]} rescue []
       # next if userSkill.blank?
@@ -119,7 +120,6 @@ class ArchonLinkedinUser < ArchonBase
       linkedin["education"] = education
       linkedin["career"] = career
       data[:linkedIn] = linkedin.merge(unknow_hash)
-      # datas << data.to_json
       $redis.sadd("archon_center_linkedin_datas", data.to_json)
     end
 
