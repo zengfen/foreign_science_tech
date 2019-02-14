@@ -10,9 +10,26 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
+            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+              <div id="rcontent" class="clear-p">
 
+                <div class="col-md-8">
+                  <div class="form-group mb0">
+
+                    <input type="text" placeholder="关键词" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
+                    <i class="search-line" style=></i>
+                    <i class="fa fa-search search-icon"></i></div>
+                </div>
+
+                <div class="ibox-tools dib">
+                  <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                </div>
+
+              </div>
+
+          <%end%>
           </div>
-        </div>
+          </div>
         <div id="result_release">
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
