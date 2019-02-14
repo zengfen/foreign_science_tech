@@ -1,7 +1,11 @@
 <tr>
   <td><%= i%></td>
   <td><%=obj.domain%></td>
-  <td><%=truncate_utf(obj.rss_site.join(","),15,"...") rescue ""%></td>
+  <%if !JSON.parse(obj.rss_site).blank?%>
+  	<td><%=truncate_utf(JSON.parse(obj.rss_site).join(","),15,"...")%></td>
+  <%else%>
+  	<td></td>>
+  <%end%>
   <td><%=obj.newslookup%></td>
 
 </tr>
