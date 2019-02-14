@@ -150,6 +150,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :domain_data do
+    collection do
+
+    end
+  end
+
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/sidekiq'

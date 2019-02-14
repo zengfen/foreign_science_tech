@@ -94,6 +94,7 @@
           <li class="<%= is_active_action("loader", "services") %>"><%= link_to "Loader数据量", "/services/loader" %></li>
           <li class="<%= is_active_action("dumper", "services") %>"><%= link_to "Dumper数据量", "/services/dumper" %></li>
           <li class="<%= is_active_action("index", "information_statistics") || is_active_action("govern", "information_statistics") %>"><%= link_to "资讯列表", "/information_statistics" %></li>
+          <li class="<%= is_active_action("index", "domain_data") %>"><%= link_to "域名对应列表", "/domain_data" %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('service_codes,service_code_versions') %>">
