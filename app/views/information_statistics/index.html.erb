@@ -164,7 +164,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">来源</label>
             <div class="col-md-10">
-              <select name="data_source" multiple class="form-control chosen-select" data-placeholder="请选择来源">
+              <select name="data_source[]" multiple class="form-control chosen-select" data-placeholder="请选择来源">
                 <%@data_sources.each do |x|%>
                   <option value="<%=x%>" ><%=x%></option>
                 <%end%>
@@ -209,7 +209,7 @@ $(document)
   var isRemark = $this.hasClass('js-remark');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
-  var $field = isRemark ? $form.find('[name="remark"]') : $form.find('[name="data_source"]');
+  var $field = isRemark ? $form.find('[name="remark"]') : $form.find('[name="data_source[]"]');
   if(isRemark) {
     $field.val(val);
   } else {
