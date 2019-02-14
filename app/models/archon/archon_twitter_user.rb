@@ -97,15 +97,15 @@ class ArchonTwitterUser < ArchonBase
   end
 
 
-  # nohup rails r ArchonTwitterUser.dump_data_to_json &
-  def self.dump_data_to_json
+  # nohup rails r ArchonTwitterUser.dump_data_to_json("#{Rails.root}/public/json_datas/dump_1123123.txt") &
+  def self.dump_data_to_json(file_path)
     tag = get_tag
     datas = []
     unknow_hash = self.unknow_hash
     count = 0
 
     # file_path = "dump_1123123.txt"
-    file_path = "#{Rails.root}/public/json_datas/dump_20_56.txt"
+    # file_path = "#{Rails.root}/public/json_datas/dump_20_56.txt"
     user_id_datas = []
     File.open(file_path, "r") do |f|
       while data  = f.gets
