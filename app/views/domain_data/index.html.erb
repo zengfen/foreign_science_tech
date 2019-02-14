@@ -59,37 +59,9 @@
   </div>
 </div>
 
-<div class="modal fade" id="modal_edit_data_source" tabindex="-1" role="dialog" aria-labelledby="modal_edit_data_sourceLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modal_edit_data_sourceLabel">编辑来源</h4>
-      </div>
-      <%= form_tag url_for(action: 'update_data_source'),:class=>"form-horizontal",:method=>:post do %>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="col-md-2 control-label">来源</label>
-            <div class="col-md-10">
-              <select name="data_source[]" multiple class="form-control chosen-select" data-placeholder="请选择来源">
-                <%@data_sources.each do |x|%>
-                  <option value="<%=x%>" ><%=x%></option>
-                <%end%>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="submit" class="btn btn-primary">保存</button>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
 
-  <% content_for :javascript do %>
-    <script>
+<% content_for :javascript do %>
+<script>
 $(document)
 .on("click",'.icon-more',function(e){
    e.preventDefault();
