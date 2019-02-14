@@ -218,6 +218,7 @@ $(document)
   var $field = isRemark ? $form.find('[name="hav_infos"]') : $form.find('[name="data_source[]"]');
   if(isRemark) {
     // $field.val(val);
+    console.log(val)
     $field.filter('[value="' + val + '"]').prop('checked',true);
   } else {
     (val || '').split(',').forEach(function(item) {
