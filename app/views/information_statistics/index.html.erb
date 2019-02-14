@@ -241,6 +241,8 @@ $(document)
           $tr.find('td').eq(3).html(($field.val() || '').join(','));
         }
 
+        $modal.modal('hide');
+
       } else {
         toastr.error(res.message);
       }
