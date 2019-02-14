@@ -62,7 +62,7 @@ class ArchonFacebookPost < ArchonBase
       ids00[x[1]] << x[0]
     end
 
-    ids1 = ArchonFacebookComment.select("id,user_id").where(user_id:ids00.keys).reorder('').collect{|x| [x.id, x.user_id]}.count
+    ids1 = ArchonFacebookComment.select("id,user_id").where(user_id:ids00.keys).reorder('').collect{|x| [x.id, x.user_id]}
     ids11 = {}
     ids1.each do |x|
       ids11[x[1]] ||= []
