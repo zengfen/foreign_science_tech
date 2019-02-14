@@ -61,7 +61,7 @@ class ArchonFacebookUser < ArchonBase
   end
 
 
-  # ArchonFacebookUser.dump_data_to_json("#{Rails.root}/public/json_data/temp_facebook_users")
+  # ArchonFacebookUser.dump_data_to_json("#{Rails.root}/public/json_datas/temp_facebook_users.txt")
   def self.dump_data_to_json(file_path)
     tag = get_tag
     datas = []
@@ -83,10 +83,11 @@ class ArchonFacebookUser < ArchonBase
 
       ids_data = user_id_datas.find{|x| x["userid"] == user.id}
       post_ids = ids_data["post_ids"]
+      comment_ids = ids_data["comment_ids"]
       facebook_post = ArchonFacebookPost.get_facebook_post(post_ids)
       # oids = facebook_post.map{|x| x[:shareId]}
       # facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(oids)
-      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(user.id)
+      facebook_postReply = ArchonFacebookComment.get_facebook_post_reply(comment_ids)
       data = {facebook: {}}
       facebook = {}
       facebook["basic"] = facebook_basic
