@@ -27,6 +27,10 @@ class InformationStatisticsController < ApplicationController
   	return render 'index'
 	end
 
+  def detail
+    
+  end
+
 	def all_info
   	@countries = InformationExcel.new.countries_json
   	@data_sources = MediaInfo.data_sources 

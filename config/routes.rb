@@ -150,6 +150,10 @@ Rails.application.routes.draw do
       post :update_data_source
       post :hav_infos
     end
+
+    member do 
+      get :detail
+    end
   end
 
   resources :domain_data do
