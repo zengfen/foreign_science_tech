@@ -139,15 +139,21 @@
           <div class="form-group">
             <label class="col-md-2 control-label">有无新闻</label>
             <div class="col-md-10">
-              <label style="line-height: 30px; margin-right: 10px"><input type="radio" name="hav_infos" value="1">有</label>
-              <label style="line-height: 30px; margin-right: 10px"><input type="radio" name="hav_infos" value="0">无</label>
-              <label style="line-height: 30px; margin-right: 10px"><input type="radio" name="hav_infos" value="">不确定</label>
+              <label style="line-height: 30px; margin-right: 10px">
+                <input type="radio" name="hav_infos" value="1" style="margin: 0;vertical-align: middle"> 有
+              </label>
+              <label style="line-height: 30px; margin-right: 10px">
+                <input type="radio" name="hav_infos" value="0" style="margin: 0;vertical-align: middle"> 无
+              </label>
+              <label style="line-height: 30px; margin-right: 10px">
+                <input type="radio" name="hav_infos" value="" style="margin: 0;vertical-align: middle"> 不确定
+              </label>
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-2 control-label">备注</label>
             <div class="col-md-10">
-              <textarea name="remark" rows="10" placeholder="请添加标注" class="form-control"></textarea>                            
+              <textarea name="remark" rows="4" placeholder="请添加备注" class="form-control"></textarea>                            
             </div>
           </div>
         </div>
@@ -212,22 +218,25 @@ $(document)
 .on('click', '.js-remark, .js-edit-data-source', function(e) {
   e.preventDefault();
   var $this = $(this);
-  var val = $this.data('value');
-  var remark = $this.data('remark');
-  var url = $this.prop('href');
   var isRemark = $this.hasClass('js-remark');
+  var hav_infos = $this.data('hav_infos');
+  var remark = $this.data('remark');
+  var data_source = $this.data('data_source');
+  var url = $this.prop('href');
   var $modal = isRemark ? $('#modal_edit_mark') : $('#modal_edit_data_source');
   var $form = $modal.find('form');
-  var $field = isRemark ? $form.find('[name="hav_infos"]') : $form.find('[name="data_source[]"]');
+  var $remark = $form.find('[name="remark"]');
+  var $hav_infos = $form.find('[name="hav_infos"]');
+  var $data_source = $form.find('[name="data_source[]"]');
   if(isRemark) {
-    // $field.val(val);
+    $remark.val(remark);
+    $hav_infos.filter('[value="'+ hav_infos +'"]').prop('checked',true);
     $form.find('[name="remark"]').val(remark);
-    $field.filter('[value="' + val + '"]').prop('checked',true);
   } else {
-    (val || '').split(',').forEach(function(item) {
-      $field.children().filter('[value="'+ item +'"]').prop('selected', true);
+    (data_source || '').split(',').forEach(function(item) {
+      $data_source.children().filter('[value="'+ item +'"]').prop('selected', true);
     });
-    $field.trigger('chosen:updated');
+    $data_source.trigger('chosen:updated');
   }
 
   $modal.modal({backdrop: 'static', keybaord: false});
@@ -246,10 +255,11 @@ $(document)
         
         var $tr = $this.closest('tr');
         if(isRemark) {
-          $tr.find('td').eq(5).prop('title', $field.val());
-          
+          var hav_infos_val = $hav_infos.filter(':checked').val();
+          var new_hav_infos_text = hav_infos_val == '1' ? '有' : hav_infos_val == '0' ? '无' : '不确定';
+          $tr.find('td').eq(5).prop('title', $remark.val()).html(new_hav_infos_text);
         } else {
-          $tr.find('td').eq(3).html(($field.val() || '').join(','));
+          $tr.find('td').eq(3).html(($data_source.val() || '').join(','));
         }
 
         $modal.modal('hide');
