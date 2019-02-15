@@ -36,4 +36,25 @@ class MediaInfo < ApplicationRecord
 		}
 	end
 
+	def self.update_data_sources
+		MediaInfo.all.each do |x|
+			a = DomainDataSource.where({domain:x.domain}).first
+			data_source = x.data_source.split(',') rescue []
+			unless a.blank?
+				rsses = JSON.parse(a.rss_site)
+				rsses.each do |rss|
+					if rss.include?('news.google')
+						data_source << 'Googlenrss'
+					else
+						data_source << 'Rss'
+					end
+				end
+				unless a.newslookup
+					data_source << 'Newslookup'
+				end
+			end
+			x.update({data_source:data_source.uniq.join(',')})
+		end
+	end
+
 end
