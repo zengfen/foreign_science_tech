@@ -12,6 +12,11 @@
           <div class="bg-search">
           <%=form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <input type="text" name="keyword" class="form-control" data-placeholder="请输入名称">
+                  </div>
+                </div>
 
                 <div class="col-md-2">
                   <div class="form-group mb0">
@@ -45,7 +50,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                   <div class="form-group mb0">
                     <select name="hav_infos" class="form-control chosen-select" data-placeholder="有无新闻">
                       <option value="">有无新闻</option>
@@ -54,7 +59,7 @@
                       <%end%>
                     </select>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="col-md-4">
                   <div class="input-daterange input-group js-number-range">
