@@ -47,6 +47,7 @@ class InformationStatisticsController < ApplicationController
     @data_sources = MediaInfo.data_sources
     @levels = MediaInfo.levels
     @countries = InformationExcel.new.countries_json
+    @domain_data_source = DomainDataSource.where({domain:@data.domain}).first
   end
 
 	def all_info

@@ -56,6 +56,14 @@
                     <td><%=$redis.hget("archon_center_info_statistics","#{@data.domain}_#{Time.now.strftime("%F")}")%></td>
                   </tr>
                   <tr>
+                    <td>rss网址</td>
+                    <td><%=JSON.parse(@domain_data_source.rss_site).join(',') rescue ''%></td>
+                  </tr>
+                  <tr>
+                    <td>newslookip ID</td>
+                    <td><%=@domain_data_source.newslookup rescue ''%></td>
+                  </tr>
+                  <tr>
                     <td>备注</td>
                     <td><%=@data.remark%></td>
                   </tr>
