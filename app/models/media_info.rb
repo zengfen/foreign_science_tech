@@ -41,7 +41,7 @@ class MediaInfo < ApplicationRecord
 			a = DomainDataSource.where({domain:x.domain}).first
 			data_source = x.data_source.split(',') rescue []
 			unless a.blank?
-				rsses = JSON.parse(a.rss_site)
+				rsses = JSON.parse(a.rss_site) rescue []
 				rsses.each do |rss|
 					if rss.include?('news.google')
 						data_source << 'Googlenrss'
