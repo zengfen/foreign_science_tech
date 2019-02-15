@@ -1,6 +1,7 @@
 <tr>
   <td><%= i%></td>
   <td><a href="<%=obj.site%>" target="_blank"><%= obj.ch_name %></a></td>
+  <td><%=obj.domain%></td>
   <td><%= @countries[obj.country_code] %></td>
   <!-- <td><%= obj.data_source %></td> -->
   <td><%= obj.level.split(',').collect{|x| @levels[x.to_i]}.join(',') rescue ''%></td>
