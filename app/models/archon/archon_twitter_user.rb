@@ -92,10 +92,6 @@ class ArchonTwitterUser < ArchonBase
     out
   end
 
-  def user_names
-    "CynthiaAGriffin,TerryBranstad,johnsonrc01,mattmurray8,PetersFrancisM,jiminjava,clarkledger,KeithLommel,cannonsmith,ngraytishman,sean_stein,Boolbada,daphelps,Hokaheyhockey,Carlahitch,paradisoDX,tongkurt,tahinman".split(",")
-  end
-
 
   # nohup rails r ArchonTwitterUser.dump_data_to_json("#{Rails.root}/dump_1123123.txt") &
   def self.dump_data_to_json(file_path)
@@ -133,29 +129,8 @@ class ArchonTwitterUser < ArchonBase
       twittwer["postForward"] = postForward
       twittwer["follower"] = follower
       data[:twittwer] = twittwer.merge(unknow_hash)
-      # datas << data.to_json
       $redis.sadd("archon_center_twitter_datas", data.to_json)
 
-
-      # basic = user.get_twitter_basic
-      # post = ArchonTwitter.get_twitter_post(user.id, user.name, user.screen_name, tag)
-      # next if post.blank?
-      # oids = post.map{|x| x[:tweetID] }
-      # postReply = ArchonTwitter.get_twittwer_post_reply(oids)
-      # postForward = ArchonTwitter.get_twittwer_post_forward(oids)
-      # follower = ArchonTwitterFriend.get_twittwer_followers(user.id)
-      # count += 1
-      # break if count > twitter_user_size
-      # data = {twittwer: {}}
-      # twittwer = {}
-      # twittwer["basic"] = basic
-      # twittwer["post"] = post
-      # twittwer["postReply"] = postReply
-      # twittwer["postForward"] = postForward
-      # twittwer["follower"] = follower
-      # data[:twittwer] = twittwer.merge(unknow_hash)
-      # # datas << data.to_json
-      # $redis.sadd("archon_center_twitter_datas", data.to_json)
     end
 
   end

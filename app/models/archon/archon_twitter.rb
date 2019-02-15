@@ -255,7 +255,9 @@ class ArchonTwitter < ArchonBase
     exist_uids = ArchonTwitterUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
 
 
-    f = File.open("dump_1123123.txt", "w")
+    # f = File.open("dump_1123123.txt", "w")
+
+    f = File.open("#{Rails.root}/public/json_datas/temp_twitter_users.txt", "w")
 
     exist_uids[0,1500].each do |x|
       post_ids = ArchonTwitter.select("id").where(user_id: x).reorder(nil).limit(5).collect(&:id)

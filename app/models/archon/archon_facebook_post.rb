@@ -53,8 +53,9 @@ class ArchonFacebookPost < ArchonBase
   end
 
 
+  # 获取部分有post数据的fb人物
   def self.temp_dump_facebook_users
-    ids0 = ArchonFacebookPost.select("id,user_id").limit(50000).reorder('').collect{|x| [x.id, x.user_id]}
+    ids0 = ArchonFacebookPost.select("id,user_id").limit(100000).reorder('').collect{|x| [x.id, x.user_id]}
 
     ids00 = {}
     ids0.each do |x|
@@ -69,7 +70,8 @@ class ArchonFacebookPost < ArchonBase
       ids11[x[1]] << x[0]
     end
 
-    ids2 = ids0.collect{|x| x[1]} & ids1.collect{|x| x[1]}
+    ids2 = ids00.keys
+    # & ids1.collect{|x| x[1]}
 
     exist_uids = ArchonFacebookUser.select("id").where(id: ids2).reorder(nil).collect(&:id)
 
@@ -77,7 +79,7 @@ class ArchonFacebookPost < ArchonBase
     f = File.open("#{Rails.root}/public/json_datas/temp_facebook_users.txt", "w")
 
     exist_uids[0,1500].each do |x|
-      line = {userid: x, post_ids: ids00[x][0..4], comment_ids: ids11[x][0..4]}
+      line = {userid: x, post_ids: ids00[x][0..4], comment_ids: ids11[x].to_a[0..4]}
       f.puts line.to_json
     end
 
