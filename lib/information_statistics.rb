@@ -45,7 +45,7 @@ class InformationStatistics
 	end
 
 	# 更新当天的新闻量统计
-	def renew_statistics_now
+	def renew_statistics_today
 		$redis.set(redis_switch_key1,1)
 		begin
 			all_fields = $redis.hkeys(redis_key) || []
