@@ -49,7 +49,7 @@ class MediaInfo < ApplicationRecord
 						data_source << 'Rss'
 					end
 				end
-				unless a.newslookup
+				unless a.newslookup.blank?
 					data_source << 'Newslookup'
 				end
 			end
