@@ -258,8 +258,11 @@ $(document)
           var hav_infos_val = $hav_infos.filter(':checked').val();
           var new_hav_infos_text = hav_infos_val == '1' ? '有' : hav_infos_val == '0' ? '无' : '不确定';
           $tr.find('td').eq(5).prop('title', $remark.val()).html(new_hav_infos_text);
+          $this.data('hav_infos', new_hav_infos_text);
+          $this.data('remark', $remark.val());
         } else {
           $tr.find('td').eq(3).html(($data_source.val() || '').join(','));
+          $this.data('data_source', ($data_source.val() || '').join(','));
         }
 
         $modal.modal('hide');
