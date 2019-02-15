@@ -92,7 +92,12 @@ class InformationStatisticsController < ApplicationController
   end
 
   def switch_status
-    status = InformationStatistics.switch
+    status = ''
+    if params[:type] == 'today'
+      status = InformationStatistics.switch1
+    else
+      status = InformationStatistics.switch
+    end
     return render json:{status:status}
   end
 

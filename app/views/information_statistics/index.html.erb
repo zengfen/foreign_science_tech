@@ -97,13 +97,13 @@
                   <%end%>
                   
                   <%if InformationStatistics.switch1 == 1%>
-                    <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
+                    <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update1" >更新中</a>
                   <%elsif InformationStatistics.switch1 == 2%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新今日</a>
+                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
                   <%elsif InformationStatistics.switch1 == 3%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新失败</a>
+                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新失败</a>
                   <%else%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新今日</a>
+                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
                   <%end%>                  
                 </div>
               </div>
@@ -418,11 +418,15 @@ function initNumberRange($wrap) {
 }
 
 var currentSwitchStatus = <%== InformationStatistics.switch %>;
+var currentSwitchStatus1 = <%== InformationStatistics.switch1 %>;
 
 if(currentSwitchStatus == 1) {
   updateButtonStatus($('.js-btn-update'));
 }
 
+if(currentSwitchStatus1 == 1) {
+  updateButtonStatus1($('.js-btn-update1'));
+}
 function updateButtonStatus($btn) {
   var statusMap = {
     '1': '更新中',
@@ -442,7 +446,7 @@ function updateButtonStatus($btn) {
         $btn.html(statusMap[res.status]);
       } else {
         $btn.prop('href', url);
-        $btn.html('更新');
+        $btn.html('更新全量');
       }
 
       if(res.status == 1) {
@@ -460,6 +464,46 @@ function updateButtonStatus($btn) {
       $(".all-page").html(data);
     })
   },10000)
+}
+
+function updateButtonStatus1($btn) {
+  var statusMap = {
+    '1': '更新中',
+    '2': '更新今日',
+    '3': '更新失败'
+  };
+  var url = '<%= update_today_statistic_information_statistics_path %>';
+  setTimeout(function() {
+    $.ajax({
+      method: 'get',
+      url: '/information_statistics/switch_status',
+      data: {type:'today'},
+      // url: window.location.href,
+      dataType: 'json'
+    }).done(function(res) {
+      if(statusMap[res.status]) {
+        $btn.prop('href', res.status == 1 ? 'javascript: void(0)' : url);
+        $btn.html(statusMap[res.status]);
+      } else {
+        $btn.prop('href', url);
+        $btn.html('更新今日');
+      }
+
+      if(res.status == 1) {
+        updateButtonStatus1($btn);
+      }
+      // $(".all-page").html(res)
+    });
+  }, 5000);
+
+  setTimeout(function(){
+    $.ajax({
+      method: 'get',
+      url: window.location.href,
+    }).done(function(data){
+      $(".all-page").html(data);
+    })
+  },1000)
 }
     </script>
   <% end %>
