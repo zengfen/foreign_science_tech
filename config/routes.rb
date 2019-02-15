@@ -142,6 +142,7 @@ Rails.application.routes.draw do
   resources :information_statistics do
     collection do
       get :update_statistic
+      get :update_today_statistic
       get :govern
       get :all_info
       get :switch_status
