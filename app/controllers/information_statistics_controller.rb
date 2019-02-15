@@ -57,7 +57,8 @@ class InformationStatisticsController < ApplicationController
     @redis_key = a.redis_key
     source_opt =  params[:data_source].present? ? "data_source like '%#{params[:data_source]}%'" : {}
     opt[:country_code] = params[:country_code] if params[:country_code].present?
-    opt[:level] = params[:level] if params[:level].present?
+    # opt[:level] = params[:level] if params[:level].present?
+    level_opt = params[:level].present? ? "level like '%#{params[:level]}%'" : {}
     opt[:hav_infos] = params[:hav_infos] if params[:hav_infos].present?
     opt[:domain] = custom_domains[params[:custom_domains]] if params[:custom_domains].present?
     lists = []
@@ -65,7 +66,7 @@ class InformationStatisticsController < ApplicationController
     	lists += MediaInfo.where(opt).where(source_opt).to_a
     	lists += GovernmentInfo.where(opt).where(source_opt).to_a
     else
-    	lists = model.where(opt).where(source_opt)
+    	lists = model.where(opt).where(source_opt).where(level_opt)
     end
     info_count = {}
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
