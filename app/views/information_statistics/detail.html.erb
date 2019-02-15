@@ -25,39 +25,39 @@
                 <tbody class="text-center">
                   <tr>
                     <td>中文名</td>
-                    <td></td>
+                    <td><%=@data.ch_name%></td>
                   </tr>
                   <tr>
                     <td>英文名</td>
-                    <td></td>
+                    <td><%=@data.en_name%></td>
                   </tr>
                   <tr>
                     <td>国家</td>
-                    <td></td>
+                    <td><%=@countries[@data.country_code]%></td>
                   </tr>
                   <tr>
                     <td>域名</td>
-                    <td></td>
+                    <td><%=@data.domain%></td>
                   </tr>
                   <tr>
                     <td>网站首页</td>
-                    <td></td>
+                    <td><%=@data.site%></td>
                   </tr>
                   <tr>
                     <td>来源</td>
-                    <td></td>
+                    <td><%=@data.data_source%></td>
                   </tr>
                   <tr>
                     <td>等级</td>
-                    <td></td>
+                    <td><%=@data.level.split(',').collect{|x| @levels[x.to_i]}.join(',') rescue ''%></td>
                   </tr>
                   <tr>
-                    <td>新闻量</td>
-                    <td></td>
+                    <td>今日新闻量</td>
+                    <td><%=$redis.hget("archon_center_info_statistics","#{@data.domain}_#{Time.now.strftime("%F")}")%></td>
                   </tr>
                   <tr>
                     <td>备注</td>
-                    <td></td>
+                    <td><%=@data.remark%></td>
                   </tr>
 
                 </tbody>

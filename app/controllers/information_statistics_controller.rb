@@ -44,7 +44,9 @@ class InformationStatisticsController < ApplicationController
       flash['error'] = '该数据不存在或已被删除'
       return redirect_to information_statistics_path
     end
-
+    @data_sources = GovernmentInfo.data_sources
+    @levels = GovernmentInfo.levels
+    @countries = InformationExcel.new.countries_json
   end
 
 	def all_info
