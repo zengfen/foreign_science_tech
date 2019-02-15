@@ -65,14 +65,13 @@ class InformationStatisticsController < ApplicationController
     level_opt = params[:level].present? ? "level like '%#{params[:level]}%'" : {}
     opt[:hav_infos] = params[:hav_infos] if params[:hav_infos].present?
     opt[:domain] = custom_domains[params[:custom_domains]] if params[:custom_domains].present?
-    name_opt = params[:keyword].present? ? "ch_name like '%#{params[:keyword]}%'" : {}
-    domain_opt = params[:keyword].present? ? "domain like '%#{params[:keyword]}%'" : {}
+    name_domain_opt = params[:keyword].present? ? "ch_name like '%#{params[:keyword]}%' or domain like '%#{params[:keyword]}%'" : {}
     lists = []
     if model.blank?
     	lists += MediaInfo.where(opt).where(source_opt).to_a
     	lists += GovernmentInfo.where(opt).where(source_opt).to_a
     else
-    	lists = model.where(opt).where(source_opt).where(level_opt).where(name_opt).where(domain_opt)
+    	lists = model.where(opt).where(source_opt).where(level_opt).where(name_domain_opt)
     end
     info_count = {}
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Date.today
