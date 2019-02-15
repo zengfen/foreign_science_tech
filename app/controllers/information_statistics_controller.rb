@@ -28,7 +28,23 @@ class InformationStatisticsController < ApplicationController
 	end
 
   def detail
-    
+    model = params[:model]
+    id = params[:id]
+    if model.blank?
+      flash['error'] = "数据类型不能为空"
+      return redirect_to information_statistics_path
+    end
+    if id.blank?
+      flash['error'] = "数据ID不能为空"
+      return redirect_to information_statistics_path      
+    end
+    k = Object.const_get model
+    @data = k.where({id:id}).first
+    if @data.blank?
+      flash['error'] = '该数据不存在或已被删除'
+      return redirect_to information_statistics_path
+    end
+
   end
 
 	def all_info
