@@ -43,6 +43,13 @@ class InformationStatisticsController < ApplicationController
 		redirect_to information_statistics_path
   end
 
+  def update_today_statistic
+    InformationStatistics.start_renew1
+    UpdateTodayInformationStatisticsJob.perform_later
+    flash['success'] = "更新计算后台运行开始"
+    redirect_to information_statistics_path    
+  end
+
   def search(params,model)
     opt = {}
     custom_domains = MediaInfo.custom_domains
