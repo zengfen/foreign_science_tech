@@ -171,10 +171,15 @@ class InformationExcel
 
 	def init_countries
 		data = {}
-    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
-      doc = JSON.parse(line)
-      data.merge!({doc['cname']=>doc['country_code']})
-    end	
+    # File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+    #   doc = JSON.parse(line)
+    #   data.merge!({doc['cname']=>doc['country_code']})
+    # end	
+    url = 'https://dp.aggso.com/api/query_countries'
+    res = RestClient.get(url)
+    JSON.parse(res.body).each do |x|
+    	data.merge!({x['name_cn'] => x['country_code']})
+    end
     return data	
 	end
 
