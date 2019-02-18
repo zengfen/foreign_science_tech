@@ -69,7 +69,10 @@ class GovernmentInfo < ApplicationRecord
 
 			a = DomainDataSource.where({domain:x.domain}).first
 			if a.blank? && !x.rss_site.blank?
-				
+				a = DomainDataSource.new
+				a.domain = x.domain
+				a.rss_site = [x.rss_site].to_json
+				a.save
 			end
 			data_source = x.data_source.split(',') rescue []
 			unless a.blank?
