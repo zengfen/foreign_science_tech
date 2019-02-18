@@ -61,9 +61,11 @@ class GovernmentInfo < ApplicationRecord
 		al = 0
 		rss_count = 0
 		GovernmentInfo.where("level like '100'").each do |x|
-			x.update({status:'0'})
+			
 			if x.level.split(',').size > 1
 				al += 1
+			else
+				x.update({status:'0'})
 			end
 
 
