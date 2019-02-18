@@ -112,6 +112,12 @@ class InformationExcel
 	# 模式1
 	def parse_row1(query)
 		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
+		
+		domain = PublicSuffix.domain(query[:url]) rescue ''
+		if domain.blank?
+			return {type:'error',message:'域名不能为空',query:query}
+		end
+		query[:domain] = domain
 
 		k = Object.const_get modelclass	
 		new_data = k.where({domain:query[:domain]}).first
@@ -134,11 +140,6 @@ class InformationExcel
 			else
 				query[:hav_infos] = 0
 			end
-		end
-
-		domain = PublicSuffix.domain(query[:url]) rescue ''
-		if domain.blank?
-			return {type:'error',message:'域名不能为空',query:query}
 		end
 
 		a = DomainDataSource.where({domain:domain}).first
