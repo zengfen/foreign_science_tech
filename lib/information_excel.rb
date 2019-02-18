@@ -178,7 +178,7 @@ class InformationExcel
     url = 'https://dp.aggso.com/api/query_countries'
     res = RestClient.get(url)
     JSON.parse(res.body).each do |x|
-    	data.merge!({x['name_cn'] => x['country_code']})
+    	data.merge!({x['name_cn'] => x['iso_code']})
     end
     return data	
 	end
