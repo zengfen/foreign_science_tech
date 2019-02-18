@@ -111,7 +111,61 @@ class InformationExcel
 
 	# 模式1
 	def parse_row1(query)
+		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
+
+		k = Object.const_get modelclass	
+		new_data = k.where({domain:query[:domain]}).first
+		unless new_data.blank?
+			levels = new_data.level.split(',') rescue []
+			level = query[:level]
+			levels << level
+			new_data.update({level:levels.uniq.join(',')})
+			return {type:'success',message:'该网站已存在',query:query}
+		end
 		
+		unless query[:country_code].blank?
+			query[:country_code] = countries[query[:country_code]]
+			return {type:'error',message:'国家不能为空',query:query} if query[:country_code].blank?			
+		end
+
+		unless query[:hav_infos].blank?
+			if query[:hav_infos] == 'Y'
+				query[:hav_infos] = 1
+			else
+				query[:hav_infos] = 0
+			end
+		end
+
+		domain = PublicSuffix.domain(query[:url]) rescue ''
+		if domain.blank?
+			return {type:'error',message:'域名不能为空',query:query}
+		end
+
+		a = DomainDataSource.where({domain:domain}).first
+		unless a.blank?
+			data_source = []
+			rsses = JSON.parse(a.rss_site) rescue []
+			rsses.each do |rss|
+				if rss.include?('news.google')
+					data_source << 'Googlenrss'
+				else
+					data_source << 'Rss'
+				end
+			end
+			unless a.newslookup.blank?
+				data_source << 'Newslookup'
+			end		
+			query[:data_source] = data_source.uniq.join(',')	
+		end
+
+		info = {}
+		info = info.merge(query)
+		info.delete(:url)
+		new_data = k.new(info)
+		unless new_data.save
+			return {type:'error',message:new_data.errors.full_messages.to_sentence,query:query}
+		end
+		return {type:'success',message:'添加成功',query:query}		
 	end
 
 	def init_countries
