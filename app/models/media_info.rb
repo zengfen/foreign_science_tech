@@ -19,6 +19,7 @@ class MediaInfo < ApplicationRecord
 			1 => '一级',
 			2 => '二级',
 			3 => '三级',
+			100 => '未分级',
 		}
 	end
 
