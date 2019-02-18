@@ -183,7 +183,7 @@ class InformationExcel
 		data = {}
     File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
       doc = JSON.parse(line)
-      data.merge!({doc['cname']=>doc['country_code']})
+      data.merge!({doc['name_cn']=>doc['iso_code']})
     end	
     # url = 'https://dp.aggso.com/api/query_countries'
     # res = RestClient.get(url)
@@ -197,7 +197,7 @@ class InformationExcel
 		data = {}
     File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
       doc = JSON.parse(line)
-      data.merge!({doc['country_code']=>doc['cname']})
+      data.merge!({doc['iso_code']=>doc['name_cn']})
     end	
 
     # url = 'https://dp.aggso.com/api/query_countries'
