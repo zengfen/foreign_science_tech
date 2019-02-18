@@ -130,6 +130,12 @@ class InformationExcel
 			level = query[:level]
 			levels << level
 			new_data.update({level:levels.uniq.join(',')})
+			new_data.twitter_screen_name = query[:twitter_screen_name]
+			new_data.facebook_screen_name = query[:facebook_screen_name]
+			new_data.youtube_screen_name = query[:youtube_screen_name]
+			new_data.instagram_screen_name = query[:instagram_screen_name]
+			new_data.org_name = query[:org_name]
+			new_data.save
 			return {type:'success',message:'该网站已存在',query:query}
 		end
 		
@@ -203,7 +209,7 @@ class InformationExcel
 	end
 
 	def default_column_size
-		return 15
+		return 16
 	end
 
 	def update_hav_infos
