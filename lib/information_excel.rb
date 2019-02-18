@@ -115,7 +115,10 @@ class InformationExcel
 		
 		domain = PublicSuffix.domain(query[:url]) rescue ''
 		if domain.blank?
-			return {type:'error',message:'域名不能为空',query:query}
+			if ['kna.kw'].include?(query[:url])
+				domain = query[:url]
+			end
+			return {type:'error',message:'域名不能为空',query:query} if domain.blank?
 		end
 		query[:domain] = domain
 
