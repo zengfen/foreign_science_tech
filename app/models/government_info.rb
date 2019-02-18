@@ -60,7 +60,7 @@ class GovernmentInfo < ApplicationRecord
 	def self.statistics_rss
 		al = 0
 		rss_count = 0
-		GovernmentInfo.where("level like '100'").each do |x|
+		GovernmentInfo.where("level like '%100%'").each do |x|
 			
 			if x.level.split(',').size > 1
 				al += 1
