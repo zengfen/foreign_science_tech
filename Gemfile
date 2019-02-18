@@ -100,7 +100,8 @@ gem 'aliyun-sdk'
 # 批量插入
 gem 'bulk_insert'
 
-
+# 提取主域名
+gem 'public_suffix'
 
 
 

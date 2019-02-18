@@ -1,12 +1,14 @@
 class InformationExcel
 	attr_accessor :file_path,:sheet_name,:column_size,:file_dir
 	attr_accessor :modelclass,:countries
+	attr_accessor :mode
 
 	def initialize(opt={})
 		@file_path = opt[:file_path]
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
+		@mode = opt[:mode] || 1
 	end
 
 	def media_info_from_excel
@@ -64,7 +66,13 @@ class InformationExcel
 				query_values.delete(nil)
 				next if query_values.size == 1 # 跳过空行		
 				
-				msg = parse_row(query)
+				case @mode
+				when 1
+					msg = parse_row1(query)
+				else
+					msg = parse_row(query)
+				end
+				
 				if msg[:type] == 'error'
 					raise ActiveRecord::Rollback ,msg[:message]
 				end			
@@ -98,6 +106,12 @@ class InformationExcel
 			return {type:'error',message:new_data.errors.full_messages.to_sentence,query:query}
 		end
 		return {type:'success',message:'添加成功',query:query}
+	end
+
+
+	# 模式1
+	def parse_row1(query)
+		
 	end
 
 	def init_countries
