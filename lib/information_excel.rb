@@ -181,30 +181,30 @@ class InformationExcel
 
 	def init_countries
 		data = {}
-    # File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
-    #   doc = JSON.parse(line)
-    #   data.merge!({doc['cname']=>doc['country_code']})
-    # end	
-    url = 'https://dp.aggso.com/api/query_countries'
-    res = RestClient.get(url)
-    JSON.parse(res.body).each do |x|
-    	data.merge!({x['name_cn'] => x['iso_code']})
-    end
+    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+      doc = JSON.parse(line)
+      data.merge!({doc['cname']=>doc['country_code']})
+    end	
+    # url = 'https://dp.aggso.com/api/query_countries'
+    # res = RestClient.get(url)
+    # JSON.parse(res.body).each do |x|
+    # 	data.merge!({x['name_cn'] => x['iso_code']})
+    # end
     return data	
 	end
 
 	def countries_json
 		data = {}
-    # File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
-    #   doc = JSON.parse(line)
-    #   data.merge!({doc['country_code']=>doc['cname']})
-    # end	
+    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+      doc = JSON.parse(line)
+      data.merge!({doc['country_code']=>doc['cname']})
+    end	
 
-    url = 'https://dp.aggso.com/api/query_countries'
-    res = RestClient.get(url)
-    JSON.parse(res.body).each do |x|
-    	data.merge!({x['iso_code'] => x['name_cn']})
-    end    
+    # url = 'https://dp.aggso.com/api/query_countries'
+    # res = RestClient.get(url)
+    # JSON.parse(res.body).each do |x|
+    # 	data.merge!({x['iso_code'] => x['name_cn']})
+    # end    
     return data			
 	end
 
