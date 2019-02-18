@@ -203,7 +203,7 @@ class InformationExcel
 	end
 
 	def default_column_size
-		return 10
+		return 15
 	end
 
 	def update_hav_infos
