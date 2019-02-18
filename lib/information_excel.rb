@@ -112,7 +112,8 @@ class InformationExcel
 	# 模式1
 	def parse_row1(query)
 		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
-		
+		query[:url] = query[:url].split('://').last.split('/').first rescue ''
+
 		domain = PublicSuffix.domain(query[:url]) rescue ''
 		if domain.blank?
 			if ['kna.kw'].include?(query[:url])
@@ -188,10 +189,16 @@ class InformationExcel
 
 	def countries_json
 		data = {}
-    File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
-      doc = JSON.parse(line)
-      data.merge!({doc['country_code']=>doc['cname']})
-    end	
+    # File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
+    #   doc = JSON.parse(line)
+    #   data.merge!({doc['country_code']=>doc['cname']})
+    # end	
+
+    url = 'https://dp.aggso.com/api/query_countries'
+    res = RestClient.get(url)
+    JSON.parse(res.body).each do |x|
+    	data.merge!({x['iso_code'] => x['name_cn']})
+    end    
     return data			
 	end
 
