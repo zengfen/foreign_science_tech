@@ -8,7 +8,7 @@ class InformationExcel
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
-		@mode = opt[:mode] || 1
+		@mode = opt[:mode] || 2
 	end
 
 	def media_info_from_excel
@@ -69,6 +69,8 @@ class InformationExcel
 				case @mode
 				when 1
 					msg = parse_row1(query)
+				when 2
+					msg = update_countries(query)
 				else
 					msg = parse_row(query)
 				end
@@ -190,6 +192,7 @@ class InformationExcel
 			end	
 			new_data.update({country_code:query[:country_code]})		
 		end
+		return {type:'success',message:'更新成功'}
 	end
 
 	def init_countries
