@@ -179,6 +179,19 @@ class InformationExcel
 		return {type:'success',message:'添加成功',query:query}		
 	end
 
+	def update_countries(query)
+		return {type:'success',message:'跳过空行',query:query} if query[:site].blank?
+		k = Object.const_get modelclass
+		new_data = k.where({domain:query[:domain],ch_name:query[:ch_name]}).first
+		unless new_data.blank?
+			unless query[:country_code].blank?
+				query[:country_code] = countries[query[:country_code]]
+				return {type:'error',message:'国家不能为空',query:query} if query[:country_code].blank?			
+			end	
+			new_data.update({country_code:query[:country_code]})		
+		end
+	end
+
 	def init_countries
 		data = {}
     File.open("#{Rails.root.to_s}/public/countrys/countrys.json","r").readlines.each do |line|
@@ -259,4 +272,5 @@ class InformationExcel
 		end
 		return {type:'success',message:'更新结束'}		
 	end
+
 end
