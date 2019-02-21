@@ -52,6 +52,7 @@ class InformationExcel
 						head << row[ii].to_s
 					end
 					head.delete(nil)
+					head.delete("")
 					column_size = head.size
 					n = head.size					
 					next
