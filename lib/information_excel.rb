@@ -8,7 +8,7 @@ class InformationExcel
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
-		@mode = opt[:mode] || 1
+		@mode = opt[:mode] || 0
 	end
 
 	def media_info_from_excel
