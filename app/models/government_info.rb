@@ -7,8 +7,9 @@ class GovernmentInfo < ApplicationRecord
 			'Googlenews',
 			'Googlenrss',
 			'Rss',
-			'Newslookup',			
+			'Newslookup',
 			'GDELT',
+			'Dowjones',
 			'人工爬虫'
 		]
 	end
