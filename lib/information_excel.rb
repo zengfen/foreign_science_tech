@@ -9,7 +9,7 @@ class InformationExcel
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
-		@mode = opt[:mode] || 3
+		@mode = opt[:mode] || 0
 		@domains = []
 	end
 
@@ -99,7 +99,10 @@ class InformationExcel
 			levels = new_data.level.split(',') rescue []
 			level = query[:level]
 			levels << level
-			new_data.update({level:levels.uniq.join(','),dowjones_source_code:query[:dowjones_source_code],ch_intro:query[:ch_intro],en_intro:query[:en_intro]})
+
+			data_source = new_data.data_source.split(',') rescue []
+			data_source << 'Dowjones'
+			new_data.update({level:levels.uniq.join(','),dowjones_source_code:query[:dowjones_source_code],ch_intro:query[:ch_intro],en_intro:query[:en_intro],data_source:data_source.uniq.join(',')})
 			return {type:'success',message:'该网站已存在',query:query}
 		end
 		
