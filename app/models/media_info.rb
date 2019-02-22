@@ -9,6 +9,7 @@ class MediaInfo < ApplicationRecord
 			'Rss',
 			'Newslookup',
 			'GDELT',
+			'Dowjones',
 			'人工爬虫'
 		]
 	end
