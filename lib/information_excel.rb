@@ -95,7 +95,7 @@ class InformationExcel
 			levels = new_data.level.split(',') rescue []
 			level = query[:level]
 			levels << level
-			new_data.update({level:levels.uniq.join(',')})
+			new_data.update({level:levels.uniq.join(','),dowjones_source_code:query[:dowjones_source_code],ch_intro:query[:ch_intro],en_intro:query[:en_intro]})
 			return {type:'success',message:'该网站已存在',query:query}
 		end
 		
