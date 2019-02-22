@@ -1,5 +1,6 @@
 <tr>
   <td><%= i%></td>
+  <td><%=obj.id%></td>
   <td><a href="<%=detail_information_statistic_path({id:obj.id,model:obj.class.to_s})%>" target="_blank"><%= obj.ch_name %></a></td>
   <td><%=obj.domain%></td>
   <td><%= @countries[obj.country_code] %></td>
