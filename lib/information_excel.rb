@@ -2,13 +2,15 @@ class InformationExcel
 	attr_accessor :file_path,:sheet_name,:column_size,:file_dir
 	attr_accessor :modelclass,:countries
 	attr_accessor :mode
+	attr_accessor :domains
 
 	def initialize(opt={})
 		@file_path = opt[:file_path]
 		@sheet_name = opt[:sheet_name]
 		@column_size = opt[:column_size] || default_column_size
 		@countries = init_countries
-		@mode = opt[:mode] || 0
+		@mode = opt[:mode] || 3
+		@domains = []
 	end
 
 	def media_info_from_excel
@@ -72,6 +74,8 @@ class InformationExcel
 					msg = parse_row1(query)
 				when 2
 					msg = update_countries(query)
+				when 3
+					msg = all_domains(query)
 				else
 					msg = parse_row(query)
 				end
@@ -180,6 +184,11 @@ class InformationExcel
 			return {type:'error',message:new_data.errors.full_messages.to_sentence,query:query}
 		end
 		return {type:'success',message:'添加成功',query:query}		
+	end
+
+	def all_domains(query)
+		@domains << query[:domain]
+		return {type:'success',message:'ok'}
 	end
 
 	def update_countries(query)
