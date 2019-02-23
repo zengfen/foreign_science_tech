@@ -4,7 +4,7 @@
   <td><a href="<%=detail_information_statistic_path({id:obj.id,model:obj.class.to_s})%>" target="_blank"><%= obj.ch_name %></a></td>
   <td><%=obj.domain%></td>
   <td><%= @countries[obj.country_code] %></td>
-  <td><%=obj.dowjones_source_code%></td>
+  <td><%=obj.dowjones_source_code rescue ''%></td>
   <!-- <td><%= obj.data_source %></td> -->
   <td><%= obj.level.split(',').collect{|x| @levels[x.to_i]}.join(',') rescue ''%></td>
   <!-- <td title="<%=obj.remark%>"><%= @hav_infos[obj.hav_infos] || '不确定' %></td> -->
