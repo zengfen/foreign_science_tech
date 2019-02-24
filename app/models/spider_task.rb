@@ -906,7 +906,7 @@ class SpiderTask < ApplicationRecord
 
 
   def self.dump_task_social_accounts(list_id, file_name)
-    user_ids = ArchonTwitterList.where(uri: list_id).pluck(:user_ids).map{|x| x.split(",")}.flatten
+    user_ids = ArchonTwitterList.where(id: list_id).pluck(:user_ids).map{|x| x.split(",")}.flatten
 
     file = File.open("public/#{file_name}", "a+")
     ArchonTwitterListBing.where(id:user_ids).each do |x|
