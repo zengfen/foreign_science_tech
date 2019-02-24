@@ -911,7 +911,7 @@ class SpiderTask < ApplicationRecord
     file = File.open("public/#{file_name}", "a+")
     ArchonTwitterListBing.where(id:user_ids).each do |x|
       record =  {
-        twitter_screen_name: ArchonTwitterUser.find(x).screen_name,
+        twitter_screen_name: ArchonTwitterUser.find(x.id).screen_name,
         facebook: x.facebook,
         linkedin: x.linkedin,
         wikipedia: x.wikipedia,
