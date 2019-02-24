@@ -5,9 +5,10 @@
   <td><%=obj.domain%></td>
   <td><%= @countries[obj.country_code] %></td>
   <td><%=obj.dowjones_source_code%></td>
+  <td title="<%=obj.remark%>"><%= @hav_infos[obj.hav_infos] || '不确定' %></td> 
   <!-- <td><%= obj.data_source %></td> -->
   <td><%= obj.level.split(',').collect{|x| @levels[x.to_i]}.join(',') rescue ''%></td>
-  <!-- <td title="<%=obj.remark%>"><%= @hav_infos[obj.hav_infos] || '不确定' %></td> -->
+ 
   <td><%= @info_count[obj.id] %></td>
   <td class="pos-r">
 	  <a href="##">
