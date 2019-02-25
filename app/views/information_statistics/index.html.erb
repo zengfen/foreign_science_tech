@@ -12,14 +12,14 @@
         <div class="ibox-content pl15">
           <div class="bg-search">
           <%=form_tag url_for(action: action_name),:class=>"-form-horizontal",:method=>:get do%>
-              <div id="rcontent" class="clear-p">
-                <div class="col-md-2">
+              <div id="rcontent" class="clear-p" style="margin-top: -10px">
+                <div class="col-md-2 mt10">
                   <div class="form-group mb0">
                     <input type="text" name="keyword" class="form-control" placeholder="请输入名称/域名" value="<%=params[:keyword]%>">
                   </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2 mt10">
                   <div class="form-group mb0">
                   <select name="country_code" class="form-control chosen-select" data-placeholder="请选择国家">
                     <option value="">国家</option>
@@ -30,7 +30,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2 mt10">
                   <div class="form-group mb0">
                   <select name="data_source" class="form-control chosen-select" data-placeholder="请选择来源">
                     <option value="">来源</option>
@@ -40,7 +40,7 @@
                   </select>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mt10">
                   <div class="form-group mb0">
                   <select name="level" class="form-control chosen-select" data-placeholder="请选择等级">
                     <option value="">等级</option>
@@ -51,7 +51,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2 mt10">
                   <div class="form-group mb0">
                     <select name="hav_infos" class="form-control chosen-select" data-placeholder="有无新闻">
                       <option value="">有无新闻</option>
@@ -62,7 +62,18 @@
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2 mt10">
+                  <div class="form-group mb0">
+                    <select name="custom_domains" class="form-control chosen-select" data-placeholder="请选择自定义site">
+                      <option value="">自定义site</option>
+                      <%@custom_domains.each do |k,v|%>
+                          <option value="<%=k%>" <%= 'selected' if k.to_s==params[:custom_domains] %>><%=k%></option>
+                      <%end%>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mt10">
                   <div class="input-daterange input-group js-number-range">
                     <input type="text" placeholder="最小新闻量" name="min_count" class="form-control" value="<%= params[:min_count] %>">
                     <span class="input-group-addon">~</span>
@@ -76,17 +87,6 @@
                     <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] || Date.today %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
                     <span class="input-group-addon">~</span>
                     <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] || Date.today %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
-                  </div>
-                </div>
-
-                <div class="col-md-2 mt10">
-                  <div class="form-group mb0">
-                    <select name="custom_domains" class="form-control chosen-select" data-placeholder="请选择自定义site">
-                      <option value="">自定义site</option>
-                      <%@custom_domains.each do |k,v|%>
-                          <option value="<%=k%>" <%= 'selected' if k.to_s==params[:custom_domains] %>><%=k%></option>
-                      <%end%>
-                    </select>
                   </div>
                 </div>
 
