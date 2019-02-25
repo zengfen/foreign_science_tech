@@ -234,7 +234,7 @@ class InformationStatisticsController < ApplicationController
         i += 1
       end      
     end
-
+    workbook.close
     send_file(file_path, :type => 'xlsx', :disposition => 'attachment', :filename => filename)
   end
 
