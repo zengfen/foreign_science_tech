@@ -94,32 +94,33 @@
                 <div class="col-md-1 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
                 </div>
-              </div>
+                
+                <div class="col-md-3 mt10">
+                    <%if InformationStatistics.switch == 1%>
+                      <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
+                    <%elsif InformationStatistics.switch == 2%>
+                      <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新全量</a>
+                    <%elsif InformationStatistics.switch == 3%>
+                      <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新失败</a>
+                    <%else%>
+                      <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新全量</a>
+                    <%end%>
+                    
+                    <%if InformationStatistics.switch1 == 1%>
+                      <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update1" >更新中</a>
+                    <%elsif InformationStatistics.switch1 == 2%>
+                      <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
+                    <%elsif InformationStatistics.switch1 == 3%>
+                      <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新失败</a>
+                    <%else%>
+                      <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
+                    <%end%>
 
-              <div class="col-md-3 mt10">
-                  <%if InformationStatistics.switch == 1%>
-                    <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
-                  <%elsif InformationStatistics.switch == 2%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新全量</a>
-                  <%elsif InformationStatistics.switch == 3%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新失败</a>
-                  <%else%>
-                    <a href="<%= update_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update" >更新全量</a>
-                  <%end%>
-                  
-                  <%if InformationStatistics.switch1 == 1%>
-                    <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update1" >更新中</a>
-                  <%elsif InformationStatistics.switch1 == 2%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
-                  <%elsif InformationStatistics.switch1 == 3%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新失败</a>
-                  <%else%>
-                    <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
-                  <%end%>
-
-                  <a href="<%= download_daily_news_count_information_statistics_path(JSON.parse(params.to_json).merge({model:modelclass}))%>" class="btn btn-primary mb0 ml10">下载</a>                  
+                    <a href="<%= download_daily_news_count_information_statistics_path(JSON.parse(params.to_json).merge({model:modelclass}))%>" class="btn btn-primary mb0 ml10">下载</a>                  
+                  </div>
                 </div>
               </div>
+
 
           <%end%>
           </div>
