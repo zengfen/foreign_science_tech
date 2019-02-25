@@ -21,33 +21,34 @@
 
                 <div class="col-md-2 mt10">
                   <div class="form-group mb0">
-                  <select name="country_code" class="form-control chosen-select" data-placeholder="请选择国家">
-                    <option value="">国家</option>
-                    <%@countries.each do |k,v|%>
-                      <option value="<%=k%>" <%= 'selected' if k==params[:country_code] %>><%=v%></option>
-                    <%end%>
-                  </select>
+                    <select name="country_code" class="form-control chosen-select" data-placeholder="请选择国家">
+                      <option value="">国家</option>
+                      <%@countries.each do |k,v|%>
+                        <option value="<%=k%>" <%= 'selected' if k==params[:country_code] %>><%=v%></option>
+                      <%end%>
+                    </select>
                   </div>
                 </div>
 
                 <div class="col-md-2 mt10">
                   <div class="form-group mb0">
-                  <select name="data_source" class="form-control chosen-select" data-placeholder="请选择来源">
-                    <option value="">来源</option>
-                    <%@data_sources.each do |x|%>
-                      <option value="<%=x%>" <%= 'selected' if x==params[:data_source] %>><%=x%></option>
-                    <%end%>
-                  </select>
+                    <select name="data_source" class="form-control chosen-select" data-placeholder="请选择来源">
+                      <option value="">来源</option>
+                      <%@data_sources.each do |x|%>
+                        <option value="<%=x%>" <%= 'selected' if x==params[:data_source] %>><%=x%></option>
+                      <%end%>
+                    </select>
                   </div>
                 </div>
+
                 <div class="col-md-2 mt10">
                   <div class="form-group mb0">
-                  <select name="level" class="form-control chosen-select" data-placeholder="请选择等级">
-                    <option value="">等级</option>
-                    <%@levels.each do |k,v|%>
-                      <option value="<%=k%>"  <%= 'selected' if k.to_s==params[:level] %>><%=v%></option>
-                    <%end%>
-                  </select>
+                    <select name="level" class="form-control chosen-select" data-placeholder="请选择等级">
+                      <option value="">等级</option>
+                      <%@levels.each do |k,v|%>
+                        <option value="<%=k%>"  <%= 'selected' if k.to_s==params[:level] %>><%=v%></option>
+                      <%end%>
+                    </select>
                   </div>
                 </div>
 
@@ -90,7 +91,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-6 mt10">
+                <div class="col-md-8 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
                   <%if InformationStatistics.switch == 1%>
                     <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
