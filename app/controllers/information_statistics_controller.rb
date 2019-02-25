@@ -226,7 +226,7 @@ class InformationStatisticsController < ApplicationController
     i = 0
     lists.where({id:ids}).each do |x|
       (start_date..end_date).each do |day|
-        count = $redis.hget(@redis_key,"#{obj.domain}_#{day.strftime("%F")}").to_i
+        count = $redis.hget(@redis_key,"#{x.domain}_#{day.strftime("%F")}").to_i
         date = day.strftime("%F")
         worksheet.write(i,0,x.ch_name,xlsx_format)
         worksheet.write(i,1,date,xlsx_format)
