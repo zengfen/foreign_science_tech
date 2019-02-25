@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="col-md-4 mt10">
-                  <div class="input-daterange input-group js-number-range">
+                  <div class="input-daterange input-group js-number-range" style="width: 100%">
                     <input type="text" placeholder="最小新闻量" name="min_count" class="form-control" value="<%= params[:min_count] %>">
                     <span class="input-group-addon">~</span>
                     <input type="text" placeholder="最大新闻量" name="max_count" class="form-control" value="<%= params[:max_count] %>">
@@ -83,7 +83,7 @@
 
 
                 <div class="col-md-4 mt10">
-                  <div class="input-daterange input-group js-daterange">
+                  <div class="input-daterange input-group js-daterange" style="width: 100%">
                     <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] || Date.today %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
                     <span class="input-group-addon">~</span>
                     <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] || Date.today %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
