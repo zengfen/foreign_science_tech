@@ -210,7 +210,7 @@ class InformationStatisticsController < ApplicationController
     @info_count = info_count.select{|k,v| params[:max_count].present? ? (v >= min_count && v <= params[:max_count].to_i) : (v >= min_count)}.sort_by{|k,v| v}.reverse.to_h
     ids = @info_count.keys
 
-    filename = "#{Time.now}_.xlsx"
+    filename = "#{Time.now.to_i}_.xlsx"
     file_path = Rails.root.to_s + "/public/download/#{filename}"
     workbook  = WriteXLSX.new(file_path)
     worksheet = workbook.add_worksheet('Sheet1')
