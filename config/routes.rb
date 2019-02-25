@@ -149,6 +149,7 @@ Rails.application.routes.draw do
       post :remark
       post :update_data_source
       post :hav_infos
+      get :download_daily_news_count
     end
 
     member do 
