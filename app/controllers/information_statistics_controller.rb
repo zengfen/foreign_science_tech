@@ -226,7 +226,7 @@ class InformationStatisticsController < ApplicationController
     xlsx_format.set_align('left')
 
     i = 0
-    lists.where({id:ids}).each do |x|
+    lists.where({id:ids}).order("find_in_set(id, '#{ids.join(",")}')").each do |x|
       (start_date..end_date).each do |day|
         count = $redis.hget(@redis_key,"#{x.domain}_#{day.strftime("%F")}").to_i
         date = day.strftime("%F")
