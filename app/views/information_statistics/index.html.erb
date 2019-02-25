@@ -90,7 +90,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-4 mt10">
+                <div class="col-md-6 mt10">
                   <input type="submit" class="btn btn-primary btn-warning mb0" value="搜索">
                   <%if InformationStatistics.switch == 1%>
                     <a href="javascript:void(0)" class="btn btn-primary mb0 ml10 js-btn-update" >更新中</a>
@@ -112,7 +112,7 @@
                     <a href="<%= update_today_statistic_information_statistics_path %>" class="btn btn-primary mb0 ml10 js-btn-update1" >更新今日</a>
                   <%end%>
 
-                  <a href="<%= download_daily_news_count_information_statistics_path(JSON.parse(params.to_json).merge({model:modelclass}))%>" class="btn btn-primary mb0 ">下载</a>                  
+                  <a href="<%= download_daily_news_count_information_statistics_path(JSON.parse(params.to_json).merge({model:modelclass}))%>" class="btn btn-primary mb0 ml10">下载</a>                  
                 </div>
               </div>
 
