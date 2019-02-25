@@ -8,7 +8,8 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
-gem 'sprockets', '>= 3.7.2'
+#gem 'sprockets', '>= 3.7.2'
+gem 'sprockets', '~> 4.0.0.beta7'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -43,6 +44,7 @@ gem 'kaminari'
 gem 'sidekiq'
 gem 'sidekiq-cron'
 gem 'redis-namespace'
+gem 'rufus-scheduler', '~> 3.4.0'
 
 #db注释
 gem 'annotate'
@@ -79,7 +81,7 @@ end
 gem "elasticsearch"
 gem "elasticsearch-rails"
 gem "elasticsearch-model"
-gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
+#gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -113,5 +115,6 @@ gem 'public_suffix'
 # gem 'memory_profiler'
 
 
-# gem 'derailed_benchmarks', group: :development
+#gem 'derailed_benchmarks', group: :development
 # gem 'stackprof', group: :development
+#gem 'tunemygc'
