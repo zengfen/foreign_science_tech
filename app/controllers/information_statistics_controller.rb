@@ -183,6 +183,8 @@ class InformationStatisticsController < ApplicationController
 
   # 下载每日新闻量
   def download_daily_news_count
+    a = InformationStatistics.new
+    @redis_key = a.redis_key
     opt = {}
     source_opt =  params[:data_source].present? ? "data_source like '%#{params[:data_source]}%'" : {}
     opt[:country_code] = params[:country_code] if params[:country_code].present?
