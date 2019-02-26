@@ -278,10 +278,10 @@ class InformationExcel
 				data += MediaInfo.where({domain:query[:domain]}).to_a
 				data += GovernmentInfo.where({domain:query[:domain]}).to_a
 				data.each do |x|
-					if query[:hav_infos] == '是'
+					if query[:hav_infos] == '是' || query[:hav_infos] == '1'
 						x.update({hav_infos:1})
 					else
-						x.update({hav_infos:0})
+						x.update({hav_infos:0, remark: query[:remark]})
 					end 
 				end			
 			end
