@@ -761,7 +761,7 @@ class SpiderTask < ApplicationRecord
       x.virtual_destroy
     end
 
-    SpiderTask.where("status = 2 and created_at < '#{3.days.ago}'").each do |x|
+    SpiderTask.where("status = 2 and created_at < '#{2.days.ago}'").each do |x|
       x.destroy
     end
   end
