@@ -10,8 +10,9 @@ class InformationStatistics
 		$redis.set(redis_switch_key,1) # 更新中
 		now_time = Time.now
 		start_time0 = (Time.now - @last_days.day).to_i
+		i = 0
 		begin
-			@last_days.times.each do |i|
+			@last_days.times.each do |ii|
 				i += 1
 				start_time = (now_time - i.day).to_i
 				end_time = (now_time - i.day + 1.day).to_i
