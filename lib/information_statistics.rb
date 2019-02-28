@@ -19,25 +19,6 @@ class InformationStatistics
 				# pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
 				puts "========start======"
 				ArchonNews.select("created_time,site_url").where("created_time >? and created_time <=?",start_time,end_time).each do |x|
-					# source_url = x.source_url
-					# domain = source_url.split('://').last.split('/').first rescue ''
-					# domain = domain.gsub('www.','') rescue ''
-					# unless domain.blank?
-					# 	created_time = Time.at(x.created_time).strftime("%F")
-					# 	# day_key = (Time.now.to_i - Time.parse(created_time).to_i)/86400
-					# 	day_key = created_time
-					# 	domain_key = "#{domain}_#{day_key}"
-					# 	domain_key1 = "#{x.site}_#{day_key}"
-					# 	domain_key2 = "#{x.site_url}_#{day_key}"
-					# 	$redis.hincrby(redis_key,domain_key,1)
-					# 	if domain_key1 != domain_key
-					# 		$redis.hincrby(redis_key,domain_key1,1)
-					# 	end
-
-					# 	if !domain_key2.include?('/') && domain_key2 != domain_key && domain_key2 != domain_key1
-					# 		$redis.hincrby(redis_key,domain_key2,1)
-					# 	end
-					# end
 					created_time = Time.at(x.created_time).strftime("%F")
 					day_key = created_time
 					domain_key2 = "#{x.site_url}_#{day_key}"
@@ -45,8 +26,6 @@ class InformationStatistics
 				end			
 				puts "=========end==========="
 			end	
-
-
 		rescue Exception => e
 			$redis.set(redis_switch_key,3)
 		end
