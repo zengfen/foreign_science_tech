@@ -18,10 +18,10 @@ class InformationStatistics
 				end_time = (now_time - i.day + 1.day).to_i
 				# pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
 				puts "========start======"
-				ArchonNews.select("created_time,site_url").where("created_time >? and created_time <=?",start_time,end_time).each do |x|
-					created_time = Time.at(x.created_time).strftime("%F")
+				ArchonNews.select("created_time,site_url").where("created_time >? and created_time <=?",start_time,end_time).pluck(:created_time,:site_url).each do |x|
+					created_time = Time.at(x[0]).strftime("%F")
 					day_key = created_time
-					domain_key2 = "#{x.site_url}_#{day_key}"
+					domain_key2 = "#{x[1]}_#{day_key}"
 					$redis.hincrby(redis_key,domain_key2,1)
 				end			
 				puts "=========end==========="
