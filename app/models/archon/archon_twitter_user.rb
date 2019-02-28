@@ -150,6 +150,10 @@ class ArchonTwitterUser < ArchonBase
     end
   end
 
+  def uniq_user_id
+    Cipher.aes256_encrypt(self.id)
+  end
+
   def get_twitter_basic
     twitter_basic = {
       "userId": self.id, #int
