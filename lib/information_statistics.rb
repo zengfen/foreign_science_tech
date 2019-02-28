@@ -15,9 +15,8 @@ class InformationStatistics
 				start_time = (now_time - i.day).to_i
 				end_time = (now_time - i.day + 1.day).to_i
 				# pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
-				
+				puts "========start======"
 				ArchonNews.where("created_time > ?",start_time).where("created_time <= ?",end_time).each do |x|
-					puts "========start======"
 					# source_url = x.source_url
 					# domain = source_url.split('://').last.split('/').first rescue ''
 					# domain = domain.gsub('www.','') rescue ''
@@ -41,8 +40,8 @@ class InformationStatistics
 					day_key = created_time
 					domain_key2 = "#{x.site_url}_#{day_key}"
 					$redis.hincrby(redis_key,domain_key2,1)
-					puts "=========end==========="
 				end			
+				puts "=========end==========="
 			end			
 		rescue Exception => e
 			$redis.set(redis_switch_key,3)
