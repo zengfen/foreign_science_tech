@@ -18,7 +18,7 @@ class InformationStatistics
 				end_time = (now_time - i.day + 1.day).to_i
 				# pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
 				puts "========start======"
-				ArchonNews.where("created_time >? and created_time <=?",start_time,end_time).each do |x|
+				ArchonNews.select("created_time,site_url").where("created_time >? and created_time <=?",start_time,end_time).each do |x|
 					# source_url = x.source_url
 					# domain = source_url.split('://').last.split('/').first rescue ''
 					# domain = domain.gsub('www.','') rescue ''
