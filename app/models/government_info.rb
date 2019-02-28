@@ -98,4 +98,15 @@ class GovernmentInfo < ApplicationRecord
 
 		puts "===al= #{al}====rss_count===#{rss_count}==============="
 	end
+
+
+	def self.update_levels
+		GovernmentInfo.all.each do |x|
+			levels = x.level.split(",")
+			if levels.include?("100") && levels.size > 1
+				levels.delete("100")
+				x.update({level:levels.join(',')})
+			end
+		end
+	end	
 end

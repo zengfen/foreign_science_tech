@@ -60,4 +60,14 @@ class MediaInfo < ApplicationRecord
 		end
 	end
 
+	def self.update_levels
+		MediaInfo.all.each do |x|
+			levels = x.level.split(",")
+			if levels.include?("100") && levels.size > 1
+				levels.delete("100")
+				x.update({level:levels.join(',')})
+			end
+		end
+	end
+
 end
