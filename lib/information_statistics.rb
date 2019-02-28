@@ -9,6 +9,7 @@ class InformationStatistics
 		$redis.del(redis_key)
 		$redis.set(redis_switch_key,1) # 更新中
 		now_time = Time.now
+		start_time0 = (Time.now - @last_days.day).to_i
 		begin
 			@last_days.times.each do |i|
 				i += 1
@@ -16,7 +17,7 @@ class InformationStatistics
 				end_time = (now_time - i.day + 1.day).to_i
 				# pids = ArchonNewsTag.where("created_at > ?",start_time).where("created_at <= ?",end_time).pluck('pid')
 				puts "========start======"
-				ArchonNews.where("created_time > ?",start_time).where("created_time <= ?",end_time).each do |x|
+				ArchonNews.where("created_time >? and created_time <=?",start_time,end_time).each do |x|
 					# source_url = x.source_url
 					# domain = source_url.split('://').last.split('/').first rescue ''
 					# domain = domain.gsub('www.','') rescue ''
@@ -42,7 +43,9 @@ class InformationStatistics
 					$redis.hincrby(redis_key,domain_key2,1)
 				end			
 				puts "=========end==========="
-			end			
+			end	
+
+
 		rescue Exception => e
 			$redis.set(redis_switch_key,3)
 		end
