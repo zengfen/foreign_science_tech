@@ -36,10 +36,8 @@ module ArchonCenter
 end
 
 begin
-  # $redis = Redis.new(:host => "47.99.44.207", :port => 9529, :db => 5,:password=>"Devpro321")
-  $redis = Redis.new(:host => "127.0.0.1", :port => 6379, :db => 1)
 
-  #RsDataDB = Rails.application.config_for(:database, env: "rs_data")
+  $redis = Redis.new(:host => "127.0.0.1", :port => 6379, :db => 1)
 
   CommonDataDB = Rails.application.config_for(:database, env: "common_data")
 
