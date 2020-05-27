@@ -18,4 +18,5 @@ Rails.application.config.assets.precompile += %w(
   ztree-custom.css
   ztree/ztree.min.css
   ztree/ztree.min.js
+  home.css
 )
