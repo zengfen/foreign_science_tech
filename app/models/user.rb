@@ -30,7 +30,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 },allow_nil: true
 	
   
-  mount_uploader :avatar, UserAvatarUploader
   class << self
     # 返回指定字符串的哈希摘要
     def digest(string)
