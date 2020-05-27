@@ -5,3 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+CommonBase.create_table
+User.create(email:"admin@test.com",name:"admin",password:"123456")
+
+
+
+
+
+

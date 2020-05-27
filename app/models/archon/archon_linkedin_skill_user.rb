@@ -1,3 +1,0 @@
-class ArchonLinkedinSkillUser < ArchonBase
-
-end

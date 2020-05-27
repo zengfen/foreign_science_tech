@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   # protect_from_forgery with: :exception
 
-  before_action :invalid_check
 
   private
   # 确保用户已登录
@@ -10,18 +9,16 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       store_location
       flash[:notice] = "请先登录！"
-      redirect_to login_path
+      return redirect_to login_path
     end
+
   end
 
-  def test_account
-    if @current_user.email == "test@china-revival.com"
-      redirect_back fallback_location: root_path
-      return
-    end
-  end
+  def unhandle_count
+    opt = {status:[0,1]}
+    opt['work_list_employees.employee_id'] = @employee.id unless @employee.blank?
+    opt['work_list_employees.mark'] = [0,1,3]
 
-  def invalid_check
-    @expired_account_count = Account.expired_accounts.count
+    @work_lists_unhandle_count = WorkList.where(opt).includes(:work_list_employees).count
   end
 end

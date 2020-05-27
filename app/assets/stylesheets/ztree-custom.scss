@@ -1,0 +1,111 @@
+#ztree_wrap {
+  overflow: auto;
+
+  li ul {
+    padding-left: 30px;
+    background: none;
+  }
+  
+  ul li {
+    position: relative;
+    padding-top: 20px;
+  
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      left: -22px;
+    }
+  
+    &:before {
+      top: -15px;
+      bottom: 15px;
+      height: 100%;
+      border-left: 1px dashed #999;
+    }
+  
+    &:after {
+      top: 35px;
+      width: 30px;
+      border-top: 1px dashed #999;
+    }
+  
+    &:last-child:before {
+      height: 50px;
+    }
+  }
+  
+  li span.button.add {
+    margin-left:2px; 
+    margin-right: 2px; 
+    background-image: asset-url('ztree-icon/ztree-add.svg');
+  }
+  
+  li span.button.edit {
+    background-image: asset-url('ztree-icon/ztree-edit.svg');
+  }
+  
+  li span.button.remove {
+    background-image: asset-url('ztree-icon/ztree-remove.svg');
+  }
+  
+  li span.button.noline_open,
+  li span.button.root_open,
+  li span.button.roots_open,
+  li span.button.center_open,
+  li span.button.bottom_open {
+    background-image: asset-url('ztree-icon/ztree-open.svg');
+    background-color: #f9f9f9;
+    background-size: cover;
+  }
+  
+  li span.button.noline_close,
+  li span.button.roots_close,
+  li span.button.root_close,
+  li span.button.center_close,
+  li span.button.bottom_close {
+    background-image: asset-url('ztree-icon/ztree-close.svg');
+    background-color: #f9f9f9;
+    background-size: cover;
+  }
+  
+  li span.button {
+    vertical-align: middle;
+  }
+  
+  li {
+    line-height: 30px;
+    font-size: 14px;
+  }
+  
+  li a {
+    height: 30px;
+    padding-left: 5px;
+    padding-right: 60px;
+
+    &.curSelectedNode,
+    &.tmpTargetNode_inner {
+      padding-top: 1px;
+      background-color: transparent;
+      // border-color: #1ab394;
+      border: 0;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  
+  li span.button {
+    background: none;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  li span.button,
+  li span.button.center_docu,
+  li span.button.bottom_docu {
+    position: relative;
+    z-index: 1;
+  }
+}

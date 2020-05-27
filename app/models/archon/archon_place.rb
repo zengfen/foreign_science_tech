@@ -1,6 +1,0 @@
-class ArchonPlace < ArchonBase
-
-end
-
-
-

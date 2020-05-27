@@ -2,929 +2,268 @@
 #
 # Table name: spider_tasks
 #
-#  id                    :bigint(8)        not null, primary key
-#  spider_id             :integer
-#  level                 :integer          default(1)
-#  keyword               :text
-#  special_tag           :string
-#  status                :integer          default(0)
-#  success_count         :integer          default(0)
-#  fail_count            :integer          default(0)
-#  refresh_time          :datetime
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  max_retry_count       :integer          default(0)
-#  warning_count         :integer          default(0)
-#  spider_cycle_task_id  :integer
-#  task_type             :integer          default(1)
-#  additional_function   :json
-#  is_split              :boolean          default(FALSE)
-#  begin_time            :datetime
-#  end_time              :datetime
-#  current_task_count    :integer
-#  current_success_count :integer
-#  current_fail_count    :integer
-#  current_warning_count :integer
-#  split_group_count     :integer
-#  timeout_second        :integer          default(15), not null
+#  id                         :bigint           not null, primary key
+#  spider_id                  :integer
+#  level                      :integer          default(1)
+#  full_keywords              :text(16777215)
+#  keywords_summary           :string(255)
+#  special_tag                :string(255)
+#  status                     :integer          default(0)
+#  max_retry_count            :integer          default(0), not null
+#  current_retry_count        :integer          default(0), not null
+#  spider_cycle_task_id       :integer
+#  task_type                  :integer          default(1)
+#  additional_function        :json
+#  begin_time                 :datetime
+#  end_time                   :datetime
+#  current_task_count         :integer          default(0), not null
+#  current_success_count      :integer          default(0), not null
+#  current_fail_count         :integer          default(0), not null
+#  current_warning_count      :integer          default(0), not null
+#  current_result_count       :integer          default(0), not null
+#  current_waiting_count      :integer          default(0), not null
+#  maybe_completed_task_count :integer          default(0), not null
+#  maybe_completed_at         :datetime
+#  completed_at               :datetime
+#  deleted_at                 :datetime
+#  last_recover_at            :datetime
+#  is_deleted_subtasks        :boolean          default(FALSE), not null
+#  is_count_site              :boolean          default(FALSE), not null
+#  split_group_count          :integer
+#  timeout_second             :integer          default(15), not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  is_download_media          :boolean          default(FALSE), not null
+#
+# Indexes
+#
+#  s_status   (status)
+#  spider_id  (spider_id)
+#  st_scti    (spider_cycle_task_id)
+#  st_tt      (task_type)
 #
 
 class SpiderTask < ApplicationRecord
   validates :spider_id, presence: true
-  validates :level, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-  validates :max_retry_count, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 9}
 
   belongs_to :spider
-  belongs_to :spider_cycle_task, required: false
 
-  has_one :spider_task_keyword
-
-  scope :cycle, -> { where.not(task_type: 1) }
-  scope :not_cycle, -> { where(task_type: 1) }
-  scope :unfinished, -> { where.not(status: 2) }
-  scope :finished, -> { where(status: 2) }
-
-  after_create :setup_task_spider, :setup_spider_keyword
-  before_destroy :clear_related_datas!
+  # TypeTaskWait = 0 # 未启动
+  TypeTaskStart = 1 # 启动
+  TypeTaskComplete = 2 # 完成
+  TypeTaskStop = 3 # 暂停
+  TypeTaskReopen = 4 # 重启
 
 
-  def self.status_list
-    { 0 => '未启动', 1 => '执行中', 2 => '完成', 3 => '已暂停' }
+  StatusList = {TypeTaskStart => '启动',
+                TypeTaskComplete => '完成',
+                TypeTaskStop => '已暂停',
+                TypeTaskReopen => '重新打开'}.freeze
+
+
+  RealTimeTask = 0
+  CycleTask = 1
+
+  TypesList = {RealTimeTask => '实时任务',
+               CycleTask => '周期任务'
+  }
+
+  def self.t_log_spider_mode
+    {0 => 'real-time',
+     1 => 'cycle'
+    }
   end
+
 
   def status_cn
-    cn_hash = { 0 => '未启动', 1 => '执行中', 2 => '完成', 3 => '已暂停' }
-    cn_hash[status]
+    StatusList[status]
   end
 
-  def is_finished?
-    status == 2
+  def self.task_types
+    return {"周期任务" => "1", "实时任务" => "2"}
   end
 
-  def is_running?
-    status == 1
+  def task_type_cn
+    TypesList[task_type]
   end
 
   def can_start?
-    status == 0 || status == 3
+    status == TypeTaskComplete
   end
 
-  def enqueue_level_task
-    if spider.network_environment == 1
-      $archon_redis.zadd('archon_internal_tasks', level, id)
-    else
-      $archon_redis.zadd('archon_external_tasks', level, id)
-    end
-
-    $archon_redis.hset('archon_available_tasks', id, max_retry_count)
-  end
-
-  def dequeue_level_task
-    if spider.network_environment == 1
-      $archon_redis.zrem('archon_internal_tasks', id)
-    else
-      $archon_redis.zrem('archon_external_tasks', id)
-    end
-  end
-
-  def start!
-    return unless can_start?
-
-    self.status = 1
-    save
-
-    enqueue_level_task
-  end
-
+  # 周期任务生成的单次任务不能停止
   def can_stop?
-    status == 1
+    status == TypeTaskStart && task_type == SpiderTask::RealTimeTask
   end
 
-  def stop!
-    return unless can_stop?
 
-    self.status = 3
-    save
-
-    dequeue_level_task
+  def can_reopen?
+    status == TypeTaskStop
   end
 
-  def special_tag_names
-    tag_names = []
-    special_tag.split(',').each do |x|
-      st = begin
-        SpecialTag.find(x)
-      rescue StandardError
-        nil
+
+  def create_subtasks
+    line = JSON.parse(Base64.decode64(self.full_keywords)) rescue {}
+    task = {"status" => SpiderTask::TypeTaskStart}
+    task["id"] = Subtask.make_id(line)
+    task["task_id"] = self.id
+    task["content"] = line.to_json
+    # 创建子任务
+    subtask = Subtask.create(task) rescue nil
+    # return if subtask.blank?
+    key = Subtask.task_key(self.id)
+    puts "=========redis.add=====+#{task["id"]}"
+    $redis.sadd(key, task["id"])
+  end
+
+
+
+  def process_status
+    puts "====status=====#{status}"
+    case self.status
+      when TypeTaskStart
+        self.process_start
+      when TypeTaskStop
+        self.process_stop
+      when TypeTaskReopen
+        self.process_reopen
+    end
+  end
+
+  def process_start
+    key = Subtask.task_key(self.id)
+    success_key = Subtask.task_success_key(self.id)
+    error_key = Subtask.task_error_key(self.id)
+    while true
+      subtask_ids = []
+      200.times do
+        subtask_id = $redis.spop(key)
+        subtask_ids << subtask_id if subtask_id.present?
       end
-      tag_names << st.tag if st
-    end
-    tag_names
-  end
-
-  def special_tag_transfor_id
-    return if self.special_tag.blank?
-
-    specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
-    self.special_tag = specital_tags_ids
-  end
-
-  def self.special_tag_transfor_id(special_tag)
-    specital_tags_ids = special_tag.split(',').collect { |tag| SpecialTag.create_with(tag: tag, created_at: Time.now, updated_at: Time.now).find_or_create_by(tag: tag).id }.join(',')
-    return specital_tags_ids
-  end
-
-  def tidb_table_name
-    spider.tidb_table_name
-  end
-
-  def accounts_is_valid?
-    spider.accounts_is_valid?
-  end
-
-  def save_with_spilt_keywords
-    return { 'error' => '设置关键词!' } if spider.has_keyword && keyword.blank?
-
-    return { 'error' => '账号都已过期' } unless accounts_is_valid?
-
-    if spider.has_keyword
-      keywords = keyword.gsub('，',',').split(',').collect(&:strip).uniq
-      keywords.delete(nil)
-      keywords.delete('')
-      return { 'error' => '设置关键词!' } if keywords.blank?
-
-      if is_split
-        keywords.each do |keyword|
-          spider_task = dup
-          spider_task.keyword = keyword
-          return { 'error' => spider_task.errors.full_messages.join('\n') } unless spider_task.save
-        end
-      else
-        self.keyword = keywords.join(',')
-        return { 'error' => errors.full_messages.join('\n') } unless save
+      puts "======subtask_ids=======+#{subtask_ids}"
+      if subtask_ids.blank?
+        flag = self.process_deleted
+        return if flag
       end
-    else
-      self.keyword = nil
-      return { 'error' => errors.full_messages.join('\n') } unless save
-    end
-
-    enqueue
-
-    { 'success' => '保存成功！' }
-  end
-
-
-  def enqueue
-    # // ArchonInternalTaskKey 国内顶级任务的列表
-    # ArchonInternalTaskKey = "archon_internal_tasks"
-
-    # // ArchonExternalTaskKey 境外任务
-    # ArchonExternalTaskKey = "archon_external_task"
-
-    # // ArchonTaskDetailHashKeyFormat  md5 -> task
-    # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
-    #
-    #
-    #
-
-
-    created_tasks = []
-    created_keys = []
-
-    b_time = ''
-    b_time = begin_time.to_s unless begin_time.blank?
-
-    e_time = ''
-    e_time = end_time.to_s unless end_time.blank?
-
-    task_template = {
-      'task_id' => id,
-      'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}"),
-      'params' => {},
-      'url' => keyword, # keyword or url
-      'template_id' => spider.template_name,
-      'account' => '',
-      'ignore_account' => false,
-      'timeout_second' => self.timeout_second,
-      'proxy' => '',
-      'retry_count' => 0,
-      'max_retry_count' => max_retry_count,
-      'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: b_time, end_time: e_time }
-    }
-
-    # need_account = !spider.control_template_id.blank?
-
-    # Rails.logger.info(need_account)
-
-    archon_template_id = spider.control_template_id
-
-    prefix_integer = 0
-
-    unless archon_template_id.blank?
-      prefix_integer = archon_template_id * 10_000_000_000_000
-    end
-
-    if spider.has_keyword && is_split
-      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{self.spider_task_keyword.keyword}{}#{spider.template_name}")
-      task_template['url'] = self.spider_task_keyword.keyword
-      created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-
-      created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
-    end
-
-    if spider.has_keyword && !is_split
-      if (split_group_count || 0) > 0
-        self.spider_task_keyword.keyword.split(',').each_slice(split_group_count).each do |kk|
-          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
-          task_template['url'] = kk.join(",")
-          created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-          created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
-        end
-      else
-        self.spider_task_keyword.keyword.split(',').each do |k|
-          task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
-          task_template['url'] = k
-          created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-          created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
+       subtask_ids.each do |subtask_id|
+        subtask = Subtask.find(subtask_id) rescue nil
+        next if subtask.blank?
+        line = JSON.parse(subtask.content) rescue {}
+        puts "======line=======+#{line}"
+        error_content = process_one_task(line)
+        # 将任务结果缓存到redis中
+        if error_content.present?
+          $redis.sadd(error_key, {id: subtask_id, error_content: error_content, error_at: Time.now.to_i, status: Subtask::TypeSubtaskError}.to_json)
+        else
+          $redis.sadd(success_key, {id: subtask_id, error_content: error_content, competed_at: Time.now.to_i, status: Subtask::TypeSubtaskSuccess}.to_json)
         end
       end
-
     end
+  end
 
-    unless spider.has_keyword
-      task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
-      task_template['url'] = keyword
-      created_tasks << DispatcherSubtask.new(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-      created_keys << ["archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5']]
-    end
-
-
-
-    if !created_tasks.blank?
-      created_tasks.each_slice(500).each do |temp_tasks|
-        DispatcherSubtask.import(temp_tasks, recursive: true)
+  def process_one_task(line)
+    key = Subtask.task_key(self.id)
+    # begin
+      model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+      return model_tasks if line["mode"] == "item"
+      subtasks = []
+      model_tasks.each do |new_line|
+        new_line = new_line.stringify_keys
+        new_line["spider_name"] = line["spider_name"]
+        task = {"status" => SpiderTask::TypeTaskStart}
+        task["id"] = Subtask.make_id(new_line)
+        task["task_id"] = self.id
+        task["content"] = new_line.to_json
+        subtasks << task
       end
-
-      created_keys.each do |x|
-        $archon_redis.zadd(x[0], x[1], x[2])
-      end
-    end
-
-
-    $archon_redis.hset('archon_available_tasks', id, max_retry_count)
-  end
-
-
-  #def enqueue
-  #  # // ArchonInternalTaskKey 国内顶级任务的列表
-  #  # ArchonInternalTaskKey = "archon_internal_tasks"
-
-  #  # // ArchonExternalTaskKey 境外任务
-  #  # ArchonExternalTaskKey = "archon_external_task"
-
-  #  # // ArchonTaskDetailHashKeyFormat  md5 -> task
-  #  # ArchonTaskDetailHashKeyFormat = "archon_task_details_%s"
-  #  #
-
-  #  b_time = ''
-  #  b_time = begin_time.to_s unless begin_time.blank?
-
-  #  e_time = ''
-  #  e_time = end_time.to_s unless end_time.blank?
-
-  #  task_template = {
-  #    'task_id' => id,
-  #    'task_md5' => Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}"),
-  #    'params' => {},
-  #    'url' => keyword, # keyword or url
-  #    'template_id' => spider.template_name,
-  #    'account' => '',
-  #    'ignore_account' => false,
-  #    'timeout_second' => self.timeout_second,
-  #    'proxy' => '',
-  #    'retry_count' => 0,
-  #    'max_retry_count' => max_retry_count,
-  #    'extra_config' => { special_tag: special_tag, additional_function: additional_function, begin_time: b_time, end_time: e_time }
-  #  }
-
-  #  # need_account = !spider.control_template_id.blank?
-
-  #  # Rails.logger.info(need_account)
-
-  #  archon_template_id = spider.control_template_id
-
-  #  prefix_integer = 0
-
-  #  unless archon_template_id.blank?
-  #    prefix_integer = archon_template_id * 10_000_000_000_000
-  #  end
-
-  #  if spider.has_keyword && is_split
-  #    task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{self.spider_task_keyword.keyword}{}#{spider.template_name}")
-  #    task_template['url'] = self.spider_task_keyword.keyword
-  #    DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-  #    $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-  #  end
-
-  #  if spider.has_keyword && !is_split
-  #    if (split_group_count || 0) > 0
-  #      self.spider_task_keyword.keyword.split(',').each_slice(split_group_count).each do |kk|
-  #        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{kk.join(',')}{}#{spider.template_name}")
-  #        task_template['url'] = kk.join(",")
-  #        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-  #        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-  #      end
-  #    else
-  #      self.spider_task_keyword.keyword.split(',').each do |k|
-  #        task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{k}{}#{spider.template_name}")
-  #        task_template['url'] = k
-  #        DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-  #        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-  #      end
-  #    end
-
-  #  end
-
-  #  unless spider.has_keyword
-  #    task_template['task_md5'] = Digest::MD5.hexdigest("#{id}#{keyword}{}#{spider.template_name}")
-  #    task_template['url'] = keyword
-  #    DispatcherSubtask.create(id: task_template['task_md5'], task_id: id, content: task_template.to_json, retry_count: 0)
-  #    $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_template['task_md5'])
-  #  end
-
-  #  $archon_redis.hset('archon_available_tasks', id, max_retry_count)
-  #end
-
-  def success_count
-    DispatcherSubtaskStatus.select(1).where(task_id: id).where('status = 1 or status = 2').count
-  end
-
-  def fail_count
-    DispatcherSubtaskStatus.select(1).where(task_id: id).where('status = 3').count
-  end
-
-  def warning_count
-    DispatcherSubtaskStatus.select(1).where(task_id: id).where('status = 2').count
-  end
-
-  def current_total_count
-    DispatcherSubtask.select(1).where(task_id: id).count
-    # $archon_redis.hlen("archon_task_details_#{id}")
-  end
-
-  def current_running_count
-    current_total_count - success_count - fail_count
-  end
-
-  def result_count
-    DispatcherTaskResultCounter.where(task_id: id).sum(&:result_count)
-    # $archon_redis.zrange("archon_task_total_results_#{id}", 0, -1, withscores: true).map { |x| x[1] }.sum.to_i
-    # rescue StandardError
-    # 0
-  end
-
-  def maybe_finished?
-    (current_total_count == success_count + fail_count)
-    # current_running_count == 0
-    # (current_total_count == success_count + fail_count) && $archon_redis.zcard("archon_tasks_#{self.id}") == 0
-  end
-
-  # 重试失败任务
-  # 删除fail_task 记录
-  # 重新添加到执行队列
-  # 任务运行
-  def retry_fail_task(task_md5)
-    subtaskStatus = DispatcherSubtaskStatus.where(id: task_md5, status: 3).first
-    return if subtaskStatus.blank?
-
-    subtask = DispatcherSubtask.where(id: task_md5).first
-    return if subtask.blank?
-    subtask.retry_count = 0
-    subtask.save
-
-    subtaskStatus.destroy
-
-    task = JSON.parse(subtask.content)
-
-    archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
-    prefix_integer = 0
-
-    unless archon_template_id.blank?
-      prefix_integer = archon_template_id.to_i * 10_000_000_000_000
-    end
-
-    if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
-      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
-    else
-      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
-    end
-
-    if maybe_finished? || is_finished?
-      self.status = 1
-      save
-
-      enqueue_level_task
-    end
-  end
-
-
-  def retry_task(task_md5)
-    subtask = DispatcherSubtask.where(id: task_md5).first
-    return if subtask.blank?
-    subtask.retry_count = 0
-    subtask.save
-
-
-    task = JSON.parse(subtask.content)
-
-    archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
-    prefix_integer = 0
-
-    unless archon_template_id.blank?
-      prefix_integer = archon_template_id.to_i * 10_000_000_000_000
-    end
-
-    if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
-      $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, task_md5)
-    else
-      $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, task_md5)
-    end
-
-    if maybe_finished? || is_finished?
-      self.status = 1
-      save
-
-      enqueue_level_task
-    end
-  end
-
-  def retry_all_fail_task
-    return if fail_count == 0
-
-    # need_account = !spider.control_template_id.blank?
-
-    DispatcherSubtaskStatus.where(task_id: id, status: 3).each do |subtaskStatus|
-      subtask = DispatcherSubtask.where(id: subtaskStatus.id).first
-      next if subtask.blank?
-
-      task = JSON.parse(subtask.content)
-
-      archon_template_id = $archon_redis.hget('archon_template_control_id', task['template_id'])
-      prefix_integer = 0
-
-      unless archon_template_id.blank?
-        prefix_integer = archon_template_id.to_i * 10_000_000_000_000
-      end
-
-      if prefix_integer > 0 && (task['ignore_account'].blank? || !task['ignore_account'])
-        $archon_redis.zadd("archon_tasks_#{id}", prefix_integer + Time.now.to_i * 1000, subtask.id)
-      else
-        $archon_redis.zadd("archon_tasks_#{id}", Time.now.to_i * 1000, subtask.id)
-      end
-
-      subtaskStatus.destroy
-    end
-
-    if maybe_finished? || is_finished?
-      self.status = 1
-      save
-
-      enqueue_level_task
-    end
-  end
-
-  def del_fail_task(task_md5)
-    # return unless $archon_redis.sismember("archon_discard_tasks_#{id}", task_md5)
-    # $archon_redis.srem("archon_discard_tasks_#{id}", task_md5)
-    # $archon_redis.hdel("archon_task_details_#{id}", task_md5)
-  end
-
-  def clear_related_datas!
-    dequeue_level_task # fix me
-
-    redis_keys = []
-    redis_keys << "archon_tasks_#{id}_0"
-    redis_keys << "archon_tasks_#{id}_1"
-    redis_keys << "archon_tasks_#{id}"
-
-    # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
-
-    redis_keys.map { |x| $archon_redis.del(x) }
-
-    $archon_redis.hdel('archon_task_account_controls', id)
-    $archon_redis.hdel('archon_task_controls', id)
-
-    $archon_redis.hdel('archon_available_tasks', id)
-
-    DispatcherRunningSubtask.where(task_id: id).delete_all
-    DispatcherSubtask.where(task_id: id).delete_all
-    DispatcherSubtaskStatus.where(task_id: id).delete_all
-    DispatcherTaskResultCounter.where(task_id: id).delete_all
-
-
-    SpiderTaskKeyword.where(spider_task_id: self.id).delete_all
-  end
-
-
-  def clear_subtasks
-    DispatcherSubtask.where(task_id: id).delete_all
-    DispatcherSubtaskStatus.where(task_id: id).delete_all
-  end
-
-  def self.refresh_task_status
-    SpiderTask.where(status: 1).find_each(&:update_finished_status!)
-  end
-
-  def update_self_counters!
-    update_attributes(
-      current_success_count: success_count,
-      current_fail_count: fail_count,
-      current_warning_count: warning_count,
-      current_task_count: current_total_count,
-      current_result_count: result_count,
-    )
-  end
-
-  def update_finished_status!
-    return if !is_running?
-
-    # DispatcherRunningSubtask.where("created_at < #{15.minutes.ago.to_i}", task_id: self.id).each do |x|
-    #   task_id = x.id
-    #   x.destroy
-
-    #   self.retry_task(task_id)
+      # ActiveRecord::Base.transaction do
+        destination_columns = subtasks.first.keys
+    puts "========subtasks======+#{subtasks}"
+    puts "========Subtask.name======+#{Subtask.name}"
+        Subtask.bulk_insert(*destination_columns, ignore: true, set_size: 5000) do |worker|
+          subtasks.each do |data|
+            worker.add(data)
+          end
+        end
+        # 更新count
+    puts "========self.current_task_count======+#{self.current_task_count}"
+        self.update(current_task_count:self.current_task_count + subtasks.count)
+        $redis.sadd(key, subtasks.map { |x| x["id"] })
+      # end
+      return nil
+    # rescue Exception => e
+    #   return e
     # end
-
-    update_self_counters!
-
-    if maybe_finished?
-      update_attributes(status: 2)
-
-      $archon_redis.hdel('archon_available_tasks', id)
-      dequeue_level_task
-    end
   end
 
-  def setup_task_spider
-    # $archon_redis.hset("archon_task_spider", self.id, self.spider_id)
-    $archon_redis.hset('archon_task_controls', id, spider.control_template_id_details)
-  end
-
-
-  def setup_spider_keyword
-    SpiderTaskKeyword.create(spider_task_id: self.id, keyword: self.keyword)
-    self.keyword = self.keyword[0..10] rescue nil
-    self.save
-  end
-
-  def self.clear_expired_tasks
-    tasks = SpiderTask.where(status: 2).where('created_at < ?', 12.hours.ago)
-    return if tasks.blank?
-
-    tasks.each do |task|
-      task.destroy
-    end
-  end
-
-
-  def self.do_monitor_twitter_friends(file_count = 1)
-    files = Dir.glob("#{Rails.root}/vendor/data/part*")
-    total_file_count = files.count
-    return if total_file_count == 0
-
-    files = files[0, file_count]
-    return if files.blank?
-
-    files.each do |f|
-      puts f
-      lines = File.new(f).to_a.collect{|x| x.strip}.join(",")
-      next if lines.blank?
-      @spider_task = SpiderTask.new(
-        spider_id: 100,
-        level: 1,
-        max_retry_count: 1,
-        keyword: lines,
-        special_tag: "",
-        status: 0,
-        task_type: 1,
-        additional_function: [{"by_screen_name"=>"1"}, {"has_friends"=>"1"}],
-        is_split: false,
-        split_group_count: 100,
-      )
-      # @spider_task.special_tag_transfor_id
-      @spider_task.save_with_spilt_keywords
-      @spider_task.start!
-
-      `rm -f #{f}`
-    end
-  end
-
-
-  def self.clear_task_by_ids(ids)
-    ids.each do |id|
-      redis_keys = []
-      redis_keys << "archon_tasks_#{id}_0"
-      redis_keys << "archon_tasks_#{id}_1"
-      redis_keys << "archon_tasks_#{id}"
-
-      # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
-
-      redis_keys.map { |x| $archon_redis.del(x) }
-
-      $archon_redis.hdel('archon_task_account_controls', id)
-      $archon_redis.hdel('archon_task_controls', id)
-
-      $archon_redis.hdel('archon_available_tasks', id)
-
-      DispatcherRunningSubtask.where(task_id: id).delete_all
-      DispatcherSubtask.where(task_id: id).delete_all
-      DispatcherSubtaskStatus.where(task_id: id).delete_all
-      DispatcherTaskResultCounter.where(task_id: id).delete_all
-    end
-  end
-
-
-  # [118, 119, 120, 121, 122]
-  def self.clear_tasks_by_spider_id(ids)
-    SpiderTask.where(spider_id: ids, status: 2).each do |x|
-      x.destroy
-    end
-  end
-
-
-  def self.fix_keywords
-    SpiderTask.all.each do |x|
-      SpiderTaskKeyword.create(spider_task_id: x.id, keyword: x.keyword)
-      x.keyword = x.keyword[0..10] rescue nil
-      x.save
-    end
-
-    nil
-  end
-
-
-  def self.fix_ghost_tasks
-    $archon_redis.hgetall("archon_available_tasks").each do |id, z|
-      task = SpiderTask.find(id) rescue nil
-      next if !task.blank?
-
-      puts id
-
-      $archon_redis.zrem('archon_internal_tasks', id)
-      $archon_redis.zrem('archon_external_tasks', id)
-      redis_keys = []
-      redis_keys << "archon_tasks_#{id}_0"
-      redis_keys << "archon_tasks_#{id}_1"
-      redis_keys << "archon_tasks_#{id}"
-
-      redis_keys.map { |x| $archon_redis.del(x) }
-
-      $archon_redis.hdel('archon_task_account_controls', id)
-      $archon_redis.hdel('archon_task_controls', id)
-
-      $archon_redis.hdel('archon_available_tasks', id)
-
-      DispatcherRunningSubtask.where(task_id: id).delete_all
-      DispatcherSubtask.where(task_id: id).delete_all
-      DispatcherSubtaskStatus.where(task_id: id).delete_all
-      DispatcherTaskResultCounter.where(task_id: id).delete_all
-
-
-      SpiderTaskKeyword.where(spider_task_id: id).delete_all
-    end
-
-    nil
-    # $archon_redis.zrem('archon_internal_tasks', id)
-    # $archon_redis.zrem('archon_external_tasks', id)
-    # redis_keys = []
-    # redis_keys << "archon_tasks_#{id}_0"
-    # redis_keys << "archon_tasks_#{id}_1"
-    # redis_keys << "archon_tasks_#{id}"
-
-    # redis_keys.map { |x| $archon_redis.del(x) }
-
-    # $archon_redis.hdel('archon_task_account_controls', id)
-    # $archon_redis.hdel('archon_task_controls', id)
-
-    # $archon_redis.hdel('archon_available_tasks', id)
-
-    # DispatcherRunningSubtask.where(task_id: id).delete_all
-    # DispatcherSubtask.where(task_id: id).delete_all
-    # DispatcherSubtaskStatus.where(task_id: id).delete_all
-    # DispatcherTaskResultCounter.where(task_id: id).delete_all
-
-
-    # SpiderTaskKeyword.where(spider_task_id: self.id).delete_all
-  end
-
-
-  def recover_all
-    ids = DispatcherSubtask.select("id").where(task_id: self.id).collect(&:id) - DispatcherSubtaskStatus.select("id").where(task_id: self.id).collect(&:id)
-    ids.each do |x|
-      self.retry_task(x)
-    end
-  end
-
-  def missing_tasks
-    DispatcherSubtask.select("id").where(task_id: self.id).collect(&:id) - DispatcherSubtaskStatus.select("id").where(task_id: self.id).collect(&:id)
-  end
-
-
-  def virtual_destroy
-    return if self.status != 2
-    dequeue_level_task # fix me
-
-    redis_keys = []
-    redis_keys << "archon_tasks_#{id}_0"
-    redis_keys << "archon_tasks_#{id}_1"
-    redis_keys << "archon_tasks_#{id}"
-
-    # %w[task_details completed_tasks discard_tasks warning_tasks task_errors].map { |x| redis_keys << "archon_#{x}_#{id}" }
-
-    redis_keys.map { |x| $archon_redis.del(x) }
-
-    $archon_redis.hdel('archon_task_account_controls', id)
-    $archon_redis.hdel('archon_task_controls', id)
-
-    $archon_redis.hdel('archon_available_tasks', id)
-
-    DispatcherRunningSubtask.where(task_id: id).delete_all
-    DispatcherSubtask.where(task_id: id).delete_all
-    DispatcherSubtaskStatus.where(task_id: id).delete_all
-    DispatcherTaskResultCounter.where(task_id: id).delete_all
-
-  end
-
-
-  def self.clear_all
-    SpiderTask.where("status = 2 and created_at < '#{6.hours.ago}'").each do |x|
-      x.virtual_destroy
-    end
-
-    SpiderTask.where("status = 2 and created_at < '#{2.days.ago}'").each do |x|
-      x.destroy
-    end
-  end
-
-  # 能导出的模板id
-  def self.output_spider_ids
-    [146]
-  end
-
-  # 导出文件
-  def dump_crowed_file(params)
-    tag_ids = params[:tag_ids]
-    name = params[:name]
-
-    list_ids = ArchonTwitterListTag.where(tag:self.special_tag).pluck(:pid)
-    user_ids = ArchonTwitterList.where(id:list_ids).pluck(:user_ids).map{|x| x.split(",")}.flatten
-    screen_names = {}
-    ArchonTwitterListBing.where(id:user_ids).each do |x|
-      screen_names[x.id] ||= []
-      screen_names[x.id] << x.facebook if x.facebook.present?
-      screen_names[x.id] << x.linkedin if x.linkedin.present?
-      screen_names[x.id] << x.wikipedia if x.wikipedia.present?
-      screen_names[x.id] << x.instagram if x.instagram.present?
-    end
-
-    # tag_ids ||= ""
-    # tag_ids = tag_ids.split(",").collect(&:strip)
-    # tag_ids.delete(nil)
-    # tag_ids.delete("")
-    # tag_ids.uniq!
-
-
-    datas = []
-    ArchonTwitterUser.where(id:user_ids).each do |x|
-      data = {}
-      user_screen_names = screen_names[x.id].to_a
-      data["twitter_screen_name"] = x.screen_name
-      data["facebook_screen_name"] = nil
-      data["facebook_id"] = nil
-      data["instagram_screen_name"] = nil
-      data["linkedin_screen_name"] = nil
-      data["wikidata_id"] = nil
-      data["crunchbase_id"] = nil
-      data["person_contact"] = nil
-      person_name = {
-        name: x.name,
-        aliases: x.name,
-        is_default: "1",
-        language_id: "en"
-      }
-      data["person_name"] = {}
-      data["person_name"][0] = person_name
-      data["person_image"] = nil
-      person =  {
-        "name": x.name,
-        "gender": nil,
-        "country_id": nil,
-        "born_date": nil,
-        "born_place": nil,
-        "is_married": nil,
-        "height": nil,
-        "weight": nil,
-        "blood_type": nil,
-        "youtube_channel_id": nil,
-        "youtube_screen_name": nil,
-        "googleplus_id": nil,
-        "freebase_id": nil,
-        "quora_topic_id": nil,
-        "site": nil,
-        "tags": tag_ids,
-        "account_hash": {
-          "twitter_screen_name": [x.screen_name],
-          "facebook_screen_name": nil,
-          "instagram_screen_name": nil,
-          "linkedin_screen_name": nil,
-          "wikidata_id": nil,
-          "facebook_id": nil,
-          "crunchbase_id": nil,
-        },
-      }
-      data["person"] = person
-      data["person_address"] = nil
-      data["person_description"] = nil
-      data["person_relation"] = nil
-      data["person_party"] = nil
-      data["person_education"] = nil
-      data["person_work"] = nil
-      user_screen_names.each_with_index do |current_name, index|
-        data["all_medias.#{index}.media_url"] = current_name
+  # 删除和更新跑完的任务
+  def process_deleted
+    key = Subtask.task_key(self.id)
+    success_key = Subtask.task_success_key(self.id)
+    error_key = Subtask.task_error_key(self.id)
+    while true
+      results_success = []
+      200.times do
+        result = $redis.spop(success_key)
+        results_success << JSON.parse(result) if result.present?
       end
-      # data["reference.person.tags"] = tag_ids.to_s
-      datas << data.to_json
+      if results_success.present?
+        Subtask.where(id: results_success.map { |x| x["id"] }).delete_all
+        current_success_count = self.current_success_count + results_success.count
+        self.update(current_success_count: current_success_count)
+      end
+
+      results_error = []
+      200.times do
+        result = $redis.spop(error_key)
+        results_error << JSON.parse(result) if result.present?
+      end
+      if results_error.present?
+        destination_columns = results_error.first.keys
+        Subtask.bulk_insert(*destination_columns, ignore: true, update_duplicates: true) do |worker|
+          results_error.each do |data|
+            worker.add(data)
+          end
+        end
+
+        current_fail_count = self.current_fail_count + results_error.count
+        self.update(current_fail_count: current_fail_count)
+      end
+
+      return true if status == TypeTaskStop
+
+      if results_success.blank? && results_error.blank? && Subtask.where(task_id: self.id, status: Subtask::TypeSubtaskStart).none? && status == TypeTaskStart
+        self.update(status: SpiderTask::TypeTaskComplete)
+        $redis.del(key, success_key, error_key)
+        return true
+      else
+        return false
+      end
+
     end
-
-    file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_#{name}.json"
-    file_path = crowed_path
-    Dir.mkdir(file_path) if !Dir.exists?(file_path)
-    File.open("#{file_path}/#{file_name}", "w") {|f| f.puts datas}
-    message = crowed_export_load_data(params, file_name)
   end
 
-  # 创建众包任务
-  def crowed_export_load_data(params, file_name)
-    template,result_name  = {}, []
-    template["name"] = params[:name]
-    template["record_count"] = params[:record_count]
-    template["replica_task_count"] = params[:replica_task_count]
-    template["reward"] = params[:reward]
-    # result_name = ["facebook_screen_name", "facebook_id", "instagram_screen_name", "linkedin_screen_name", "wikidata_id","person.tags"]
-    # result_values = result_name.count.times.map{"must"}
-    # params = {}
-    # params[:template] = template
-    # params[:result_name] = result_name
-    # params[:result_values] = result_values
-    # params[:user_id] = 20
-    # (2..(result_name.count + 1)).to_a.each do |index|
-    #   params["name#{index}_type".to_sym] = "input"
-    # end
-
-    params = {}
-    params[:template] = template
-    params[:user_id] = 20
-    params[:file_path] = "#{crowed_path}/#{file_name}"
-    url = "#{crowed_api_url}/export_load_data"
-    message = {}
-    begin
-      res = RestClient.post(url, params)
-      message = {type: "success", message:"导出成功"}
-    rescue Exception => e
-      message = {type: "error", message:"导出失败"}
-    end
-    return message
+  def process_stop
+    key = Subtask.task_key(self.id)
+    tasks = $redis.smembers(key)
+    $redis.del(key)
+    pause_key = Subtask.task_pause_key(self.id)
+    $redis.sadd(pause_key, tasks) if tasks.present?
   end
 
-  def crowed_api_url
-    "http://csd.aggso.com/api"
-  end
-
-  def crowed_path
-    "#{Rails.root}/public/crowed"
+  def process_reopen
+    pause_key = Subtask.task_pause_key(self.id)
+    tasks = $redis.smembers(pause_key)
+    $redis.del(pause_key)
+    key = Subtask.task_key(self.id)
+    $redis.sadd(key, tasks) if tasks.present?
+    puts "=====tasks====#{tasks}"
+    self.update(status:TypeTaskStart)
+    puts "=========#{self.status}"
+    # self.process_start
   end
 
 
-  def self.dump_task_social_accounts(list_id, file_name)
-    user_ids = ArchonTwitterList.where(id: list_id).pluck(:user_ids).map{|x| x.split(",")}.flatten
-
-    file = File.open("public/#{file_name}", "a+")
-    ArchonTwitterListBing.where(id:user_ids).each do |x|
-      record =  {
-        twitter_screen_name: ArchonTwitterUser.find(x.id).screen_name,
-        facebook: x.facebook,
-        linkedin: x.linkedin,
-        wikipedia: x.wikipedia,
-        instagram: x.instagram,
-      }
-
-      file.puts  record.to_json
-    end
-
-    file.close
-
-
-  end
 
 
 end

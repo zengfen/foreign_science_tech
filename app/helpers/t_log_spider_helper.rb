@@ -1,0 +1,2 @@
+module TLogSpiderHelper
+end

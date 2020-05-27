@@ -1,2 +1,0 @@
-class ArchonThinkTankTag < ArchonBase
-end

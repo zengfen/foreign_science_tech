@@ -13,31 +13,20 @@
           <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-8">
+                <div class="col-md-4">
                   <div class="form-group mb0">
 
-                    <input type="text" placeholder="名称" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                    <i class="search-line" style=></i>
-                    <i class="fa fa-search search-icon"></i></div>
+                    <input type="text" placeholder="爬虫名" name="keyword" class="form-control" value="<%= params[:keyword] %>">
+                  
+                   </div>
                 </div>
-                <div class="col-md-2">
-                  <div class="form-group mb0">
-                    <%=select_tag(:category,options_for_select(Spider.categories.to_a,params["category"]),include_blank: "类别",:class=>"form-control chosen-select")%>
-                  </div>
-                </div>
-
 
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
-                  <!-- <a class="btn btn-primary btn-warning w70 mb0">
-                    搜索</a> -->
                 </div>
                 <div class="ibox-tools fr">
                   <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
                     添加</a>
-<!--                     
-                    <a class="btn btn-primary " href="#" >
-                    按钮2</a> -->
                 </div>
               </div>
 
@@ -119,28 +108,7 @@
     <script>
 
 $(document)
-.on("click",".tab-li a",function(e){
-  e.preventDefault();
-  var $this = $(this);
-  if ($this.find('.icon-result').length > 0) return;
-  var targetClass = $this.data('target');
-  var $thisP = $this.closest('.ibox-content');
-  $this.closest('li').addClass('active').siblings('li').removeClass('active');
-  $thisP.children('.ibox-content').addClass('dn');
-  $thisP.children('.' + targetClass).removeClass('dn');
-  $('.more-ul').addClass('dn');
 
-  if (targetClass) {
-    var url = $this.attr("href");
-    if (url != "##") {
-      $("#current_url").val(url);
-      $.get(url, function (data) {
-        $("." + targetClass).html(data);
-      })
-      return false;
-    }
-  }
-})
 .on("click",'.icon-more',function(e){
    e.preventDefault();
     var $this = $(this), $thisMoreUl = $this.closest('td').find('.more-ul');
@@ -192,7 +160,6 @@ $(document)
    var $modal = $('#modal-form-remove');
       $modal.modal("hide");
 });
-
 
 $('.add-sql').on('click', function (e) {
   e.preventDefault();

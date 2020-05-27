@@ -2,231 +2,151 @@
 #
 # Table name: spiders
 #
-#  id                       :bigint(8)        not null, primary key
-#  spider_name              :string
+#  id                       :bigint           not null, primary key
+#  spider_name              :string(255)
 #  spider_type              :integer
 #  network_environment      :integer          default(1)
 #  proxy_support            :boolean          default(FALSE)
-#  has_keyword              :boolean          default(TRUE)
-#  template_name            :string
-#  category                 :string
-#  additional_function      :json             is an Array
+#  has_keyword              :boolean          default(FALSE)
+#  category                 :string(255)
+#  additional_function      :json
+#  instruction              :string(255)
+#  has_time_limit           :boolean          default(FALSE)
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  control_template_id      :integer
-#  instruction              :string
-#  has_time_limit           :boolean          default(FALSE)
-#  dep_control_template_ids :integer          default([]), not null, is an Array
-#  dep_templates            :json             not null
 #
 
 class Spider < ApplicationRecord
-  has_many :spider_cycle_tasks, dependent: :destroy
   has_many :spider_tasks, dependent: :destroy
-  belongs_to :control_template
 
-  validates :spider_name, presence: true, length: { maximum: 50 },
-    uniqueness: { case_sensitive: false }
+  validates :spider_name, presence: true, length: {maximum: 50},
+            uniqueness: {case_sensitive: false}
 
-  after_create :add_control_template_id
-  before_destroy :remove_control_template_id
-  after_update :update_control_template_id
 
-  validates_uniqueness_of :template_name
-
-  attr_accessor :template_name1, :template_name2, :template_name3, :template_name4, :template_name5
-  attr_accessor :control_template_id1, :control_template_id2, :control_template_id3, :control_template_id4, :control_template_id5
-
-  def self.categories
-    {
-      '新闻' => 'news',
-      '论坛' => 'forums',
-      '微博' => 'weibo',
-      '视频' => 'video',
-      '视频评论' => 'video_comment',
-      '电商' => 'electric_business',
-      '图片' => 'picture',
-      '图片评论' => 'picture_comment',
-      '问答' => 'question',
-      '社交' => 'sns_post',
-      '博客' => 'blog',
-      '招聘' => 'hiring',
-      '新闻评论' => 'news_comment',
-      '酒店评论' => 'hotel_comment',
-      'Facebook' => 'facebook_post',
-      'Facebook评论' => 'facebook_comment',
-      'Twitter' => 'twitter',
-      'Linkedin' => 'linkedin',
-      '字幕' => 'timed_text',
-      "商户" => "place",
-      "景点评论" => "scenic_comment",
-      "Okidb人物" => "temp_person_record",
-      "Linkedin用户" => "linkedin_user",
-      "Wikidata" =>  "archon_wikidata",
-      "VK" =>  "archon_vks",
-    }
+  def status_cn
+    cn_hash = {0 => '未启动', 1 => '周期运行中', 2 => '已停止'}
+    cn_hash[status]
   end
 
-  def tidb_table_name
-    "archon_#{category}"
+  def real_time_status_cn
+    self.spider_tasks.order(:created_at).last.status_cn rescue '未启动'
   end
 
-  def category_cn
-    Spider.categories.invert[category]
+
+  #===========================================================
+
+
+  def can_start?
+    spider_task = self.spider_tasks.order(:created_at).last rescue nil
+    return true if spider_task.blank?
+    spider_task.can_start?
   end
 
-  def self.spider_types
-    {
-      'html解析' => 1,
-      'api' => 2,
-      '自定义脚本' => 3
-    }
+  def can_stop?
+    spider_task = self.spider_tasks.order(:created_at).last rescue nil
+    return false if spider_task.blank?
+    spider_task.can_stop?
   end
 
-  def spider_type_cn
-    Spider.spider_types.invert[spider_type]
+  def can_reopen?
+    spider_task = self.spider_tasks.order(:created_at).last rescue nil
+    return false if spider_task.blank?
+    spider_task.can_reopen?
   end
 
-  def self.network_environments
-    { '境内' => 1, '境外' => 2 }
+  def create_spider_task(mode)
+    line = {"mode" => "list", "spider_name" => self.spider_name, "body" => {}}
+    keyword = Base64.encode64(line.to_json).gsub("\n", "")
+    spider_task = SpiderTask.create(spider_id: self.id, full_keywords: keyword, status: SpiderTask::TypeTaskStart,task_type: mode,current_task_count: 1)
+    return spider_task
   end
 
-  def network_environment_cn
-    Spider.network_environments.invert[network_environment]
-  end
-
-  def self.build_spider(spider_params)
-    additional_function = spider_params.delete(:additional_function)
-    spider = Spider.new(spider_params)
-    unless additional_function.blank?
-      begin
-        spider.additional_function = JSON.parse(additional_function)
-      rescue StandardError
-        spider.errors.add(:additional_function, '格式错误')
-      end
+  # mode 启动模式  0：周期启动，1：实时启动
+  def start_task(mode)
+    if can_reopen?
+      reopen_task
+      return {type: "success",message: "实时任务启动成功"}
     end
-
-    temp_templates = {}
-    (1..5).to_a.each do |i|
-      template_name = spider.send("template_name#{i}")
-      next if template_name.blank?
-      template_name.strip!
-
-      if temp_templates.include?(template_name)
-        spider.errors.add("template_name#{i}".to_sym, '模板重复')
-        return spider
-      end
-
-      control_id = spider.send("control_template_id#{i}")
-      temp_templates[template_name] = control_id unless template_name.blank?
+    job_instance = TSkJobInstance.where(spider_name: self.spider_name).first
+    if job_instance.blank?
+      return {type: "error",message: "对应TSkJobInstance实例为空"}
     end
-    spider.dep_templates = temp_templates
-
-
-    is_internal = spider.network_environment == 1
-
-    if !spider.control_template.blank? && spider.control_template.is_internal != is_internal
-      spider.errors.add('network_environment', '控制模板网络环境不一致')
-      return spider
+    # 周期任务直接可以执行，实时任务需判断状态后执行
+    if mode == SpiderTask::RealTimeTask
+      return {type: "error",message: "实时任务正在执行中"} unless can_start?
     end
+    log_mode = SpiderTask.t_log_spider_mode[mode]
+    # 创建一条爬虫日志数据
+    TLogSpider.create({spider_name: self.spider_name, start_time: Time.now, mode: log_mode})
+    spider_task = self.create_spider_task(mode)
+    # 创建子任务 缓存子任务
+    spider_task.create_subtasks
+    # 检查任务状态，处理任务
+    # spider_task.process_status
+    return {type: "success",message: "实时任务启动成功"}
 
-    spider
   end
 
-  # def self.create_index(category, dates)
-  #   dates.each do |date|
-  #     category.classify.constantize.create_index(date)
+
+  # 暂停任务
+  def stop_task(mode)
+    return {type: "error",message: "周期生成的单次任务正在执行中"} unless can_stop?
+    spider_task = self.spider_tasks.order(:created_at).last rescue nil
+    spider_task.update(status: SpiderTask::TypeTaskStop)
+    # # 检查任务状态，处理任务
+    spider_task.process_status
+    return {type: "success",message: "实时任务暂停成功"}
+  end
+
+  # 重启任务
+  def reopen_task
+    return unless can_reopen?
+    spider_task = self.spider_tasks.order(:created_at).last rescue nil
+    spider_task.update(status: SpiderTask::TypeTaskReopen)
+    # 检查任务状态，处理任务
+    spider_task.process_status
+    # self.update(real_time_status: SpiderTask::TypeTaskComplete)
+  end
+
+
+  # # 周期任务，调用此方法生成cron定时任务
+  # def init_task_job
+  #   # 周期任务审核通过后且是有效数据，才能创建crontab任务
+  #   # return if self.status_before_type_cast != 4 || self.is_deleted
+  #   cron = Sidekiq::Cron::Job.find self.job_name
+  #   if cron.blank?
+  #     time = "#{self.cron_minutes} #{self.cron_hour} * * * Asia/Shanghai"
+  #     cron = Sidekiq::Cron::Job.new(name: self.job_name, cron: time, class: 'ProcessStatusJob', args: {spider_name: self.spider_name}) if cron.blank?
+  #     if cron.valid?
+  #       cron.save
+  #     else
+  #       Rails.logger.info cron.errors
+  #     end
+  #   else
+  #     time = "*/10 * * * * Asia/Shanghai"
+  #     cron.cron = time
+  #     cron.save
   #   end
   # end
+  #
+  # # 初始化所有任务
+  # def self.init_all_tasks
+  #   self.all.each do |x|
+  #     x.init_task_job
+  #   end
+  # end
+  #
+  #
+  # # cron任务名称
+  # def job_name
+  #   "ProcessStatusJob-#{self.spider_name}"
+  # end
 
-  def accounts_is_valid?
-    ids = []
-    unless control_template_id.blank?
-      ids << control_template.id
 
-    end
+  def self.update_complete(log_spider_id)
+    spider_name = TLogSpider.find(log_spider_id).spider_name
+    self.where(spider_name: spider_name).first.update(run_type: TypeTaskCompleted)
 
-    dep_templates.each do |_k, v|
-      c = ControlTemplate.find(v)
-      ids << c.id
-    end
-
-    ids.each do |x|
-      c = ControlTemplate.find(x)
-      if !c.accounts_is_valid?
-        return false
-      end
-    end
-
-    return true
   end
 
-  def control_template_id_details
-    ids = []
-    unless control_template_id.blank?
-      ids << control_template.id
-      ids << if control_template.is_bind_ip
-      '1'
-    else
-      '0'
-    end
-  end
-
-  dep_templates.each do |_k, v|
-    c = ControlTemplate.find(v)
-    ids << c.id
-    ids << if c.is_bind_ip
-    '1'
-    else
-      '0'
-    end
-  end
-
-  ids.join(',')
-end
-
-def add_control_template_id
-  $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-
-  dep_templates.each do |k, v|
-    $archon_redis.hset('archon_template_control_id', k, v || '')
-  end
-end
-
-
-def update_control_template_id
-  $archon_redis.hset('archon_template_control_id', template_name, control_template_id || '')
-end
-
-def remove_control_template_id
-  $archon_redis.hdel('archon_template_control_id', template_name)
-  dep_templates.each do |k, _v|
-    $archon_redis.hdel('archon_template_control_id', k)
-  end
-end
-
-
-def update_dep_templates(templates)
-  return if templates.blank?
-
-  d = {}
-
-  templates.each do |x|
-    d[x] = self.control_template_id
-  end
-
-  self.dep_templates = d
-  self.save
-end
-
-
-def set_control_template
-  i = 1
-  self.dep_templates.each do |k, v|
-    break if i > 5
-    self.send("template_name#{i}=", k)
-    self.send("control_template_id#{i}=", v)
-    i += 1
-  end
-end
 end

@@ -1,3 +1,0 @@
-class ArchonTwitterListBing < ArchonBase
-
-end

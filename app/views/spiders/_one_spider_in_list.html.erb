@@ -1,27 +1,31 @@
 <tr>
   <td><%= spider.spider_name%></td>
-  <!-- <td><%= spider.spider_type_cn %></td> -->
-  <td><%= spider.category_cn %></td>
-  <td><%= spider.network_environment_cn %></td>
-  <td><%= show_boolean_cn(spider.proxy_support) %></td>
-  <td><%= show_boolean_cn(spider.has_keyword) %></td>
-  <td><%= spider.template_name %></td>
-  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=format_additional_function(spider.additional_function)%>"><%= truncate_utf(format_additional_function(spider.additional_function))%></td>
-  <td data-toggle="tooltip"  data-container="body" data-placement="bottom" title="<%=spider.instruction%>"><%= truncate_utf(spider.instruction)%></td>
-  <!-- <td><%= show_format_time(spider.created_at) %></td> -->
+  <td><%= spider.status_cn %></td>
+  <td><%= spider.real_time_status_cn rescue nil %></td>
+  <td><%= '总量' %></td>
+  <td><%= link_to(spider_tasks_path(spider_id:spider.id)) do%>报警<%end%></td>
   <td class="pos-r">
     <a href="##">
       <i class="icon_data_analysis icon-more"></i>
     </a>
     <ul class="more-ul dn">
-      <!--       <li class="bor-b">
-       <%#= link_to(spider_spider_tasks_path(spider)) do%>任务<%#end%>
-      </li> -->
       <li class="bor-b">
         <%= link_to(load_edit_form_spider_path(spider),:class=>"edit",:remote=>true) do%>编辑<%end%>
       </li>
       <li>
         <%=link_to(spider_path(spider),:class=>"remove-line") do%>删除<%end%>
+      </li>
+      <li>
+        <%= link_to(start_spider_path(id:spider.id), :title => "启动", :remote => true) do %>启动实时任务<% end %>
+      </li>
+      <li>
+        <%= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>停止实时任务<% end %>
+      </li>
+      <li>
+        <%#= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>启动<%# end %>
+      </li>
+      <li>
+        <%#= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>停止<%# end %>
       </li>
     </ul>
   </td>

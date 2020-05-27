@@ -2420,8 +2420,14 @@ a.forum-item-title:hover {
 
 /* Select2 custom styles */
 
+.select2-container {
+  z-index: 9999;
+}
+
 .select2-container--default .select2-selection--single,
-.select2-container--default .select2-selection--multiple {
+.select2-container--default .select2-selection--multiple,
+.select2-dropdown, 
+.select2-container--default .select2-search--dropdown .select2-search__field {
   border-color: $border-color;
 }
 

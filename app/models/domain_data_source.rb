@@ -1,2 +1,0 @@
-class DomainDataSource < ApplicationRecord
-end

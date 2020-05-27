@@ -1,3 +1,0 @@
-class ArchonVideoComment < ArchonBase
-
-end

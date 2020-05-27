@@ -1,103 +1,34 @@
 class SpiderTasksController < ApplicationController
-  before_action :logged_in_user
-  before_action :get_spider
-  before_action :test_account,only: %i[create start stop destroy]
+  # before_action :logged_in_user
+  before_action :get_spider_task, only: %i[fail_tasks retry_fail_task destroy_fail_task retry_all_fail_task]
 
   def index
+    @spider_task = SpiderTask.new
     opts = {}
-    opts[:special_tag] = params[:keyword] unless params[:keyword].blank?
-    @spider_tasks = @spider.spider_tasks.where(opts).order('created_at desc').page(params[:page]).per(10)
-    @spider_task = SpiderTask.new
-  end
-
-  def new
-    @spider_task = SpiderTask.new
-  end
-
-  def show; end
-
-  def create
-    @spider_task = SpiderTask.new(spider_task_params)
-    @spider_task.special_tag_transfor_id
-    add_funs = []
-    params.keys.each do |key|
-      if key.to_s =~ /cate_/
-        if key.match("special_tags")
-          add_funs << { key.gsub('cate_', '').to_s => SpiderTask.special_tag_transfor_id(params[key.to_sym])}
-        else
-          add_funs << { key.gsub('cate_', '').to_s => params[key.to_sym] }
-        end
-      end
+    unless params[:id].blank?
+      opts[:id] = params[:id].split(',')
     end
+    opts[:spider_id] = params[:spider_id] unless params[:spider_id].blank?
+    opts[:status] = params[:status] unless params[:status].blank?
+    opts[:task_type] = params[:task_type] unless params[:task_type].blank?
 
-    @spider_task.begin_time = params[:begin_time] unless params[:begin_time].blank?
-    @spider_task.end_time = params[:end_time] unless params[:end_time].blank?
-
-    @spider_task.additional_function = add_funs
-    message = @spider_task.save_with_spilt_keywords
-    flash[message.keys.first.to_sym] = message.values.first
-
-    redirect_back(fallback_location: tasks_path)
-  end
-
-  def start
-    @spider_task = SpiderTask.find_by(id: params[:id])
-    @spider_task.start!
-
-    render template: '/tasks/refresh_spider_task.js.erb', layout: false
-    # redirect_back(fallback_location:tasks_path)
-  end
-
-  def stop
-    @spider_task = SpiderTask.find_by(id: params[:id])
-    @spider_task.stop!
-
-    render template: '/tasks/refresh_spider_task.js.erb', layout: false
-    # redirect_back(fallback_location:tasks_path)
-  end
-
-  def destroy
-    @spider_task = SpiderTask.find_by(id: params[:id])
-    @spider_task.destroy
-
-    render json: { type: 'success', message: '删除成功！' }
-  end
-
-  # 获取dp标签
-  def dp_tags
-    dp_api_url = "https://dp.aggso.com/api/query_person_tags"
-    res = RestClient.get(dp_api_url)
-    tags = JSON.parse(res).map{|x| [x["id"],x["name"]]}
-    render :json => {tags: tags}
-  end
-
-  # 导出
-  def output
-    @spider_task = SpiderTask.find_by(id: params[:id])
-    @spider_task.dump_crowed_file
-    flash['success'] = '导出成功'
-
-    redirect_back(fallback_location: tasks_path)
+    @spider_tasks = SpiderTask.includes('spider').where(opts).order(id: :desc).page(params[:page]).per(20)
   end
 
 
-  def output_csd
-    @spider_task = SpiderTask.find_by(id: params[:id])
-    Rails.logger.info "======params======params"
-    message = @spider_task.dump_crowed_file(params)
-    flash[message[:type]] = message[:message]
-
-    redirect_back(fallback_location: tasks_path)
+  def fail_tasks
+    @fail_tasks = Subtask.where(task_id: @spider_task.id, status: Subtask::TypeSubtaskError).page(params[:page]).per(100)
   end
+
+  def show_keyword
+    render plain: SpiderTask.where(id: params[:id]).first.full_keywords
+  end
+
 
   private
 
-  def spider_task_params
-    params.require(:spider_task).permit(:spider_id, :special_tag, :level, :keyword, :max_retry_count, :is_split, :begin_time, :end_time, :split_group_count, :timeout_second)
-  end
-
-  def get_spider
-    @spider = Spider.find_by(id: params[:spider_id])
-    redirect_to(root_url) if @spider.blank?
+  def get_spider_task
+    @spider_task = SpiderTask.find_by(id: params[:id])
+    redirect_back(fallback_location: root_path) if @spider_task.blank?
   end
 end

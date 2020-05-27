@@ -1,2 +1,0 @@
-class ArchonVkCommentTag < ArchonBase
-end

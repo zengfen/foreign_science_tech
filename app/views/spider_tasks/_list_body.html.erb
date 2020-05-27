@@ -1,22 +1,24 @@
+<input type="hidden" name="current_url" value="<%= url_for(params.to_unsafe_h) %>" id="current_url">
 <%if !@spider_tasks.blank?%>
   <table class="table table-striped table-bordered table-hover table-vcenter">
     <thead>
       <tr>
-        <th class="text-center">特殊标签</th>
-        <th class="text-center">优先级别</th>
+        <th class="text-center">爬虫名</th>
+        <th class="text-center">模式</th>
         <th class="text-center">关键词</th>
-        <th class="text-center">任务状态</th>
-        <th class="text-center">成功数</th>
-        <th class="text-center">结果数</th>
-        <th class="text-center">失败数</th>
-        <th class="text-center">警告数</th>
+        <th class="text-center">状态</th>
+        <th class="text-center">任务数</th>
+        <th class="text-center">成功</th>
+        <th class="text-center">失败</th>
+        <!--<th class="text-center">结果</th>-->
         <th class="text-center">创建时间</th>
-        <th class="text-center">操作</th>
       </tr>
     </thead>
     <tbody class="text-center">
       <% @spider_tasks.each do |spider_task| %>
-       <%=render :partial=>"one_task_in_list",:locals=>{:spider_task=>spider_task}%>
+        <tr id = "spider_task_<%=spider_task.id%>">
+          <%=render :partial=>"one_task_in_list",:locals=>{:spider_task=>spider_task}%>
+        </tr>
       <% end %>
     </tbody>
   </table>
@@ -24,5 +26,5 @@
     <%= paginate @spider_tasks%>
   </div>
 <%else%>
-   <%= render "shared/no_data" %>
+  <%= render "shared/no_data" %>
 <%end%>

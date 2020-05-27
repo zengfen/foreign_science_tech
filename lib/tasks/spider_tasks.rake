@@ -1,11 +1,11 @@
-namespace :spider_tasks  do
+namespace :foreign_science_tech  do
 
-	namespace :refresh_status do 
-	  desc "This is for start refresh status"
+	namespace :process_status do
+	  desc "This is for start process status"
 	  task :start => :environment do
-	    job = Sidekiq::Cron::Job.find "RefreshTaskStatusJob"
+	    job = Sidekiq::Cron::Job.find "ProcessStatusJob"
 			if job.blank?
-				Sidekiq::Cron::Job.create(name: "RefreshTaskStatusJob", cron: "*/5 * * * * Asia/Shanghai", class: 'RefreshTaskStatusJob') 
+				Sidekiq::Cron::Job.create(name: "ProcessStatusJob", cron: "*/20 * * * * Asia/Shanghai", class: 'ProcessStatusJob')
 				puts "job start success!"
 			else
 				puts "job already exist!"
@@ -14,9 +14,9 @@ namespace :spider_tasks  do
 
 	  desc "This is for stop refresh status"
 	  task :stop => :environment do
-	    job = Sidekiq::Cron::Job.find "RefreshTaskStatusJob"
+	    job = Sidekiq::Cron::Job.find "ProcessStatusJob"
 	    if !job.blank?
-		  	Sidekiq::Cron::Job.destroy "RefreshTaskStatusJob" 
+		  	Sidekiq::Cron::Job.destroy "ProcessStatusJob"
 		  	puts "job stop success!"
 		  else
 		  	puts "job not exist!"

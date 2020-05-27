@@ -1,107 +1,55 @@
-<nav class="navbar-default navbar-static-side" role="navigation" >
+<nav class="navbar-default navbar-static-side" role="navigation">
   <div class="sidebar-collapse">
     <ul class="nav metismenu" id="side-menu">
       <li class="nav-header">
         <div class="dropdown profile-element">
           <span>
-            <%=image_tag(current_user.avatar.url,class:"img-circle",style:"width:50px;height:50px") %>
+            <% image = current_user.avatar.url rescue "profile_small.jpg" %>
+            <%= image_tag(image, class: "img-circle", style: "width:50px;height:50px") %>
           </span>
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="clear">
               <span class="block m-t-xs">
-              </span> <span class="text-muted text-xs block"><%=current_user.name%> <b class="caret"></b></span>
+              </span> <span class="text-muted text-xs block"><%= current_user.name rescue "Guest" %>
+                <b class="caret"></b></span>
             </span>
           </a>
           <ul class="dropdown-menu animated fadeInRight m-t-xs">
-            <li><%=link_to "修改头像",edit_user_avatar_path(current_user)%>
-            </li>
-            <li><%= link_to "修改信息", edit_user_path(current_user) %>
-            </li>
-            <li class="divider"></li>
-            <li><%=link_to logout_path,:method=>:delete do %>退出<%end%>
-            </li>
+            <% if !@current_user.blank? %>
+              <!--<li>-->
+                <!--<%#= link_to "修改头像", edit_user_avatar_path(current_user) %>-->
+              <!--</li>-->
+              <li><%= link_to "修改信息", edit_user_path(current_user) %>
+              </li>
+              <li class="divider"></li>
+              <li><%= link_to logout_path, :method => :delete do %>退出
+                <% end %>
+              </li>
+            <% end %>
           </ul>
         </div>
         <div class="logo-element">
           Center
         </div>
       </li>
-      <li class="<%= is_active_controller('home') %>">
-        <%= link_to root_path do %><i class="fa fa-dashboard"></i> <span class="nav-label">仪表盘</span>
-        <%end%>
+      <li class="<%#= is_active_controller('home') %>">
+        <a href=""><i class="fa fa-bug"></i> <span class="nav-label">仪表盘</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%#= is_active_controller('home') %>">
+          <li class="<%#= is_active_action('data_index', 'home') %>"><%#= link_to "数据概览", data_index_home_index_path %></li>
+          <li class="<%#= is_active_action('monitor_index', 'home') %>"><%#= link_to "监控目标", monitor_index_home_index_path %></li>
+          <li class="<%#= is_active_action('index', 'home') %>"><%#= link_to "采集任务", home_index_path %></li>
+        </ul>
       </li>
-      <li class="<%= is_active_controller('spiders,base_spiders') %>">
-        <a href=""><i class="fa fa-bug"></i> <span class="nav-label">模板中心</span> <span class="fa arrow"></span></a>
+      <li class="<%= is_active_controller('spiders') %>">
+        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">爬虫列表</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
-          <li class="<%= is_active_action('index', 'spiders') %>"><%= link_to "模板库", spiders_path %></li>
-          <li class="<%= is_active_action('index', 'base_spiders') %>"><%= link_to "基础模板库", base_spiders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "爬虫列表", spiders_path %></li>
         </ul>
       </li>
-      <li class="<%= is_active_controller('tasks') %>">
+      <li class="<%= is_active_controller('spider_tasks') %>">
         <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('tasks') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", tasks_path %></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('data_centers') %>">
-        <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据中心</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('data_centers') %>">
-          <li class="<%= is_active_action('index', 'data_centers') %>"><%= link_to "类型列表", data_centers_path %></li>
-          <li class="<%= is_active_action('show', 'data_centers') %>"><%= link_to "数据查找", "/data_centers/show" %></li>
-        </ul>
-      </li>
-      <!--       <li class="<%= is_active_controller('monitoring') %>">
-        <a href=""><i class="fa fa-thermometer-2"></i> <span class="nav-label">性能监控</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('monitoring') %>">
-        <li class="<%= is_active_action('lucene') %>"><%= link_to "存储资源监控", "/monitoring/lucene" %></li>
-        <li class="<%= is_active_action('index') %>"><%= link_to "Kafka监控", social_accounts_path %></li>
-        <li class="<%= is_active_action('index') %>"><%= link_to "Agent监控", social_accounts_path %></li>
-        </ul>
-        </li> -->
-      <li class="<%= is_active_controller('social_accounts,social_account_monitors') %>">
-        <a href=""><i class="fa fa-users"></i> <span class="nav-label">社交账号库</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('social_accounts,social_account_monitors') %>">
-          <li class="<%= is_active_action(nil, 'social_accounts') %>"><%= link_to "社交账号库", social_accounts_path %></li>
-          <li class="<%= is_active_action(nil, 'social_account_monitors') %>"><%= link_to "监控设置", social_account_monitors_path %></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('media_accounts') %>">
-        <a href=""><i class="fa fa-inbox"></i> <span class="nav-label">媒体库</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('media_accounts') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "媒体库", media_accounts_path %></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('control_templates,accounts,proxies') %>">
-        <a href=""><i class="fa fa-desktop"></i> <span class="nav-label">资源配置中心</span>
-          <% if @expired_account_count > 0  %>
-            <span class="label label-danger">过期</span>
-          <% end %>
-          <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('control_templates,accounts,proxies') %>">
-          <li class="<%= is_active_action(nil, "control_templates") %>"><%= link_to "访问控制", control_templates_path %></li>
-          <li class="<%= is_active_action(nil, "accounts") %>"><%= link_to "账号管理", accounts_path%></li>
-          <li class="<%= is_active_action(nil, "proxies") %>"><%= link_to "代理管理", proxies_path%></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('hosts,services,information_statistics') %>">
-        <a href=""><i class="fa fa-camera"></i> <span class="nav-label">监控中心</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('hosts,services,information_statistics') %>">
-          <li class="<%= is_active_action("index", "hosts") %>"><%= link_to "主机节点", hosts_path %></li>
-          <li class="<%= is_active_action("block_ips", "hosts") %>"><%= link_to "节点黑名单", "/hosts/block_ips" %></li>
-          <li class="<%= is_active_action("index", "services") %>"><%= link_to "服务监控", services_path%></li>
-          <li class="<%= is_active_action("counters", "services") %>"><%= link_to "数据量监控", "/services/counters"%></li>
-          <li class="<%= is_active_action("receiver", "services") %>"><%= link_to "接收器数据量", "/services/receiver" %></li>
-          <li class="<%= is_active_action("loader", "services") %>"><%= link_to "Loader数据量", "/services/loader" %></li>
-          <li class="<%= is_active_action("dumper", "services") %>"><%= link_to "Dumper数据量", "/services/dumper" %></li>
-          <li class="<%= is_active_action("index", "information_statistics") || is_active_action("govern", "information_statistics") %>"><%= link_to "资讯列表", "/information_statistics" %></li>
-          <li class="<%= is_active_action("index", "domain_data") %>"><%= link_to "域名对应列表", "/domain_data" %></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('service_codes,service_code_versions') %>">
-        <a href=""><i class="fa fa-code-fork"></i> <span class="nav-label">代码版本控制</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('service_codes,service_code_versions') %>">
-          <li class="<%= is_active_action("index", "service_codes") %>"><%= link_to "代码管理", "/service_codes" %></li>
-          <li class="<%= is_active_action("block_ips", "service_code_versions") %>"><%= link_to "代码打包", "/service_code_versions" %></li>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('spider_tasks') %>">
+          <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", spider_tasks_path %></li>
         </ul>
       </li>
     </ul>

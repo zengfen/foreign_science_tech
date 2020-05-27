@@ -1,3 +1,0 @@
-class ArchonPictureComment < ArchonBase
-
-end

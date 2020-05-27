@@ -1,5 +1,5 @@
 module SessionsHelper
-	# 登入指定的用户
+  # 登入指定的用户
   def log_in(user)
     session[:user_id] = user.id
   end
@@ -39,7 +39,7 @@ module SessionsHelper
 
   # 退出当前用户
   def log_out
-  	forget(current_user)
+    forget(current_user)
     session.delete(:user_id)
     @current_user = nil
   end

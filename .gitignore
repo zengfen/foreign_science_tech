@@ -34,4 +34,11 @@ db/schema.rb
 .byebug_history
 config/GeoIP.dat
 */.DS_Store
+*/*/.DS_Store
+*/*/*/.DS_Store
+*/*/*/*/.DS_Store
+*/*/*/*/*/.DS_Store
 */nohup.out
+/test/*
+/test
+*.txt

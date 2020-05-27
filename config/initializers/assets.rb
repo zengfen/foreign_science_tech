@@ -12,3 +12,10 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 Rails.application.config.assets.precompile += %w( home.js lucene.js lucene.css)
+
+
+Rails.application.config.assets.precompile += %w( 
+  ztree-custom.css
+  ztree/ztree.min.css
+  ztree/ztree.min.js
+)

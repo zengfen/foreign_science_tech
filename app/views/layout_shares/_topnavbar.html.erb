@@ -5,8 +5,15 @@
         </div>
         <ul class="nav navbar-top-links navbar-right">
             <li>
+                <%#=image_tag("as0707_logo.png",height: '30px',style: "margin-right:20px")%>
 <!--                 <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext">Welcome to INSPINIA+ Admin Theme.</span> -->
             </li>
+            <li>
+                <a href="/employee_tasks_statistic">
+                    <i class="fa fa-list-alt"></i>
+                </a>
+            </li>
+
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope"></i>  <!-- <span class="label label-warning">16</span> -->
@@ -63,8 +70,8 @@
             <%end%>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell"></i>  <!-- <span class="label label-primary">8</span> -->
+                <a class="dropdown-toggle count-info" href="/work_lists">
+                    <i class="fa fa-bell"><span class="label label-danger"><%=@work_lists_unhandle_count rescue 0%></span></i>  
                 </a>
                 <%if false%>
                 <ul class="dropdown-menu dropdown-alerts">
@@ -109,10 +116,13 @@
 
 
             <li>
-                <%=link_to logout_path,:method=>:delete do %>
-                <i class="fa fa-sign-out"></i> Log out
+                <%if !@current_user.blank?%>
+                    <%=link_to logout_path,:method=>:delete do %>
+                      <i class="fa fa-sign-out"></i> Log out
+                     <%end%>                    
                 <%end%>
-        </li>
+                
+            </li>
 <!-- 
             <li>
                 <a class="right-sidebar-toggle">

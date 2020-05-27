@@ -2,16 +2,18 @@
 #
 # Table name: users
 #
-#  id              :bigint(8)        not null, primary key
-#  email           :string
-#  name            :string
-#  password_digest :string
-#  remember_digest :string
+#  id              :bigint           not null, primary key
+#  email           :string(255)
+#  name            :string(255)
+#  password_digest :string(255)
+#  remember_digest :string(255)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  avatar          :string
-#  reset_digest    :string
-#  reset_sent_at   :string
+#  avatar          :string(255)
+#
+# Indexes
+#
+#  user_email  (email) UNIQUE
 #
 
 class User < ApplicationRecord

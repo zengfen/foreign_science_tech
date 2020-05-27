@@ -1,2 +1,0 @@
-class ArchonVk < ArchonBase
-end

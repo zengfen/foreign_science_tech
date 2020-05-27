@@ -1,3 +1,0 @@
-class ArchonTempPersonRecord  < ArchonBase
-
-end

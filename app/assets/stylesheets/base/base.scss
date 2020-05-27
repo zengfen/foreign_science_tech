@@ -315,7 +315,11 @@ body.body-small .footer.fixed {
   border-top: 1px solid $border-color;
   line-height: 1.42857;
   padding: 8px;
-  vertical-align: top;
+  // vertical-align: top;
+  vertical-align: middle;
+  max-width: 250px;
+  word-break: break-all;
+  text-align: left;
 }
 
 /* PANELS */

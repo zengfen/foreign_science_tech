@@ -1,4 +1,5 @@
 <% provide(:title, "Spider Tasks") %>
+
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
 
@@ -10,120 +11,115 @@
 
         <div class="ibox-content pl15">
           <div class="bg-search">
-          <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+           <% form_url = params.permit(:task_type, :action).clone
+            %>
+          <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-8">
+                <div class="col-md-3">
                   <div class="form-group mb0">
-
-                    <input type="text" placeholder="特殊标签" name="keyword" class="form-control pl40" value="<%= params[:keyword] %>">
-                    <i class="search-line" style=></i>
-                    <i class="fa fa-search search-icon"></i></div>
+                    <%=select_tag(:spider_id ,options_for_select(Spider.select("spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "爬虫名",:class=>"form-control chosen-select")%>
+                  </div>
                 </div>
-
+                <div class="col-md-2">
+                  <div class="form-group mb0">
+                    <%=select_tag(:status, options_for_select(SpiderTask::StatusList.invert.to_a, params["status"]),include_blank: "状态",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
 
                 <div class="ibox-tools dib">
                   <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
                   <!-- <a class="btn btn-primary btn-warning w70 mb0">
                     搜索</a> -->
                 </div>
-                <div class="ibox-tools fr">
-                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加</a>
-<!--                     
-                    <a class="btn btn-primary " href="#" >
-                    按钮2</a> -->
-                </div>
+
               </div>
 
           <%end%>
           </div>
         </div>
         <div id="result_release">
+         
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-            <li class="tab-li active">
-              <a href="#" data-target="all-page">列表信息</a>
-            </li>
-              </ul>
+             <%# url = params.permit(:controller, :action,:keyword,:category).clone
+              %>
+              <li class="tab-li active">
+                列表信息
+              </li>
+            </ul>
 
-            <div class="ibox-content p15-0 all-page table-content">
+            <div class="ibox-content p15-0 all-page table-content <%=params[:task_type].blank? ? '': 'dn' %>">
               <%= render "list_body" %>
             </div>
 
-        </div>
+          </div>
         </div>
       </div>
     </div>
     </div>
   </div>
-   <!--这里是提示框-->
-      <div id="modal-form-remove" class="modal fade in" aria-hidden="true">
-        <div class="modal-dialog" style="width: 460px;top: 190px;">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-12">
-                  <h3 class="m-t-none m-b">提示</h3>
-                  <div class="hr-line-dashed"></div>
-                  <p class="text-center">
-                  <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
-                  <div class="hr-line-dashed"></div>
-                  <div>
-                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
-                                                                                           
-                      <strong>确定</strong></button>
-                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
-                                                                                            
-                      <strong>取消</strong></button>
-                  </div>
 
-                </div>
-              </div>
+<!--这里是提示框-->
+<div id="modal-form-remove" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 460px;top: 190px;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="m-t-none m-b">提示</h3>
+            <div class="hr-line-dashed"></div>
+            <p class="text-center">
+            <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
+            <div class="hr-line-dashed"></div>
+            <div>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
+                                                                                     
+                <strong>确定</strong></button>
+              <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
+                                                                                      
+                <strong>取消</strong></button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--这里是提示框-->
+<div id="modal-form-show-keyword" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" id="copy_button" data-clipboard-target="#modal-form-show-keyword .keywords_list" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
+        <h4 class="modal-title">关键词列表</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="hr-line-dashed"></div>
+            <div class="keywords_list">
             </div>
           </div>
         </div>
       </div>
-      <div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
-        <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">添加</h4>
-            </div>
-            <div class="modal-body">
-              <!-- modal-body -->
-              <%=render "form_body"%>
-            </div>
-          </div>
-          </div>
-      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
   <% content_for :javascript do %>
     <script>
 
 $(document)
-.on("click",".tab-li a",function(e){
-  e.preventDefault();
-  var $this = $(this);
-  if ($this.find('.icon-result').length > 0) return;
-  var targetClass = $this.data('target');
-  var $thisP = $this.closest('.ibox-content');
-  $this.closest('li').addClass('active').siblings('li').removeClass('active');
-  $thisP.children('.ibox-content').addClass('dn');
-  $thisP.children('.' + targetClass).removeClass('dn');
-  $('.more-ul').addClass('dn');
 
-  if (targetClass) {
-    var url = $this.attr("href");
-    if (url != "##") {
-      $("#current_url").val(url);
-      $.get(url, function (data) {
-        $("." + targetClass).html(data);
-      })
-      return false;
-    }
-  }
-})
 .on("click",'.icon-more',function(e){
    e.preventDefault();
     var $this = $(this), $thisMoreUl = $this.closest('td').find('.more-ul');
@@ -165,12 +161,8 @@ $(document)
           if (data.type=="success"){
             _this.closest('.modal').modal("hide");
             $this.closest('tr').remove();
-            }
-          },
-          complete: function (XHR, TS) { 
-           XHR = null 
-           } //回收资源
-       });
+          }
+        }});
       }
      
     });
@@ -181,11 +173,90 @@ $(document)
 });
 
 
-$('.add-sql').on('click', function (e) {
-  e.preventDefault();
-  var $modal = $('#modal-form-add-sql');
-  $modal.modal("show");
-})
+
+$(".submit_btn").on('click', function (e) {
+    $this = $(this);
+    $form = $this.closest('form');
+    var str = $form.find('.spider').val();
+    if (str == ''){
+    swal({
+        title: "提示",
+        text: "请选择爬虫模版！",
+        type: "error",
+    })
+    }else{
+      $form.submit();
+    }
+});
+
+
+//window.setInterval(function(){
+//  var current_url = $("#current_url").val();
+//  var status = $(".task_status").find('span').text();
+//  var bool1 = !$('.all-page').hasClass('dn');
+//  //  && status.indexOf("执行中")!=-1
+//  if (bool1){
+//      $.ajax({
+//          url:current_url,
+//          type:'get',
+//          success:function(data){
+//            $(".all-page").find("[data-toggle='tooltip']").tooltip('destroy');
+//            $(".all-page").html(data);
+//            $(".all-page").find("[data-toggle='tooltip']").tooltip();
+//            var clipboard = new Clipboard('.keyword', {
+//              text: function(el) {
+//                var data = $(el).data('original-title')
+//                return data;
+//              }
+//            });
+//            clipboard.on('success', function(e) {
+//             toastr.success("复制成功");
+//            });
+//            clipboard.on('error', function(e) {
+//              console.log(e);
+//            });
+//          },
+//          complete: function (XHR, TS) {
+//            XHR = null
+//          }
+//      });
+//    // $.get(current_url, function(data){
+//    //   $("[data-toggle='tooltip']").tooltip('destroy');
+//    //   $(".all-page").html(data);
+//    //   $("[data-toggle='tooltip']").tooltip();
+//    // })
+//  }
+//}, 20000);
+$("[data-toggle='tooltip']").tooltip();
+var clipboard = new Clipboard('.keyword', {
+      text: function(el) {
+        var data = $(el).data('original-title')
+        return data;
+      }
+    });
+    clipboard.on('success', function(e) {
+     toastr.success("复制成功");
+    });
+    clipboard.on('error', function(e) {
+      console.log(e);
+    });
+     $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,search_contains: true,no_results_text: "未匹配到关键词："});
+
+
+
+function show_keyword(id) {
+  $.get("/spider_tasks/show_keyword?id=" + id, function(data) {
+    $("#modal-form-show-keyword .keywords_list").html(data);
+    var $modal = $('#modal-form-show-keyword');
+    $modal.modal("show");
+  })
+}
+
+
+var clipboard1 = new Clipboard('#copy_button');
+    clipboard1.on('success', function(e) {
+     toastr.success("复制成功");
+    });
 
     </script>
   <% end %>

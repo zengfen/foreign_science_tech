@@ -1,0 +1,40 @@
+
+
+.statistic-style {
+  position: relative;
+  overflow: hidden;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.statistic-style-col {
+  float: left;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+@media (min-width: 796px) {
+  .statistic-style-col {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .statistic-style-col {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .statistic-style-col {
+    width: 20%;
+  }
+}
+
+.statistic-style__icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+  width: 20px;
+}

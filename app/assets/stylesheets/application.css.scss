@@ -15,4 +15,16 @@
  *= require sweetalert/sweetalert.css
  *= require forms
  *= require style
+ *= require customs.css
  */
+
+.text_truncate {
+	height: 60px;
+	line-height: 20px;
+	overflow: hidden;
+}
+
+.show_more {
+	margin-left: 10px;
+	white-space: nowrap;
+}
