@@ -46,7 +46,7 @@ end
 pidfile "#{Rails.root}/tmp/pids/puma.pid"
 state_path "#{Rails.root}/tmp/pids/puma.state"
 stdout_redirect "#{Rails.root}/log/puma.stdout.log", "#{Rails.root}/log/puma.stderr.log", true
-bind "unix://#{Rails.root}/tmp/archon_center.sock"
+bind "unix://#{Rails.root}/tmp/foreign_science_tech.sock"
 daemonize
 threads 0,4
 preload_app!
