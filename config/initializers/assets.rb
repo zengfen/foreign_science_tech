@@ -22,4 +22,10 @@ Rails.application.config.assets.precompile += %w(
 
   dashboards.css
   dashboards.js
+
+  bootstrap-datepicker/bootstrap-datepicker3.standalone.css
+  bootstrap-datepicker/bootstrap-datepicker.min.js
+  bootstrap-datepicker-init.js
+
+  echarts/echarts.min.js
 )

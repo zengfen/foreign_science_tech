@@ -43,4 +43,72 @@
 
   <h3 class="section-title">单项统计</h3>
   
+  <!-- 表单: 时间范围查询 -->
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">每日采集数据量趋势图</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_total_data" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="ibox">
+        <div class="ibox-title">每日采集任务量趋势图</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_task_data" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="ibox">
+        <div class="ibox-title">每日成功采集任务量趋势图</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_success_task_data" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<%= render 'shared/bootstrap_datepicker' %>
+
+<% content_for :javascript do %>
+  <script>
+    // $(function() {
+      function getTestData(n) {
+        n = n || 10;
+        var res = [];
+
+        while(res.length < n) {
+          var now = new Date().getTime();
+          var t = new Date(t - ( n - res.length ) * 3600 * 24);
+          var y = t.getFullYear();
+          var m = t.getMonth() + 1;
+          var d = t.getDate();
+
+          m = m > 9 ? m : '0' + m;
+          d = d > 9 ? d : '0' + d;
+
+          res.push({
+            name: [y, m, d].join('-'),
+            value: rand(1, 1000)
+          });
+        }
+
+        return res;
+      }
+
+      function renderTrendEchart(el, dataArray) {
+        var data = getTestData(15);
+
+        console.log(data);
+        // return renderEchart(el);
+      }
+    // });
+  </script>
+<% end %>

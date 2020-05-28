@@ -3,6 +3,7 @@
 .statistic-group {
   position: relative;
   padding-left: 80px;
+  margin-bottom: 15px;
 }
 
 .bg-statistic-1 {
@@ -38,6 +39,7 @@
     vertical-align: middle;
     width: 40px;
     height: 40px;
+    border-radius: 50%;
     background: rgba(255,255,255,.2) asset-url('project/download.svg') no-repeat center;
   }
 }
