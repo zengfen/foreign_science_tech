@@ -104,7 +104,7 @@
         return res;
       }
 
-      function renderTrendEchart(el, dataArray) {
+      function renderTrendEchart(el, seriesName, dataArray) {
         dataArray = getTestData(15);
 
         return renderEchart(el, {
@@ -155,8 +155,11 @@
             axisLabel: {}
           },
           series: dataArray.map(function(item) {
-            item.type = 'bar';
-            return item;
+            return {
+              name: seriesName,
+              type: 'bar',
+              data: item.data
+            };
           })
         });
 
