@@ -154,13 +154,11 @@
             },
             axisLabel: {}
           },
-          series: dataArray.map(function(item) {
-            return {
-              name: seriesName,
-              type: 'bar',
-              data: item
-            };
-          })
+          series: [{
+            name: seriesName,
+            type: 'bar',
+            data: dataArray
+          }]
         });
 
         console.log(data);
