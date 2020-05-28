@@ -2,7 +2,7 @@
 
 .statistic-group {
   position: relative;
-  padding-left: 40px;
+  padding-left: 60px;
 }
 
 .bg-statistic-1 {
@@ -27,6 +27,23 @@
   top: 0;
   bottom: 0;
   margin: auto;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
+}
+
+.statistic-group__content {
+  padding: 20px;
+  color: #fff;
+  text-align: right;
+  white-space: nowrap;
+
+  h6 {
+    font-size: 16px;
+    margin: 0 0 10px;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
 }
