@@ -86,7 +86,7 @@
 
         while(res.length < n) {
           var now = new Date().getTime();
-          var t = new Date(t - ( n - res.length ) * 3600 * 24);
+          var t = new Date(now - ( n - res.length ) * 3600 * 24);
           var y = t.getFullYear();
           var m = t.getMonth() + 1;
           var d = t.getDate();
