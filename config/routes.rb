@@ -88,6 +88,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :dashboards
+
 
 
   require 'sidekiq/web'
