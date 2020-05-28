@@ -137,7 +137,7 @@
               show: false
             },
             axisLabel: {},
-            data: dataArray[0].data.map(function(item) {
+            data: dataArray.map(function(item) {
               return item.name;
             })
           },
@@ -155,11 +155,8 @@
             axisLabel: {}
           },
           series: dataArray.map(function(item) {
-            return {
-              name: item.name,
-              type: 'bar',
-              data: item.data
-            };
+            item.type = 'bar';
+            return item;
           })
         });
 
