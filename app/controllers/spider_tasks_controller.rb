@@ -1,6 +1,6 @@
 class SpiderTasksController < ApplicationController
   # before_action :logged_in_user
-  before_action :get_spider_task, only: %i[fail_tasks retry_fail_task destroy_fail_task retry_all_fail_task]
+  before_action :get_spider_task, only: %i[retry_fail_task destroy_fail_task retry_all_fail_task]
 
   def index
     @spider_task = SpiderTask.new
@@ -17,7 +17,8 @@ class SpiderTasksController < ApplicationController
 
 
   def fail_tasks
-    @fail_tasks = Subtask.where(task_id: @spider_task.id, status: Subtask::TypeSubtaskError).page(params[:page]).per(100)
+    spider_task = Spider.where(id:params[:id]).first.spider_tasks.order(:created_at).last.id rescue nil
+    @fail_tasks = Subtask.where(task_id: spider_task, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
   end
 
   def show_keyword

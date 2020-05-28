@@ -44,6 +44,7 @@ class SpidersController < ApplicationController
 
   def start
     res = @spider.start_task(SpiderTask::RealTimeTask)
+
     if res[:type] == "success"
       flash[:success] = '更新成功！'
     else
