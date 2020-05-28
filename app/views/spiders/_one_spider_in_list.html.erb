@@ -3,7 +3,7 @@
   <td><%= spider.status_cn %></td>
   <td><%= spider.real_time_status_cn rescue nil %></td>
   <td><%= '总量' %></td>
-  <td><%= link_to(spider_tasks_path(spider_id:spider.id)) do%>报警<%end%></td>
+  <td><%= link_to(fail_tasks_spider_task_path(id:spider.id)) do%>报警<%end%></td>
   <td class="pos-r">
     <a href="##">
       <i class="icon_data_analysis icon-more"></i>
