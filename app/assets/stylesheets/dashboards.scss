@@ -1,0 +1,60 @@
+
+
+.statistic-group {
+  position: relative;
+  padding-left: 80px;
+}
+
+.bg-statistic-1 {
+  background-color: rgba(51,202,187,1);
+}
+
+.bg-statistic-2 {
+  background-color: rgba(249,104,104,1);
+}
+
+.bg-statistic-3 {
+  background-color: rgba(21,195,119,1);
+}
+
+.bg-statistic-4 {
+  background-color: rgba(146,109,222,1);
+}
+
+.statistic-group__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 80px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,.2) asset-url('project/download.svg') no-repeat center;
+  }
+}
+
+.statistic-group__content {
+  padding: 20px;
+  color: #fff;
+  text-align: right;
+  white-space: nowrap;
+
+  h6 {
+    font-size: 16px;
+    margin: 0 0 10px;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+}

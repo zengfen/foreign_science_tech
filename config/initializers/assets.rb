@@ -19,4 +19,7 @@ Rails.application.config.assets.precompile += %w(
   ztree/ztree.min.css
   ztree/ztree.min.js
   home.css
+
+  dashboards.css
+  dashboards.js
 )
