@@ -104,6 +104,10 @@
         return res;
       }
 
+      [ '#graph_total_data', '#graph_task_data', '#graph_success_task_data' ].forEach(function(selector) {
+        renderTrendEchart($(selector)[0]);
+      });
+
       function renderTrendEchart(el, seriesName, dataArray) {
         dataArray = getTestData(15);
         console.log(dataArray);
@@ -163,6 +167,7 @@
           series: [{
             name: seriesName,
             type: 'bar',
+            barMaxWidth: 50,
             data: dataArray
           }]
         });
