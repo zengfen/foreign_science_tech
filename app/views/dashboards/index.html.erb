@@ -44,14 +44,14 @@
   <h3 class="section-title">单项统计</h3>
   
   <!-- 表单: 时间范围查询 -->
-  <form action="##" method="get" class="form-inline daterange-wrap">
+  <form action="##" method="get" autocomplete="off" class="form-inline daterange-wrap">
     <div class="form-group">
       <div>开始日期：</div>
-      <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期">
+      <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
     </div>
     <div class="form-group">
       <div>结束日期：</div>
-      <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期">
+      <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
     </div>
     <div class="form-group">
       <div>&nbsp;</div>
@@ -129,6 +129,7 @@
       });
 
       function renderTrendEchart(el, seriesName, dataArray) {
+        var length = dataArray.length;
         return renderEchart(el, {
           color: [ '#0881FF', '#0043EE', '#A035F3', '#FF0076', '#FCC700', '#FFA500', '#F05A4F', '#6E4DED', '#34B1B9', '#0076FE' ],
           tooltip: {
@@ -152,7 +153,7 @@
             {
               show: true,
               type: 'inside',
-              start: dataArray.length > 10 ? 80 : 0,
+              start: length <= 10 ? 0 : (length - 10) / length,
               end: 100
             },
             {
