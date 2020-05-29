@@ -44,7 +44,7 @@
   <h3 class="section-title">单项统计</h3>
   
   <!-- 表单: 时间范围查询 -->
-  <form action="##" method="get" class="form-inline">
+  <form action="##" method="get" class="form-inline daterange-wrap">
     <div class="form-group">
       <div>开始日期：</div>
       <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期">
@@ -94,7 +94,9 @@
 <% content_for :javascript do %>
   <%= javascript_include_tag 'echarts/echarts.min' %>
   <script>
-    // $(function() {
+    $(function() {
+      initDateRangePicker($('.daterange-wrap'));
+
       function getTestData(n) {
         n = n || 10;
         var res = [];
@@ -118,14 +120,15 @@
         return res;
       }
 
-      [ '#graph_total_data', '#graph_task_data', '#graph_success_task_data' ].forEach(function(selector) {
-        renderTrendEchart($(selector)[0]);
+      [
+        { selector: '#graph_total_data', seriesName: '每日采集数据量', dataArray: getTestData(15) },
+        { selector: '#graph_task_data', seriesName: '每日采集任务量', dataArray: getTestData(15) },
+        { selector: '#graph_success_task_data', seriesName: '每日成功采集任务量', dataArray: getTestData(15) }
+      ].forEach(function(item) {
+        renderTrendEchart($(item.selector)[0], item.seriesName, item.dataArray);
       });
 
       function renderTrendEchart(el, seriesName, dataArray) {
-        dataArray = getTestData(65);
-        console.log(dataArray);
-
         return renderEchart(el, {
           color: [ '#0881FF', '#0043EE', '#A035F3', '#FF0076', '#FCC700', '#FFA500', '#F05A4F', '#6E4DED', '#34B1B9', '#0076FE' ],
           tooltip: {
@@ -223,6 +226,6 @@
           }]
         });
       }
-    // });
+    });
   </script>
 <% end %>
