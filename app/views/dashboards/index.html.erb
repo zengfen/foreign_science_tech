@@ -130,11 +130,18 @@
             bottom: 40,
             containLabel: true
           },
-          dataZoom: [{
-            show: true,
-            start: dataArray.length > 15 ? 60 : 0,
-            end: 100
-          }],
+          dataZoom: [
+            {
+              show: true,
+              type: 'inside',
+              start: dataArray.length > 15 ? 60 : 0,
+              end: 100
+            },
+            {
+              type: 'slider',
+              showDetail: false
+            }
+          ],
           xAxis:  {
             type: 'category',
             name: '日期',
