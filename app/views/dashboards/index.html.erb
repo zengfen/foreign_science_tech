@@ -113,6 +113,7 @@
         console.log(dataArray);
 
         return renderEchart(el, {
+          color: [ '#55E6FF', '#03D8FF', '#02B9EC', '#AEAAFF', '#5F48E2', '#FFA500', '#F05A4F', '#4266F2', '#6A88FF', '#A8C0FF' ],
           tooltip: {
             trigger: 'axis',
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -146,13 +147,22 @@
             type: 'category',
             name: '日期',
             axisLine: {
-              show: true
+              show: true,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             axisTick: {
-              show: true
+              show: true,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             splitLine: {
-              show: false
+              show: false,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             axisLabel: {
               interval: 0,
@@ -166,13 +176,22 @@
             type: 'value',
             name: '数量/条',
             axisLine: {
-              show: true
+              show: true,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             axisTick: {
-              show: false
+              show: false,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             splitLine: {
-              show: true
+              show: true,
+              lineStyle: {
+                color: '#e4e5e5'
+              }
             },
             axisLabel: {}
           },
