@@ -47,13 +47,14 @@
   <form action="##" method="get" class="form-inline">
     <div class="form-group">
       <div>开始日期：</div>
-      <input type="text" name="" value="<%= params[:start_date] %>" class="form-control" placeholder="开始日期">
+      <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期">
     </div>
     <div class="form-group">
       <div>结束日期：</div>
-      <input type="text" name="" value="<%= params[:end_date] %>" class="form-control" placeholder="结束日期">
+      <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期">
     </div>
     <div class="form-group">
+      <div>&nbsp;</div>
       <button class="btn btn-primary" type="submit">确定</button>
     </div>
   </form>
