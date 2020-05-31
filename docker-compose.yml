@@ -1,0 +1,50 @@
+version: '2'
+volumes:
+  mysql_data: {}
+services:
+  db-mysql:
+    image: mysql:5.7.17
+    container_name: mysql
+    restart: unless-stopped
+#    hostname: mysqlhost
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_HOST=localhost
+      - MYSQL_ROOT_PASSWORD=fenfenlehe
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - "./mysql_data/db:/var/lib/mysql"
+      - "./mysql_data/conf/my.cnf:/etc/my.cnf"
+      - "./mysql_data/init:/docker-entrypoint-initdb.d/"
+    ports:
+      - "3306:3306"
+    command: ['mysqld', '--character-set-server=utf8']
+    tty: true
+  db-redis:
+      image: redis:4.0.8
+      container_name: redis
+      restart: unless-stopped
+#      hostname: redishost
+      volumes:
+        - ./conf/redis.conf:/etc/redis/redis.conf:rw
+        - ./redis_data:/data:rw
+      ports:
+        - 6379:6379
+      command: redis-server /etc/redis/redis.conf --appendonly yes
+      tty: true
+  web:
+    build: .
+#    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: ./start.sh
+    volumes:
+      - .:/test2
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db-mysql
+      - db-redis
+    environment:
+      - RAILS_ENV=production
+#      - DATABASE_HOST=demo_db_1
+#      - DATABASE_USER=root
+#      - DATABASE_PORT=3306

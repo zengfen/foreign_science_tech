@@ -37,8 +37,6 @@ end
 
 begin
 
-  $redis = Redis.new(:host => "127.0.0.1", :port => 6379, :db => 1)
-
   CommonDataDB = Rails.application.config_for(:database, env: "common_data")
 
 rescue Exception => e

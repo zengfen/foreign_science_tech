@@ -35,7 +35,6 @@ gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-
 gem 'kaminari'
 
 gem 'gather' #记录每个账号请求内容
@@ -73,9 +72,6 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'ruby_dep', '~> 1.4', require: 'ruby_dep/quiet'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  # gem 'spring'
-  # gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 
@@ -86,51 +82,6 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'rest-client'
-# gem 'geoip'
-# gem 'roo', :git => 'https://github.com/roo-rb/roo.git'
-# gem 'roo-xls'
-# gem 'write_xlsx'
 gem 'mysql2'
-# gem 'newrelic_rpm'#监控
-# gem 'puma_worker_killer'
-# gem 'httparty'
-# gem 'mail'
-# gem 'activerecord-import'
-# gem 'seed_dump'
-# gem 'aliyun-sdk'
-# gem 'rubyXL'
 # 批量插入
 gem 'bulk_insert'
-
-# 提取主域名
-# gem 'public_suffix'
-# gem 'simhash2'
-# gem 'htmlentities'
-
-# profiler
-#
-# gem 'rack-mini-profiler'
-# gem 'flamegraph'
-# gem 'stackprof'
-# gem 'memory_profiler'
-
-
-#gem 'derailed_benchmarks', group: :development
-# gem 'stackprof', group: :development
-#gem 'tunemygc'
-gem 'whenever'
-# gem 'hpricot'
-# gem 'httpclient'
-
-# # csv
-# gem 'smarter_csv'
-#
-# gem "iconv"
-#
-# gem 'ruby-kafka','~> 0.5.5'
-
-#sidekiq 异步请求
-# gem 'rufus-scheduler', '= 3.4.2'
-gem 'sidekiq'
-gem 'sidekiq-cron'
