@@ -89,6 +89,7 @@ Rails.application.routes.draw do
   end
 
   resources :dashboards
+  resources :data_centers
 
 
 

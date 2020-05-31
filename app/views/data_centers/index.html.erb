@@ -1,0 +1,49 @@
+<% provide(:title, "Spiders") %>
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>爬虫列表</h5>
+        </div>
+        <div class="ibox-content pl15">
+          <div class="bg-search">
+            <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+              <div id="rcontent" class="clear-p">
+                <div class="col-md-4">
+                  <div class="form-group mb0">
+                    <input type="text" placeholder="爬虫名" name="keyword" class="form-control" value="<%= params[:keyword] %>">
+                   </div>
+                </div>
+                <div class="ibox-tools dib">
+                  <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                </div>
+                <div class="ibox-tools fr">
+                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
+                    添加</a>
+                </div>
+              </div>
+            <%end%>
+          </div>
+        </div>
+        <div id="result_release">
+          <div class="ibox-content table-sql">
+            <ul class="tab-ul clear-p">
+              <li class="tab-li active">
+                <a href="#" data-target="all-page">列表信息</a>
+              </li>
+            </ul>
+            <div class="ibox-content p15-0 all-page table-content">
+              <%#= render "list_body" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript do %>
+
+<% end %>
+
