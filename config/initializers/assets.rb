@@ -23,6 +23,9 @@ Rails.application.config.assets.precompile += %w(
   dashboards.css
   dashboards.js
 
+  data_centers.css
+  data_centers.js
+
   bootstrap-datepicker/bootstrap-datepicker3.standalone.css
   bootstrap-datepicker/bootstrap-datepicker.min.js
   bootstrap-datepicker-init.js
