@@ -198,10 +198,14 @@
           dataArray: getTestData(15) 
         }
       ].forEach(function(item) {
-        renderTrendEchart($(item.selector)[0], item.seriesName, item.dataArray);
+        renderTrendEchart($(item.selector)[0], item);
       });
 
-      function renderTrendEchart(el, seriesName, dataArray) {
+      function renderTrendEchart(el, obj) {
+        var dataArray = obj.dataArray;
+        var xAxisName = obj.xAxisName;
+        var yAxisName = obj.yAxisName;
+        var seriesName = obj.seriesName;
         var length = dataArray.length;
         return renderEchart(el, {
           color: [ '#0881FF', '#0043EE', '#A035F3', '#FF0076', '#FCC700', '#FFA500', '#F05A4F', '#6E4DED', '#34B1B9', '#0076FE' ],
