@@ -19,30 +19,72 @@
             </ul>
             <div class="tab-content">
               <div id="tab_search_form_1" class="tab-pane fade <%= is_fuzzy_search ? '' : 'active' %>">
-                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
                   <div class="clear-p">
-                    <div class="col-md-4">
-                      <div class="form-group mb0">
-                        <input type="text" placeholder="爬虫名" name="keyword" class="form-control" value="<%= params[:keyword] %>">
-                       </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div>开始日期：</div>
+                        <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
+                      </div>
                     </div>
-                    <div class="ibox-tools dib">
-                      <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div>结束日期：</div>
+                        <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div>作者：</div>
+                        <input type="text" name="author" value="<%= params[:author] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div>爬虫名：</div>
+                        <select name="spider_name" class="chosen-select form-control">
+                          <option value="">不限</option>
+                          <option value="1">spider-1</option>
+                          <option value="2">spider-2</option>
+                          <option value="3">spider-3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div>网站名：</div>
+                        <select name="website_name" class="chosen-select form-control">
+                          <option value="">不限</option>
+                          <option value="1">网站-1</option>
+                          <option value="2">网站-2</option>
+                          <option value="3">网站-3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="form-group">
+                        <div>文章标题：</div>
+                        <input type="text" name="title" value="<%= params[:title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <input type="submit" class="btn btn-primary btn-warning full-width" value="精确搜索">
                     </div>
                   </div>
                 <%end%>
               </div>
               <div id="tab_search_form_2" class="tab-pane fade <%= is_fuzzy_search ? 'active' : '' %>">
-                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
+                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
                   <input type="hidden" name="search_type" value="fuzzy">
                   <div class="clear-p">
-                    <div class="col-md-4">
-                      <div class="form-group mb0">
-                        <input type="text" placeholder="爬虫名" name="keyword" class="form-control" value="<%= params[:keyword] %>">
+                    <div class="col-md-10">
+                      <div class="form-group">
+                        <div>检索内容：</div>
+                        <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
                        </div>
                     </div>
-                    <div class="ibox-tools dib">
-                      <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
+                    <div class="col-md-2">
+                      <input type="submit" class="btn btn-warning full-width" value="模糊搜索">
                     </div>
                   </div>
                 <%end%>
