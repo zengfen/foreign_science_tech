@@ -61,7 +61,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                       <div class="form-group">
                         <div class="form-control-label">文章标题：</div>
                         <input type="text" name="title" value="<%= params[:title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
@@ -80,18 +80,18 @@
                 <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
                   <input type="hidden" name="search_type" value="fuzzy">
                   <div class="clear-p">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                       <div class="form-group">
                         <div class="form-control-label">检索内容：</div>
                         <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
                        </div>
                     </div>
                     <div class="col-md-2">
-                        <div class="form-group">
-                          <div class="form-control-label">&nbsp;</div>
-                          <input type="submit" class="btn btn-warning full-width" value="模糊搜索">
-                        </div>
-                      </div>]
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <input type="submit" class="btn btn-warning full-width" value="模糊搜索">
+                      </div>
+                    </div>
                   </div>
                 <%end%>
               </div>
