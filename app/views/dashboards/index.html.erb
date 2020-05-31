@@ -86,6 +86,33 @@
         </div>
       </div>
     </div>
+
+    <div class="col-lg-6">
+      <div class="ibox">
+        <div class="ibox-title">网站发布统计</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_website_statistic" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="ibox">
+        <div class="ibox-title">作者发布统计</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_author_statistic" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12">
+      <div class="ibox">
+        <div class="ibox-title">爬虫采集统计</div>
+        <div class="ibox-content">
+          <div class="graph-box" id="graph_spider_statistic" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -121,9 +148,55 @@
       }
 
       [
-        { selector: '#graph_total_data', seriesName: '每日采集数据量', dataArray: getTestData(15) },
-        { selector: '#graph_task_data', seriesName: '每日采集任务量', dataArray: getTestData(15) },
-        { selector: '#graph_success_task_data', seriesName: '每日成功采集任务量', dataArray: getTestData(15) }
+        { 
+          selector: '#graph_total_data', 
+          xAxisName: '日期',
+          yAxisName: '数量/条',
+          seriesName: '每日采集数据量', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_task_data', 
+          xAxisName: '日期',
+          yAxisName: '数量/条',
+          seriesName: '每日采集任务量', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_success_task_data', 
+          xAxisName: '日期',
+          yAxisName: '数量/条',
+          seriesName: '每日成功采集任务量', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_success_task_data', 
+          xAxisName: '日期',
+          yAxisName: '数量/条',
+          seriesName: '每日成功采集任务量', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_website_statistic', 
+          xAxisName: '日期',
+          yAxisName: '数量/条',
+          seriesName: '网站分布统计', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_author_statistic', 
+          xAxisName: '名字',
+          yAxisName: '数量/条',
+          seriesName: '作者分布统计', 
+          dataArray: getTestData(15) 
+        },
+        { 
+          selector: '#graph_spider_statistic', 
+          xAxisName: '名称',
+          yAxisName: '数量/条',
+          seriesName: '爬虫采集统计', 
+          dataArray: getTestData(15) 
+        }
       ].forEach(function(item) {
         renderTrendEchart($(item.selector)[0], item.seriesName, item.dataArray);
       });
@@ -163,7 +236,7 @@
           ],
           xAxis:  {
             type: 'category',
-            name: '日期',
+            name: xAxisName,
             nameTextStyle: {
               color: '#555'
             },
@@ -195,7 +268,7 @@
           },
           yAxis: {
             type: 'value',
-            name: '数量/条',
+            name: yAxisName,
             nameTextStyle: {
               color: '#555'
             },
@@ -220,7 +293,7 @@
             axisLabel: {}
           },
           series: [{
-            name: seriesName || 'test',
+            name: seriesName,
             type: 'bar',
             barMaxWidth: 50,
             data: dataArray
