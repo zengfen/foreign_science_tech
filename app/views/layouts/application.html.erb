@@ -22,9 +22,6 @@
     <%= yield :extro_styles %>
 </head>
 <body>
-
-<!-- Skin configuration box -->
-<!-- <%#= render 'layout_shares/skinconfig' %> -->
     <!-- Wrapper-->
     <div id="wrapper" class="<%= params[:controller] %>.<%= params[:action] %>">
 
@@ -44,11 +41,6 @@
             <%= render 'layout_shares/footer' %>
 
         </div>
-        <!-- End page wrapper-->
-
-        <!-- Right sidebar -->
-        <%= render 'layout_shares/rightsidebar' %>
-
     </div>
     <!-- End wrapper-->
 
