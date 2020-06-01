@@ -23,3 +23,31 @@
     padding-bottom: 20px;
   }
 }
+
+.data__title {
+  font-size: 18px;
+  margin: 0 0 1em;
+}
+
+.data__items {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1em;
+
+  li {
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+
+    span {
+      color: #999;
+    }
+
+    strong {
+      font-weight: normal;
+      color: #676a6c;
+    }
+  }
+}
