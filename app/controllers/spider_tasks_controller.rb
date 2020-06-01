@@ -11,8 +11,10 @@ class SpiderTasksController < ApplicationController
     opts[:spider_id] = params[:spider_id] unless params[:spider_id].blank?
     opts[:status] = params[:status] unless params[:status].blank?
     opts[:task_type] = params[:task_type] unless params[:task_type].blank?
-
-    @spider_tasks = SpiderTask.includes('spider').where(opts).order(id: :desc).page(params[:page]).per(20)
+    start_date = params[:start_date].present? ? params[:start_date] : (Date.today - 1.month)
+    end_date = params[:end_date].present? ? params[:end_date] : Time.now
+    end_date = end_date.to_time.end_of_day > Time.now ? Time.now : end_date.to_time.end_of_day
+    @spider_tasks = SpiderTask.includes('spider').where(opts).during(start_date, end_date).order("created_at desc").page(params[:page]).per(20)
   end
 
 

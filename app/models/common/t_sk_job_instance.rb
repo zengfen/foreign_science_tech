@@ -42,4 +42,18 @@ class TSkJobInstance < CommonBase
     "TSkJobInstanceJob-#{self.spider_name}"
   end
 
+
+  def stop_task
+    job = Sidekiq::Cron::Job.find job_name
+    job.destroy if job.present?
+  end
+
+  def start_task
+    job = Sidekiq::Cron::Job.find job_name
+    if job.present?
+    else
+
+    end
+    job.destroy if job.present?
+  end
 end

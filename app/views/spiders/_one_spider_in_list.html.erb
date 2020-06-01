@@ -1,32 +1,43 @@
 <tr>
-  <td><%= spider.spider_name%></td>
+  <td><%= spider.spider_name %></td>
   <td><%= spider.status_cn %></td>
-  <td><%= spider.real_time_status_cn rescue nil %></td>
-  <td><%= '总量' %></td>
-  <td><%= link_to(fail_tasks_spider_task_path(id:spider.id)) do%>报警<%end%></td>
+  <td><%= @total_count[spider.spider_name] rescue 0 %></td>
+  <td><%= @task_info[spider.spider_name][:freq] rescue nil %></td>
+  <td><%= @task_info[spider.spider_name][:next_time] rescue nil %></td>
+  <!--<td><%#= link_to(fail_tasks_spider_task_path(id:spider.id)) do%>报警<%#end%></td>-->
   <td class="pos-r">
     <a href="##">
       <i class="icon_data_analysis icon-more"></i>
     </a>
     <ul class="more-ul dn">
       <li class="bor-b">
-        <%= link_to(load_edit_form_spider_path(spider),:class=>"edit",:remote=>true) do%>编辑<%end%>
+        <%= link_to(load_edit_form_spider_path(spider), :class => "edit", :remote => true) do %>编辑
+        <% end %>
       </li>
       <li>
-        <%=link_to(spider_path(spider),:class=>"remove-line") do%>删除<%end%>
+        <%= link_to(spider_path(spider), :class => "remove-line") do %>删除
+        <% end %>
       </li>
-      <li>
-        <%= link_to(start_spider_path(id:spider.id), :title => "启动", :remote => true) do %>启动实时任务<% end %>
+      <!--<li>-->
+      <!--<%= link_to(start_spider_path(id: spider.id), :title => "启动", :remote => true) do %>启动实时任务
+      <% end %>-->
+      <!--</li>-->
+      <!--<li>-->
+      <!--<%= link_to(stop_spider_path(id: spider.id), :title => "停止", :remote => true) do %>停止实时任务
+      <% end %>-->
+      <!--</li>-->
+      <% if spider.status != 1 %>
+          <li>
+            <%= link_to(start_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>启动
+            <% end %>
+          </li>
+      <% end %>
+      <% if spider.status == 1 %>
+          <li>
+        <%= link_to(stop_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>停止
+        <% end %>
       </li>
-      <li>
-        <%= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>停止实时任务<% end %>
-      </li>
-      <li>
-        <%#= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>启动周期任务<%# end %>
-      </li>
-      <li>
-        <%#= link_to(stop_spider_path(id:spider.id), :title => "停止", :remote => true) do %>停止周期任务<%# end %>
-      </li>
+      <% end %>
     </ul>
   </td>
 </tr>

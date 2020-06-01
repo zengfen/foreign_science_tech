@@ -21,51 +21,16 @@ Rails.application.routes.draw do
   resources :spiders do
     member do
       get 'load_edit_form'
-      get 'start'
-      get 'stop'
+      get 'start_cycle_task'
+      get 'stop_cycle_task'
     end
-    collection do
-    end
-
-
-
-    # resources :spider_tasks do
-    #   member do
-    #     get 'start'
-    #     get 'stop'
-    #     get 'output'
-    #     get 'dp_tags'
-    #     get 'download'
-    #   end
-    #   collection do
-    #     get 'download'
-    #
-    #   end
-    # end
-
-    # resources :spider_cycle_tasks do
-    #   member do
-    #     get 'start'
-    #     get 'stop'
-    #   end
-    #   collection do
-    #   end
-    # end
   end
 
   resources :spider_tasks do
     member do
       get 'fail_tasks'
-    end
-    collection do
-      get 'show_keyword'
-    end
-  end
-
-
-  resources :data_centers do
-    collection do
-      get 'index'
+      get 'start_task'
+      get 'stop_task'
     end
   end
 

@@ -23,9 +23,12 @@ class Spider < ApplicationRecord
             uniqueness: {case_sensitive: false}
 
 
-  def status_cn
+  def self.status_list
     cn_hash = {0 => '未启动', 1 => '周期运行中', 2 => '已停止'}
-    cn_hash[status]
+  end
+
+  def status_cn
+    Spider.status_list[status]
   end
 
   def real_time_status_cn

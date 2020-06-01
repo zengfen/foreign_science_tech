@@ -64,9 +64,15 @@ class SpiderTask < ApplicationRecord
   RealTimeTask = 0
   CycleTask = 1
 
-  TypesList = {RealTimeTask => '实时任务',
-               CycleTask => '周期任务'
+  TypesList = {RealTimeTask => '实时单次任务',
+               CycleTask => '周期单次任务'
   }
+
+
+  def self.during(start_date, end_date)
+    self.where(created_at: (start_date..end_date.end_of_day))
+  end
+
 
   def self.t_log_spider_mode
     {0 => 'real-time',

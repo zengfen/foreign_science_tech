@@ -32,18 +32,24 @@
           Center
         </div>
       </li>
-      <!--<li class="<%#= is_active_controller('home') %>">-->
-        <!--<a href=""><i class="fa fa-bug"></i> <span class="nav-label">仪表盘</span> <span class="fa arrow"></span></a>-->
-        <!--<ul class="nav nav-second-level collapse <%#= is_active_controller('home') %>">-->
-          <!--<li class="<%#= is_active_action('data_index', 'home') %>"><%#= link_to "数据概览", data_index_home_index_path %></li>-->
-          <!--<li class="<%#= is_active_action('monitor_index', 'home') %>"><%#= link_to "监控目标", monitor_index_home_index_path %></li>-->
-          <!--<li class="<%#= is_active_action('index', 'home') %>"><%#= link_to "采集任务", home_index_path %></li>-->
-        <!--</ul>-->
-      <!--</li>-->
+      <li class="<%= is_active_controller('dashboards') %>">
+        <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据统计</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('dashboards') %>">
+          <li class="<%= is_active_action('index', 'dashboards') %>"><%= link_to "数据概览", "/dashboards/" %></li>
+        </ul>
+      </li>
+      <li class="<%= is_active_controller('data_centers') %>">
+        <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据中心</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse <%= is_active_controller('data_centers') %>">
+          <li class="<%= is_active_action('index', 'data_centers') %>"><%= link_to "数据查询", "/data_centers" %></li>
+        </ul>
+      </li>
+
       <li class="<%= is_active_controller('spiders') %>">
-        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">爬虫列表</span> <span class="fa arrow"></span></a>
+        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "爬虫列表", spiders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "定时任务", spiders_path %></li>
+          <li class="<%= is_active_action('index') %>"><%= link_to "单次任务", spider_tasks_path %></li>
         </ul>
       </li>
       <li class="<%= is_active_controller('spider_tasks') %>">
