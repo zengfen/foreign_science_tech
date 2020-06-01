@@ -115,12 +115,14 @@ class Htmlarticle
 
 
   def self.download_images(image_urls)
+    image_path = "#{Rails.root}/public/images"
+    Dir.mkdir image_path if !Dir.exist?(image_path)
     images = []
     image_urls.each do |image_url|
       image_name = Digest::MD5.hexdigest(image_url)
       image_res = RestClient.get(image_url)
-      File.open("#{Rails.root}/public/images/#{image_name}.jpg" 'wb') { |f| f.write(image_res.body) }
-      images << "images#{image_name}.jpg"
+      File.open("#{Rails.root}/public/images/#{image_name}.jpg", 'wb') { |f| f.write(image_res.body) }
+      images << "images/#{image_name}.jpg"
     end
     return images
   end
