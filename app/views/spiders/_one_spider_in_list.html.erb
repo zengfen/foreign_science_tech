@@ -18,14 +18,6 @@
         <%= link_to(spider_path(spider), :class => "remove-line") do %>删除
         <% end %>
       </li>
-      <!--<li>-->
-      <!--<%= link_to(start_spider_path(id: spider.id), :title => "启动", :remote => true) do %>启动实时任务
-      <% end %>-->
-      <!--</li>-->
-      <!--<li>-->
-      <!--<%= link_to(stop_spider_path(id: spider.id), :title => "停止", :remote => true) do %>停止实时任务
-      <% end %>-->
-      <!--</li>-->
       <% if spider.status != 1 %>
           <li>
             <%= link_to(start_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>启动
