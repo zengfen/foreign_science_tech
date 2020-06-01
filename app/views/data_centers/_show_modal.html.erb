@@ -1,39 +1,39 @@
 
 
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <h5 class="modal-title">详情</h5>
-  </div>
-  <div class="modal-body">
-    <h3 class="data__title"><%= @data.con_title %></h3>
-    <ul class="data__items">
-      <li>
-        <span>时间：</span>
-        <strong><%= @data.con_time.strftime("%F %T") rescue nil %></strong>
-      </li>
-      <li>
-        <span>作者：</span>
-        <strong><%= @data.con_author %></strong>
-      </li>
-      <li>
-        <span>网站：</span>
-        <strong><%= @data.website_name %></strong>
-      </li>
-      <li>
-        <span>类别：</span>
-        <strong><%= @data.category %></strong>
-      </li>
-    </ul>
-    <div class="data__content">
-      <%= @data.con_text %>
+<div class="modal-dialog" role="document" style="width: 750px">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h5 class="modal-title">详情</h5>
+    </div>
+    <div class="modal-body">
+      <h3 class="data__title"><%= @data.con_title %></h3>
+      <ul class="data__items">
+        <li>
+          <span>时间：</span>
+          <strong><%= @data.con_time.strftime("%F %T") rescue nil %></strong>
+        </li>
+        <li>
+          <span>作者：</span>
+          <strong><%= @data.con_author %></strong>
+        </li>
+        <li>
+          <span>网站：</span>
+          <strong><%= @data.website_name %></strong>
+        </li>
+        <li>
+          <span>类别：</span>
+          <strong><%= @data.category %></strong>
+        </li>
+      </ul>
+      <div class="data__content">
+        <%= @data.con_text %>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
     </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-  </div>
-</div>
 </div>
