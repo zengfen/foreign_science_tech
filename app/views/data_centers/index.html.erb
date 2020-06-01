@@ -20,7 +20,7 @@
             <div class="tab-content">
               <div id="tab_search_form_1" class="tab-pane fade <%= is_fuzzy_search ? '' : 'active in' %>">
                 <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
-                  <div class="clear-p">
+                  <div class="clear-p daterange-wrap">
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">开始日期：</div>
@@ -115,9 +115,12 @@
   </div>
 </div>
 
+<%= render 'shared/bootstrap_datepicker' %>
+
 <% content_for :javascript do %>
   <script>
     $(function() {
+      initDateRangePicker($('.daterange-wrap'));
       $('.chosen-select').chosen({
         width: "100%",
         disable_search_threshold: 10, 
