@@ -24,19 +24,19 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">开始日期：</div>
-                        <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
+                        <input type="text" name="start_date" value="<%= params[:start_date].present? ? params[:start_date] : Date.today - 1.month %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
                       </div>
                     </div>
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">结束日期：</div>
-                        <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
+                        <input type="text" name="end_date" value="<%= params[:end_date].present? ? params[:end_date] : Date.today %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
                       </div>
                     </div>
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">作者：</div>
-                        <input type="text" name="author" value="<%= params[:author] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
+                        <input type="text" name="con_author" value="<%= params[:con_author] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
                       </div>
                     </div>
                     <div class="col-md-2">
@@ -44,9 +44,9 @@
                         <div class="form-control-label">爬虫名：</div>
                         <select name="spider_name" class="chosen-select form-control">
                           <option value="">不限</option>
-                          <option value="1">spider-1</option>
-                          <option value="2">spider-2</option>
-                          <option value="3">spider-3</option>
+                          <% @spiders.map{|x| x[0]}.each do |spider_name| %>
+                            <option value="<%= spider_name%>"  <%= 'selected' if spider_name.to_s == params[:spider_name]%>><%= spider_name%></option>
+                          <% end %>
                         </select>
                       </div>
                     </div>
@@ -55,16 +55,16 @@
                         <div class="form-control-label">网站名：</div>
                         <select name="website_name" class="chosen-select form-control">
                           <option value="">不限</option>
-                          <option value="1">网站-1</option>
-                          <option value="2">网站-2</option>
-                          <option value="3">网站-3</option>
+                          <% @spiders.map{|x| x[1]}.each do |website_name| %>
+                              <option value="<%= website_name%>"  <%= 'selected' if website_name.to_s == params[:website_name]%>><%= website_name%></option>
+                          <% end %>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
                         <div class="form-control-label">文章标题：</div>
-                        <input type="text" name="title" value="<%= params[:title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
+                        <input type="text" name="con_title" value="<%= params[:con_title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
                       </div>
                     </div>
                     <div class="col-md-2">
@@ -123,7 +123,7 @@
       initDateRangePicker($('.daterange-wrap'));
       $('.chosen-select').chosen({
         width: "100%",
-        disable_search_threshold: 10, 
+        disable_search_threshold: 10,
         search_contains: true,
         no_results_text: "未匹配到关键词："
       });

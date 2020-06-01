@@ -63,28 +63,9 @@ Rails.application.routes.draw do
   end
 
 
-  resources :t_sk_job_instances do
-    member do
-      # get :research
-      get :start_task
-      get :stop_task
-    end
+  resources :data_centers do
     collection do
-      # post :send_medium
-      # get :review
-      # get :update_news_data
-      # get :media_authorize
-      # get :set_freq
-      # post :update_freq
-    end
-  end
-
-  resources :t_log_spider do
-    member do
-
-    end
-    collection do
-
+      get 'index'
     end
   end
 
