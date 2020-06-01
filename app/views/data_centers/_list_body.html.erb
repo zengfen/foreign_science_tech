@@ -8,7 +8,9 @@
         <th>发布时间</th>
         <th>网站</th>
         <th>爬虫名</th>
+        <th>正文</th>
         <th>类别</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
@@ -20,7 +22,9 @@
           <td><%= x.con_time.strftime("%F %T") rescue nil %></td>
           <td><%= x.website_name %></td>
           <td><%= x.data_spidername %></td>
+          <td><%= x.con_text[0..100] rescue '--' %></td>
           <td><%= x.category %></td>
+          <td><a href="<%= data_center_path({id: x.data_id}) %>">查看</a></td>
         </tr>
       <% end %>
     </tbody>
