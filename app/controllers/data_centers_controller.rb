@@ -29,4 +29,8 @@ class DataCentersController < ApplicationController
     end
     @datas = datas.order("con_time desc").page(@page).per(@per_page)
   end
+
+  def show
+    @data = TData.find(params[:id])
+  end
 end

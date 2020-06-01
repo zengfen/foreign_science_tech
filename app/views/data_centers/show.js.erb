@@ -1,0 +1,12 @@
+;(function() {
+  var $modal = $('#modalContainer');
+  var tpl = '<%= j(render "show_modal") %>';
+
+  $modal.empty().html(tpl);
+  $modal.one('hidden.bs.modal', function() {
+    $modal.off();
+    $modal = null;
+    tpl = null;
+  });
+  $modal.modal();
+})();

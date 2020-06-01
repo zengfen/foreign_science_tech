@@ -43,7 +43,7 @@
         </div>
     </div>
     <!-- End wrapper-->
-
+    <div id="modalContainer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
     <!-- Include javascript per-controller - vendor plugins -->
     <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
 
