@@ -64,8 +64,8 @@ class SpiderTask < ApplicationRecord
   RealTimeTask = 0
   CycleTask = 1
 
-  TypesList = {RealTimeTask => '实时单次任务',
-               CycleTask => '周期单次任务'
+  TypesList = {RealTimeTask => '实时任务',
+               CycleTask => '周期任务'
   }
 
 

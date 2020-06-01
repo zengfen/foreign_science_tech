@@ -1,6 +1,6 @@
 class Htmlarticle
 
-  def initialize(text,options = {})
+  def initialize(text, options = {})
     @text = text
     @options = options
     @content = ""
@@ -22,7 +22,7 @@ class Htmlarticle
   # params = {doc:doc,content_selector:content_selector,html_replacer:html_replacer}
   # desp,html_content = Htmlarticle.get_html_content(params)
   def self.get_html_content(params)
-    desp_buff,html_content,desp = "","",""
+    desp_buff, html_content, desp = "", "", ""
     doc = params[:doc]
     content_selector = params[:content_selector].to_s.split("||||")
     html_replacer = params[:html_replacer].to_s.split("||||")
@@ -47,7 +47,7 @@ class Htmlarticle
           end
         end
         s.children.each do |n|
-          desp_buff = get_desp(n,desp_buff,html_replacer,html_replacer_for_no_tag_line)
+          desp_buff = get_desp(n, desp_buff, html_replacer, html_replacer_for_no_tag_line)
         end
       end
       # 处理空格和换行
@@ -67,15 +67,14 @@ class Htmlarticle
     content_replacer = params[:content_replacer].to_s
     if content_replacer.present?
       content_replacer.split("||||").each do |replacer|
-        desp_buff = desp_buff.gsub(replacer,"") if replacer.present?
+        desp_buff = desp_buff.gsub(replacer, "") if replacer.present?
         if replacer.present?
           replacer_arr = replacer.split("&&&&")
-          desp_buff = desp_buff.gsub(replacer_arr[0],"")
-          html_content = html_content.gsub(replacer_arr[1],"") if replacer_arr[1].present?
+          desp_buff = desp_buff.gsub(replacer_arr[0], "")
+          html_content = html_content.gsub(replacer_arr[1], "") if replacer_arr[1].present?
         end
       end
     end
-
 
 
     desp = ""
@@ -83,10 +82,10 @@ class Htmlarticle
       desp += v.strip + "\n" if v.strip.present?
     end
 
-    return desp,html_content
+    return desp, html_content
   end
 
-  def self.get_desp(n,desp_buff,html_replacer,html_replacer_for_no_tag_line)
+  def self.get_desp(n, desp_buff, html_replacer, html_replacer_for_no_tag_line)
     html_replacer = html_replacer
     if html_replacer.count > 0 && html_replacer[0].present?
       if html_replacer.include? n.name
@@ -101,19 +100,30 @@ class Htmlarticle
           end
         end
       end
-      desp_buff += n.inner_text.gsub("\n"," ") if n.inner_text.present?
+      desp_buff += n.inner_text.gsub("\n", " ") if n.inner_text.present?
       if !(html_replacer.count > 0 && html_replacer[0].present?)
         desp_buff += "\n"
       end
     end
     if n.children.present?
       n.children.each do |c|
-        desp_buff = get_desp(c,desp_buff,html_replacer,html_replacer_for_no_tag_line)
+        desp_buff = get_desp(c, desp_buff, html_replacer, html_replacer_for_no_tag_line)
       end
     end
     return desp_buff
   end
 
+
+  def self.download_images(image_urls)
+    images = []
+    image_urls.each do |image_url|
+      image_name = Digest::MD5.hexdigest(image_url)
+      image_res = RestClient.get(image_url)
+      File.open("#{Rails.root}/public/images/#{image_name}.jpg" 'wb') { |f| f.write(image_res.body) }
+      images << "images#{image_name}.jpg"
+    end
+    return images
+  end
 
 
 end

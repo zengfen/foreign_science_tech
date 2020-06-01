@@ -85,3 +85,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'mysql2'
 # 批量插入
 gem 'bulk_insert'
+
+gem 'rest-client'
