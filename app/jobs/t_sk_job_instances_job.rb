@@ -3,7 +3,7 @@ class TSkJobInstancesJob < ApplicationJob
 
   def perform(*args)
     puts "==spider_name====#{args[0]["spider_name"]}="
-    spider = Spider.where(spider_name:args[0]["spider_name"]).firstl
+    spider = Spider.where(spider_name:args[0]["spider_name"]).first
     res,spider_task = spider.create_spider_task(SpiderTask::CyceTask)
     if res[:type] == "success"
       res2 = spider_task.start_task
