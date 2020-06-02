@@ -45,27 +45,24 @@
 
 class SpiderTask < ApplicationRecord
   validates :spider_id, presence: true
-
+  has_many :subtasks, dependent: :destroy, foreign_key: :task_id
   belongs_to :spider
 
-  # TypeTaskWait = 0 # 未启动
+  TypeTaskWait = 0 # 未启动
   TypeTaskStart = 1 # 启动
   TypeTaskComplete = 2 # 完成
   TypeTaskStop = 3 # 暂停
   TypeTaskReopen = 4 # 重启
-
-
-  StatusList = {TypeTaskStart => '启动',
-                TypeTaskComplete => '完成',
-                TypeTaskStop => '已暂停',
-                TypeTaskReopen => '重新打开'}.freeze
+  StatusList = {TypeTaskWait => '未启动',
+                TypeTaskStart => '已启动',
+                TypeTaskComplete => '已完成',
+                TypeTaskStop => '已暂停',}.freeze
 
 
   RealTimeTask = 0
   CycleTask = 1
-
-  TypesList = {RealTimeTask => '实时任务',
-               CycleTask => '周期任务'
+  TypesList = {RealTimeTask => '实时单次任务',
+               CycleTask => '周期单次任务'
   }
 
 
@@ -80,13 +77,8 @@ class SpiderTask < ApplicationRecord
     }
   end
 
-
   def status_cn
     StatusList[status]
-  end
-
-  def self.task_types
-    return {"周期任务" => "1", "实时任务" => "2"}
   end
 
   def task_type_cn
@@ -94,19 +86,19 @@ class SpiderTask < ApplicationRecord
   end
 
   def can_start?
-    status == TypeTaskComplete
+    status == TypeTaskStop || status == TypeTaskWait
   end
 
   # 周期任务生成的单次任务不能停止
   def can_stop?
-    status == TypeTaskStart && task_type == SpiderTask::RealTimeTask
+    status == TypeTaskStart
+    # && task_type == SpiderTask::RealTimeTask
   end
 
 
   def can_reopen?
     status == TypeTaskStop
   end
-
 
   def create_subtasks
     line = JSON.parse(Base64.decode64(self.full_keywords)) rescue {}
@@ -125,7 +117,6 @@ class SpiderTask < ApplicationRecord
 
 
   def process_status
-    puts "====status=====#{status}"
     case self.status
       when TypeTaskStart
         self.process_start
@@ -271,5 +262,40 @@ class SpiderTask < ApplicationRecord
 
 
 
+  # mode 启动模式  0：周期启动，1：实时启动
+  def start_task
+    # if can_reopen?
+    #   reopen_task
+    #   return {type: "success",message: "任务启动成功"}
+    # end
+    return {type: "success",message: "任务启动成功"} unless can_start?
+    spider_name = self.spider.spider_name
+    job_instance = TSkJobInstance.where(spider_name: spider_name).first
+    if job_instance.blank?
+      return {type: "error",message: "对应TSkJobInstance实例为空"}
+    end
+    # # 周期任务直接可以执行，实时任务需判断状态后执行
+    # if self.task_type == SpiderTask::RealTimeTask
+    #   return {type: "error",message: "任务正在执行中"} unless can_start?
+    # end
+    log_mode = SpiderTask.t_log_spider_mode[self.task_type]
+    # 创建一条爬虫日志数据
+    TLogSpider.create({spider_name: spider_name, start_time: Time.now, mode: log_mode})
+    # 创建子任务 缓存子任务
+    self.create_subtasks
+    self.update(status:SpiderTask::TypeTaskStart)
+    # 检查任务状态，处理任务
+    # spider_task.process_status
+    return {type: "success",message: "任务启动成功"}
+
+  end
+
+  def stop_task
+    return {type: "error",message: "任务正在执行中"} unless can_stop?
+    self.update(status: SpiderTask::TypeTaskStop)
+    # # 检查任务状态，处理任务
+    self.process_status
+    return {type: "success",message: "任务暂停成功"}
+  end
 
 end

@@ -88,14 +88,14 @@
             <h3 class="m-t-none m-b">提示</h3>
             <div class="hr-line-dashed"></div>
             <p class="text-center">
-            <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
+              <strong style="font-size: 14px;">您确定要删除<span class="remove-html"></span>吗？</strong></p>
             <div class="hr-line-dashed"></div>
             <div>
               <button class="btn btn-sm btn-primary pull-right m-t-n-xs sure-remove" type="button" style="margin-left: 20px;">
-                                                                                     
+
                 <strong>确定</strong></button>
               <button class="btn btn-sm btn-primary pull-right m-t-n-xs cancel-remove" type="button"  style="">
-                                                                                      
+
                 <strong>取消</strong></button>
             </div>
 
@@ -107,29 +107,21 @@
 </div>
 
 
-
 <!--这里是提示框-->
-<div id="modal-form-show-keyword" class="modal fade in" aria-hidden="true">
-  <div class="modal-dialog" style="width: 800px">
+<div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
+  <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <button type="button" id="copy_button" data-clipboard-target="#modal-form-show-keyword .keywords_list" class="btn btn-sm btn-primary pull-right m-t-n-xs" >复制</button>
-        <h4 class="modal-title">关键词列表</h4>
+        <h4 class="modal-title">添加</h4>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="hr-line-dashed"></div>
-            <div class="keywords_list">
-            </div>
-          </div>
-        </div>
+        <!-- modal-body -->
+        <%=render "form_body"%>
       </div>
     </div>
   </div>
 </div>
-
 
 
 
@@ -184,11 +176,70 @@ $(document)
       }
      
     });
+
   
-}).on("click",'.cancel-remove',function(e){
+})
+  .on("click",'.cancel-remove',function(e){
    var $modal = $('#modal-form-remove');
       $modal.modal("hide");
+})
+  .on("click",".start-line",function(e){
+
+    e.preventDefault();
+    var $this = $(this),html = $this.closest('tr').find('td').first().html();
+    var url = $this.attr("href");
+    if (url != "##") {
+      $.ajax({
+        url: url,
+        type: 'POST',
+        processData: false,
+        dataType: 'json',
+        success:function(data){
+          if (data.type=="success"){
+            toastr.success(data.message);
+            setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
+              window.location.reload();;
+            }, 1000);
+          }else{
+            toastr.error(data.message);
+          }
+        }});
+    }
+
+
+  })
+
+.on("click",".stop-line",function(e){
+
+  e.preventDefault();
+  var $this = $(this),html = $this.closest('tr').find('td').first().html();
+  var url = $this.attr("href");
+  if (url != "##") {
+    $.ajax({
+      url: url,
+      type: 'POST',
+      processData: false,
+      dataType: 'json',
+      success:function(data){
+        if (data.type=="success"){
+          toastr.success(data.message);
+          setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
+            window.location.reload();;
+          }, 1000);
+        }else{
+          toastr.error(data.message);
+        }
+      }});
+  }
+
+
 });
+
+$('.add-sql').on('click', function (e) {
+  e.preventDefault();
+  var $modal = $('#modal-form-add-sql');
+  $modal.modal("show");
+})
 
 
 

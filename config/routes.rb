@@ -21,16 +21,16 @@ Rails.application.routes.draw do
   resources :spiders do
     member do
       get 'load_edit_form'
-      get 'start_cycle_task'
-      get 'stop_cycle_task'
+      post 'start_cycle_task'
+      post 'stop_cycle_task'
     end
   end
 
   resources :spider_tasks do
     member do
       get 'fail_tasks'
-      get 'start_task'
-      get 'stop_task'
+      post 'start_task'
+      post 'stop_task'
     end
   end
 

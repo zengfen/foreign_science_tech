@@ -20,14 +20,16 @@
       </li>
       <% if spider.status != 1 %>
           <li>
-            <%= link_to(start_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>启动
-            <% end %>
+            <%#= link_to(start_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>
+            <%# end %>
+            <a href="/spiders/start_cycle_task?id=<%= spider.id %>" class="start-line">启动</a>
           </li>
       <% end %>
       <% if spider.status == 1 %>
           <li>
-        <%= link_to(stop_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>停止
-        <% end %>
+        <%#= link_to(stop_cycle_task_spider_path(id: spider.id), :title => "停止", :remote => true) do %>
+        <%# end %>
+            <a href="/spiders/stop_cycle_task?id=<%= spider.id %>" class="stop-line">停止</a>
       </li>
       <% end %>
     </ul>

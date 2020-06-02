@@ -9,30 +9,31 @@
 <td><%= spider_task.current_success_count || 0 %></td>
 <td><%= spider_task.current_fail_count || 0 %></td>
 <td>
-  <a href=""><%= truncate(spider_task.full_keywords, :length => 15) %></a>
-</td>
-<td><%= spider_task.current_task_count || 0 %></td>
-<td>
   <li>
     <%= link_to(fail_tasks_spider_task_path(spider_task), :title => "报警", :remote => true) do %>报警
     <% end %>
   </li>
 </td>
 <td><%= show_format_time(spider_task.created_at) %></td>
-<td>
-  <ul>
+<td class="pos-r">
+  <a href="##">
+    <i class="icon_data_analysis icon-more"></i>
+  </a>
+  <ul class="more-ul dn">
     <% if spider_task.status != 1 %>
-        <li>
-          <%= link_to(start_task_spider_task_path(id: spider_task.id), :title => "启动", :remote => true) do %>启动
-          <% end %>
+        <li class="bor-b">
+          <a href="/spider_tasks/start_task?id=<%= spider_task.id %>" class="start-line">启动</a>
         </li>
     <% end %>
     <% if spider_task.status == 1 %>
-        <li>
-          <%= link_to(stop_task_spider_task_path(id: spider_task.id), :title => "停止", :remote => true) do %>停止
-          <% end %>
+        <li class="bor-b">
+          <a href="/spider_tasks/stop_task?id=<%= spider_task.id %>" class="stop-line">停止</a>
         </li>
     <% end %>
+    <li class="bor-b">
+      <%= link_to(spider_task_path(spider_task), :class => "remove-line") do %>删除
+      <% end %>
+    </li>
   </ul>
 </td>
 

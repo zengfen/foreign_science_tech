@@ -47,35 +47,19 @@ class SpidersController < ApplicationController
   end
 
 
-  def start
-    res = @spider.start_task(SpiderTask::RealTimeTask)
-
-    if res[:type] == "success"
-      flash[:success] = '更新成功！'
-    else
-      flash[:error] = res[:message]
-    end
-    redirect_to spiders_path
-  end
-
-  def stop
-    @spider.stop_task(mode = SpiderTask::RealTimeTask)
-  end
 
   def start_cycle_task
     job_instance = TSkJobInstance.where(spider_name:@spider.spider_name).first
     job_instance.init_instance_job
     @spider.update(status:1)
-    flash[:success] = '周期任务已开启！'
-    redirect_to spiders_path
+    render json: {type:"success",message:'周期任务已开启！'}
   end
 
   def stop_cycle_task
     job_instance = TSkJobInstance.where(spider_name:@spider.spider_name).first
     job_instance.stop_task
     @spider.update(status:2)
-    flash[:success] = '周期任务已停止！'
-    redirect_to spiders_path
+    render json: {type:"success",message:'周期任务已停止！'}
   end
 
   private

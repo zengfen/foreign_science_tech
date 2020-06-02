@@ -45,17 +45,11 @@
         </ul>
       </li>
 
-      <li class="<%= is_active_controller('spiders') %>">
+      <li class="<%= is_active_controller('spiders') ||  is_active_controller('spider_tasks')%>">
         <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse <%= is_active_controller('spiders') %>">
           <li class="<%= is_active_action('index') %>"><%= link_to "定时任务", spiders_path %></li>
           <li class="<%= is_active_action('index') %>"><%= link_to "单次任务", spider_tasks_path %></li>
-        </ul>
-      </li>
-      <li class="<%= is_active_controller('spider_tasks') %>">
-        <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">任务中心</span> <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse <%= is_active_controller('spider_tasks') %>">
-          <li class="<%= is_active_action('index') %>"><%= link_to "任务队列", spider_tasks_path %></li>
         </ul>
       </li>
     </ul>

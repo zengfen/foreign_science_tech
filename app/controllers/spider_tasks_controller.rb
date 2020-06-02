@@ -1,6 +1,7 @@
 class SpiderTasksController < ApplicationController
-  # before_action :logged_in_user
-  before_action :get_spider_task, only: %i[retry_fail_task destroy_fail_task retry_all_fail_task]
+  before_action :logged_in_user
+  before_action :get_spider_task, only: %i[destroy start_task stop_task]
+
 
   def index
     @spider_task = SpiderTask.new
@@ -23,12 +24,38 @@ class SpiderTasksController < ApplicationController
     @fail_tasks = Subtask.where(task_id: spider_task, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
   end
 
-  def show_keyword
-    render plain: SpiderTask.where(id: params[:id]).first.full_keywords
+  def create
+    spider_id = spider_task_params[:spider_id]
+    spider = Spider.find(spider_id) rescue nil
+    if spider.blank?
+      res = {type:"error",message:"请选择爬虫模板"}
+    else
+      res = spider.create_spider_task(SpiderTask::RealTimeTask)
+    end
+    flash[res[:type]] = res[:message]
+    redirect_to spider_tasks_path
+  end
+
+  def destroy
+    render json: {type: 'success', message: '操作成功！'} if @spider_task.destroy
+  end
+
+  def start_task
+    res = @spider_task.start_task
+    render json: res
+  end
+
+  def stop_task
+    res = @spider_task.stop_task
+    render json: res
   end
 
 
   private
+
+  def spider_task_params
+    params.require(:spider_task).permit(:spider_id,:status,:task_type)
+  end
 
   def get_spider_task
     @spider_task = SpiderTask.find_by(id: params[:id])

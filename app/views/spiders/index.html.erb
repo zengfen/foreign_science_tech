@@ -165,7 +165,58 @@ $(document)
 }).on("click",'.cancel-remove',function(e){
    var $modal = $('#modal-form-remove');
       $modal.modal("hide");
-});
+})
+  .on("click",".start-line",function(e){
+
+    e.preventDefault();
+    var $this = $(this),html = $this.closest('tr').find('td').first().html();
+    var url = $this.attr("href");
+    if (url != "##") {
+      $.ajax({
+        url: url,
+        type: 'POST',
+        processData: false,
+        dataType: 'json',
+        success:function(data){
+          if (data.type=="success"){
+            toastr.success(data.message);
+            setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
+              window.location.reload();;
+            }, 1000);
+          }else{
+            toastr.error(data.message);
+          }
+        }});
+    }
+
+
+  })
+
+  .on("click",".stop-line",function(e){
+
+    e.preventDefault();
+    var $this = $(this),html = $this.closest('tr').find('td').first().html();
+    var url = $this.attr("href");
+    if (url != "##") {
+      $.ajax({
+        url: url,
+        type: 'POST',
+        processData: false,
+        dataType: 'json',
+        success:function(data){
+          if (data.type=="success"){
+            toastr.success(data.message);
+            setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
+              window.location.reload();;
+            }, 1000);
+          }else{
+            toastr.error(data.message);
+          }
+        }});
+    }
+
+
+  });
 
 $('.add-sql').on('click', function (e) {
   e.preventDefault();
