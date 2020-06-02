@@ -20,7 +20,7 @@
     <i class="icon_data_analysis icon-more"></i>
   </a>
   <ul class="more-ul dn">
-    <% if spider_task.status != 1 %>
+    <% if spider_task.can_start? %>
         <li class="bor-b">
           <a href="/spider_tasks/start_task?id=<%= spider_task.id %>" class="start-line">启动</a>
         </li>

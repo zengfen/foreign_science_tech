@@ -28,9 +28,9 @@ class SpiderTasksController < ApplicationController
     spider_id = spider_task_params[:spider_id]
     spider = Spider.find(spider_id) rescue nil
     if spider.blank?
-      res = {type:"error",message:"请选择爬虫模板"}
+      res,_ = {type:"error",message:"请选择爬虫模板"}
     else
-      res = spider.create_spider_task(SpiderTask::RealTimeTask)
+      res,_ = spider.create_spider_task(SpiderTask::RealTimeTask)
     end
     flash[res[:type]] = res[:message]
     redirect_to spider_tasks_path

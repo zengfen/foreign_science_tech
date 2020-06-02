@@ -38,7 +38,6 @@ Rails.application.routes.draw do
   resources :data_centers
 
 
-
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/sidekiq'

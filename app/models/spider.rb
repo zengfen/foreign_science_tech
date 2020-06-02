@@ -61,11 +61,11 @@ class Spider < ApplicationRecord
   def create_spider_task(mode)
     line = {"mode" => "list", "spider_name" => self.spider_name, "body" => {}}
     keyword = Base64.encode64(line.to_json).gsub("\n", "")
-    spider_task = SpiderTask.new(spider_id: self.id, full_keywords: keyword, status: SpiderTask::TypeTaskWait,task_type: mode,current_task_count: 1)
+    spider_task = SpiderTask.new(spider_id: self.id, full_keywords: keyword, status: SpiderTask::TypeTaskWait,task_type: mode,current_task_count: 0)
     if spider_task.save
-      return {type:"success",message:"创建成功"}
+      return {type:"success",message:"创建成功"},spider_task
     else
-      return {type:"error",message:spider_task.errors.full_messages.join('\n')}
+      return {type:"error",message:spider_task.errors.full_messages.join('\n')},spider_task
     end
   end
 

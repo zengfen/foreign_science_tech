@@ -56,7 +56,7 @@ class SpiderTask < ApplicationRecord
   StatusList = {TypeTaskWait => '未启动',
                 TypeTaskStart => '已启动',
                 TypeTaskComplete => '已完成',
-                TypeTaskStop => '已暂停',}.freeze
+                TypeTaskStop => '已暂停', }.freeze
 
 
   RealTimeTask = 0
@@ -110,10 +110,8 @@ class SpiderTask < ApplicationRecord
     subtask = Subtask.create(task) rescue nil
     # return if subtask.blank?
     key = Subtask.task_key(self.id)
-    puts "=========redis.add=====+#{task["id"]}"
     $redis.sadd(key, task["id"])
   end
-
 
 
   def process_status
@@ -137,16 +135,14 @@ class SpiderTask < ApplicationRecord
         subtask_id = $redis.spop(key)
         subtask_ids << subtask_id if subtask_id.present?
       end
-      puts "======subtask_ids=======+#{subtask_ids}"
       if subtask_ids.blank?
         flag = self.process_deleted
         return if flag
       end
-       subtask_ids.each do |subtask_id|
+      subtask_ids.each do |subtask_id|
         subtask = Subtask.find(subtask_id) rescue nil
         next if subtask.blank?
         line = JSON.parse(subtask.content) rescue {}
-        puts "======line=======+#{line}"
         error_content = process_one_task(line)
         # 将任务结果缓存到redis中
         if error_content.present?
@@ -161,33 +157,31 @@ class SpiderTask < ApplicationRecord
   def process_one_task(line)
     key = Subtask.task_key(self.id)
     # begin
-      model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
-      return model_tasks if line["mode"] == "item"
-      subtasks = []
-      model_tasks.each do |new_line|
-        new_line = new_line.stringify_keys
-        new_line["spider_name"] = line["spider_name"]
-        task = {"status" => SpiderTask::TypeTaskStart}
-        task["id"] = Subtask.make_id(new_line)
-        task["task_id"] = self.id
-        task["content"] = new_line.to_json
-        subtasks << task
+    model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+    return model_tasks if line["mode"] == "item"
+    subtasks = []
+    model_tasks.each do |new_line|
+      new_line = new_line.stringify_keys
+      new_line["spider_name"] = line["spider_name"]
+      task = {"status" => SpiderTask::TypeTaskStart}
+      task["id"] = Subtask.make_id(new_line)
+      task["task_id"] = self.id
+      task["content"] = new_line.to_json
+      subtasks << task
+    end
+    subtasks = subtasks.uniq
+    # ActiveRecord::Base.transaction do
+    destination_columns = subtasks.first.keys
+    Subtask.bulk_insert(*destination_columns, ignore: true, set_size: 5000) do |worker|
+      subtasks.each do |data|
+        worker.add(data)
       end
-      # ActiveRecord::Base.transaction do
-        destination_columns = subtasks.first.keys
-    puts "========subtasks======+#{subtasks}"
-    puts "========Subtask.name======+#{Subtask.name}"
-        Subtask.bulk_insert(*destination_columns, ignore: true, set_size: 5000) do |worker|
-          subtasks.each do |data|
-            worker.add(data)
-          end
-        end
-        # 更新count
-    puts "========self.current_task_count======+#{self.current_task_count}"
-        self.update(current_task_count:self.current_task_count + subtasks.count)
-        $redis.sadd(key, subtasks.map { |x| x["id"] })
-      # end
-      return nil
+    end
+    # 更新count
+    self.update(current_task_count: self.current_task_count + subtasks.count)
+    $redis.sadd(key, subtasks.map { |x| x["id"] })
+    # end
+    return nil
     # rescue Exception => e
     #   return e
     # end
@@ -205,7 +199,7 @@ class SpiderTask < ApplicationRecord
         results_success << JSON.parse(result) if result.present?
       end
       if results_success.present?
-        Subtask.where(id: results_success.map { |x| x["id"] }).delete_all
+        # Subtask.where(id: results_success.map { |x| x["id"] }).delete_all
         current_success_count = self.current_success_count + results_success.count
         self.update(current_success_count: current_success_count)
       end
@@ -254,25 +248,18 @@ class SpiderTask < ApplicationRecord
     $redis.del(pause_key)
     key = Subtask.task_key(self.id)
     $redis.sadd(key, tasks) if tasks.present?
-    puts "=====tasks====#{tasks}"
-    self.update(status:TypeTaskStart)
-    puts "=========#{self.status}"
+    self.update(status: TypeTaskStart)
     # self.process_start
   end
 
 
-
   # mode 启动模式  0：周期启动，1：实时启动
   def start_task
-    # if can_reopen?
-    #   reopen_task
-    #   return {type: "success",message: "任务启动成功"}
-    # end
-    return {type: "success",message: "任务启动成功"} unless can_start?
+    return {type: "error", message: "任务不能启动"} unless can_start?
     spider_name = self.spider.spider_name
     job_instance = TSkJobInstance.where(spider_name: spider_name).first
     if job_instance.blank?
-      return {type: "error",message: "对应TSkJobInstance实例为空"}
+      return {type: "error", message: "对应TSkJobInstance实例为空"}
     end
     # # 周期任务直接可以执行，实时任务需判断状态后执行
     # if self.task_type == SpiderTask::RealTimeTask
@@ -283,19 +270,19 @@ class SpiderTask < ApplicationRecord
     TLogSpider.create({spider_name: spider_name, start_time: Time.now, mode: log_mode})
     # 创建子任务 缓存子任务
     self.create_subtasks
-    self.update(status:SpiderTask::TypeTaskStart)
+    self.update(status: SpiderTask::TypeTaskStart)
     # 检查任务状态，处理任务
     # spider_task.process_status
-    return {type: "success",message: "任务启动成功"}
+    return {type: "success", message: "任务启动成功"}
 
   end
 
   def stop_task
-    return {type: "error",message: "任务正在执行中"} unless can_stop?
+    return {type: "error", message: "任务不能停止"} unless can_stop?
     self.update(status: SpiderTask::TypeTaskStop)
     # # 检查任务状态，处理任务
     self.process_status
-    return {type: "success",message: "任务暂停成功"}
+    return {type: "success", message: "任务暂停成功"}
   end
 
 end
