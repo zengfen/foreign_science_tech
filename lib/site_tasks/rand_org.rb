@@ -14,7 +14,7 @@ class RandOrg
         tasks << {mode:"list",body:URI.encode(body.to_json)}
       end
     else
-      body = JSON.parse(body)
+      body = JSON.parse(URI.decode(body))
       url = body["url"]
       res = RestClient.get(url)
       doc = Nokogiri::HTML(res.body)
@@ -39,7 +39,7 @@ class RandOrg
   end
 
   def item(body)
-    body = JSON.parse(body)
+    body = JSON.parse(URI.decode(body))
     link = body["link"]
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
