@@ -64,7 +64,6 @@ class RandOrg
     puts task
     task
     # puts "====item==task==#{task}"
-    # task = {data_address: body["link"],website_name:@site,data_spidername:self.class,data_snapshot_path:'12',con_title:'12', con_author: '12', con_time: Time.now, con_text: '12',attached_img_info: nil,attached_file_info: nil}
     info = ::TData.save_one(task)
     return info
   end
