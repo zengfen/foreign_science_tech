@@ -103,9 +103,9 @@ class SpiderTask < ApplicationRecord
   def create_subtasks
     line = JSON.parse(Base64.decode64(self.full_keywords)) rescue {}
     task = {"status" => SpiderTask::TypeTaskStart}
-    task["id"] = Subtask.make_id(line)
-    task["task_id"] = self.id
     task["content"] = line.to_json
+    task["id"] = Subtask.make_id(line.merge!("task_id"=>self.id))
+    task["task_id"] = self.id
     # 创建子任务
     subtask = Subtask.create(task) rescue nil
     # return if subtask.blank?
@@ -145,10 +145,10 @@ class SpiderTask < ApplicationRecord
         line = JSON.parse(subtask.content) rescue {}
         error_content = process_one_task(line)
         # 将任务结果缓存到redis中
-        if error_content.present?
-          $redis.sadd(error_key, {id: subtask_id, error_content: error_content, error_at: Time.now.to_i, status: Subtask::TypeSubtaskError}.to_json)
+        if error_content.to_h[:type] == "error"
+          $redis.sadd(error_key, {id: subtask_id, error_content: error_content.to_h[:message], error_at: Time.now.to_i, status: Subtask::TypeSubtaskError}.to_json)
         else
-          $redis.sadd(success_key, {id: subtask_id, error_content: error_content, competed_at: Time.now.to_i, status: Subtask::TypeSubtaskSuccess}.to_json)
+          $redis.sadd(success_key, {id: subtask_id, error_content: error_content.to_h[:message], competed_at: Time.now.to_i, status: Subtask::TypeSubtaskSuccess}.to_json)
         end
       end
     end
@@ -164,7 +164,7 @@ class SpiderTask < ApplicationRecord
       new_line = new_line.stringify_keys
       new_line["spider_name"] = line["spider_name"]
       task = {"status" => SpiderTask::TypeTaskStart}
-      task["id"] = Subtask.make_id(new_line)
+      task["id"] = Subtask.make_id(new_line.merge("task_id"=>self.id))
       task["task_id"] = self.id
       task["content"] = new_line.to_json
       subtasks << task
@@ -199,7 +199,7 @@ class SpiderTask < ApplicationRecord
         results_success << JSON.parse(result) if result.present?
       end
       if results_success.present?
-        # Subtask.where(id: results_success.map { |x| x["id"] }).delete_all
+        Subtask.where(id: results_success.map { |x| x["id"] }).delete_all
         current_success_count = self.current_success_count + results_success.count
         self.update(current_success_count: current_success_count)
       end
@@ -211,6 +211,7 @@ class SpiderTask < ApplicationRecord
       end
       if results_error.present?
         destination_columns = results_error.first.keys
+        puts "destination_columns=======+#{destination_columns}  results_error=======+#{results_error}"
         Subtask.bulk_insert(*destination_columns, ignore: true, update_duplicates: true) do |worker|
           results_error.each do |data|
             worker.add(data)
@@ -223,7 +224,8 @@ class SpiderTask < ApplicationRecord
 
       return true if status == TypeTaskStop
 
-      if results_success.blank? && results_error.blank? && Subtask.where(task_id: self.id, status: Subtask::TypeSubtaskStart).none? && status == TypeTaskStart
+      if results_success.blank? && results_error.blank? && status == TypeTaskStart
+        #  && Subtask.where(task_id: self.id, status: Subtask::TypeSubtaskStart).none?
         self.update(status: SpiderTask::TypeTaskComplete)
         $redis.del(key, success_key, error_key)
         return true
@@ -270,7 +272,7 @@ class SpiderTask < ApplicationRecord
     TLogSpider.create({spider_name: spider_name, start_time: Time.now, mode: log_mode})
     # 创建子任务 缓存子任务
     self.create_subtasks
-    self.update(status: SpiderTask::TypeTaskStart)
+    self.update(status: SpiderTask::TypeTaskStart,current_task_count:self.current_task_count + 1)
     # 检查任务状态，处理任务
     # spider_task.process_status
     return {type: "success", message: "任务启动成功"}

@@ -21,6 +21,16 @@ class TData < CommonBase
 
   after_destroy :delete_redis_data
 
+  def self.link_exist(link)
+    key = TData.t_datas_key
+    md5_id = Digest::MD5.hexdigest(a.data_address)
+    if $redis.sismember(key, md5_id)
+      return {type:"success",message:"已存在"}
+    else
+      return nil
+    end
+  end
+
   def self.save_one(task)
     a = TData.new
     a.data_address = task[:data_address]
@@ -43,8 +53,9 @@ class TData < CommonBase
     key = TData.t_datas_key
     md5_id = Digest::MD5.hexdigest(a.data_address)
     if $redis.sismember(key, md5_id)
-      return nil
+      return {type:"success",message:"数据已存在"}
     end
+
     error_message = nil
     if a.con_title.blank?
       error_message = "con_title is nil"
@@ -58,7 +69,6 @@ class TData < CommonBase
     if a.con_text.blank? && attached_file_info.blank?
       error_message = "con_text and attached_file_info is nil"
     end
-    a.con_time = nil
     if a.con_time.blank?
       error_message = "时间为空"
     end
@@ -67,16 +77,16 @@ class TData < CommonBase
     end
 
     if error_message.present?
-      return error_message
+      return {type:"error",message:error_message}
     end
 
     if a.save
       $redis.sadd(key, md5_id)
-      return nil
+      return {type:"success"}
     else
-      return false, a.errors.full_messages
+      return {type:"error",message:a.errors.full_messages}
     end
-    return nil
+    return {type:"success"}
   end
 
 

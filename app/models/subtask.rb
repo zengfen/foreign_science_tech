@@ -42,7 +42,7 @@ class Subtask < ApplicationRecord
   end
   
   def self.make_id(line)
-    id = Digest::MD5.hexdigest(line["spider_name"] + line["mode"] + line["body"].to_json)
+    id = Digest::MD5.hexdigest(line["spider_name"] + line["mode"] + line["task_id"].to_s + line["body"].to_json)
     return id
   end
 end

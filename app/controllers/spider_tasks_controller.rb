@@ -41,11 +41,13 @@ class SpiderTasksController < ApplicationController
 
   def start_task
     res = @spider_task.start_task
+    # @spider_task.process_status
     render json: res
   end
 
   def stop_task
     res = @spider_task.stop_task
+    # @spider_task.process_status
     render json: res
   end
 

@@ -28,12 +28,6 @@ class RandOrg
         tasks << {mode:"item",body:URI.encode(body.to_json)}
       end
 
-      # page = rand(0..1000)
-      # for i in page..page
-      #   body = {link:"link_#{i}"}
-      #   tasks << {mode:"item",body:body}
-      # end
-
     end
     return tasks
   end
@@ -41,6 +35,8 @@ class RandOrg
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
+    # res = ::TData.link_exist(link)
+    # return res if res.present?
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1")[0].inner_text.strip rescue nil
