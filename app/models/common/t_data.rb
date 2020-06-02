@@ -19,6 +19,8 @@
 class TData < CommonBase
   self.table_name = "t_data"
 
+  after_destroy :delete_redis_data
+
   def self.save_one(task)
     a = TData.new
     a.data_address = task[:data_address]
@@ -56,6 +58,10 @@ class TData < CommonBase
     if a.con_text.blank? && attached_file_info.blank?
       error_message = "con_text and attached_file_info is nil"
     end
+    a.con_time = nil
+    if a.con_time.blank?
+      error_message = "时间为空"
+    end
     if a.con_time.to_i > Time.now.to_i
       error_message = "时间大于当前"
     end
@@ -78,6 +84,12 @@ class TData < CommonBase
     "foreign_sci_tec_t_datas_key"
   end
 
+
+  def delete_redis_data
+    key = TData.t_datas_key
+    md5_id = Digest::MD5.hexdigest(self.data_address)
+    $redis.srem(key, md5_id)
+  end
 
   # TData.create_table
   def self.create_table

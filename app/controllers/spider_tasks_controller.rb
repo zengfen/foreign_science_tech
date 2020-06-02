@@ -1,6 +1,6 @@
 class SpiderTasksController < ApplicationController
   before_action :logged_in_user
-  before_action :get_spider_task, only: %i[destroy start_task stop_task]
+  before_action :get_spider_task, only: %i[destroy start_task stop_task fail_tasks]
 
 
   def index
@@ -20,8 +20,7 @@ class SpiderTasksController < ApplicationController
 
 
   def fail_tasks
-    spider_task = Spider.where(id:params[:id]).first.spider_tasks.order(:created_at).last.id rescue nil
-    @fail_tasks = Subtask.where(task_id: spider_task, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
+    @fail_tasks = Subtask.where(task_id: @spider_task.id, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
   end
 
   def create

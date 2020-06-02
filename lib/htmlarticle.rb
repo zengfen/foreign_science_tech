@@ -121,7 +121,10 @@ class Htmlarticle
     image_urls.each do |image_url|
       extn = File.extname  image_url
       image_name = Digest::MD5.hexdigest(image_url) + extn
-      next if File.exist? "#{image_path}/#{image_name}"
+      if File.exist? "#{image_path}/#{image_name}"
+        images << "/images/#{image_name}#{extn}"
+        next
+      end
       res = RestClient.get(image_url)
       File.open("#{image_path}/#{image_name}", 'wb') { |f| f.write(res.body) }
       images << "/images/#{image_name}#{extn}"
@@ -136,7 +139,10 @@ class Htmlarticle
     file_urls.each do |file_url|
       extn = File.extname  file_url
       file_name = Digest::MD5.hexdigest(file_url) + extn
-      next if File.exist? "#{file_path}/#{file_name}"
+      if File.exist? "#{file_path}/#{file_name}"
+        images << "/images/#{image_name}#{extn}"
+        next
+      end
       res = RestClient.get(file_url)
       File.open("#{file_path}/#{file_name}", 'wb') { |f| f.write(res.body) }
       files << "/files/#{file_name}#{extn}"
@@ -152,7 +158,10 @@ class Htmlarticle
     urls.each do |url|
       extn = File.extname  url
       file_name = Digest::MD5.hexdigest(url) + extn
-      next if File.exist? "#{file_path}/#{file_name}"
+      if File.exist? "#{file_path}/#{file_name}"
+        images << "/images/#{image_name}#{extn}"
+        next
+      end
       image_res = RestClient.get(url)
       File.open("#{file_name}/#{file_name}", 'wb') { |f| f.write(image_res.body) }
       files << "/audio_videos/#{file_name}#{extn}"
