@@ -127,7 +127,7 @@ class Htmlarticle
       end
       res = RestClient.get(image_url)
       File.open("#{image_path}/#{image_name}", 'wb') { |f| f.write(res.body) }
-      images << "/images/#{image_name}#{extn}"
+      images << "/images/#{image_name}"
     end
     return images
   end
