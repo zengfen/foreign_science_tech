@@ -21,8 +21,8 @@ class TSkJobInstance < CommonBase
     # return if self.status_before_type_cast != 4 || self.is_deleted
     cron = Sidekiq::Cron::Job.find self.job_name
     if cron.blank?
-      # time = "#{self.cron_minutes} #{self.cron_hour} * * * Asia/Shanghai"
-      time = "0 */1 * * * Asia/Shanghai"
+      time = "#{self.cron_minutes} #{self.cron_hour} * * * Asia/Shanghai"
+      # time = "0 */1 * * * Asia/Shanghai"
       cron = Sidekiq::Cron::Job.new(name: self.job_name, cron: time, class: 'TSkJobInstancesJob', args: {spider_name: self.spider_name}) if cron.blank?
       if cron.valid?
         cron.save
@@ -31,9 +31,6 @@ class TSkJobInstance < CommonBase
         Rails.logger.info cron.errors
       end
     else
-      # time = "* */1 * * * Asia/Shanghai"
-      # cron.cron = time
-      # cron.save
       cron.enque! if need_enque!
     end
   end
