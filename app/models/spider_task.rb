@@ -104,7 +104,7 @@ class SpiderTask < ApplicationRecord
     line = JSON.parse(Base64.decode64(self.full_keywords)) rescue {}
     task = {"status" => SpiderTask::TypeTaskStart}
     task["content"] = line.to_json
-    task["id"] = Subtask.make_id(line.merge!("task_id"=>self.id))
+    task["id"] = Subtask.make_id(line.merge!("task_id" => self.id))
     task["task_id"] = self.id
     # 创建子任务
     subtask = Subtask.create(task) rescue nil
@@ -156,15 +156,18 @@ class SpiderTask < ApplicationRecord
 
   def process_one_task(line)
     key = Subtask.task_key(self.id)
-    # begin
-    model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+    begin
+      model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+    rescue Exception => e
+      return {type: "error", message: e}
+    end
     return model_tasks if line["mode"] == "item"
     subtasks = []
     model_tasks.each do |new_line|
       new_line = new_line.stringify_keys
       new_line["spider_name"] = line["spider_name"]
       task = {"status" => SpiderTask::TypeTaskStart}
-      task["id"] = Subtask.make_id(new_line.merge("task_id"=>self.id))
+      task["id"] = Subtask.make_id(new_line.merge("task_id" => self.id))
       task["task_id"] = self.id
       task["content"] = new_line.to_json
       subtasks << task
@@ -272,7 +275,7 @@ class SpiderTask < ApplicationRecord
     TLogSpider.create({spider_name: spider_name, start_time: Time.now, mode: log_mode})
     # 创建子任务 缓存子任务
     self.create_subtasks
-    self.update(status: SpiderTask::TypeTaskStart,current_task_count:self.current_task_count + 1)
+    self.update(status: SpiderTask::TypeTaskStart, current_task_count: self.current_task_count + 1)
     # 检查任务状态，处理任务
     # spider_task.process_status
     return {type: "success", message: "任务启动成功"}

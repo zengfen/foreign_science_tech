@@ -56,6 +56,8 @@ class TData < CommonBase
       return {type:"success",message:"数据已存在"}
     end
 
+    # 作者处理
+
     error_message = nil
     if a.con_title.blank?
       error_message = "con_title is nil"
@@ -105,7 +107,7 @@ class TData < CommonBase
   def self.create_table
     files = ["t_data.sql", "t_log_spider.sql", "t_sk_job_instance.sql"]
     files.each do |file|
-      `bundle exec rails db < "#{Rails.root}/public/sql#{file}"`
+      `bundle exec rails db < "#{Rails.root}/public/sql/#{file}"`
     end
   end
 
