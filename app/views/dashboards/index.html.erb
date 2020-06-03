@@ -174,8 +174,8 @@
           selector: '#graph_website_statistic', 
           xAxisName: '日期',
           yAxisName: '数量/条',
-          seriesName: '网站分布统计', 
-          dataArray: getTestData(15) 
+          seriesName: '网站发布统计',
+          dataArray: <%== @spider_data_count.to_json %>
         },
         { 
           selector: '#graph_author_statistic', 
@@ -189,7 +189,7 @@
           xAxisName: '名称',
           yAxisName: '数量/条',
           seriesName: '爬虫采集统计', 
-          dataArray: getTestData(15) 
+          dataArray: <%= @spider_name_count.to_json %>
         }
       ].forEach(function(item) {
         renderTrendEchart($(item.selector)[0], item);

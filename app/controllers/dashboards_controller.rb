@@ -19,15 +19,15 @@ class DashboardsController < ApplicationController
     @spider_every_day = [] # 每日采集数据量趋势图
     @spider_task_count = [] # 每日采集任务量趋势图
     @spider_success_task = [] # 每日成功采集任务量趋势图
-    @spider_name_count = [] # 网站发布统计
+    @spider_data_count = [] # 网站发布统计 按日期
     @author_count = [] # 作者发布统计
-    @spider_data_count = [] # 爬虫采集统计
+    @spider_name_count = [] # 爬虫采集统计 按站点
     spider_every_day = TData.group("date(data_time)").select("date(data_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
-    spider_data_count = TData.group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }
+    spider_data_count = TData.group("date(con_time)").select("date(con_time),count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
+    @spider_name_count = TData.group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }
 
     # 多个作者的情况
     @author_count = TData.group("con_author").select("con_author,count(*) count").map { |x| {name: x.con_author, value: x.count} }
-
 
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : (Date.today - 1.month)
     end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : Date.today
@@ -49,6 +49,12 @@ class DashboardsController < ApplicationController
         @spider_every_day << data
       else
         @spider_every_day << one_spider_every_day
+      end
+      one_spider_data_count = spider_data_count.find { |x| x[:name] == date }
+      if one_spider_data_count.blank?
+        @spider_data_count << data
+      else
+        @spider_data_count << one_spider_data_count
       end
     end
 
