@@ -5,7 +5,7 @@ namespace :foreign_science_tech  do
 	  task :start => :environment do
 	    job = Sidekiq::Cron::Job.find "ProcessStatusJob"
 			if job.blank?
-				Sidekiq::Cron::Job.create(name: "ProcessStatusJob", cron: "0 */1 * * * Asia/Shanghai", class: 'ProcessStatusJob')
+				Sidekiq::Cron::Job.create(name: "ProcessStatusJob", cron: "0 * * * * Asia/Shanghai", class: 'ProcessStatusJob')
 				puts "job start success!"
 			else
 				puts "job already exist!"
