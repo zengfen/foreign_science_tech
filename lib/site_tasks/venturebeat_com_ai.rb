@@ -5,7 +5,7 @@ class VenturebeatComAi
 	def initialize
 		@site = "VentureBeat-AI"
 		@prefix = "https://venturebeat.com"
-		RestClient.proxy = "http://10.119.12.234:1079/"
+		# RestClient.proxy = "http://10.119.12.234:1079/"
 	end
 	def list(body)
 		tasks = []
