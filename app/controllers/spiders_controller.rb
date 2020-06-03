@@ -29,7 +29,7 @@ class SpidersController < ApplicationController
   end
 
   def load_edit_form
-
+  a = 1
   end
 
   def update
@@ -65,7 +65,7 @@ class SpidersController < ApplicationController
   private
 
   def spider_params
-    params.require(:spider).permit(:spider_name)
+    params.require(:spider).permit(:spider_name,:name_en)
   end
 
   def get_spider
