@@ -122,7 +122,7 @@ class Htmlarticle
       extn = File.extname  image_url
       image_name = Digest::MD5.hexdigest(image_url) + extn
       if File.exist? "#{image_path}/#{image_name}"
-        images << "/images/#{image_name}#{extn}"
+        images << "/images/#{image_name}"
         next
       end
       res = RestClient.get(image_url)
@@ -140,12 +140,12 @@ class Htmlarticle
       extn = File.extname  file_url
       file_name = Digest::MD5.hexdigest(file_url) + extn
       if File.exist? "#{file_path}/#{file_name}"
-        images << "/images/#{image_name}#{extn}"
+        images << "/images/#{image_name}"
         next
       end
       res = RestClient.get(file_url)
       File.open("#{file_path}/#{file_name}", 'wb') { |f| f.write(res.body) }
-      files << "/files/#{file_name}#{extn}"
+      files << "/files/#{file_name}"
     end
     return files
   end
@@ -159,12 +159,12 @@ class Htmlarticle
       extn = File.extname  url
       file_name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{file_path}/#{file_name}"
-        images << "/images/#{image_name}#{extn}"
+        images << "/images/#{image_name}"
         next
       end
       image_res = RestClient.get(url)
       File.open("#{file_name}/#{file_name}", 'wb') { |f| f.write(image_res.body) }
-      files << "/audio_videos/#{file_name}#{extn}"
+      files << "/audio_videos/#{file_name}"
     end
     return files
   end
