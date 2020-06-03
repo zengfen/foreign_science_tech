@@ -59,7 +59,7 @@ class VenturebeatComAi
 		# doc.search("")
 		author = []
 		puts author << doc.search("div.article-byline a.author").inner_text.strip rescue nil
-		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res.body,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images,attached_file_info: files, category: category}
+		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images,attached_file_info: files, category: category}
 		Rails.logger.info task
 		info = ::TData.save_one(task)
     	return info
