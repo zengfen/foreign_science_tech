@@ -5,7 +5,7 @@ namespace :foreign_science_tech do
     task :start => :environment do
       job = Sidekiq::Cron::Job.find "MonitorInstancesJob"
       if job.blank?
-        Sidekiq::Cron::Job.create(name: "MonitorInstancesJob", cron: "0 * * * * Asia/Shanghai", class: 'MonitorInstancesJob')
+        Sidekiq::Cron::Job.create(name: "MonitorInstancesJob", cron: "*/1 * * * * Asia/Shanghai", class: 'MonitorInstancesJob')
         puts "job start success!"
       else
         job.enable!
