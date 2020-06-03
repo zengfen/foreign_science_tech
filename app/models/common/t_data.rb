@@ -1,8 +1,8 @@
 # data_id 数据ID
 # data_address 数据地址(url)
 # website_name 网站名称
-# data_spidername 爬虫名称(关联website)  全部的源代码 即res.body
-# data_snapshot_path 快照路径 即 带标签正文
+# data_spidername 爬虫名称(关联website)  全部的源代码
+# data_snapshot_path 快照路径 即 带标签正文 即res.body
 # data_source_type 数据源类型（website、wechat、other） 固定为 website
 # data_mode 采集方式（spider、upload）
 # data_time 采集时间
