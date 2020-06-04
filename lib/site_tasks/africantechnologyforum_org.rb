@@ -71,7 +71,10 @@ class AfricantechnologyforumOrg
     	puts "时间"
     	puts ts
     	#获取作者
-    	authors	 = doc.search("div.td-post-author-name a").inner_text.strip.gsub(/^by /i,"") rescue nil
+      authors = []
+    	author = doc.search("div.td-post-author-name a").inner_text.strip.gsub(/^by /i,"") rescue nil
+      authors << author
+      authors = authors.uniq.compact
     	puts "作者"
     	puts authors
 
