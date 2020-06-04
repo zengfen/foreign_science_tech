@@ -1,14 +1,11 @@
 class SpiderTasksController < ApplicationController
   before_action :logged_in_user
-  before_action :get_spider_task, only: %i[destroy start_task stop_task]
+  before_action :get_spider_task, only: %i[destroy start_task stop_task fail_tasks]
 
 
   def index
     @spider_task = SpiderTask.new
     opts = {}
-    unless params[:id].blank?
-      opts[:id] = params[:id].split(',')
-    end
     opts[:spider_id] = params[:spider_id] unless params[:spider_id].blank?
     opts[:status] = params[:status] unless params[:status].blank?
     opts[:task_type] = params[:task_type] unless params[:task_type].blank?
@@ -20,8 +17,7 @@ class SpiderTasksController < ApplicationController
 
 
   def fail_tasks
-    spider_task = Spider.where(id:params[:id]).first.spider_tasks.order(:created_at).last.id rescue nil
-    @fail_tasks = Subtask.where(task_id: spider_task, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
+    @fail_tasks = Subtask.where(task_id: @spider_task.id, status: Subtask::TypeSubtaskError).page(params[:page]).per(20)
   end
 
   def create
@@ -42,11 +38,13 @@ class SpiderTasksController < ApplicationController
 
   def start_task
     res = @spider_task.start_task
+    # @spider_task.process_status
     render json: res
   end
 
   def stop_task
     res = @spider_task.stop_task
+    # @spider_task.process_status
     render json: res
   end
 

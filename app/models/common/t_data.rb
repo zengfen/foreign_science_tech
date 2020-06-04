@@ -1,8 +1,8 @@
 # data_id 数据ID
 # data_address 数据地址(url)
 # website_name 网站名称
-# data_spidername 爬虫名称(关联website)  全部的源代码 即res.body
-# data_snapshot_path 快照路径 即 带标签正文
+# data_spidername 爬虫名称(关联website)  全部的源代码
+# data_snapshot_path 快照路径 即 带标签正文 即res.body
 # data_source_type 数据源类型（website、wechat、other） 固定为 website
 # data_mode 采集方式（spider、upload）
 # data_time 采集时间
@@ -18,6 +18,18 @@
 
 class TData < CommonBase
   self.table_name = "t_data"
+
+  after_destroy :delete_redis_data
+
+  def self.link_exist(link)
+    key = TData.t_datas_key
+    md5_id = Digest::MD5.hexdigest(a.data_address)
+    if $redis.sismember(key, md5_id)
+      return {type:"success",message:"已存在"}
+    else
+      return nil
+    end
+  end
 
   def self.save_one(task)
     a = TData.new
@@ -41,8 +53,11 @@ class TData < CommonBase
     key = TData.t_datas_key
     md5_id = Digest::MD5.hexdigest(a.data_address)
     if $redis.sismember(key, md5_id)
-      return nil
+      return {type:"success",message:"数据已存在"}
     end
+
+    # 作者处理
+
     error_message = nil
     if a.con_title.blank?
       error_message = "con_title is nil"
@@ -56,21 +71,24 @@ class TData < CommonBase
     if a.con_text.blank? && attached_file_info.blank?
       error_message = "con_text and attached_file_info is nil"
     end
+    if a.con_time.blank?
+      error_message = "时间为空"
+    end
     if a.con_time.to_i > Time.now.to_i
       error_message = "时间大于当前"
     end
 
     if error_message.present?
-      return error_message
+      return {type:"error",message:error_message}
     end
 
     if a.save
       $redis.sadd(key, md5_id)
-      return nil
+      return {type:"success"}
     else
-      return false, a.errors.full_messages
+      return {type:"error",message:a.errors.full_messages}
     end
-    return nil
+    return {type:"success"}
   end
 
 
@@ -79,11 +97,17 @@ class TData < CommonBase
   end
 
 
+  def delete_redis_data
+    key = TData.t_datas_key
+    md5_id = Digest::MD5.hexdigest(self.data_address)
+    $redis.srem(key, md5_id)
+  end
+
   # TData.create_table
   def self.create_table
     files = ["t_data.sql", "t_log_spider.sql", "t_sk_job_instance.sql"]
     files.each do |file|
-      `bundle exec rails db < "#{Rails.root}/public/sql#{file}"`
+      `bundle exec rails db < "#{Rails.root}/public/sql/#{file}"`
     end
   end
 

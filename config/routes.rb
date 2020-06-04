@@ -37,6 +37,13 @@ Rails.application.routes.draw do
   resources :dashboards
   resources :data_centers
 
+  resources :test do
+    collection do
+      get 'list'
+      get 'item'
+
+    end
+  end
 
   require 'sidekiq/web'
   require 'sidekiq/cron/web'

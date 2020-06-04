@@ -21,6 +21,7 @@ class SpidersController < ApplicationController
   def create
     @spider = Spider.new(spider_params)
     if @spider.save
+      TSkJobInstance.create(spider_name: @spider.spider_name,cron_minutes:0,cron_hour:0,project_id:1)
       flash[:success] = '创建成功'
     else
       flash[:error] = @spider.errors.full_messages.join('\n')
@@ -29,7 +30,7 @@ class SpidersController < ApplicationController
   end
 
   def load_edit_form
-
+  a = 1
   end
 
   def update
@@ -65,7 +66,7 @@ class SpidersController < ApplicationController
   private
 
   def spider_params
-    params.require(:spider).permit(:spider_name)
+    params.require(:spider).permit(:spider_name,:name_en)
   end
 
   def get_spider

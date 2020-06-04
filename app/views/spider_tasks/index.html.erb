@@ -18,7 +18,7 @@
 
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:spider_id ,options_for_select(Spider.select("spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "爬虫名",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:spider_id ,options_for_select(Spider.select("id,spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "爬虫名",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group mb0">
-                    <%=select_tag(:status, options_for_select(SpiderTask::TypesList.invert.to_a, params["status"]),include_blank: "模式",:class=>"form-control chosen-select")%>
+                    <%=select_tag(:task_type, options_for_select(SpiderTask::TypesList.invert.to_a, params["task_type"]),include_blank: "模式",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
 

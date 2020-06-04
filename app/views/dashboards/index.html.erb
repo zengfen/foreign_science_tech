@@ -153,49 +153,43 @@
           xAxisName: '日期',
           yAxisName: '数量/条',
           seriesName: '每日采集数据量', 
-          dataArray: getTestData(15) 
+          dataArray: <%== @spider_every_day.to_json %>
         },
         { 
           selector: '#graph_task_data', 
           xAxisName: '日期',
           yAxisName: '数量/条',
           seriesName: '每日采集任务量', 
-          dataArray: getTestData(15) 
+          dataArray:<%== @spider_task_count.to_json %>
+
         },
         { 
           selector: '#graph_success_task_data', 
           xAxisName: '日期',
           yAxisName: '数量/条',
           seriesName: '每日成功采集任务量', 
-          dataArray: getTestData(15) 
-        },
-        { 
-          selector: '#graph_success_task_data', 
-          xAxisName: '日期',
-          yAxisName: '数量/条',
-          seriesName: '每日成功采集任务量', 
-          dataArray: getTestData(15) 
+          dataArray: <%== @spider_success_task.to_json %>
         },
         { 
           selector: '#graph_website_statistic', 
           xAxisName: '日期',
           yAxisName: '数量/条',
-          seriesName: '网站分布统计', 
-          dataArray: getTestData(15) 
+          seriesName: '网站发布统计',
+          dataArray: <%== @spider_data_count.to_json %>
         },
         { 
           selector: '#graph_author_statistic', 
           xAxisName: '名字',
           yAxisName: '数量/条',
           seriesName: '作者分布统计', 
-          dataArray: getTestData(15) 
+          dataArray: <%== @author_count.to_json %>
         },
         { 
           selector: '#graph_spider_statistic', 
           xAxisName: '名称',
           yAxisName: '数量/条',
           seriesName: '爬虫采集统计', 
-          dataArray: getTestData(15) 
+          dataArray: <%= @spider_name_count.to_json %>
         }
       ].forEach(function(item) {
         renderTrendEchart($(item.selector)[0], item);
