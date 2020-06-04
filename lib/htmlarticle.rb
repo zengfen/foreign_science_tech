@@ -124,11 +124,11 @@ class Htmlarticle
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{path}/#{name}"
-        files << "/images/#{name}"
+        files << "images/#{name}"
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/images/#{name}"
+      files << "images/#{name}"
     end
     return files
   end
@@ -143,11 +143,11 @@ class Htmlarticle
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{path}/#{name}"
-        files << "/files/#{name}"
+        files << "files/#{name}"
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/files/#{name}"
+      files << "files/#{name}"
     end
     return files
   end
@@ -163,11 +163,11 @@ class Htmlarticle
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{path}/#{name}"
-        files << "/audio_videos/#{name}"
+        files << "audio_videos/#{name}"
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/audio_videos/#{name}"
+      files << "audio_videos/#{name}"
     end
     return files
   end
