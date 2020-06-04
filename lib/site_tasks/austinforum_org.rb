@@ -19,8 +19,8 @@ class AustinforumOrg
       		url = body["url"]
       		res = RestClient.get(url)
       		doc = Nokogiri::HTML(res.body)
-      		doc.search("h2.blog-title a.blog-title-link blog-link").each_with_index do |item,index|
-        		link = item["href"] rescue nil
+      		doc.search("h2.blog-title a.blog-title-link.blog-link").each_with_index do |item,index|
+        		link = item["href"].gsub("//","") rescue nil
         		puts "链接"
         		puts link
         		body = {link:link}
@@ -46,7 +46,7 @@ class AustinforumOrg
     	puts "正文"
     	puts desp
     	#获取时间
-    	ts = Time.parse(doc.search("p.blog-date span.date-text")).to_s
+    	ts = Time.parse(doc.search("p.blog-date span.date-text").inner_html.strip).to_s
     	puts "时间"
     	puts ts
     	#获取作者
