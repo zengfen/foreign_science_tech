@@ -36,11 +36,21 @@
         </li>
         <li>
           <span>文件：</span>
-          <strong><%= @data.attached_file_info %></strong>
+          <strong>
+            <% datas = JSON.parse(@data.attached_file_info) rescue [] %>
+            <% datas.each do |data| %>
+                <a href="<%= data %>" target="_blank" class="block"><%= data %></a>
+            <% end %>
+          </strong>
         </li>
         <li>
           <span>音视频：</span>
-          <strong><%= @data.attached_media_info %></strong>
+          <strong>
+            <% datas = JSON.parse(@data.attached_media_info) rescue [] %>
+            <% datas.each do |data| %>
+                <a href="<%= data %>" target="_blank" class="block"><%= data %></a>
+            <% end %>
+          </strong>
         </li>
       </ul>
       <div class="data__content">
