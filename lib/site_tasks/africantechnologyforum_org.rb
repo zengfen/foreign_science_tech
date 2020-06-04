@@ -17,25 +17,24 @@ class AfricantechnologyforumOrg
  "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
 }
 
-		RestClient.proxy = "http://192.168.235.1:1080/"
+		# RestClient.proxy = "http://192.168.235.1:1080/"
 		tasks = []
     	if body.blank?
       		urls = ["http://africantechnologyforum.org/category/news/news-ictechnology/"]
      		urls.each do |url|
         		body = {url:url}
-       			tasks << {mode:"list",body:body}
+       			tasks << {mode:"list",body:URI.encode(body.to_json)}
       		end
     	else
+    		body = JSON.parse(URI.decode(body))
       		url = body["url"]
       		res = RestClient.get(url,header = header)
       		doc = Nokogiri::HTML(res.body)
       		doc.search("div.td-module-thumb a").each_with_index do |item,index|
         		link = item["href"] rescue nil
         		puts link
-        		next if link.blank?
-        		link = @prefix + link if !link.match(/^http/)
         		body = {link:link}
-        		tasks << {mode:"item",body:body}
+        		tasks << {mode:"item",body:URI.encode(body.to_json)}
       		end
       	end
     	return tasks
@@ -53,8 +52,9 @@ class AfricantechnologyforumOrg
  "Upgrade-Insecure-Requests": "1",
  "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
 }
+		body = JSON.parse(URI.decode(body))
   		link = body["link"]
-  		link = "http://africantechnologyforum.org/shedalert-load-shedding-alerts/"
+  		# link = "http://africantechnologyforum.org/shedalert-load-shedding-alerts/"
    	 	res = RestClient.get(link,header = header).body
     	doc = Nokogiri::HTML(res)
     	#获取标题
