@@ -12,7 +12,7 @@ class AustinforumOrg
      		urls.each do |url|	
         		body = {url:url}
        			tasks << {mode:"list",body:URI.encode(body.to_json)}
-       			tasks << {mode:"list",body:body}
+       			# tasks << {mode:"list",body:body}
       		end
     	else
     		body = JSON.parse(URI.decode(body))
