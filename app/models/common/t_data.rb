@@ -21,13 +21,13 @@ class TData < CommonBase
 
   after_destroy :delete_redis_data
 
-  def self.link_exist(link)
+  def self.link_exist?(link)
     key = TData.t_datas_key
-    md5_id = Digest::MD5.hexdigest(a.data_address)
+    md5_id = Digest::MD5.hexdigest(link)
     if $redis.sismember(key, md5_id)
-      return {type:"success",message:"已存在"}
+      return true
     else
-      return nil
+      return false
     end
   end
 
@@ -56,8 +56,6 @@ class TData < CommonBase
       return {type:"success",message:"数据已存在"}
     end
 
-    # 作者处理
-
     error_message = nil
     if a.con_title.blank?
       error_message = "con_title is nil"
@@ -77,6 +75,9 @@ class TData < CommonBase
     if a.con_time.to_i > Time.now.to_i
       error_message = "时间大于当前"
     end
+    if task[:con_author].present? && task[:con_author].class != Array
+      error_message = "作者需数组类型"
+    end
 
     if error_message.present?
       return {type:"error",message:error_message}
@@ -84,6 +85,7 @@ class TData < CommonBase
 
     if a.save
       $redis.sadd(key, md5_id)
+      # AuthorCount.process_author(task[:con_author],a.con_time) if task[:con_author].present?
       return {type:"success"}
     else
       return {type:"error",message:a.errors.full_messages}

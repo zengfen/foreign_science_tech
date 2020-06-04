@@ -154,9 +154,15 @@ class SpiderTask < ApplicationRecord
     end
   end
 
+
   def process_one_task(line)
     key = Subtask.task_key(self.id)
     begin
+      if line["mode"] == "item"
+        link = JSON.parse(URI.decode(line["body"])).values.find{|x| x.match(/^http/)} rescue nil
+        exist = TData.link_exist?(link)
+        return {type: "success", message: "数据已存在"} if exist
+      end
       model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
     rescue Exception => e
       return {type: "error", message: e}
@@ -214,7 +220,6 @@ class SpiderTask < ApplicationRecord
       end
       if results_error.present?
         destination_columns = results_error.first.keys
-        puts "destination_columns=======+#{destination_columns}  results_error=======+#{results_error}"
         Subtask.bulk_insert(*destination_columns, ignore: true, update_duplicates: true) do |worker|
           results_error.each do |data|
             worker.add(data)
