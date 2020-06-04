@@ -17,7 +17,7 @@ class AfricantechnologyforumOrg
  "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
 }
 
-		RestClient.proxy = "http://192.168.235.1:1080/"
+		# RestClient.proxy = "http://192.168.235.1:1080/"
 		tasks = []
     	if body.blank?
       		urls = ["http://africantechnologyforum.org/category/news/news-ictechnology/"]
