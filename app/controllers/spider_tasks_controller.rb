@@ -6,9 +6,6 @@ class SpiderTasksController < ApplicationController
   def index
     @spider_task = SpiderTask.new
     opts = {}
-    unless params[:id].blank?
-      opts[:id] = params[:id].split(',')
-    end
     opts[:spider_id] = params[:spider_id] unless params[:spider_id].blank?
     opts[:status] = params[:status] unless params[:status].blank?
     opts[:task_type] = params[:task_type] unless params[:task_type].blank?
