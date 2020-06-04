@@ -1,7 +1,7 @@
 class NikkeiCom
 
   def initialize
-     RestClient.proxy = "http://192.168.50.1:1080/"
+    # RestClient.proxy = "http://192.168.50.1:1080/"
     @site = "日本经济报-技术-环境/材料"
     @prefix = "https://www.nikkei.com"
   end
