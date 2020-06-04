@@ -277,9 +277,8 @@ class SpiderTask < ApplicationRecord
     self.create_subtasks
     self.update(status: SpiderTask::TypeTaskStart, current_task_count: self.current_task_count + 1)
     # 检查任务状态，处理任务
-    # spider_task.process_status
-    return {type: "success", message: "任务启动成功"}
-
+    ProcessStatusJob.perform_later(self.id)
+    return {type:"success",message:"任务启动成功"}
   end
 
   def stop_task
