@@ -115,56 +115,59 @@ class Htmlarticle
 
 
   def self.download_images(image_urls)
-    image_path = "#{Rails.root}/public/images"
-    Dir.mkdir image_path if !Dir.exist?(image_path)
-    images = []
-    image_urls.each do |image_url|
-      extn = File.extname  image_url
-      image_name = Digest::MD5.hexdigest(image_url) + extn
-      if File.exist? "#{image_path}/#{image_name}"
-        images << "/images/#{image_name}"
+    path = "#{Rails.root}/public/images"
+    Dir.mkdir path if !Dir.exist?(path)
+    files = []
+    image_urls.each do |url|
+      res = RestClient.get(url)
+      content_type = res.headers[:content_type]
+      extn = Rack::Mime::MIME_TYPES.invert[content_type]
+      name = Digest::MD5.hexdigest(url) + extn
+      if File.exist? "#{path}/#{name}"
+        files << "/images/#{name}"
         next
       end
-      res = RestClient.get(image_url)
-      File.open("#{image_path}/#{image_name}", 'wb') { |f| f.write(res.body) }
-      images << "/images/#{image_name}"
+      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      files << "/images/#{name}"
     end
-    return images
+    return files
   end
 
   def self.download_files(file_urls)
-    file_path = "#{Rails.root}/public/files"
-    Dir.mkdir file_path if !Dir.exist?(file_path)
+    path = "#{Rails.root}/files/images"
+    Dir.mkdir path if !Dir.exist?(path)
     files = []
-    file_urls.each do |file_url|
-      extn = File.extname  file_url
-      file_name = Digest::MD5.hexdigest(file_url) + extn
-      if File.exist? "#{file_path}/#{file_name}"
-        images << "/images/#{image_name}"
+    file_urls.each do |url|
+      res = RestClient.get(url)
+      content_type = res.headers[:content_type]
+      extn = Rack::Mime::MIME_TYPES.invert[content_type]
+      name = Digest::MD5.hexdigest(url) + extn
+      if File.exist? "#{path}/#{name}"
+        files << "/files/#{name}"
         next
       end
-      res = RestClient.get(file_url)
-      File.open("#{file_path}/#{file_name}", 'wb') { |f| f.write(res.body) }
-      files << "/files/#{file_name}"
+      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      files << "/files/#{name}"
     end
     return files
   end
 
 
   def self.download_audio_videos(urls)
-    file_path = "#{Rails.root}/public/audio_videos"
-    Dir.mkdir file_path if !Dir.exist?(file_path)
+    path = "#{Rails.root}/audio_videos/images"
+    Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
-      extn = File.extname  url
-      file_name = Digest::MD5.hexdigest(url) + extn
-      if File.exist? "#{file_path}/#{file_name}"
-        images << "/images/#{image_name}"
+      res = RestClient.get(url)
+      content_type = res.headers[:content_type]
+      extn = Rack::Mime::MIME_TYPES.invert[content_type]
+      name = Digest::MD5.hexdigest(url) + extn
+      if File.exist? "#{path}/#{name}"
+        files << "/audio_videos/#{name}"
         next
       end
-      image_res = RestClient.get(url)
-      File.open("#{file_name}/#{file_name}", 'wb') { |f| f.write(image_res.body) }
-      files << "/audio_videos/#{file_name}"
+      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      files << "/audio_videos/#{name}"
     end
     return files
   end
