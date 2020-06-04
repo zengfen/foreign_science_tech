@@ -30,7 +30,7 @@
           <strong>
             <% datas = JSON.parse(@data.attached_img_info) rescue [] %>
             <% datas.each do |data| %>
-              <a href="<%= data %>" class="block"><%= data %></a>
+              <a href="<%= data %>" target="_blank" class="block"><%= data %></a>
             <% end %>
           </strong>
         </li>
