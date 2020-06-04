@@ -1,5 +1,5 @@
 class SpidersController < ApplicationController
-  # before_action :logged_in_user
+  before_action :logged_in_user
   before_action :get_spider, only: %i[show show_info load_edit_form update destroy start stop start_cycle_task stop_cycle_task]
 
   def index
@@ -30,7 +30,7 @@ class SpidersController < ApplicationController
   end
 
   def load_edit_form
-  a = 1
+
   end
 
   def update
