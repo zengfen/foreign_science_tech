@@ -30,7 +30,7 @@
           <strong>
             <% datas = JSON.parse(@data.attached_img_info) rescue [] %>
             <% datas.each do |data| %>
-                <a href="<%= "#{Rails.root}/public/#{data}" %>">"<%= "#{Rails.root}/public/#{data}" %>"</a>
+                <a href="<%= "/#{data}" %>">"<%= "/#{data}" %>"</a>
             <% end %>
           </strong>
         </li>
