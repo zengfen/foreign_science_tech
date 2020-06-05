@@ -189,7 +189,7 @@
           xAxisName: '名称',
           yAxisName: '数量/条',
           seriesName: '爬虫采集统计', 
-          dataArray: <%= @spider_name_count.to_json %>
+          dataArray: <%== @spider_name_count.to_json %>
         }
       ].forEach(function(item) {
         renderTrendEchart($(item.selector)[0], item);
