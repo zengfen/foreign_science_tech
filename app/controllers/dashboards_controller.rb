@@ -23,7 +23,7 @@ class DashboardsController < ApplicationController
     @author_count = [] # 作者发布统计
     @spider_name_count = [] # 爬虫采集统计 按站点
     spider_every_day = TData.group("date(data_time)").select("date(data_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
-    spider_data_count = TData.group("date(con_time)").select("date(con_time),count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
+    spider_data_count = TData.group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
     @spider_name_count = TData.group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }
 
     # 多个作者的情况
