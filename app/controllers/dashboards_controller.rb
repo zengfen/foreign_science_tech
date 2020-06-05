@@ -2,15 +2,23 @@ class DashboardsController < ApplicationController
   before_action :logged_in_user
 
   def index
+    @total_data_count = TData.count
+    @today_count = TData.during(Date.today,Date.today).count
+    @last_week_count = TData.during(Date.today.at_beginning_of_week,Date.today).count
+    @last_month_count = TData.during(Date.today.at_beginning_of_month,Date.today).count
+    # 每天采集数据量 可以每天统计 当天的需要每两小时更新一次
+    # 网站每天发布的新闻 要每两小时统计一次
+    # 每天总的发布数量
 
-    @runing_count = 0
-    @total_data_count = 0
-    @today_count = 0
-    @last_week_count = 0
-    @last_month_count = 0
-    @news_count = 0
-    @media_count = 0
-    @ais_count = 0
+    # 计算每个站点每天发布的新闻
+    # 日期 2020-01-01 a 发布量3条  采集量4条
+    # 2020-01-02 a 4条
+    # 2020-01-01 b 4条
+    # 2020-01-02 b 5条
+
+    # 统计每个作者每天发布的新闻量
+    # 作者 a  发布量 2条
+
 
     # 本地图片未展示 日期选择范围是多长
     # 问题 采集量是按照新闻发布时间con_tim统计还是采集时间统计data_time  若con_tim 则需要更新

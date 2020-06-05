@@ -8,7 +8,7 @@
         <div class="statistic-group__icon"></div>
         <div class="statistic-group__content">
           <h6>今日采集量</h6>
-          <p>0</p>
+          <p><%= @today_count %></p>
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
         <div class="statistic-group__icon"></div>
         <div class="statistic-group__content">
           <h6>本周采集量</h6>
-          <p>3</p>
+          <p><%= @last_week_count %></p>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="statistic-group__icon"></div>
         <div class="statistic-group__content">
           <h6>本月采集量</h6>
-          <p>12</p>
+          <p><%= @last_month_count %></p>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
         <div class="statistic-group__icon"></div>
         <div class="statistic-group__content">
           <h6>总采集量</h6>
-          <p>235</p>
+          <p><%= @total_data_count %></p>
         </div>
       </div>
     </div>
@@ -47,11 +47,11 @@
   <form action="##" method="get" autocomplete="off" class="form-inline daterange-wrap">
     <div class="form-group">
       <div class="form-control-label">开始日期：</div>
-      <input type="text" name="start_date" value="<%= params[:start_date] %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
+      <input type="text" name="start_date" value="<%= params[:start_date].present? ? params[:start_date] : Date.today - 1.month %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
     </div>
     <div class="form-group">
       <div class="form-control-label">结束日期：</div>
-      <input type="text" name="end_date" value="<%= params[:end_date] %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
+      <input type="text" name="end_date" value="<%= params[:end_date].present? ? params[:end_date] : Date.today %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
     </div>
     <div class="form-group">
       <div class="form-control-label">&nbsp;</div>
