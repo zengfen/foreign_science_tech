@@ -6,7 +6,7 @@ class ReutersComScience
 
   def list(body)
 
-    RestClient.proxy = "http://192.168.16.1:1080/"
+    # RestClient.proxy = "http://192.168.16.1:1080/"
     tasks = []
     @headers = {
       "authority" => "www.reuters.com",
