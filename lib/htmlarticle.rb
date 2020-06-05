@@ -113,7 +113,7 @@ class Htmlarticle
     return desp_buff
   end
 
-
+  # 图片下载
   def self.download_images(image_urls)
     path = "#{Rails.root}/public/images"
     Dir.mkdir path if !Dir.exist?(path)
@@ -133,6 +133,7 @@ class Htmlarticle
     return files
   end
 
+  # 文件下载
   def self.download_files(file_urls)
     path = "#{Rails.root}/files/images"
     Dir.mkdir path if !Dir.exist?(path)
@@ -153,8 +154,9 @@ class Htmlarticle
   end
 
 
-  def self.download_audio_videos(urls)
-    path = "#{Rails.root}/audio_videos/images"
+  # 音视频下载
+  def self.download_medias(urls)
+    path = "#{Rails.root}/medias/images"
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
@@ -163,11 +165,11 @@ class Htmlarticle
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{path}/#{name}"
-        files << "/audio_videos/#{name}"
+        files << "/medias/#{name}"
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/audio_videos/#{name}"
+      files << "/medias/#{name}"
     end
     return files
   end
