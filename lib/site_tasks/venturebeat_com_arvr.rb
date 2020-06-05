@@ -1,16 +1,16 @@
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
 OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
-class VenturebeatComAi
+class VenturebeatComArvr
 	def initialize
-		@site = "VentureBeat-AI"
+		@site = "VentureBeat-ARVR"
 		@prefix = "https://venturebeat.com"
-		# RestClient.proxy = "http://10.119.12.234:1077/"
+		# RestClient.proxy = "http://10.119.12.234:1079/"
 	end
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://venturebeat.com/category/ai/"]
+			urls = ["https://venturebeat.com/category/arvr/"]
 			urls.each do |url|
 				body = {url:url}
 				tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -52,7 +52,6 @@ class VenturebeatComAi
 		end
 		image_urls = image_urls.compact.uniq
 		puts image_urls
-		Rails.logger.info "------------------------"
 		Rails.logger.info images = ::Htmlarticle.download_images(image_urls)
 		files = []
 		videos = []
