@@ -135,7 +135,7 @@ class Htmlarticle
 
   # 文件下载
   def self.download_files(file_urls)
-    path = "#{Rails.root}/files"
+    path = "#{Rails.root}/public/files"
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     file_urls.each do |url|
@@ -156,7 +156,7 @@ class Htmlarticle
 
   # 音视频下载
   def self.download_medias(urls)
-    path = "#{Rails.root}/medias"
+    path = "#{Rails.root}/public/medias"
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
