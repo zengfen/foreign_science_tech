@@ -1,14 +1,9 @@
 FROM ruby:2.5
-WORKDIR /test2
-COPY Gemfile /test2/Gemfile
-COPY Gemfile.lock /test2/Gemfile.lock
-# RUN bundle config mirror.https://rubygems.org https://gems.ruby-china.com \
-# RUN apt-get install libxslt-dev libxml2-dev
-# RUN gem install nokogiri -v '1.10.9'
-#  bundle config build.nokogiri --use-system-libraries
+WORKDIR /foreign_science_tech
+COPY Gemfile /foreign_science_tech/Gemfile
+COPY Gemfile.lock /foreign_science_tech/Gemfile.lock
 RUN bundle install
-COPY . /test2
-ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
+COPY . /foreign_science_tech
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
