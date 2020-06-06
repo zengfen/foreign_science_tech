@@ -1,7 +1,6 @@
-class NikkeiComDeiveriess
-
+class NikkeiComDriverless
   def initialize
-    # RestClient.proxy = "http://192.168.50.1:1080/"
+  #  RestClient.proxy = "http://192.168.50.1:1080/"
     @site = "日本经济报-技术-自动驾驶"
     @prefix = "https://www.nikkei.com"
   end
@@ -11,10 +10,10 @@ class NikkeiComDeiveriess
       lk = "https://www.nikkei.com/technology/driverless/"
 
       str = RestClient.get(lk).body
-      doc = Nokogiri::HTML(str)
+      p doc = Nokogiri::HTML(str)
       doc.search("h3.m-miM09_title").each do |item|
         next if item.to_s.match("有料会員限定")
-        link = item.search("a")[0][:href] rescue nil
+        p link = item.search("a")[0][:href] rescue nil
         next if link.blank?
         link = @prefix + link if !link.match(/^http/)
         body = {link:link}
