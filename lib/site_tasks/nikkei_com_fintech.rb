@@ -1,4 +1,4 @@
-class NikkeiComEnergy
+class NikkeiComFintech
 
   def initialize
     # RestClient.proxy = "http://192.168.50.1:1080/"
