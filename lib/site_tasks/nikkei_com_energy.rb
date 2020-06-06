@@ -38,7 +38,7 @@ class NikkeiComEnergy
     puts ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     # []
-    image_urls = doc.search("div.cmnc-figure a img,div[style='cmnc-figure']>img").map{|x| x[:src]} rescue nil
+    p image_urls = doc.search('div.cmnc-figure img,div[style="cmnc-figure"] img').map{|x| x[:src]} rescue nil
     images = ::Htmlarticle.download_images(image_urls)
 
     p desp = doc.search("div.cmn-article_text").search("p").collect{|x| x.inner_text.strip}.join("\n")
