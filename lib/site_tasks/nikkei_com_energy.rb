@@ -1,4 +1,4 @@
-class NikkeiCom
+class NikkeiComEnergy
 
   def initialize
     # RestClient.proxy = "http://192.168.50.1:1080/"
@@ -8,7 +8,6 @@ class NikkeiCom
 
   def list(body)
     tasks = []
-
       lk = "https://www.nikkei.com/business/energy/"
 
       str = RestClient.get(lk).body
