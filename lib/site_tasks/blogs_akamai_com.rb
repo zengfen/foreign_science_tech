@@ -36,7 +36,7 @@ class BlogsAkamaiCom
     p image_urls = doc.search('.entry-content img').map{|x| x[:src]} rescue nil
     images = ::Htmlarticle.download_images(image_urls)
 
-    p desp = doc.search(".entry-content").search("p").collect{|x| x.inner_text.strip}.join("\n")
+    p desp = doc.search(".entry-content").search("p,h3,li").collect{|x| x.inner_text.strip}.join("\n")
     # html_content = doc.search("div.cmn-article_text").search("p,div").to_s
 
     files = []
