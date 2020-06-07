@@ -1,4 +1,5 @@
 FROM ruby:2.5
+RUN mkdir /foreign_science_tech
 WORKDIR /foreign_science_tech
 COPY Gemfile /foreign_science_tech/Gemfile
 COPY Gemfile.lock /foreign_science_tech/Gemfile.lock
