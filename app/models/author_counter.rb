@@ -16,4 +16,10 @@ class AuthorCounter < ApplicationRecord
     end
   end
 
+  def self.during(start_date, end_date)
+    self.where("current_date>=? and current_date <=?",start_date.strftime("%F%m%d"),end_date.strftime("%F%m%d"))
+  end
+
+
+
 end
