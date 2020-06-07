@@ -4,14 +4,14 @@ class SpidersController < ApplicationController
 
   def index
     opts = {}
-    opts[:spider_name] = params[:keyword] unless params[:keyword].blank?
+    opts[:spider_name] = params[:spider_name] unless params[:spider_name].blank?
     @spiders = Spider.where(opts).order('created_at desc').page(params[:page]).per(20)
     @spider = Spider.new
     @task_info = {}
     TSkJobInstance.all.each do |x|
       @task_info[x.spider_name] = {freq:"1day",next_time:Date.today}
     end
-    @total_count = {"RandOrg":"100"}.stringify_keys
+    @total_count = TData.group(:data_spidername).count
   end
 
   def show
