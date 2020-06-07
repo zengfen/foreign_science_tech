@@ -28,10 +28,10 @@ class DashboardsController < ApplicationController
     @spider_name_count = [] # 爬虫采集统计 按站点
     spider_every_day = TData.during(start_date,end_date).group("date(data_time)").select("date(data_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
     spider_data_count = TData.during(start_date,end_date).group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
-    @spider_name_count = TData.during(start_date,end_date).group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }.sort_by{|x| x[:value]}.reverse
+    @spider_name_count = TData.during(start_date,end_date).group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }.sort_by{|x| x[:value]}
 
     # 多个作者的情况
-    @author_count = AuthorCounter.during(start_date,end_date).group("author_name").select("author_name,count(*) count").map { |x| {name: x.author_name, value: x.count} }.sort_by{|x| x[:value]}.reverse
+    @author_count = AuthorCounter.during(start_date,end_date).group("author_name").select("author_name,count(*) count").map { |x| {name: x.author_name, value: x.count} }.sort_by{|x| x[:value]}
 
     spider_task_count = SpiderTask.during(start_date,end_date).group("date(created_at)").select("date(created_at) date,sum(current_task_count) task_count,sum(current_success_count) success_count").map { |x| {name: x.date.strftime("%F"), task_count: x.task_count, success_count: x.success_count} }
     (start_date..end_date).each do |date|
