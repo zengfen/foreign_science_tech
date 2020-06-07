@@ -20,6 +20,7 @@ class TData < CommonBase
   self.table_name = "t_data"
 
   after_destroy :delete_redis_data
+  after_save :update_author_counter
 
   def self.link_exist?(link)
     key = TData.t_datas_key
@@ -85,7 +86,7 @@ class TData < CommonBase
 
     if a.save
       $redis.sadd(key, md5_id)
-      # AuthorCount.process_author(task[:con_author],a.con_time) if task[:con_author].present?
+      # AuthorCounter.process_author(task[:con_author],a.con_time) if task[:con_author].present?
       return {type:"success"}
     else
       return {type:"error",message:a.errors.full_messages}
@@ -117,5 +118,20 @@ class TData < CommonBase
   def self.during(start_date, end_date)
     self.where(con_time: (start_date..end_date.end_of_day))
   end
+
+  def update_author_counter
+    authors = JSON.parse(self.con_author) rescue nil
+    return if authors.blank?
+    date = self.con_time.strftime("%Y%m%d")
+    authors.each do |author|
+      data = AuthorCounter.where(author_name:author,current_date:date).first
+      if data.present?
+        data.update(count:data.count + 1)
+      else
+        AuthorCounter.create(author_name:author,current_date:date,count:1)
+      end
+    end
+  end
+
 
 end
