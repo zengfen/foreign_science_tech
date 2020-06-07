@@ -128,7 +128,7 @@ class TData < CommonBase
       if data.present?
         data.update(count:data.count + 1)
       else
-        AuthorCounter.create(con_date:author,con_date:date,count:1)
+        AuthorCounter.create(con_author:author,con_date:date,count:1)
       end
     end
   end
