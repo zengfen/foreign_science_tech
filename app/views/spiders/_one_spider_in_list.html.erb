@@ -3,7 +3,7 @@
   <td><%= spider.status_cn %></td>
   <td><%= @total_count[spider.spider_name] || 0 %></td>
   <td><%= @task_info[spider.spider_name][:freq] rescue nil %></td>
-  <td><%= @task_info[spider.spider_name][:next_time] rescue nil %></td>
+  <td><%= spider.next_time rescue nil %></td>
   <!--<td><%#= link_to(fail_tasks_spider_task_path(id:spider.id)) do%>报警<%#end%></td>-->
   <td class="pos-r">
     <a href="##">

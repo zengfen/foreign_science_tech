@@ -48,6 +48,8 @@ class SpiderTask < ApplicationRecord
   has_many :subtasks, dependent: :destroy, foreign_key: :task_id
   belongs_to :spider
 
+  after_save :update_next_time
+
   TypeTaskWait = 0 # 未启动
   TypeTaskStart = 1 # 启动
   TypeTaskComplete = 2 # 完成
@@ -292,6 +294,17 @@ class SpiderTask < ApplicationRecord
     # # 检查任务状态，处理任务
     self.process_status
     return {type: "success", message: "任务暂停成功"}
+  end
+
+  def update_next_time
+    if self.task_type == CycleTask
+      spider = self.spider
+      instance = TSkJobInstance.where(spider_name:spider.spider_name).first
+      day = Date.tomorrow.strftime("%F")
+      time = instance.cron_hour.to_i.to_s + ":" + instance.cron_minutes.to_i.to_s
+      next_time = Time.parse("#{day} #{time}")
+      spider.update(next_time:next_time)
+    end
   end
 
 end

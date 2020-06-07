@@ -52,7 +52,11 @@ class SpidersController < ApplicationController
   def start_cycle_task
     job_instance = TSkJobInstance.where(spider_name:@spider.spider_name).first
     job_instance.init_instance_job
-    @spider.update(status:1)
+    day = Date.today.strftime("%F")
+    time = job_instance.cron_hour.to_i.to_s + ":" + job_instance.cron_minutes.to_i.to_s
+    time = Time.parse("#{day} #{time}")
+    next_time = Time.now > time ? time + 1.day : time
+    @spider.update(status:1,next_time:next_time)
     render json: {type:"success",message:'周期任务已开启！'}
   end
 
@@ -66,7 +70,7 @@ class SpidersController < ApplicationController
   private
 
   def spider_params
-    params.require(:spider).permit(:spider_name,:name_en)
+    params.require(:spider).permit(:spider_name,:name_en,:next_time)
   end
 
   def get_spider
