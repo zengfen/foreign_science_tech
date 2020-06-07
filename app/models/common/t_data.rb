@@ -122,13 +122,13 @@ class TData < CommonBase
   def update_author_counter
     authors = JSON.parse(self.con_author) rescue nil
     return if authors.blank?
-    date = self.con_time.strftime("%Y%m%d")
+    date = self.con_time.to_date
     authors.each do |author|
-      data = AuthorCounter.where(author_name:author,current_date:date).first
+      data = AuthorCounter.where(con_author:author).where(con_date:date).first
       if data.present?
         data.update(count:data.count + 1)
       else
-        AuthorCounter.create(author_name:author,current_date:date,count:1)
+        AuthorCounter.create(con_date:author,con_date:date,count:1)
       end
     end
   end

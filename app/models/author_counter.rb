@@ -4,20 +4,20 @@ class AuthorCounter < ApplicationRecord
     TData.where.not(con_author:["",nil,"[]"]).each do |x|
       authors = JSON.parse(x.con_author) rescue nil
       return if authors.blank?
-      date = x.con_time.strftime("%Y%m%d")
+      date = x.con_time.to_date
       authors.each do |author|
-        data = AuthorCounter.where(author_name:author,current_date:date).first
+        data = AuthorCounter.where(con_author:author).where(con_date:date).first
         if data.present?
           data.update(count:data.count + 1)
         else
-          AuthorCounter.create(author_name:author,current_date:date,count:1)
+          AuthorCounter.create(con_date:author,con_date:date,count:1)
         end
       end
     end
   end
 
   def self.during(start_date, end_date)
-    self.where("current_date>=? and current_date <=?",start_date.strftime("%F%m%d"),end_date.strftime("%F%m%d"))
+    self.where("con_date>=? and con_date <=?",start_date.to_date,end_date.to_date)
   end
 
 
