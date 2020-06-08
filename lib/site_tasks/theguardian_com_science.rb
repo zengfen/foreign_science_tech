@@ -2,7 +2,7 @@ class TheguardianComScience
 	def initialize
 		@site = "the guardian-science"
 		@prefix = "https://www.theguardian.com"
-		# RestClient.proxy = "http://10.119.12.234:1077/"
+		RestClient.proxy = "http://10.119.12.12:1077/"
 	end
 	def list(body)
 		tasks = []
@@ -48,19 +48,36 @@ class TheguardianComScience
 		desp = desp.gsub("How to listen to podcasts: everything you need to know","")
 		attached_media_info = []
 		doc.search("div.youtube-media-atom__iframe").each do |video|
+			if video["src"].include? "youtube"
+				src = video["src"]
+				Rails.logger.info video_id = src.to_s.split("embed/")[1].split("?")[0]
+				request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
+				request_res = RestClient.get(request_url)
+				urires = URI.decode(request_res.to_s)
+				Rails.logger.info "**"*100
+				# Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
+				# jsonres = JSON.parse(uriressplit)
+				Rails.logger.info video_url = urires.split('"url":"')[1].split('","mimeType"')[0]
+				Rails.logger.info viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
+				attached_media_info << viurl
+			else
+				attached_media_info << video["src"]
+			end
 			attached_media_info << "https://www.youtube.com/embed/"+video["data-asset-id"]
 		end
 		doc.search("div.podcast figure.podcast__player").each do |audio|
 			attached_media_info << audio["data-download-url"]
 		end
+		Rails.logger.info attached_media_info
+		attached_media_infos = ::Htmlarticle.download_medias(attached_media_info)
 		image_urls = []
 		doc.search("img.maxed.responsive-img,div.u-responsive-ratio img.gu-image").each do |img|
 			image_urls << img["src"]
 		end
-		# Rails.logger.info image_urls
+		Rails.logger.info image_urls
 		images = ::Htmlarticle.download_images(image_urls)
 		category = "新闻综合"
-		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images.compact.uniq, attached_media_info: attached_media_info.compact.uniq, category: category}
+		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images.compact.uniq, attached_media_info: attached_media_infos.compact.uniq, category: category}
 		Rails.logger.info task
 		info = ::TData.save_one(task)
     	return info
