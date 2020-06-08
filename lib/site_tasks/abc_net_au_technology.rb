@@ -10,7 +10,7 @@ class AbcNetAuTechnology
 
     str = RestClient.get(lk).body
     doc = Nokogiri::HTML(str)
-    doc.search("article .view-textlink").each do |item|
+    doc.search(".article-index li").each do |item|
       p link = "https://www.abc.net.au" + item.search("a")[0][:href] rescue nil
       body = {link:link}
       puts body.to_json
