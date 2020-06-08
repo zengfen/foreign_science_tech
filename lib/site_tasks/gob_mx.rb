@@ -5,7 +5,7 @@ class GobMx
 	def initialize
 		@site = "墨西哥航天局"
 		@prefix = "https://www.gob.mx"
-		RestClient.proxy = "http://192.168.112.1:1080/"
+		# RestClient.proxy = "http://192.168.112.1:1080/"
 	end
 	def list(body)
 		tasks = []
