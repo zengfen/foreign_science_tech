@@ -34,10 +34,16 @@ class LemondeFr
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
-    # link = "https://www.lemonde.fr/blog/lavventura/2020/06/08/la-belle-indifference-les-effets-neuro-psychiatriques-du-covid"
+    # link = "https://www.lemonde.fr/sciences/live/2020/05/27/spacex-en-direct-decollage-de-la-fusee-falcon-9-avec-deux-astronautes-americains-a-son-bord_6040965_1650684.html"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
-    title = doc.search("header.article__header h1.article__title")[0].inner_text.strip rescue nil
+    if doc.to_s.match("article__header")
+      puts title = doc.search("header.article__header h1.article__title")[0].inner_text.strip rescue nil
+    elsif doc.to_s.match("entry-header")
+      puts title = doc.search("header.entry-header h1.entry-title")[0].inner_text.strip rescue nil
+    elsif doc.to_s.match("js-title-live")
+      puts title = doc.search("h1#js-title-live")[0].inner_text.strip rescue nil
+    end
     if doc.to_s.match("og:article:published_time")
       timepublished = doc.search("meta[property='og:article:published_time']")[0]["content"]
       ts = Time.parse(timepublished).strftime("%Y-%m-%d %H:%M:%S") rescue nil
@@ -51,6 +57,9 @@ class LemondeFr
       desp,_ = ::Htmlarticle.get_html_content(params)
     elsif doc.to_s.match("entry-content")
       params = {doc:doc,content_selector:"div.entry-content",html_replacer:"p",content_rid_html_selector:"p>a||||p>strong"}
+      desp,_ = ::Htmlarticle.get_html_content(params)
+    elsif doc.to_s.match("js-facts-live")
+      params = {doc:doc,content_selector:"section#js-facts-live",html_replacer:"h2||||ul",content_rid_html_selector:""}
       desp,_ = ::Htmlarticle.get_html_content(params)
     end
 
