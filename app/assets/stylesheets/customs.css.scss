@@ -253,3 +253,27 @@ $color-highlight: #1ab394;
 .full-width {
   width: 100%;
 }
+
+.top-search-box {
+  box-shadow: 0 0 4px 0 rgba(0,0,0,.1);
+  border: 1px solid #e4e5e6;
+
+  .nav-tabs {
+    background-color: #f5f7fe;
+  }
+
+  .nav-tabs > li > a {
+    border-radius: 0;
+    border-top-color: transparent!important;
+    border-left-color: transparent!important;
+  }
+
+  .nav-tabs > li.active > a {
+    background-color: #fff;
+  }
+
+  .tab-pane {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
