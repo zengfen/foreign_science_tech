@@ -39,7 +39,7 @@ class ReutersComScience
       doc = Nokogiri::HTML(res.body)
       doc.search("div.column1 div.story-content a").each_with_index do |item,index|
         link = item["href"] rescue nil
-        link = @prefix + link if !link.match(/^http/)
+        link = "https://www.reuters.com/article" + link if !link.match(/^http/)
         body = {link:link}
 
         tasks << {mode:"item",body:URI.encode(body.to_json)}
