@@ -2,26 +2,71 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
-
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>任务列表</h5>
         </div>
-
         <div class="ibox-content pl15">
+          <div class="top-search-box pt-4">
+            <%= form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do %>
+              <div class="clear-p daterange-wrap">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="form-control-label">爬虫名：</div>
+                    <%=select_tag(:spider_id ,options_for_select(Spider.select("id,spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "不限",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="form-control-label">状态：</div>
+                    <%=select_tag(:status, options_for_select(SpiderTask::StatusList.invert.to_a, params["status"]),include_blank: "不限",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="form-control-label">模式：</div>
+                    <%=select_tag(:task_type, options_for_select(SpiderTask::TypesList.invert.to_a, params["task_type"]),include_blank: "不限",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="form-control-label">开始日期：</div>
+                    <input type="text" name="start_date" value="<%= params[:start_date].present? ? params[:start_date] : Date.today - 1.month %>" class="form-control datepicker-input" placeholder="开始日期" autocomplete="off">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="form-control-label">结束日期：</div>
+                    <input type="text" name="end_date" value="<%= params[:end_date].present? ? params[:end_date] : Date.today %>" class="form-control datepicker-input" placeholder="结束日期" autocomplete="off">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="form-control-label">&nbsp;</div>
+                    <input type="submit" class="btn btn-primary btn-warning w70" value="搜索">
+                    <div class="pull-right">
+                      <a class="btn btn-primary mb0 add-sql" href="javascript:void(0)">
+                        <i class="fa fa-plus"></i> 添加任务
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
           <div class="bg-search">
            <% form_url = params.permit(:task_type, :action).clone
             %>
           <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <div class="form-group mb0">
                     <%=select_tag(:spider_id ,options_for_select(Spider.select("id,spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "爬虫名",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <div class="form-group mb0">
                     <%=select_tag(:status, options_for_select(SpiderTask::StatusList.invert.to_a, params["status"]),include_blank: "状态",:class=>"form-control chosen-select")%>
                   </div>
@@ -57,26 +102,21 @@
           </div>
         </div>
         <div id="result_release">
-         
           <div class="ibox-content table-sql">
             <ul class="tab-ul clear-p">
-             <%# url = params.permit(:controller, :action,:keyword,:category).clone
-              %>
               <li class="tab-li active">
                 列表信息
               </li>
             </ul>
-
             <div class="ibox-content p15-0 all-page table-content">
               <%= render "list_body" %>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-    </div>
   </div>
+</div>
 
 <!--这里是提示框-->
 <div id="modal-form-remove" class="modal fade in" aria-hidden="true">
