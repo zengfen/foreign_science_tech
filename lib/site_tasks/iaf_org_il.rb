@@ -19,6 +19,7 @@ class IafOrgIl
       body = JSON.parse(URI.decode(body))
       puts url = body["url"]
       res = RestClient.get(url)
+      puts res.body
       doc = Nokogiri::HTML(res.body)
       doc.search("a.info-box__link,a.cards-container__card-link").each_with_index do |item|
         link = item["href"] rescue nil
