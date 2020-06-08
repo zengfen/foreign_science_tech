@@ -34,7 +34,7 @@ class LemondeFr
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
-    # link = "https://www.lemonde.fr/sciences/video/2020/06/04/des-parasites-vieux-de-512-millions-d-annees_6041733_1650684.html"
+    # link = "https://www.lemonde.fr/sciences/article/2020/06/02/francoise-baylis-la-pandemie-de-covid-19-nous-offre-un-miroir-grossissant-de-nos-inegalites_6041549_1650684.html"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("header.article__header h1.article__title")[0].inner_text.strip rescue nil
@@ -50,16 +50,18 @@ class LemondeFr
     images = ::Htmlarticle.download_images(image_urls)
 
     media_urls = []
-    src =  doc.search("meta[property='og:video']")[0]["content"]
-    video_id = src.to_s.split("embed/")[1].split("?")[0]
-    request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
-    request_res = RestClient.get(request_url)
-    urires = URI.decode(request_res.to_s)
-    # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
-    # jsonres = JSON.parse(uriressplit)
-    video_url = urires.split('"url":"')[1].split('","mimeType"')[0]
-    viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
-    media_urls << viurl
+    if doc.to_s.match("og:video")
+      src =  doc.search("meta[property='og:video']")[0]["content"]
+      video_id = src.to_s.split("embed/")[1].split("?")[0]
+      request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
+      request_res = RestClient.get(request_url)
+      urires = URI.decode(request_res.to_s)
+      # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
+      # jsonres = JSON.parse(uriressplit)
+      video_url = urires.split('"url":"')[1].split('","mimeType"')[0]
+      viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
+      media_urls << viurl
+    end
     medias = ::Htmlarticle.download_medias(media_urls)
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、生物及交叉技术、海洋科学技术、"
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_time: ts, con_text: desp,attached_img_info: images,category: category,attached_media_info:medias}
