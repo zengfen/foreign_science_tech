@@ -2,7 +2,7 @@ class LemondeFr
   def initialize
     @site = "france lemonde-science"
     @prefix = "https://www.lemonde.fr/sciences/"
-    RestClient.proxy = "http://192.168.16.1:1080/"
+    # RestClient.proxy = "http://192.168.16.1:1080/"
   end
 
   def list(body)
@@ -34,7 +34,7 @@ class LemondeFr
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
-    link = "https://www.lemonde.fr/blog/realitesbiomedicales/2020/06/03/un-bebe-ne-avec-deux-bouches-deux-langues-et-une-duplication-de-la-mandibule/"
+    # link = "https://www.lemonde.fr/blog/realitesbiomedicales/2020/06/03/un-bebe-ne-avec-deux-bouches-deux-langues-et-une-duplication-de-la-mandibule/"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     if doc.to_s.match("article__header")
