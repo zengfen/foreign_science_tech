@@ -23,7 +23,7 @@ class SmhComAuTechnology
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    link = "https://www.smh.com.au/technology/spacex-prototype-explosion-20200530-p54xx3.html"
+   # link = "https://www.smh.com.au/technology/spacex-prototype-explosion-20200530-p54xx3.html"
     puts res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search('h1[data-test="headline"]')[0].inner_text.strip rescue nil
