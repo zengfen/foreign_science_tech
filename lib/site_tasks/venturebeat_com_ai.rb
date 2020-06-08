@@ -57,8 +57,24 @@ class VenturebeatComAi
 		files = []
 		videos = []
 		doc.search("span.embed-youtube iframe.youtube-player").each do |video|
-			videos << video["src"]
+			if video["src"].include? "youtube"
+				src = video["src"]
+				Rails.logger.info video_id = src.to_s.split("embed/")[1].split("?")[0]
+				request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
+				request_res = RestClient.get(request_url)
+				Rails.logger.info urires = URI.decode(request_res.to_s)
+				Rails.logger.info "**"*100
+				# Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
+				# jsonres = JSON.parse(uriressplit)
+				Rails.logger.info video_url = urires.split('"url":"')[1].split('","mimeType"')[0]
+				Rails.logger.info video_url = URI.decode(video_url)
+				videos << video_url
+			else
+				videos << video["src"]
+			end
+			
 		end
+		# videos << "https://r2---sn-a5mlrn7z.googlevideo.com/videoplayback?expire=1591613266&ei=8sLdXs7qCoiskga_pbjYBg&ip=170.178.190.146&id=o-AOeqy4YoTdb66OUQw_Ymzzdcg7Y6bwuDIJR2hoQa4lJ9&itag=398&aitags=133,134,135,136,137,160,242,243,244,247,248,271,278,313,394,395,396,397,398,399&source=youtube&requiressl=yes&mh=ZS&mm=31,26&mn=sn-a5mlrn7z,sn-n4v7sney&ms=au,onr&mv=m&mvi=1&pl=24&initcwndbps=4010000&vprv=1&mime=video/mp4&gir=yes&clen=4305660&dur=77.099&lmt=1591516668804119&mt=1591591595&fvip=2&keepalive=yes&fexp=23882513&c=WEB&txp=5531432&sparams=expire,ei,ip,id,aitags,source,requiressl,vprv,mime,gir,clen,dur,lmt&sig=AOq0QJ8wRgIhAM8KGJQ3Qovtq-KfAC92ytu5y7oQaUSv0YuAWwT-GnI9AiEAt_gARKv9F5oii5P8W3Ut1r37XX3FXguI6Wrpkw9L5vw=&lsparams=mh,mm,mn,ms,mv,mvi,pl,initcwndbps&lsig=AG3C_xAwRgIhAMmBAPmJ6_-ENROE_h34TVf8w0dc16wzErTZG3efVQYHAiEAuelpWdb2UEOUf3YI2fhMWqntvanwUUEfJHi-7SZOGt4="
 		videos = videos.compact.uniq
 		Rails.logger.info videos
 		# Rails.logger.info "--------------"
