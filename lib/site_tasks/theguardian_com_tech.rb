@@ -4,6 +4,30 @@ class TheguardianComTech
 		@prefix = "https://www.theguardian.com"
 		# RestClient.proxy = "http://10.119.12.234:1077/"
 	end
+	# def list(body)
+	# 	tasks = []
+	# 	if body.blank?
+	# 		urls = ["https://www.theguardian.com/uk/technology"]
+	# 		urls.each do |url|
+	# 			body = {url:url}
+	# 			tasks << {mode:"list",body:URI.encode(body.to_json)}
+	# 		end
+	# 	else
+	# 		body = JSON.parse(URI.decode(body))
+	# 		url = body["url"]
+	# 		res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+	# 		doc = Nokogiri::HTML(res.body)
+	# 		doc.search("a.js-headline-text").each do |one|
+	# 			link = one["href"]
+	# 			link = @prefix + link if !link.match(/^http/)
+	# 			if link.include? "/technology/"
+	# 				body = {link:link}
+	# 				tasks << {mode:"item",body:URI.encode(body.to_json)}
+	# 			end
+	# 		end
+	# 	end
+	# 	return tasks
+	# end
 	def list(body)
 		tasks = []
 		if body.blank?
@@ -14,16 +38,20 @@ class TheguardianComTech
 			end
 		else
 			body = JSON.parse(URI.decode(body))
-			url = body["url"]
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
-			doc = Nokogiri::HTML(res.body)
-			doc.search("a.js-headline-text").each do |one|
-				link = one["href"]
-				link = @prefix + link if !link.match(/^http/)
-				if link.include? "/technology/"
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
+			page = 2
+			while page < 10
+				url = "https://www.theguardian.com/uk/technology?page=#{page}"
+				res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+				doc = Nokogiri::HTML(res.body)
+				doc.search("a.js-headline-text").each do |one|
+					link = one["href"]
+					link = @prefix + link if !link.match(/^http/)
+					if link.include? "/science/"
+						body = {link:link}
+						tasks << {mode:"item",body:URI.encode(body.to_json)}
+					end
 				end
+				page = page + 1
 			end
 		end
 		return tasks
