@@ -6,7 +6,7 @@ class AbcNetAuTechnology
 
   def list(body)
     tasks = []
-    lk = "https://www.abc.net.au/news/technology/?page=2"
+    lk = "https://www.abc.net.au/news/technology/"
 
     str = RestClient.get(lk).body
     doc = Nokogiri::HTML(str)
@@ -23,6 +23,7 @@ class AbcNetAuTechnology
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
+    link = "https://www.abc.net.au/news/2020-05-27/cabbage-tree-island-school-overlooked-with-homeschooling-tech/12288446?section=technology"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.title-padding-top-small")[0].inner_text.strip rescue nil
