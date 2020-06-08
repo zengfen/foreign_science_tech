@@ -5,7 +5,7 @@ class GobMx
 	def initialize
 		@site = "墨西哥航天局"
 		@prefix = "https://www.gob.mx"
-		# RestClient.proxy = "http://192.168.112.1:1080/"
+		RestClient.proxy = "http://192.168.112.1:1080/"
 	end
 	def list(body)
 		tasks = []
@@ -36,12 +36,12 @@ class GobMx
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
-		# link = "https://www.gob.mx/aem/es/articulos/dr-salvador-landeros-ayala-director-general-de-la-agencia-espacial-mexicana-integrante-del-consejo-consultivo-del-ift?idiom=es"
+		link = "https://www.gob.mx/aem/es/articulos/dr-salvador-landeros-ayala-director-general-de-la-agencia-espacial-mexicana-integrante-del-consejo-consultivo-del-ift?idiom=es"
 		res = RestClient.get(link).body
 		doc = Nokogiri::HTML(res)
 		title = doc.search("h1").inner_text.strip
-		ts = doc.search("section.border-box dd")[-1].to_s.gsub_html.to_s.gsub("enero","January").to_s.gsub("febrero","February").to_s.gsub("marzo","March").to_s.gsub("abril","April").to_s.gsub("mayo","May").to_s.gsub("junio","June").to_s.gsub("julio","July").to_s.gsub("agosto","August").to_s.gsub("septiembre","September").to_s.gsub("octubre","October").to_s.gsub("noviembre","November").to_s.gsub("diciembre","December").to_s.gsub("de","/").to_s.gsub(" ","") rescue nil
-	    time = Time.parse(ts).to_s rescue nil
+		ts = doc.search("section.border-box dd")[-1].inner_text.to_s.gsub("enero","January").to_s.gsub("febrero","February").to_s.gsub("marzo","March").to_s.gsub("abril","April").to_s.gsub("mayo","May").to_s.gsub("junio","June").to_s.gsub("julio","July").to_s.gsub("agosto","August").to_s.gsub("septiembre","September").to_s.gsub("octubre","October").to_s.gsub("noviembre","November").to_s.gsub("diciembre","December").to_s.gsub("de","/").to_s.gsub(" ","") rescue nil
+	    puts time = Time.parse(ts)
 	    # tt = Time.parse(time).to_i rescue nil
 	    # ts = Time.at(tt) rescue nil
 		author = []
@@ -49,7 +49,7 @@ class GobMx
 		# 	author << au.inner_text.strip
 		# end
 		# author = author.compact.uniq
-		desp = doc.search("div.article-body").to_s.gsub("</p","\n</p").to_s.gsub("</li","\n</li").to_s.gsub_html rescue nil
+		desp = doc.search("div.article-body").search("p,li").collect{|x| x.inner_text.strip}.join("\n")
 		videos = []
 	      if link.to_s.match("videos")
 	        puts id = doc.search("input.video-url").to_s.match(/value\=\"(.+?)\"/)[1]
