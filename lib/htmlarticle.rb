@@ -121,6 +121,7 @@ class Htmlarticle
     files = []
     extn = ""
     image_urls.each do |url|
+      next if url.blank?
       res = RestClient.get(url)
       style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
       style.each do |one|
