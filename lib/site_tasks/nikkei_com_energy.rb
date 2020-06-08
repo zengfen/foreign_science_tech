@@ -8,8 +8,10 @@ class NikkeiComEnergy
 
   def list(body)
     tasks = []
-      lk = "https://www.nikkei.com/business/energy/"
-
+    #  lk = "https://www.nikkei.com/business/energy/"
+    for i in 1..25
+      j = 20*i + 1
+      lk = "https://www.nikkei.com/business/energy/?bn=#{j}"
       str = RestClient.get(lk).body
       doc = Nokogiri::HTML(str)
       doc.search("h3.m-miM09_title").each do |item|
@@ -22,6 +24,7 @@ class NikkeiComEnergy
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
+    end
     return tasks
   end
 
