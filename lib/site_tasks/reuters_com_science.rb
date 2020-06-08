@@ -39,7 +39,7 @@ class ReutersComScience
       doc = Nokogiri::HTML(res.body)
       doc.search("div.column1 div.story-content a").each_with_index do |item,index|
         link = item["href"] rescue nil
-        link = @prefix + link if !link.match(/^http/)
+        link = "https://www.reuters.com/article" + link if !link.match(/^http/)
         body = {link:link}
 
         tasks << {mode:"item",body:URI.encode(body.to_json)}
@@ -81,10 +81,11 @@ class ReutersComScience
       end
     end
     medias = ::Htmlarticle.download_medias(media_urls)
+    category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、生物及交叉技术、海洋科学技术、"
     authors = []
     authors << doc.search("meta[name='Author']")[0]["content"].to_s
 
-    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_media_info:medias}
+    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,category: category,attached_media_info:medias}
     puts task.to_json
     # puts "====item==task==#{task}"
     info = ::TData.save_one(task)
