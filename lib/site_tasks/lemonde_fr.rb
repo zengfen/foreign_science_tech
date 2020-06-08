@@ -34,21 +34,41 @@ class LemondeFr
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
-    # link = "https://www.lemonde.fr/sciences/article/2020/06/02/francoise-baylis-la-pandemie-de-covid-19-nous-offre-un-miroir-grossissant-de-nos-inegalites_6041549_1650684.html"
+    # link = "https://www.lemonde.fr/blog/realitesbiomedicales/2020/06/03/un-bebe-ne-avec-deux-bouches-deux-langues-et-une-duplication-de-la-mandibule/"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
-    title = doc.search("header.article__header h1.article__title")[0].inner_text.strip rescue nil
-    timepublished = doc.search("meta[property='og:article:published_time']")[0]["content"]
-    ts = Time.parse(timepublished).strftime("%Y-%m-%d %H:%M:%S") rescue nil
+    if doc.to_s.match("article__header")
+      puts title = doc.search("header.article__header h1.article__title")[0].inner_text.strip rescue nil
+    elsif doc.to_s.match("entry-header")
+      puts title = doc.search("header.entry-header h1.entry-title")[0].inner_text.strip rescue nil
+    end
 
-    params = {doc:doc,content_selector:"section.article__wrapper>article.article__content",html_replacer:"h2||||p",content_rid_html_selector:"figure||||section"}
-    desp,_ = ::Htmlarticle.get_html_content(params)
-    desp
+    if doc.to_s.match("og:article:published_time")
+      timepublished = doc.search("meta[property='og:article:published_time']")[0]["content"]
+      ts = Time.parse(timepublished).strftime("%Y-%m-%d %H:%M:%S") rescue nil
+    else
+      timepublished = doc.search("meta[property='article:published_time']")[0]["content"]
+      ts = Time.parse(timepublished).strftime("%Y-%m-%d %H:%M:%S") rescue nil
+    end
+
+    if doc.to_s.match("article__content")
+      params = {doc:doc,content_selector:"section.article__wrapper>article.article__content",html_replacer:"h2||||p",content_rid_html_selector:"figure||||section"}
+      desp,_ = ::Htmlarticle.get_html_content(params)
+    elsif doc.to_s.match("entry-content")
+      params = {doc:doc,content_selector:"div.entry-content",html_replacer:"p",content_rid_html_selector:"p>a||||p>strong"}
+      desp,_ = ::Htmlarticle.get_html_content(params)
+    end
 
     image_urls = []
-    image_urls << doc.search("meta[property='twitter:image']")[0]["content"].to_s
-    images = ::Htmlarticle.download_images(image_urls)
-
+    if doc.to_s.match("twitter:image")
+      image_urls << doc.search("meta[property='twitter:image']")[0]["content"].to_s
+      images = ::Htmlarticle.download_images(image_urls)
+    else
+      doc.search("div.entry-content p a img").each do |img|
+        image_urls << img[:src]
+      end
+      images = ::Htmlarticle.download_images(image_urls)
+    end
     media_urls = []
     if doc.to_s.match("og:video")
       src =  doc.search("meta[property='og:video']")[0]["content"]

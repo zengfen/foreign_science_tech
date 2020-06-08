@@ -67,7 +67,7 @@ class TData < CommonBase
     if a.data_address.blank?
       error_message = "data_address is nil"
     end
-    if a.con_text.blank? && attached_file_info.blank?
+    if a.con_text.blank? && a.attached_file_info.blank?
       error_message = "con_text and attached_file_info is nil"
     end
     if a.con_time.blank?
