@@ -54,7 +54,7 @@ class RandOrg
     images = ::Htmlarticle.download_images(image_urls)
 
     files = doc.search("span.format-pdf a").map { |x| x["href"].match(/^http/) ? x["src"] : @prefix + x["href"] } rescue nil
-    authors = doc.search("div.js-column-height p.authors").inner_text.strip.gsub(/^by /i,"") rescue nil
+    authors = doc.search("div.js-column-height p.authors a").map{|x| x.inner_text.strip} rescue nil
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files}
     puts task
