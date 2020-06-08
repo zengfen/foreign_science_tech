@@ -29,7 +29,10 @@ class AbcNetAuScience
 
     p authors = doc.search('header span[data-component="Byline"] a').collect{|x| x.inner_text.strip}
     # authors << JSON.parse(doc.search('script[type="application/ld+json"]').inner_text)["author"]["name"]
-    ts = doc.search('meta[property="article:published_time"]')[0][:content]
+    ts = doc.search('meta[property="article:published_time"]')[0][:content] rescue nil
+    if ts == nil
+      ts = doc.search('mata[property="og:updated_time"]')[0][:content]
+    end
     puts ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     image_urls = []
