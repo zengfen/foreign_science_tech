@@ -20,12 +20,14 @@ class DataCentersController < ApplicationController
       opts = {}
       opts[:data_spidername] = params[:spider_name].to_s.strip if params[:spider_name].to_s.strip.present?
       opts[:website_name] = params[:website_name].to_s.strip if params[:website_name].to_s.strip.present?
-      opts[:con_author] = params[:con_author].to_s.strip if params[:con_author].to_s.strip.present?
+      # opts[:con_author] = params[:con_author].to_s.strip if params[:con_author].to_s.strip.present?
+      author_opt = ""
+      author_opt = "con_author like '%#{params[:con_author].to_s.strip}%'" if params[:con_author].to_s.strip.present?
       opts[:con_title] = params[:con_title].to_s.strip if params[:con_title].to_s.strip.present?
       start_date = params[:start_date].present? ? params[:start_date] : (Date.today - 1.month)
       end_date = params[:end_date].present? ? params[:end_date] : Time.now
       end_date = end_date.to_time.end_of_day > Time.now ? Time.now : end_date.to_time.end_of_day
-      datas = TData.during(start_date, end_date).where(opts)
+      datas = TData.during(start_date, end_date).where(opts).where(author_opt)
     end
     @datas = datas.order("con_time desc").page(@page).per(@per_page)
   end
