@@ -6,16 +6,18 @@ class BlogsAkamaiCom
 
   def list(body)
     tasks = []
-    lk = "https://blogs.akamai.com/"
+    for i in 2..50
+      lk = "https://blogs.akamai.com/index#{i}.html"
 
-    str = RestClient.get(lk).body
-    doc = Nokogiri::HTML(str)
-    doc.search("h2.post--title").each do |item|
-      p link = item.search("a")[0][:href] rescue nil
-      body = {link:link}
-      puts body.to_json
-      tasks << {mode:"item",body:URI.encode(body.to_json)}
-      # tasks << {mode:"item",body:body}
+      str = RestClient.get(lk).body
+      doc = Nokogiri::HTML(str)
+      doc.search("h2.post--title").each do |item|
+        p link = item.search("a")[0][:href] rescue nil
+        body = {link:link}
+        puts body.to_json
+        tasks << {mode:"item",body:URI.encode(body.to_json)}
+        # tasks << {mode:"item",body:body}
+      end
     end
     return tasks
   end

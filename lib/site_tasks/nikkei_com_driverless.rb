@@ -1,13 +1,17 @@
 class NikkeiComDriverless
   def initialize
-  #  RestClient.proxy = "http://192.168.50.1:1080/"
+    #  RestClient.proxy = "http://192.168.50.1:1080/"
     @site = "日本经济报-技术-自动驾驶"
     @prefix = "https://www.nikkei.com"
   end
 
   def list(body)
     tasks = []
-      lk = "https://www.nikkei.com/technology/driverless/"
+    lk = "https://www.nikkei.com/technology/driverless/"
+    for i in 1..25
+      j =i*20 + 1
+      lk = "https://www.nikkei.com/technology/driverless/?bn=#{i}"
+
 
       str = RestClient.get(lk).body
       p doc = Nokogiri::HTML(str)
@@ -21,6 +25,7 @@ class NikkeiComDriverless
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
+    end
     return tasks
   end
 
