@@ -1,14 +1,41 @@
 <% provide(:title, "Spiders") %>
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
-
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>爬虫列表</h5>
         </div>
-
         <div class="ibox-content pl15">
+          <div class="top-search-box">
+            <%= form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do %>
+              <div class="clear-p">
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <div class="form-control-label">爬虫名：</div>
+                    <select name="spider_name" class="chosen-select form-control">
+                      <option value="">不限</option>
+                      <% Spider.pluck(:spider_name).each do |spider_name| %>
+                        <option value="<%= spider_name%>"  <%= 'selected' if spider_name.to_s == params[:spider_name]%>><%= spider_name%></option>
+                      <% end %>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <div class="form-control-label">状态：</div>
+                    <%=select_tag(:status, options_for_select(Spider.status_list.invert.to_a, params["status"]),include_blank: "不限",:class=>"form-control chosen-select")%>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <div class="form-control-label">&nbsp;</div>
+                    <input type="submit" class="btn btn-primary btn-warning full-width" value="搜索">
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
           <div class="bg-search">
           <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:method=>:get do%>
               <div id="rcontent" class="clear-p">
