@@ -27,7 +27,7 @@ class DataCentersController < ApplicationController
       start_date = params[:start_date].present? ? params[:start_date] : (Date.today - 1.month)
       end_date = params[:end_date].present? ? params[:end_date] : Time.now
       end_date = end_date.to_time.end_of_day > Time.now ? Time.now : end_date.to_time.end_of_day
-      datas = TData.during(start_date, end_date).where(opts).where(author_opt)
+      datas = TData.during_con_time(start_date, end_date).where(opts).where(author_opt)
     end
     @datas = datas.order("con_time desc").page(@page).per(@per_page)
   end
