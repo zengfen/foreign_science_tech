@@ -28,7 +28,7 @@ class IafOrgIl
         "Sec-Fetch-Dest": "document",
         "Accept-Encoding": "deflate",
         "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7,ja;q=0.6,mt;q=0.5",
-        #Cookie: ASP.NET_SessionId=bbx3nmi3dz2xfkli1qpwfgt2; TS01262670=010f83961dc48a62a9fb5786b91fca5b20f4c9d3aefba19e4ef735cf30d80299f427c21e536ccd39e649008d1d926becc2d357dd722284aa9ce201727951d8f935e653eaad; _ga=GA1.3.1149211527.1591615818; _gid=GA1.3.1446511440.1591615818; __atuvc=1%7C24; __atuvs=5ede21764e3b8a0c000
+        "Cookie": "ASP.NET_SessionId=bbx3nmi3dz2xfkli1qpwfgt2; TS01262670=010f83961dc48a62a9fb5786b91fca5b20f4c9d3aefba19e4ef735cf30d80299f427c21e536ccd39e649008d1d926becc2d357dd722284aa9ce201727951d8f935e653eaad; _ga=GA1.3.1149211527.1591615818; _gid=GA1.3.1446511440.1591615818; __atuvc=1%7C24; __atuvs=5ede21764e3b8a0c000"
       }
       body = JSON.parse(URI.decode(body))
       puts url = body["url"]
