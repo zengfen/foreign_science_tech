@@ -116,6 +116,10 @@ class TData < CommonBase
 
 
   def self.during(start_date, end_date)
+    self.where(data_time: (start_date..end_date.end_of_day))
+  end
+
+  def self.during_con_time(start_date, end_date)
     self.where(con_time: (start_date..end_date.end_of_day))
   end
 
