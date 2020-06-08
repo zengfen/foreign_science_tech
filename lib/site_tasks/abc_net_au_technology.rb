@@ -6,7 +6,7 @@ class AbcNetAuTechnology
 
   def list(body)
     tasks = []
-    lk = "https://www.abc.net.au/news/technology/"
+    lk = "https://www.abc.net.au/news/technology/?page=2"
 
     str = RestClient.get(lk).body
     doc = Nokogiri::HTML(str)
