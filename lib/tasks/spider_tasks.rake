@@ -25,3 +25,12 @@ namespace :foreign_science_tech  do
 	end
 
 end
+# namespace :task  do
+
+#   namespace :spider do
+#     desc "This is for starting listen status job!"
+#     task :run => :environment do
+#       WashingtonpostCom.new.item('{"link":"https://www.washingtonpost.com/news/innovations/"}')
+#     end
+#   end
+# end
