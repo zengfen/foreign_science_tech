@@ -10,7 +10,7 @@
         <div class="ibox-content pl15">
           <div class="top-search-box pt-4">
             <%= form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do %>
-              <div class="clear-p daterange-wrap">
+              <div class="clear-p">
                 <div class="col-md-3">
                   <div class="form-group">
                     <div class="form-control-label">爬虫名：</div>
@@ -29,7 +29,8 @@
                     <%=select_tag(:task_type, options_for_select(SpiderTask::TypesList.invert.to_a, params["task_type"]),include_blank: "不限",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
-                <div class="col-md-3"></div>
+              </div>
+              <div class="clear-p daterange-wrap">
                 <div class="col-md-3">
                   <div class="form-group">
                     <div class="form-control-label">开始日期：</div>
