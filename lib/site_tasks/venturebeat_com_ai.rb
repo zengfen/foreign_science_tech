@@ -5,7 +5,7 @@ class VenturebeatComAi
 	def initialize
 		@site = "VentureBeat-AI"
 		@prefix = "https://venturebeat.com"
-		# RestClient.proxy = "http://10.119.12.234:1077/"
+		# RestClient.proxy = "http://10.119.12.12:1077/"
 	end
 	def list(body)
 		tasks = []
@@ -59,7 +59,9 @@ class VenturebeatComAi
 		doc.search("span.embed-youtube iframe.youtube-player").each do |video|
 			videos << video["src"]
 		end
+		videos = videos.compact.uniq
 		Rails.logger.info videos
+		# Rails.logger.info "--------------"
 		attached_media_info = ::Htmlarticle.download_medias(videos)
 		category = "人工智能"
 		# doc.search("")
