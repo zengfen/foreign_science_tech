@@ -4,6 +4,30 @@ class TheguardianComScience
 		@prefix = "https://www.theguardian.com"
 		# RestClient.proxy = "http://10.119.12.12:1077/"
 	end
+	# def list(body)
+	# 	tasks = []
+	# 	if body.blank?
+	# 		urls = ["https://www.theguardian.com/science"]
+	# 		urls.each do |url|
+	# 			body = {url:url}
+	# 			tasks << {mode:"list",body:URI.encode(body.to_json)}
+	# 		end
+	# 	else
+	# 		body = JSON.parse(URI.decode(body))
+	# 		url = body["url"]
+	# 		res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+	# 		doc = Nokogiri::HTML(res.body)
+	# 		doc.search("a.js-headline-text").each do |one|
+	# 			link = one["href"]
+	# 			link = @prefix + link if !link.match(/^http/)
+	# 			if link.include? "/science/"
+	# 				body = {link:link}
+	# 				tasks << {mode:"item",body:URI.encode(body.to_json)}
+	# 			end
+	# 		end
+	# 	end
+	# 	return tasks
+	# end
 	def list(body)
 		tasks = []
 		if body.blank?
@@ -14,16 +38,20 @@ class TheguardianComScience
 			end
 		else
 			body = JSON.parse(URI.decode(body))
-			url = body["url"]
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
-			doc = Nokogiri::HTML(res.body)
-			doc.search("a.js-headline-text").each do |one|
-				link = one["href"]
-				link = @prefix + link if !link.match(/^http/)
-				if link.include? "/science/"
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
+			page = 2
+			while page < 40
+				url = "https://www.theguardian.com/science?page=#{page}"
+				res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+				doc = Nokogiri::HTML(res.body)
+				doc.search("a.js-headline-text").each do |one|
+					link = one["href"]
+					link = @prefix + link if !link.match(/^http/)
+					if link.include? "/science/"
+						body = {link:link}
+						tasks << {mode:"item",body:URI.encode(body.to_json)}
+					end
 				end
+				page = page + 1
 			end
 		end
 		return tasks
@@ -77,7 +105,8 @@ class TheguardianComScience
 		Rails.logger.info image_urls
 		images = ::Htmlarticle.download_images(image_urls)
 		category = "新闻综合"
-		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images.compact.uniq, attached_media_info: attached_media_infos.compact.uniq, category: category}
+		attached_file_info = []
+		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images.compact.uniq, attached_media_info: attached_media_infos.compact.uniq, category: category, attached_file_info: attached_file_info}
 		Rails.logger.info task
 		info = ::TData.save_one(task)
     	return info
