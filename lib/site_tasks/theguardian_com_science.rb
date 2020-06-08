@@ -2,7 +2,7 @@ class TheguardianComScience
 	def initialize
 		@site = "the guardian-science"
 		@prefix = "https://www.theguardian.com"
-		RestClient.proxy = "http://10.119.12.12:1077/"
+		# RestClient.proxy = "http://10.119.12.12:1077/"
 	end
 	def list(body)
 		tasks = []
