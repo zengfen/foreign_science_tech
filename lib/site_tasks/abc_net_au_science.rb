@@ -39,16 +39,19 @@ class AbcNetAuScience
     end
     p image_urls
     images = ::Htmlarticle.download_images(image_urls)
-    # p za = doc.search("aside")[-1].to_s
-    # docc = Nokogiri::HTML(res.to_s.gsub("#{za}",""))
-    # p desp = docc.search("#body").search("p,h2,li").collect{|x| x.inner_text.strip}.join("\n")
     params = {doc:doc,content_selector:"#body",html_replacer:"p||||li||||h2",content_rid_html_selector:"aside"}
     desp,_ = ::Htmlarticle.get_html_content(params)
+    if desp.blank?
+      desp =doc.search(".comp-rich-text").search("p").collect{|x| x.inner_text.strip}.join("\n")
+    end
+
+    video = doc.search('a[href*=".mp3"]').collect{|x| x[:href]}
+    attached_media_info = ::Htmlarticle.download_medias(video)
 
     # html_content = doc.search("div.cmn-article_text").search("p,div").to_s
     files = []
     category = "新闻综合"
-    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
+    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info:attached_media_info}
     # puts task.to_json
     info = ::TData.save_one(task)
     return info
