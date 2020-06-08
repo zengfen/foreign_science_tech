@@ -9,7 +9,8 @@
         </div>
         <div class="ibox-content pl15">
           <div class="top-search-box pt-4">
-            <%= form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do %>
+            <% form_url = params.permit(:task_type, :action).clone %>
+            <%= form_tag url_for(form_url),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do %>
               <div class="clear-p">
                 <div class="col-md-3">
                   <div class="form-group">
@@ -56,51 +57,6 @@
                 </div>
               </div>
             <% end %>
-          </div>
-          <div class="bg-search">
-           <% form_url = params.permit(:task_type, :action).clone
-            %>
-          <%=form_tag url_for(form_url),:class=>"-form-horizontal",:method=>:get do%>
-              <div id="rcontent" class="clear-p">
-
-                <div class="col-md-3">
-                  <div class="form-group mb0">
-                    <%=select_tag(:spider_id ,options_for_select(Spider.select("id,spider_name").collect{|x| [x.spider_name, x.id]},params["spider_id"]),include_blank: "爬虫名",:class=>"form-control chosen-select")%>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group mb0">
-                    <%=select_tag(:status, options_for_select(SpiderTask::StatusList.invert.to_a, params["status"]),include_blank: "状态",:class=>"form-control chosen-select")%>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group mb0">
-                    <%=select_tag(:task_type, options_for_select(SpiderTask::TypesList.invert.to_a, params["task_type"]),include_blank: "模式",:class=>"form-control chosen-select")%>
-                  </div>
-                </div>
-
-                <div class="col-md-4 mb0">
-                  <div class="input-daterange input-group js-daterange" style="width: 100%">
-                    <input type="text" class="form-control" name="start_date" value="<%= params[:start_date] || (Date.today - 1.month).strftime("%F") %>" placeholder="开始时间" onfocus="this.blur()" date-picker>
-                    <span class="input-group-addon">-</span>
-                    <input type="text" class="form-control" name="end_date" value="<%= params[:end_date] || Date.today.strftime("%F") %>" placeholder="结束时间" onfocus="this.blur()" date-picker>
-                  </div>
-                </div>
-
-                <div class="ibox-tools dib">
-                  <input type="submit" class="btn btn-primary btn-warning w70 mb0" value="搜索">
-                  <!-- <a class="btn btn-primary btn-warning w70 mb0">
-                    搜索</a> -->
-                </div>
-
-                <div class="ibox-tools fr">
-                  <a class="btn btn-primary mb0 add-sql" href="#" style="display: inline-block ;float: left"><i class="fa fa-plus"></i>
-                    添加任务</a>
-                </div>
-
-              </div>
-
-          <%end%>
           </div>
         </div>
         <div id="result_release">
@@ -166,10 +122,18 @@
 </div>
 
 
+<%= render 'shared/bootstrap_datepicker' %>
 
-  <% content_for :javascript do %>
-    <script>
 
+<% content_for :javascript do %>
+  <script>
+    initDateRangePicker($('.daterange-wrap'));
+    $('.chosen-select').chosen({
+      width: "100%",
+      disable_search_threshold: 10,
+      search_contains: true,
+      no_results_text: "未匹配到关键词："
+    });
 $(document)
 
 .on("click",'.icon-more',function(e){
@@ -225,10 +189,9 @@ $(document)
    var $modal = $('#modal-form-remove');
       $modal.modal("hide");
 })
-  .on("click",".start-line",function(e){
-
+  .on("click",".start-line, .stop-line",function(e){
     e.preventDefault();
-    var $this = $(this),html = $this.closest('tr').find('td').first().html();
+    var $this = $(this);
     var url = $this.attr("href");
     if (url != "##") {
       $.ajax({
@@ -245,37 +208,10 @@ $(document)
           }else{
             toastr.error(data.message);
           }
-        }});
-    }
-
-
-  })
-
-.on("click",".stop-line",function(e){
-
-  e.preventDefault();
-  var $this = $(this),html = $this.closest('tr').find('td').first().html();
-  var url = $this.attr("href");
-  if (url != "##") {
-    $.ajax({
-      url: url,
-      type: 'POST',
-      processData: false,
-      dataType: 'json',
-      success:function(data){
-        if (data.type=="success"){
-          toastr.success(data.message);
-          setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
-            window.location.reload();;
-          }, 1000);
-        }else{
-          toastr.error(data.message);
         }
-      }});
-  }
-
-
-});
+      });
+    }
+  });
 
 $('.add-sql').on('click', function (e) {
   e.preventDefault();
@@ -351,7 +287,6 @@ var clipboard = new Clipboard('.keyword', {
     clipboard.on('error', function(e) {
       console.log(e);
     });
-     $('.chosen-select').chosen({width: "100%",disable_search_threshold: 10000,search_contains: true,no_results_text: "未匹配到关键词："});
 
 
 
@@ -369,6 +304,6 @@ var clipboard1 = new Clipboard('#copy_button');
      toastr.success("复制成功");
     });
 
-    </script>
-  <% end %>
+  </script>
+<% end %>
 
