@@ -16,9 +16,23 @@ class IafOrgIl
       end
     else
 
+      headers = {
+        "Host": "www.iaf.org.il",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-User": "?1",
+        "Sec-Fetch-Dest": "document",
+        "Accept-Encoding": "deflate",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7,ja;q=0.6,mt;q=0.5",
+        #Cookie: ASP.NET_SessionId=bbx3nmi3dz2xfkli1qpwfgt2; TS01262670=010f83961dc48a62a9fb5786b91fca5b20f4c9d3aefba19e4ef735cf30d80299f427c21e536ccd39e649008d1d926becc2d357dd722284aa9ce201727951d8f935e653eaad; _ga=GA1.3.1149211527.1591615818; _gid=GA1.3.1446511440.1591615818; __atuvc=1%7C24; __atuvs=5ede21764e3b8a0c000
+      }
       body = JSON.parse(URI.decode(body))
       puts url = body["url"]
-      res = RestClient.get(url)
+      res = RestClient.get(url,headers=headers)
       puts res.body
       doc = Nokogiri::HTML(res.body)
       doc.search("a.info-box__link,a.cards-container__card-link").each_with_index do |item|
