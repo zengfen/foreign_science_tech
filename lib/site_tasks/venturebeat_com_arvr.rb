@@ -61,13 +61,13 @@ class VenturebeatComArvr
 				Rails.logger.info video_id = src.to_s.split("embed/")[1].split("?")[0]
 				request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
 				request_res = RestClient.get(request_url)
-				Rails.logger.info urires = URI.decode(request_res.to_s)
+				urires = URI.decode(request_res.to_s)
 				Rails.logger.info "**"*100
 				# Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
 				# jsonres = JSON.parse(uriressplit)
 				Rails.logger.info video_url = urires.split('"url":"')[1].split('","mimeType"')[0]
-				Rails.logger.info video_url = URI.decode(video_url)
-				videos << video_url
+				Rails.logger.info viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
+				videos << viurl
 			else
 				videos << video["src"]
 			end
