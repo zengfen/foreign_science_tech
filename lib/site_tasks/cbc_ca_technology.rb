@@ -6,24 +6,34 @@ class CbcCaTechnology
 
   def list(body)
     tasks = []
-    lk = "https://www.cbc.ca/news/technology"
-
-    str = RestClient.get(lk).body
-    puts doc = Nokogiri::HTML(str)
-    doc.search("a.contentWrapper,a.cardDefault").each do |item|
-      link = "https://www.cbc.ca" + item[:href] rescue nil
-      body = {link:link}
-      puts body.to_json
-      tasks << {mode:"item",body:URI.encode(body.to_json)}
-      # tasks << {mode:"item",body:body}
+    #lk = "https://www.cbc.ca/news/technology"
+    for i in 2..50
+      lk = "https://www.cbc.ca/aggregate_api/v1/items?typeSet=cbc-ocelot&pageSize=28&page=#{i}&lineupSlug=news-technology&categorySlug=empty-category&source=Polopoly"
+      doc = JSON.parse(RestClient.get(lk))
+      doc.each do |one|
+        link = one["typeAttributes"]["url"]
+        body = {link:link}
+        puts body.to_json
+        tasks << {mode:"item",body:URI.encode(body.to_json)}
+      end
     end
+
+    # str = RestClient.get(lk).body
+    # puts doc = Nokogiri::HTML(str)
+    # doc.search("a.contentWrapper,a.cardDefault").each do |item|
+    #   link = "https://www.cbc.ca" + item[:href] rescue nil
+    #   body = {link:link}
+    #   puts body.to_json
+    #   tasks << {mode:"item",body:URI.encode(body.to_json)}
+    #   # tasks << {mode:"item",body:body}
+    # end
     return tasks
   end
 
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-   #link = "https://www.cbc.ca/news/technology/nodosaur-borealopelta-stomach-1.5600224"
+    #link = "https://www.cbc.ca/news/technology/nodosaur-borealopelta-stomach-1.5600224"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.detailHeadline")[0].inner_text.strip rescue nil
