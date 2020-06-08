@@ -3,7 +3,7 @@ OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
 OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
 class PcmagazineCoIlCategory
 	def initialize
-		@site = "电脑杂志"
+		@site = "电脑杂志-数据安全"
 		@prefix = "http://www.pcmagazine.co.il"
 		@headers = {
 			"user-agent" => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
