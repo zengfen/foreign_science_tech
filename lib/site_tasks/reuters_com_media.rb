@@ -1,4 +1,4 @@
-class
+class ReutersComMedia
   def initialize
     @site = "reuters-technology-media"
     @prefix = "https://www.reuters.com/news/media"
