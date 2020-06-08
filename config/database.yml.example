@@ -1,27 +1,67 @@
 default: &default
   adapter: mysql2
-  database: archon_center
-  username: root
-  password: 
+  username: <%= ENV["MYSQL_USER"] %>
+  password: <%= ENV["MYSQL_PASSWORD"] %>
   encoding: utf8
-  host: localhost
-  port: 3306
+  host: <%= ENV["MYSQL_HOST"] %>
+  port: <%= ENV["MYSQL_PORT"] %>
+  pool: 20
 
 development:
   <<: *default
+  database: <%= ENV["MYSQL_DATABASE"] %>
+
+test:
+  <<: *default
+  database: <%= ENV["MYSQL_DATABASE"] %>
+
 
 production:
   <<: *default
+  database: <%= ENV["MYSQL_DATABASE"] %>
 
 
-archon_data:
+common_data:
   adapter: mysql2
-  database: archon_fix
-  username: root
-  password: 
+  database: <%= ENV["MYSQL_COMMEN_DATABASE"] %>
+  username: <%= ENV["MYSQL_COMMEN_USER"] %>
+#  password: <%= ENV["MYSQL_COMMEN_PASSWORD"] %>
+  password:
   encoding: utf8
-  host: 172.16.17.165
-  port:  4000
-  pool: 10
+  host: <%= ENV["MYSQL_COMMEN_HOST"] %>
+  port: <%= ENV["MYSQL_COMMEN_PORT"] %>
+  timeout: 20
 
 
+#default: &default
+#  adapter: mysql2
+#  username: root
+#  password:
+#  encoding: utf8
+#  host: localhost
+#  port: 3306
+#  pool: 20
+#
+#development:
+#  <<: *default
+#  database: foreign_science_tech
+#
+#test:
+#  <<: *default
+#  database: foreign_science_tech
+#
+#
+#production:
+#  <<: *default
+#  database: foreign_science_tech
+#
+#
+#common_data:
+#  adapter: mysql2
+#  database: foreign_science_tech
+#  username: root
+#  password:
+#  encoding: utf8
+#  host: localhost
+#  port: 3306
+#  timeout: 300
