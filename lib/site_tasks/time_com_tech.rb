@@ -1,10 +1,10 @@
-class TimeComScience
+class TimeComTech
 
   def initialize
-    @site = "TIME-科学类"
+    @site = "TIME-技术类"
     @prefix = "https://time.com"
     @header = {
-      "Accept": "application/json;pk=BCpkADawqM0o-V-C4Z1AjOWaDFoPHhRNu7wcR4zltUdJva5oAiic0atdA0ax1Uts9bWapryRm9mEXAMSnnoWXzp_LmZkafu2INGTCCMDagSB-1MfOcm8Jr63X27l_uXDciHVfirybCvk4Ex0",
+      "Accept": "application/json;pk=BCpkADawqM3_kyTsslnvH2gqqqa6B2vP3dUru2KSks5M8P-FJ1MCLR4zmFHNWRStrKpJrnGjpfOCmJOXEMlIyRBUR3U69B-_gnzmzzS4EgrDuDrKcri6KqEibQ8",
       "Accept-Encoding": "gzip, deflate, br",
       "Accept-Language": "zh-CN,zh;q=0.9,zh-TW;q=0.8,en-US;q=0.7,en;q=0.6",
       "Cache-Control": "no-cache",
@@ -18,7 +18,7 @@ class TimeComScience
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://time.com/section/science/"]
+      urls = ["https://time.com/section/tech/"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json
@@ -69,6 +69,8 @@ class TimeComScience
     media = []
     media_url = []
     doc.search('video').each do |item|
+      # videoId = item["data-video-id"]
+      # media << media_prefix + "#{videoId}"
       data_account = item["data-account"]
       videoId = item["data-video-id"]
       m_url = "https://edge.api.brightcove.com/playback/v1/accounts/" + "#{data_account}" + "/videos/" + "#{videoId}"

@@ -8,7 +8,7 @@ class IafOrgIl
 	def list(body)
     	tasks = []
     	if body.blank?
-      		urls = ["https://www.iaf.org.il/Templates/Shared/UserControls/Header/7229-he/IAF.aspx"]
+      		urls = ["https://www.iaf.org.il/9202-en/IAF.aspx"]
      		urls.each do |url|	
         		body = {url:url}
        			tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -19,8 +19,8 @@ class IafOrgIl
       		url = body["url"]
       		res = RestClient.get(url)
       		doc = Nokogiri::HTML(res.body)
-      		doc.search("div.grad_grey.link-wrapper").each_with_index do |item|
-        		link = item["onmouseover"].gsub("window.status='","").gsub("'","") rescue nil
+      		doc.search("a.info-box__link,a.cards-container__card-link").each_with_index do |item|
+        		link = item["href"] rescue nil
         		puts "链接"
         		puts link
         		body = {link:link}
@@ -37,23 +37,28 @@ class IafOrgIl
    	 	res = RestClient.get(link).body
     	doc = Nokogiri::HTML(res)
     	#获取标题	
-    	title = doc.search("h1.inner_page_header").inner_html.strip rescue nil
+    	title = doc.search("h1.titleHeader").inner_html.strip rescue nil
     	puts "标题"
     	puts title
+
     	#获取正文
-    	params = {doc:doc,content_selector:"span.full_list_link.h2_content_text||||div.inner_bit_page_text_holder",html_replacer:"h2||||h3||||div.line",content_rid_html_selector:""}
+    	params = {doc:doc,content_selector:"div.innerBox strong,div.innerBox p",html_replacer:"strong||||p",content_rid_html_selector:""}
     	desp,html_content = ::Htmlarticle.get_html_content(params)
     	puts "正文"
     	puts desp
 
     	# 获取图片
-    	image_urls = doc.search("div.inner_bit_page_pic_holder img").map { |x| x["src"].match(/^http/) ? x["src"] : @prefix + x["src"] } rescue nil
+    	image_urls = doc.search("img.oneImg").map { |x| x["src"].match(/^http/) ? x["src"] : @prefix + x["src"] } rescue nil
     	puts "图片链接"
     	puts image_urls
     	images = ::Htmlarticle.download_images(image_urls)
 
+    	#获取时间
+    	ts = Time.parse(doc.search("span.ctl00_ContentPlaceHolder1_ucEventLog_publishDate")) rescue nil
+    	puts "时间"
+    	puts ts
 
-    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_text:desp,attached_img_info: images}
+    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
     	puts "====item==task==#{task}"
 
     	info = ::TData.save_one(task)

@@ -173,5 +173,20 @@ class Htmlarticle
     end
     return files
   end
-
+  # m3u8下载
+  def self.download_m3u8(urls)
+    path = "#{Rails.root}/public/medias"
+    files = []
+    urls.each do |url|
+      res = RestClient.get(url)
+      name = Digest::MD5.hexdigest(url) + ".m3u8"
+      if File.exist? "#{path}/#{name}"
+        files << "/medias/#{name}"
+        next
+      end
+      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      files << "/medias/#{name}"
+    end
+    return files
+  end
 end
