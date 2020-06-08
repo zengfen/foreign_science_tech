@@ -66,7 +66,7 @@ class VenturebeatComArvr
 				"x-requested-with"=> "XMLHttpRequest",
 			}
 			
-			while page<50
+			while page<6
 				postdata = {
 					"action" => "channel_load_more",
 					"channel_nonce" => "87bc0f6988",
