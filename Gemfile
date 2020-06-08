@@ -87,3 +87,4 @@ gem 'mysql2'
 gem 'bulk_insert'
 
 gem 'rest-client'
+gem 'mechanize'
