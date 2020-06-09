@@ -1,4 +1,4 @@
-require 'watir'
+# require 'watir'
 require 'rss'
 class IafOrgIl
 	def initialize
