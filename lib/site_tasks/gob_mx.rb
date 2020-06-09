@@ -10,7 +10,7 @@ class GobMx
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive","https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/videos?idiom=es"]
+			urls = ["https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive&order=DESC&page=1","https://www.gob.mx/aem/archivo/prensa?idiom=es&order=DESC&page=1","https://www.gob.mx/aem/archivo/videos?idiom=es&order=DESC&page=1"]
 			urls.each do |url|
 				puts body = {url:url}
 				# tasks << {mode:"list",body:body}
@@ -49,7 +49,10 @@ class GobMx
 		# 	author << au.inner_text.strip
 		# end
 		# author = author.compact.uniq
-		desp = doc.search("div.article-body").search("p,li").collect{|x| x.inner_text.strip}.join("\n")
+		desp = doc.search("div.article-body").search("p,li").collect{|x| x.inner_text.strip}.join("\n") rescue ""
+		if desp == ""
+      		desp = doc.search("div.col-md-7").search("p,li").collect{|x| x.inner_text.strip}.join("\n") rescue ""
+    	end
 		videos = []
 	      if link.to_s.match("videos")
 	        puts id = doc.search("input.video-url").to_s.match(/value\=\"(.+?)\"/)[1]
