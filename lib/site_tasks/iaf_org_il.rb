@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
-# require 'watir'
 require 'rss'
->>>>>>> fa853b73ed80b7921c629f0fb3d0e7318628ac68
 class IafOrgIl
 	def initialize
 		@site = "以色列空军杂志-技术"
