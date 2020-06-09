@@ -35,7 +35,9 @@ class WashingtonpostComBusiness
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("header h1").inner_text.strip rescue nil
-
+    if title.blank?
+      title = doc.search("h1.title").inner_text.strip rescue nil
+    end
 
     authors = []
     authors = doc.search("div.author-names").search("a>span.author-name").map { |e| e.inner_text.strip }
