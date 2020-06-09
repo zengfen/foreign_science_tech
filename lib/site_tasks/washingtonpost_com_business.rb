@@ -2,6 +2,7 @@ class WashingtonpostComBusiness
 
   def initialize
     @site = "华盛顿邮报-科技"
+    @prefix = "https://www.washingtonpost.com"
   end
 
   def list(body)
