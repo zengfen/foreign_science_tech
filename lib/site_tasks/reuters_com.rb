@@ -26,10 +26,12 @@ class ReutersCom
       # "user-agent"=>"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
     }
     if body.blank?
-      urls = ["https://www.reuters.com/news/technology"]
-      urls.each do |url|
-        body = {url:url}
-        tasks << {mode:"list",body:URI.encode(body.to_json)}
+      for i in 1..100
+        urls = ["https://www.reuters.com/news/archive/technologynews?view=page&page=#{i}&pageSize=10"]
+        urls.each do |url|
+          body = {url:url}
+          tasks << {mode:"list",body:URI.encode(body.to_json)}
+        end
       end
     else
       body = JSON.parse(URI.decode(body))
