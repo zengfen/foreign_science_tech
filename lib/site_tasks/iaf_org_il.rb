@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 # require 'watir'
 require 'rss'
+>>>>>>> fa853b73ed80b7921c629f0fb3d0e7318628ac68
 class IafOrgIl
 	def initialize
 		@site = "以色列空军杂志-技术"
@@ -60,7 +63,8 @@ class IafOrgIl
     	puts "时间"
     	puts ts
 
-    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
+      category = "武器与毁伤防护技术"
+    	task = {data_address:link,website_name:@site,category:category, data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
     	puts "====item==task==#{task}"
 
     	info = ::TData.save_one(task)
