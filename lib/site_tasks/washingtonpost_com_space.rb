@@ -2,6 +2,7 @@ class WashingtonpostComSpace
 
   def initialize
     @site = "华盛顿邮报-科技-space"
+    @prefix = "https://www.washingtonpost.com"
   end
 
   def list(body)
@@ -17,8 +18,8 @@ class WashingtonpostComSpace
       url = body["url"]
       str = RestClient.get(url).body
       doc = Nokogiri::HTML(str)
-      doc.search("section#main-content div.story-headline>h2>a").each do |item|
-        link = item["href"] rescue nil
+      doc.search("section#main-content div.story-headline h2 a").each do |item|
+        link = item["href"] rescue ""
         next if link.blank?
         link = @prefix + link if !link.match(/^http/)
         body = {link:link}
