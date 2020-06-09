@@ -21,7 +21,6 @@ class TimeComTech
       urls = ["https://time.com/section/tech/"]
       urls.each do |url|
         body = {url:url}
-        puts body.to_json
         tasks << {mode:"list",body:URI.encode(body.to_json)}
       end
     else

@@ -10,7 +10,7 @@ class GobMx
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://www.gob.mx/aem/archivo/videos?idiom=es","https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive"]
+			urls = ["https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive","https://www.gob.mx/aem/archivo/videos?idiom=es"]
 			urls.each do |url|
 				puts body = {url:url}
 				# tasks << {mode:"list",body:body}
@@ -40,7 +40,7 @@ class GobMx
 		res = RestClient.get(link).body
 		doc = Nokogiri::HTML(res)
 		title = doc.search("h1").inner_text.strip
-		ts = doc.search("section.border-box dd")[-1].inner_text.to_s.gsub("enero","January").to_s.gsub("febrero","February").to_s.gsub("marzo","March").to_s.gsub("abril","April").to_s.gsub("mayo","May").to_s.gsub("junio","June").to_s.gsub("julio","July").to_s.gsub("agosto","August").to_s.gsub("septiembre","September").to_s.gsub("octubre","October").to_s.gsub("noviembre","November").to_s.gsub("diciembre","December").to_s.gsub("de","/").to_s.gsub(" ","") rescue nil
+		ts = doc.search("section.border-box").to_s.match(/\d+? de \w+? de 20\d{2}/).to_s.gsub("enero","January").to_s.gsub("febrero","February").to_s.gsub("marzo","March").to_s.gsub("abril","April").to_s.gsub("mayo","May").to_s.gsub("junio","June").to_s.gsub("julio","July").to_s.gsub("agosto","August").to_s.gsub("septiembre","September").to_s.gsub("octubre","October").to_s.gsub("noviembre","November").to_s.gsub("diciembre","December").to_s.gsub("de","/").to_s.gsub(" ","") rescue nil
 	    puts time = Time.parse(ts)
 	    # tt = Time.parse(time).to_i rescue nil
 	    # ts = Time.at(tt) rescue nil

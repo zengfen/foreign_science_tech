@@ -46,8 +46,16 @@ class YomiuriCoJp
     ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     # []
-    image_urls = doc.search("figure.wp-figure a").map{|x| @prefix + x[:href]} rescue nil
-    image_urls = image_urls.uniq
+    image_urls = doc.search("figure.wp-figure>a").map{|x| @prefix + x[:href]} rescue nil
+    if image_urls.blank?
+      image_urls = doc.search("figure.wp-caption>a").map{|x|
+        next if x[:href].blank?
+        @prefix + x[:href]
+      } rescue nil
+    end
+    if !image_urls.blank?
+      image_urls = image_urls.uniq
+    end
     images = ::Htmlarticle.download_images(image_urls)
 
     desp = doc.search("div.p-main-contents").search("p").collect{|x| x.inner_text.strip }.join("\n")
@@ -57,7 +65,7 @@ class YomiuriCoJp
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
     puts task.to_json
-    
+
     info = ::TData.save_one(task)
     return info
   end
