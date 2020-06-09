@@ -18,7 +18,8 @@ class TimeComTech
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://time.com/section/tech/"]
+      # urls = ["https://time.com/section/tech/"]
+      urls = ["https://time.com/section/tech/?page=1","https://time.com/section/tech/?page=2","https://time.com/section/tech/?page=3","https://time.com/section/tech/?page=4","https://time.com/section/tech/?page=5","https://time.com/section/tech/?page=6"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}
