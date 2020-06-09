@@ -63,6 +63,7 @@ class PcmagazineCoIlCategory
 		end
 		if au == ""
 			as = doc.search("div#articleBar span").to_s.match(/\>(.+?)\<br/)[1] rescue ""
+			as = "" if as.to_s.match("<a")
 			author << as if as != ""
 		end
 
