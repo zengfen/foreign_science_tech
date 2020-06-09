@@ -10,7 +10,7 @@ class GobMx
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive","https://www.gob.mx/aem/archivo/videos?idiom=es"]
+			urls = ["https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive","https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/videos?idiom=es"]
 			urls.each do |url|
 				puts body = {url:url}
 				# tasks << {mode:"list",body:body}
