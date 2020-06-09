@@ -56,6 +56,7 @@ class PcmagazineCoIlCategory
 	    # tt = Time.parse(time).to_i rescue nil
 	    # puts ts = Time.at(tt) rescue nil
 		author = []
+		au = doc.search("div#articleBar a").inner_text rescue ""
 		doc.search("div#articleBar a").each do |au|
 			au = au.inner_text.strip
 			author << au if au != ""
