@@ -27,7 +27,7 @@ class ReutersCom
     }
     if body.blank?
       for i in 1..30
-        urls = ["https://www.reuters.com/news/archive/technologynews?view=page&page=#{i}&pageSize=10"]
+        urls = ["https://www.reuters.com/news/technology"]
         urls.each do |url|
           body = {url:url}
           tasks << {mode:"list",body:URI.encode(body.to_json)}
