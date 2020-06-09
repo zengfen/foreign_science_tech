@@ -57,21 +57,20 @@ class TData < CommonBase
       return {type:"success",message:"数据已存在"}
     end
 
+
+    # 1、标题不为空，正文内容为空的（文字 视频 音频 文件都没有），可将正文内容设置为空字符串入库；
+    # 2、标题不为空，正文内容为文字 视频 音频 文件 中的任何一项或多项，都需要进行采集；
+    # 3、标题为空，正文内容不为空，可将标题内容设置为空字符串入库；
+
     error_message = nil
-    if a.con_title.blank?
-      error_message = "con_title is nil"
-    end
     if a.website_name.blank?
       error_message = "website_name is nil"
     end
     if a.data_address.blank?
       error_message = "data_address is nil"
     end
-    if a.con_text.blank? && a.attached_file_info.blank?
-      error_message = "con_text and attached_file_info is nil"
-    end
-    if a.con_time.blank?
-      error_message = "时间为空"
+    if a.con_title.blank? && a.con_text.blank? && a.attached_media_info.blank? && a.attached_img_info.blank? && a.attached_file_info.blank?
+      error_message = "con_title con_text attached_media_info attached_img_info attached_file_info are all nil"
     end
     if a.con_time.to_i > Time.now.to_i
       error_message = "时间大于当前"
