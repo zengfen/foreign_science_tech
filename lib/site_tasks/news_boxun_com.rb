@@ -8,16 +8,17 @@ class NewsBoxunCom
   def list(body)
     tasks = []
     if body.blank?
-      # urls = ["https://news.boxun.com/news/gb/finance/page1.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page2.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page3.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page4.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page5.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page6.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page7.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page8.shtml",
-      #         "https://news.boxun.com/news/gb/finance/page9.shtml",]
-      url = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
+      urls = ["https://news.boxun.com/news/gb/finance/page1.shtml",
+              "https://news.boxun.com/news/gb/finance/page2.shtml",
+              "https://news.boxun.com/news/gb/finance/page3.shtml",
+              "https://news.boxun.com/news/gb/finance/page4.shtml",
+              "https://news.boxun.com/news/gb/finance/page5.shtml",
+              "https://news.boxun.com/news/gb/finance/page6.shtml",
+              "https://news.boxun.com/news/gb/finance/page7.shtml",
+              "https://news.boxun.com/news/gb/finance/page8.shtml",
+              "https://news.boxun.com/news/gb/finance/page9.shtml",
+              "https://news.boxun.com/news/gb/finance/page10.shtml"]
+      # urls = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json

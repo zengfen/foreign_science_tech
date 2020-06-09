@@ -8,35 +8,25 @@ class YomiuriCoJp
   def list(body)
     tasks = []
     if body.blank?
-      # urls = ["https://www.yomiuri.co.jp/science/"]
-      # urls.each do |url|
-      #   body = {url:url}
-      #   puts body.to_json
-      #   tasks << {mode:"list",body:URI.encode(body.to_json)}
-      # end
-      for i in 1..10
-        url = "https://www.yomiuri.co.jp/y_ajax/latest_list/category/1562/1/1/20/#{i}/?action=latest_list&others=category%2F1562%2F1%2F1%2F20%2F#{i}%2F"
+      urls = ["https://www.yomiuri.co.jp/science/"]
+      urls.each do |url|
         body = {url:url}
+        puts body.to_json
         tasks << {mode:"list",body:URI.encode(body.to_json)}
       end
+      # for i in 1..10
+      #   url = "https://www.yomiuri.co.jp/y_ajax/latest_list/category/1562/1/1/20/#{i}/?action=latest_list&others=category%2F1562%2F1%2F1%2F20%2F#{i}%2F"
+      #   body = {url:url}
+      #   tasks << {mode:"list",body:URI.encode(body.to_json)}
+      # end
     else
-      body = JSON.parse(URI.decode(body))
-      puts url = body["url"]
-      str = RestClient.get(url).body
-      jres = JSON.parse(str)["contents"]
-      doc = Nokogiri::HTML(jres)
-      doc.search("article div.p-list-item__inner").each do |item|
-        link = item.search("h3>a")[0]["href"]
-        member = item.search("div.c-list-member-only").inner_text.strip
-        if !link.blank? && !member.include?("会員限定")
-          link = @prefix + link if !link.match(/^http/)
-          body = {link:link}
-          tasks << {mode:"item",body:URI.encode(body.to_json)}
-        end
-      end
-      # doc = Nokogiri::HTML(str)
-      # doc.search("ul.p-category-organization-sec-list li,ul.p-category-time-series-sec-list li").each do |item|
-      #   link = item.search("h3>a")[0]["href"] rescue nil
+      # body = JSON.parse(URI.decode(body))
+      # puts url = body["url"]
+      # str = RestClient.get(url).body
+      # jres = JSON.parse(str)["contents"]
+      # doc = Nokogiri::HTML(jres)
+      # doc.search("article div.p-list-item__inner").each do |item|
+      #   link = item.search("h3>a")[0]["href"]
       #   member = item.search("div.c-list-member-only").inner_text.strip
       #   if !link.blank? && !member.include?("会員限定")
       #     link = @prefix + link if !link.match(/^http/)
@@ -44,6 +34,19 @@ class YomiuriCoJp
       #     tasks << {mode:"item",body:URI.encode(body.to_json)}
       #   end
       # end
+      body = JSON.parse(URI.decode(body))
+      puts url = body["url"]
+      str = RestClient.get(url).body
+      doc = Nokogiri::HTML(str)
+      doc.search("ul.p-category-organization-sec-list li,ul.p-category-time-series-sec-list li").each do |item|
+        link = item.search("h3>a")[0]["href"] rescue nil
+        member = item.search("div.c-list-member-only").inner_text.strip
+        if !link.blank? && !member.include?("会員限定")
+          link = @prefix + link if !link.match(/^http/)
+          body = {link:link}
+          tasks << {mode:"item",body:URI.encode(body.to_json)}
+        end
+      end
     end
     return tasks
   end
