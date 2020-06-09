@@ -20,9 +20,14 @@
     <i class="icon_data_analysis icon-more"></i>
   </a>
   <ul class="more-ul dn">
-    <% if spider_task.can_start? %>
+    <% if spider_task.status == SpiderTask::TypeTaskWait %>
         <li class="bor-b">
           <a href="/spider_tasks/start_task?id=<%= spider_task.id %>" class="start-line">启动</a>
+        </li>
+    <% end %>
+    <% if spider_task.status == SpiderTask::TypeTaskStop %>
+        <li class="bor-b">
+          <a href="/spider_tasks/restart_task?id=<%= spider_task.id %>" class="start-line">重启</a>
         </li>
     <% end %>
     <% if spider_task.status == 1 %>

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       get 'fail_tasks'
       post 'start_task'
       post 'stop_task'
+      post 'restart_task'
     end
   end
 

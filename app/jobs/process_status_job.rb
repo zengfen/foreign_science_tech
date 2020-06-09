@@ -3,7 +3,7 @@ class ProcessStatusJob < ApplicationJob
 
   # def perform(spider_task_id)
   def perform(*args)
-    SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskStop,SpiderTask::TypeTaskReopen]).each do |spider_task|
+    SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskReopen]).each do |spider_task|
       puts "==spider_task_id====#{spider_task.id}="
       spider_task.process_status
     end

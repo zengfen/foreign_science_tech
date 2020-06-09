@@ -51,10 +51,5 @@ class Spider < ApplicationRecord
     end
   end
 
-  def self.update_complete(log_spider_id)
-    spider_name = TLogSpider.find(log_spider_id).spider_name
-    self.where(spider_name: spider_name).first.update(run_type: TypeTaskCompleted)
-
-  end
 
 end
