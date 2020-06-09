@@ -59,7 +59,6 @@ class NewsBoxunCom
 
     # []
     image_urls = doc.search('.F11 div[align="center"] img,.F11 img').map{|x|
-      puts x[:src]
       next if x[:src].blank?
       @prefix + x[:src] if !x[:src].match(/^http/)
     }
