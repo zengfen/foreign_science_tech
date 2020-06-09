@@ -68,7 +68,7 @@ class NewsBoxunCom
     # .F11 b,
     doc.search(".F11 script,.F11 noscript,.F11 tr td table,.F11 .dsq-brlink").remove
     doc.search(".F11 center")[0].remove
-    desp = doc.search(".F11").collect{|x| x.inner_text.strip }
+    desp = doc.search(".F11").collect{|x| x.inner_text.strip }.join("")
     media = doc.search(".F11 iframe").map { |e| e["src"] }
     # .to_s.gsub("BR","\n").to_s.inner_text.join("\n")
     files = []
