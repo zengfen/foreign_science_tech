@@ -19,7 +19,15 @@ class ApiController < ApplicationController
   def start_task
     spider_name = params[:spider_name]
     spider = Spider.where(spider_name:spider_name).first
-    res = spider.start_task(SpiderTask::RealTimeTask)
+    if spider.blank?
+      res = {type:"error",message:"找不到对应的爬虫"}
+      return render json: res
+    end
+    res,spider_task = spider.create_spider_task(SpiderTask::RealTimeTask)
+    if res[:type] == "error"
+      return render json: res
+    end
+    res = spider_task.start_task
     render json: res
   end
 
@@ -27,11 +35,20 @@ class ApiController < ApplicationController
   def stop_task
     spider_name = params[:spider_name]
     spider = Spider.where(spider_name:spider_name).first
-    res = spider.stop_task(SpiderTask::RealTimeTask)
-    render json: res
+    if spider.blank?
+      res = {type:"error",message:"找不到对应的爬虫"}
+      return render json: res
+    end
+    spider_task = spider.spider_tasks.where(status:SpiderTask::RealTimeTask).order(:created_at).last
+    if spider_task.blank?
+      res = {type:"error",message:"找不到对应的任务"}
+      return render json: res
+    end
+    res = spider_task.stop_task
+    if res[:type] == "error"
+      return render json: res
+    end
   end
-
-
 
 
 end
