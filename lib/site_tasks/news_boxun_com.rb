@@ -32,8 +32,8 @@ class NewsBoxunCom
       doc.search('a[href*="news\/gb\/finance\/"]').each do |item|
         link = item["href"] rescue nil
         # next if link.blank? && link.include?("finance/page")
-        puts !link.include?("finance/page")
-        puts link.blank?
+        # puts !link.include?("finance/page")
+        # puts link.blank?
         if !link.blank? && !link.include?("finance/page")
           link = @prefix + link if !link.match(/^http/)
           body = {link:link}
