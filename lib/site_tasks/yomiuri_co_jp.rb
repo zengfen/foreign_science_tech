@@ -13,7 +13,6 @@ class YomiuriCoJp
         body = {url:url}
         puts body.to_json
         tasks << {mode:"list",body:URI.encode(body.to_json)}
-        # tasks << {mode:"list",body:body}
       end
     else
       body = JSON.parse(URI.decode(body))
@@ -26,7 +25,6 @@ class YomiuriCoJp
         if !link.blank? && !member.include?("会員限定")
           link = @prefix + link if !link.match(/^http/)
           body = {link:link}
-          # puts body.to_json
           tasks << {mode:"item",body:URI.encode(body.to_json)}
         end
       end
