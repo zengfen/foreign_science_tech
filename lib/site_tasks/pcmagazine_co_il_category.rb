@@ -61,7 +61,7 @@ class PcmagazineCoIlCategory
 			au = au.inner_text.strip
 			author << au if au != ""
 		end
-		if author == ""
+		if au == ""
 			as = doc.search("div#articleBar span").to_s.match(/\>(.+?)\<br/)[1] rescue ""
 			author << as if as != ""
 		end
