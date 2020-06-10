@@ -61,10 +61,23 @@ class WashingtonpostComSpace
     media = []
     image_urls = []
     media_url = []
-    puts image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
-    if image != nil
-      image_urls << image
+    mm = doc.search("script").to_s.match(/globalContent\=(.*?)\}\}\}\}\;/)[1] + "}}}}" rescue nil
+    if !mm.blank?
+      JSON.parse(mm)["content_elements"].each do |item|
+        img_temp = item["additional_properties"]["originalUrl"] rescue nil
+        if !img_temp.blank?
+          image_urls << img_temp
+        end
+      end
     end
+    if image_urls.blank?
+      image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
+      if image != nil
+        image_urls << image
+      end
+    end
+    image_urls = image_urls.uniq
+    
     # image_urls = doc.search("figure img").map{|x| puts x["src"]} rescue nil
     # image_urls = image_urls.uniq
     # images = ::Htmlarticle.download_images(image_urls)
