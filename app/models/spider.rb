@@ -37,6 +37,17 @@ class Spider < ApplicationRecord
     self.spider_tasks.order(:created_at).last.status_cn rescue '未启动'
   end
 
+  def self.init_next_time
+    Spider.all.each do |x|
+      job_instance = TSkJobInstance.where(spider_name:x.spider_name).first
+      day = Date.today.strftime("%F")
+      time = job_instance.cron_hour.to_i.to_s + ":" + job_instance.cron_minutes.to_i.to_s
+      time = Time.parse("#{day} #{time}")
+      next_time = Time.now > time ? time + 1.day : time
+      x.update(status:1,next_time:next_time)
+    end
+  end
+
 
   #===========================================================
 
