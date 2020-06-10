@@ -5,7 +5,29 @@ class BbcComScience
 	def initialize
 		@site = "BBC-science"
 		@prefix = "https://www.bbc.com"
-		# RestClient.proxy = "http://10.119.12.12:1077/"
+		# RestClient.proxy = "http://10.119.12.2:1076/"
+	end
+	def list(body)
+		tasks = []
+		if body.blank?
+			urls = ["https://www.bbc.com/news/science_and_environment"]
+			urls.each do |url|
+				body = {url:url}
+				tasks << {mode:"list",body:URI.encode(body.to_json)}
+			end
+		else
+			body = JSON.parse(URI.decode(body))
+			url = body["url"]
+			res = RestClient.get(url)
+			doc = Nokogiri::HTML(res.body)
+			doc.search("a.gs-c-promo-heading").each do |one|
+				link = one["href"]
+				link = @prefix + link if !link.match(/^http/)
+				body = {link:link}
+				tasks << {mode:"item",body:URI.encode(body.to_json)}
+			end
+		end
+		return tasks
 	end
 	# def list(body)
 	# 	tasks = []
@@ -17,39 +39,17 @@ class BbcComScience
 	# 		end
 	# 	else
 	# 		body = JSON.parse(URI.decode(body))
-	# 		url = body["url"]
-	# 		res = RestClient.get(url)
-	# 		doc = Nokogiri::HTML(res.body)
-	# 		doc.search("a.gs-c-promo-heading").each do |one|
-	# 			link = one["href"]
-	# 			link = @prefix + link if !link.match(/^http/)
+	# 		url = "https://push.api.bbci.co.uk/p?t=morph://data/bbc-morph-lx-commentary-latest-data/about/88311b45-68f0-470b-b9f4-1b2dad901bec/limit/61/version/4.1.28&c=1"
+	# 		Rails.logger.info res = RestClient.get(url)
+	# 		res.to_s.split('{\"key\":\"').each do |one|
+	# 			Rails.logger.info key = one.to_s.split('",')[0].gsub('\\','').to_s rescue nil
+	# 			link = "https://www.bbc.com/news/science-environment-#{key}" rescue nil
 	# 			body = {link:link}
 	# 			tasks << {mode:"item",body:URI.encode(body.to_json)}
 	# 		end
 	# 	end
 	# 	return tasks
 	# end
-	def list(body)
-		tasks = []
-		if body.blank?
-			urls = ["https://www.bbc.com/news/science_and_environment"]
-			urls.each do |url|
-				body = {url:url}
-				tasks << {mode:"list",body:URI.encode(body.to_json)}
-			end
-		else
-			body = JSON.parse(URI.decode(body))
-			url = "https://push.api.bbci.co.uk/p?t=morph://data/bbc-morph-lx-commentary-latest-data/about/88311b45-68f0-470b-b9f4-1b2dad901bec/limit/61/version/4.1.28&c=1"
-			Rails.logger.info res = RestClient.get(url)
-			res.to_s.split('{\"key\":\"').each do |one|
-				Rails.logger.info key = one.to_s.split('",')[0].gsub('\\','').to_s rescue nil
-				link = "https://www.bbc.com/news/science-environment-#{key}" rescue nil
-				body = {link:link}
-				tasks << {mode:"item",body:URI.encode(body.to_json)}
-			end
-		end
-		return tasks
-	end
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		link = body["link"]
