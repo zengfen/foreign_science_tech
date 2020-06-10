@@ -186,7 +186,7 @@ class Htmlarticle
     return files
   end
   # m3u8下载
-  def self.download_m(urls)
+  def self.download_m3u8(urls)
     path = "#{Rails.root}/public/medias"
     files = []
     urls.each do |url|

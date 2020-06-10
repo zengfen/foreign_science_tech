@@ -8,10 +8,8 @@ class NikkeiComLeadingEdge
 
   def list(body)
     tasks = []
-    lk = "https://www.nikkei.com/technology/leading-edge/"
-    for i in 1..25
-      j = 20*i + 1
-      lk = "https://www.nikkei.com/technology/leading-edge/?bn=#{j}"
+      lk = "https://www.nikkei.com/technology/leading-edge/"
+
       str = RestClient.get(lk).body
       doc = Nokogiri::HTML(str)
       doc.search("h3.m-miM09_title").each do |item|
@@ -24,7 +22,6 @@ class NikkeiComLeadingEdge
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
-    end
     return tasks
   end
 

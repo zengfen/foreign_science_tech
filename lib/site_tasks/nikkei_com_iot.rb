@@ -8,10 +8,7 @@ class NikkeiComIot
 
   def list(body)
     tasks = []
-    lk = "https://www.nikkei.com/technology/iot/"
-    for i in 1..25
-      j = i*20 + 1
-      lk = "https://www.nikkei.com/technology/iot/?bn=#{j}"
+      lk = "https://www.nikkei.com/technology/iot/"
 
       str = RestClient.get(lk).body
       doc = Nokogiri::HTML(str)
@@ -25,7 +22,6 @@ class NikkeiComIot
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
-    end
     return tasks
   end
 
