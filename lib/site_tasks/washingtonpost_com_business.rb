@@ -48,7 +48,10 @@ class WashingtonpostComBusiness
     # 页面时间显示有问题:页面刷新后时区变化
     ts = doc.search('article div.display-date').inner_text rescue nil
     if ts.blank?
-      ts = doc.search("script").to_s.match(/"datePublished":"(.*?)",/)[1]
+      ts = doc.search("script").to_s.match(/"datePublished":"(.*?)",/)[1] rescue nil
+    end
+    if ts.blank?
+      return
     end
     ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
     # puts time = Time.parse(ts).to_s rescue nil

@@ -5,7 +5,33 @@ class VenturebeatComArvr
 	def initialize
 		@site = "VentureBeat-ARVR"
 		@prefix = "https://venturebeat.com"
-		# RestClient.proxy = "http://10.119.12.12:1077/"
+		# RestClient.proxy = "http://10.119.12.2:1076/"
+	end
+	def list(body)
+		tasks = []
+		if body.blank?
+			urls = ["https://venturebeat.com/category/arvr/"]
+			urls.each do |url|
+				body = {url:url}
+				tasks << {mode:"list",body:URI.encode(body.to_json)}
+			end
+		else
+			# puts "---------------#{body}"
+			body = JSON.parse(URI.decode(body))
+			url = body["url"]
+			# res = RestClient.get(url)
+			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+			doc = Nokogiri::HTML(res.body)
+			doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
+				link = one["href"]
+				link = @prefix + link if !link.match(/^http/)
+				if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
+					body = {link:link}
+					tasks << {mode:"item",body:URI.encode(body.to_json)}
+				end
+			end
+		end
+		return tasks
 	end
 	# def list(body)
 	# 	tasks = []
@@ -18,79 +44,53 @@ class VenturebeatComArvr
 	# 	else
 	# 		# puts "---------------#{body}"
 	# 		body = JSON.parse(URI.decode(body))
-	# 		url = body["url"]
-	# 		# res = RestClient.get(url)
-	# 		res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
-	# 		doc = Nokogiri::HTML(res.body)
-	# 		doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
-	# 			link = one["href"]
-	# 			link = @prefix + link if !link.match(/^http/)
-	# 			if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
-	# 				body = {link:link}
-	# 				tasks << {mode:"item",body:URI.encode(body.to_json)}
+	# 		# url = body["url"]
+	# 		url = "https://venturebeat.com/wp-admin/admin-ajax.php"
+	# 		page = 2
+	# 		header = {
+	# 			"authority"=> "venturebeat.com",
+	# 			"method"=> "POST",
+	# 			"path"=> "/wp-admin/admin-ajax.php",
+	# 			"scheme"=> "https",
+	# 			"accept"=> "application/json, text/javascript, */*; q=0.01",
+	# 			"accept-language"=> "zh-CN,zh;q=0.9",
+	# 			"content-length"=> "70",
+	# 			"content-type"=> "application/x-www-form-urlencoded; charset=UTF-8",
+	# 			"cookie"=> "__gads=ID=d3834bd5aa189eb8:T=1591005459:S=ALNI_MaJR2GrjFw6dh95gbtoTd2b5pfIaw; _fbp=fb.1.1591068631518.1079513295; _scp=1591077836537.2035036773; ac_user_id=acuyhpjytblkxz44468f7b2525249eec153ca23e5f7d3961b5e07dcaebd4b44152d2766ad107faa; __browsiUID=7e8ff057-01da-4b3f-a333-7c7535528618; __qca=P0-1427954703-1591078016906; _gid=GA1.2.1872026067.1591584027; _scs=1591584027090.242888378; __browsiSessionID=b4531375-94a1-4cfc-8d1f-fd41e65fadc6&true&false&DEFAULT&cn&desktop-1.39.3&false; bounceClientVisit3962v=N4IgNgDiBcIBYBcEQM4FIDMBBNAmAYnvgG4CmAdggK4BOpARqQIYIB0AxgPYC2R7LpAOacaATyJMaxGkRAAaEDRggQAXyA; mnet_session_depth=6%7C1591605638425; _ga_SCH1J7LNKY=GS1.1.1591605664.14.1.1591606004.0; _ga=GA1.2.1854386628.1591005305; _gat_UA-489886-1=1; GED_PLAYLIST_ACTIVITY=W3sidSI6IkdGMzciLCJ0c2wiOjE1OTE2MDYwODksIm52IjowLCJ1cHQiOjE1OTE2MDU4NjgsImx0IjoxNTkxNjA1ODY4fV0.",
+	# 			"origin"=> "https://venturebeat.com",
+	# 			"referer"=> "https://venturebeat.com/category/arvr/",
+	# 			"sec-fetch-dest"=> "empty",
+	# 			"sec-fetch-mode"=> "cors",
+	# 			"sec-fetch-site"=> "same-origin",
+	# 			"user-agent"=> "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
+	# 			"x-requested-with"=> "XMLHttpRequest",
+	# 		}
+			
+	# 		while page<6
+	# 			postdata = {
+	# 				"action" => "channel_load_more",
+	# 				"channel_nonce" => "87bc0f6988",
+	# 				"paged" => page,
+	# 				"channel" => "arvr"
+	# 			}
+	# 			res = RestClient.post(url,postdata,header=header).body
+	# 			jsonres = JSON.parse(res)
+	# 			jsonres.each do |json|
+	# 				# if json["time"].to_s.include? "2020"
+	# 					link = json["permalink"]
+	# 					link = @prefix + link if !link.match(/^http/)
+	# 					if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
+	# 						body = {link:link}
+	# 						tasks << {mode:"item",body:URI.encode(body.to_json)}
+	# 					end
+	# 					Rails.logger.info link
+	# 				# end
 	# 			end
+	# 			page = page + 1
 	# 		end
 	# 	end
 	# 	return tasks
 	# end
-	def list(body)
-		tasks = []
-		if body.blank?
-			urls = ["https://venturebeat.com/category/arvr/"]
-			urls.each do |url|
-				body = {url:url}
-				tasks << {mode:"list",body:URI.encode(body.to_json)}
-			end
-		else
-			# puts "---------------#{body}"
-			body = JSON.parse(URI.decode(body))
-			# url = body["url"]
-			url = "https://venturebeat.com/wp-admin/admin-ajax.php"
-			page = 2
-			header = {
-				"authority"=> "venturebeat.com",
-				"method"=> "POST",
-				"path"=> "/wp-admin/admin-ajax.php",
-				"scheme"=> "https",
-				"accept"=> "application/json, text/javascript, */*; q=0.01",
-				"accept-language"=> "zh-CN,zh;q=0.9",
-				"content-length"=> "70",
-				"content-type"=> "application/x-www-form-urlencoded; charset=UTF-8",
-				"cookie"=> "__gads=ID=d3834bd5aa189eb8:T=1591005459:S=ALNI_MaJR2GrjFw6dh95gbtoTd2b5pfIaw; _fbp=fb.1.1591068631518.1079513295; _scp=1591077836537.2035036773; ac_user_id=acuyhpjytblkxz44468f7b2525249eec153ca23e5f7d3961b5e07dcaebd4b44152d2766ad107faa; __browsiUID=7e8ff057-01da-4b3f-a333-7c7535528618; __qca=P0-1427954703-1591078016906; _gid=GA1.2.1872026067.1591584027; _scs=1591584027090.242888378; __browsiSessionID=b4531375-94a1-4cfc-8d1f-fd41e65fadc6&true&false&DEFAULT&cn&desktop-1.39.3&false; bounceClientVisit3962v=N4IgNgDiBcIBYBcEQM4FIDMBBNAmAYnvgG4CmAdggK4BOpARqQIYIB0AxgPYC2R7LpAOacaATyJMaxGkRAAaEDRggQAXyA; mnet_session_depth=6%7C1591605638425; _ga_SCH1J7LNKY=GS1.1.1591605664.14.1.1591606004.0; _ga=GA1.2.1854386628.1591005305; _gat_UA-489886-1=1; GED_PLAYLIST_ACTIVITY=W3sidSI6IkdGMzciLCJ0c2wiOjE1OTE2MDYwODksIm52IjowLCJ1cHQiOjE1OTE2MDU4NjgsImx0IjoxNTkxNjA1ODY4fV0.",
-				"origin"=> "https://venturebeat.com",
-				"referer"=> "https://venturebeat.com/category/arvr/",
-				"sec-fetch-dest"=> "empty",
-				"sec-fetch-mode"=> "cors",
-				"sec-fetch-site"=> "same-origin",
-				"user-agent"=> "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-				"x-requested-with"=> "XMLHttpRequest",
-			}
-			
-			while page<6
-				postdata = {
-					"action" => "channel_load_more",
-					"channel_nonce" => "87bc0f6988",
-					"paged" => page,
-					"channel" => "arvr"
-				}
-				res = RestClient.post(url,postdata,header=header).body
-				jsonres = JSON.parse(res)
-				jsonres.each do |json|
-					# if json["time"].to_s.include? "2020"
-						link = json["permalink"]
-						link = @prefix + link if !link.match(/^http/)
-						if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
-							body = {link:link}
-							tasks << {mode:"item",body:URI.encode(body.to_json)}
-						end
-						Rails.logger.info link
-					# end
-				end
-				page = page + 1
-			end
-		end
-		return tasks
-	end
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
@@ -136,7 +136,7 @@ class VenturebeatComArvr
 		Rails.logger.info videos
 		# Rails.logger.info "--------------"
 		attached_media_info = ::Htmlarticle.download_medias(videos)
-		category = "人工智能"
+		category = "平台技术,网络与信息技术,电子科技"
 		# doc.search("")
 		author = []
 		puts author << doc.search("div.article-byline a.author").inner_text.strip rescue nil
