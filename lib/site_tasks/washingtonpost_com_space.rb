@@ -34,6 +34,13 @@ class WashingtonpostComSpace
     puts link = body["link"]
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
+    ts = doc.search('article div.display-date').inner_text rescue nil
+    if ts.blank?
+      ts = doc.search("script").to_s.match(/"datePublished":"(.*?)",/)[1] rescue nil
+    end
+    if ts.blank?
+      return
+    end
     title = doc.search("header h1").inner_text.strip rescue nil
     if title.blank?
       title = doc.search("h1.title").inner_text.strip rescue nil
@@ -43,8 +50,8 @@ class WashingtonpostComSpace
     authors = doc.search("div.author-names").search("a>span.author-name").map { |e| e.inner_text.strip }
 
     # 页面时间显示有问题:页面刷新后时区变化
-    ts = doc.search('article div.display-date').inner_text rescue nil
-    ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
+
+    ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S") rescue nil
     # puts time = Time.parse(ts).to_s rescue nil
     # tt = Time.parse(time).to_i rescue nil
     # puts Time.at(tt)
