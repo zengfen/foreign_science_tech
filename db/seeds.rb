@@ -6,8 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-CommonBase.create_table
-User.create(email:"admin@test.com",name:"admin",password:"123456")
+if User.where(email: ENV["USER_NAME"]).blank?
+  User.create(email: ENV["USER_NAME"], name: ENV["USER_NAME"], password: ENV["USER_PASSWORD"])
+end
+
 
 
 

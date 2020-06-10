@@ -1,4 +1,6 @@
 FROM ruby:2.5
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir /foreign_science_tech
 WORKDIR /foreign_science_tech
 COPY Gemfile /foreign_science_tech/Gemfile
@@ -13,4 +15,4 @@ ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
 # Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# CMD ["rails", "server", "-b", "0.0.0.0"]
