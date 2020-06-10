@@ -1,6 +1,6 @@
 class SpiderTasksController < ApplicationController
   before_action :logged_in_user
-  before_action :get_spider_task, only: %i[destroy start_task stop_task fail_tasks]
+  before_action :get_spider_task, only: %i[destroy start_task stop_task fail_tasks restart_task]
 
 
   def index
@@ -45,6 +45,11 @@ class SpiderTasksController < ApplicationController
   def stop_task
     res = @spider_task.stop_task
     # @spider_task.process_status
+    render json: res
+  end
+
+  def restart_task
+    res = @spider_task.restart_task
     render json: res
   end
 

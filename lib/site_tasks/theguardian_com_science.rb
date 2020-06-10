@@ -38,7 +38,7 @@ class TheguardianComScience
 			end
 		else
 			body = JSON.parse(URI.decode(body))
-			page = 2
+			page = 1
 			while page < 40
 				url = "https://www.theguardian.com/science?page=#{page}"
 				res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)

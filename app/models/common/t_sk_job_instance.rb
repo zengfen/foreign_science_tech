@@ -15,13 +15,24 @@ class TSkJobInstance < CommonBase
     end
   end
 
+  def valid_time?
+    int_cron_minutes = self.cron_minutes.to_i.to_s
+    int_cron_hour = self.cron_hour.to_i.to_s
+    if int_cron_minutes == self.cron_minutes && int_cron_hour == self.cron_hour && int_cron_hour.to_i >=0  && int_cron_hour.to_i <= 23 && int_cron_minutes.to_i >= 0 && int_cron_minutes.to_i <= 59
+      return true
+    else
+      return false
+    end
+  end
+
   # 周期任务，调用此方法生成或更新cron定时任务
   def init_instance_job
     # 周期任务审核通过后且是有效数据，才能创建crontab任务
     # return if self.status_before_type_cast != 4 || self.is_deleted
     cron = Sidekiq::Cron::Job.find self.job_name
     if cron.blank?
-      time = "#{self.cron_minutes} #{self.cron_hour} * * * Asia/Shanghai"
+      return unless valid_time?
+      time = "#{self.cron_minutes.to_i.to_s} #{self.cron_hour.to_i.to_s} * * * Asia/Shanghai"
       cron = Sidekiq::Cron::Job.new(name: self.job_name, cron: time, class: 'TSkJobInstancesJob', args: {spider_name: self.spider_name}) if cron.blank?
       if cron.valid?
         cron.save
@@ -30,7 +41,11 @@ class TSkJobInstance < CommonBase
         Rails.logger.info cron.errors
       end
     else
-      cron.enque! if need_enque!
+      if valid_time?
+        cron.enque! if need_enque!
+      else
+        cron.destroy
+      end
     end
   end
 
@@ -53,4 +68,6 @@ class TSkJobInstance < CommonBase
     end
     job.destroy if job.present?
   end
+
+
 end

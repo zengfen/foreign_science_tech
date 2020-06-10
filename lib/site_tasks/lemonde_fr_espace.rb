@@ -1,14 +1,14 @@
-class LemondeFrCosmos
+class LemondeFrEspace
   def initialize
-    @site = "france lemonde-science-ASTRONOMIE"
-    @prefix = "https://www.lemonde.fr/cosmos/"
+    @site = "france  lemonde-science-espace"
+    @prefix = "https://www.lemonde.fr/espace/"
     # RestClient.proxy = "http://192.168.16.1:1080/"
   end
   def list(body)
 
     tasks = []
     if body.blank?
-      urls = ["https://www.lemonde.fr/cosmos/"]
+      urls = ["https://www.lemonde.fr/espace/"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}

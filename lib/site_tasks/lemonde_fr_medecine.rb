@@ -1,14 +1,14 @@
-class LemondeFrCosmos
+class LemondeFrMedecine
   def initialize
-    @site = "france lemonde-science-ASTRONOMIE"
-    @prefix = "https://www.lemonde.fr/cosmos/"
+    @site = "france  lemonde-science-medecine"
+    @prefix = "https://www.lemonde.fr/medecine/"
     # RestClient.proxy = "http://192.168.16.1:1080/"
   end
   def list(body)
 
     tasks = []
     if body.blank?
-      urls = ["https://www.lemonde.fr/cosmos/"]
+      urls = ["https://www.lemonde.fr/medecine/"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -92,7 +92,7 @@ class LemondeFrCosmos
       media_urls << viurl
     end
     medias = ::Htmlarticle.download_medias(media_urls)
-    category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、"
+    category = "生物及交叉技术、海洋科学技术"
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_time: ts, con_text: desp,attached_img_info: images,category: category,attached_media_info:medias}
     puts task.to_json
     #  "====item==task==#{task}"

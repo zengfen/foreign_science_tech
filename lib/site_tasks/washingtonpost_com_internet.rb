@@ -1,14 +1,14 @@
-class WashingtonpostComSpace
+class WashingtonpostComInternet
 
   def initialize
-    @site = "华盛顿邮报-科技-space"
+    @site = "华盛顿邮报-科技-网络"
     @prefix = "https://www.washingtonpost.com"
   end
 
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://www.washingtonpost.com/space/?itid=nb_hp_technology_space"]
+      urls = ["https://www.washingtonpost.com/internet-culture/"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -18,8 +18,8 @@ class WashingtonpostComSpace
       url = body["url"]
       str = RestClient.get(url).body
       doc = Nokogiri::HTML(str)
-      doc.search("section#main-content div.story-headline h2 a").each do |item|
-        link = item["href"] rescue ""
+      doc.search("section#main-content div.story-headline>h2>a").each do |item|
+        link = item["href"] rescue nil
         next if link.blank?
         link = @prefix + link if !link.match(/^http/)
         body = {link:link}
@@ -39,11 +39,17 @@ class WashingtonpostComSpace
       title = doc.search("h1.title").inner_text.strip rescue nil
     end
 
+
     authors = []
     authors = doc.search("div.author-names").search("a>span.author-name").map { |e| e.inner_text.strip }
-
+    if authors.blank?
+      authors = doc.search("div.author-byline>a").map { |e| e.inner_text.strip }
+    end
     # 页面时间显示有问题:页面刷新后时区变化
     ts = doc.search('article div.display-date').inner_text rescue nil
+    if ts.blank?
+      ts = doc.search("script").to_s.match(/"datePublished":"(.*?)",/)[1]
+    end
     ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
     # puts time = Time.parse(ts).to_s rescue nil
     # tt = Time.parse(time).to_i rescue nil
@@ -54,13 +60,24 @@ class WashingtonpostComSpace
     media = []
     image_urls = []
     media_url = []
-    puts image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
-    if image != nil
-      image_urls << image
+    image_urls = doc.search("img.zoom-in").map{|x| x["src"]} rescue nil
+    mm = doc.search("script").to_s.match(/globalContent\=(.*?)\}\}\}\}\;/)[1] + "}}}}" rescue nil
+    if !mm.blank?
+      JSON.parse(mm)["content_elements"].each do |item|
+        img_temp = item["additional_properties"]["originalUrl"] rescue nil
+        if !img_temp.blank?
+          image_urls << img_temp
+        end
+      end
     end
-    # image_urls = doc.search("figure img").map{|x| puts x["src"]} rescue nil
-    # image_urls = image_urls.uniq
-    # images = ::Htmlarticle.download_images(image_urls)
+    if image_urls.blank?
+      image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
+      if image != nil
+        image_urls << image
+      end
+    end
+    image_urls = image_urls.uniq
+    images = ::Htmlarticle.download_images(image_urls) rescue nil
 
     if doc.search("figure div.powa-skip").to_s.match("uuid")
       id1 = doc.search("figure div.powa-skip").to_s.match(/uuid\=\"(.+?)\"/)[1]
@@ -72,11 +89,10 @@ class WashingtonpostComSpace
       media_url << docc[0]["streams"][-1]["url"]
     end
     media = ::Htmlarticle.download_medias(media_url) rescue nil
-    images = ::Htmlarticle.download_images(image_urls) rescue nil
-
-    desp = doc.search("div.article-body").search("p,h2,li.pb-xs>span").collect{|x| x.inner_text.strip }.join("\n")
+    doc.search("div.signup-box-rr").remove
+    desp = doc.search("div.article-body>p,div.article-body h2,div.article-body li.pb-xs>span,article>p,article>h5,article>ul>li,div.article-body section>div>p").collect{|x| x.inner_text.strip }.join("\n")
     files = []
-    category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、"
+    category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
     puts task.to_json

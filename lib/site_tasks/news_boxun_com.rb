@@ -8,7 +8,17 @@ class NewsBoxunCom
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
+      urls = ["https://news.boxun.com/news/gb/finance/page1.shtml",
+              "https://news.boxun.com/news/gb/finance/page2.shtml",
+              "https://news.boxun.com/news/gb/finance/page3.shtml",
+              "https://news.boxun.com/news/gb/finance/page4.shtml",
+              "https://news.boxun.com/news/gb/finance/page5.shtml",
+              "https://news.boxun.com/news/gb/finance/page6.shtml",
+              "https://news.boxun.com/news/gb/finance/page7.shtml",
+              "https://news.boxun.com/news/gb/finance/page8.shtml",
+              "https://news.boxun.com/news/gb/finance/page9.shtml",
+              "https://news.boxun.com/news/gb/finance/page10.shtml"]
+      # urls = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json
@@ -21,10 +31,14 @@ class NewsBoxunCom
       doc = Nokogiri::HTML(str)
       doc.search('a[href*="news\/gb\/finance\/"]').each do |item|
         link = item["href"] rescue nil
-        next if link.blank?
-        link = @prefix + link if !link.match(/^http/)
-        body = {link:link}
-        tasks << {mode:"item",body:URI.encode(body.to_json)}
+        # next if link.blank? && link.include?("finance/page")
+        # puts !link.include?("finance/page")
+        # puts link.blank?
+        if !link.blank? && !link.include?("finance/page")
+          link = @prefix + link if !link.match(/^http/)
+          body = {link:link}
+          tasks << {mode:"item",body:URI.encode(body.to_json)}
+        end
       end
     end
     return tasks
@@ -44,15 +58,18 @@ class NewsBoxunCom
     ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     # []
-    image_urls = doc.search('.F11 div[align="center"] img').map{|x| x[:src]} rescue nil
+    image_urls = doc.search('.F11 div[align="center"] img,.F11 img').map{|x|
+      next if x[:src].blank?
+      @prefix + x[:src] if !x[:src].match(/^http/)
+    }
     image_urls = image_urls.uniq
     images = ::Htmlarticle.download_images(image_urls)
-    # if !image_urls.blank?
-    #   doc.search("")
-    # end
-    doc.search(".F11 center,.F11 script,.F11 noscript,.F11 b,.F11 tr td table,.F11 .dsq-brlink").remove
-    desp = doc.search(".F11").collect{|x| x.inner_text.strip }
-    media = doc.search(".F11 iframe").map { |e| e["src"] }
+    # .F11 b,
+    doc.search(".F11 script,.F11 noscript,.F11 tr td table,.F11 .dsq-brlink").remove
+    doc.search(".F11 center")[0].remove
+    desp = doc.search(".F11").collect{|x| x.inner_text.strip }.join("\n")
+    media = []
+    # media = doc.search(".F11 iframe").map { |e| e["src"] }
     # .to_s.gsub("BR","\n").to_s.inner_text.join("\n")
     files = []
     category = "新闻综合"

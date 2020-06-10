@@ -10,8 +10,6 @@ class ElectronicdesignCom
       "Cache-Control": "no-cache",
       "Cookie": "SPSI=af8237f08d40af202333cae2849df0d1; UTGv2=h4c3ba6cb3d735c2df9529d6bede617cef64; __gads=ID=4abd045fdaa7ac35:T=1591341428:S=ALNI_MYWUz4k1aFxqL06ukBoNLIpsKZKxw; _ga=GA1.2.555404389.1591341427; _gid=GA1.2.1483667478.1591341428; oly_enc_id=null; oly_anon_id=%22F-398b7c1c-524b-4948-a77c-090912aef499%22; BCSessionID=c2536f4f-4962-4484-a931-497e6a704554; hasLiveRampMatch=true; __adroll_fpc=152e6b29912e3bbbcac537c15b72501b-1591341438050; _fbp=fb.1.1591341442741.709406285; spcsrf=41a5c05b902e20954d4c02eb32204446; PRLST=QI; dpm_url_count=4; __ar_v4=45GZFZBG65GTZP2EESFCXP%3A20200605%3A2%7C3BQ2N447KNEODAIZTDTY2B%3A20200605%3A2%7CIXZC4QKE6BDSVNBBOX54JQ%3A20200605%3A2; adOtr=32USa088f4d; dpm_time_site=848.018",
       "authority": "www.electronicdesign.com",
-      # "Proxy-Connection": "keep-alive",
-      # "Upgrade-Insecure-Requests": "1",
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
     }
   end

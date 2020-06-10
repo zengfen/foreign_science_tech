@@ -18,7 +18,12 @@ class TimeComScience
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://time.com/section/science/"]
+      # urls = ["https://time.com/section/science/"]
+      urls = ["https://time.com/section/science/?page=1",
+              "https://time.com/section/science/?page=2",
+              "https://time.com/section/science/?page=3",
+              "https://time.com/section/science/?page=4",
+              "https://time.com/section/science/?page=5"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json
@@ -50,7 +55,7 @@ class TimeComScience
 
     authors = []
     authors_temp = doc.search("a.author-name")[0].inner_text.strip rescue nil
-    if authors_temp.include?("/ AP")
+    if !authors_temp.blank? && authors_temp.include?("/ AP")
       authors_temp = authors_temp.gsub(/\ \/\ AP/,"")
     end
     authors << authors_temp
