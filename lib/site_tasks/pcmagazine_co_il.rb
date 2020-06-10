@@ -56,12 +56,14 @@ class PcmagazineCoIl
 	    # tt = Time.parse(time).to_i rescue nil
 	    # puts ts = Time.at(tt) rescue nil
 		author = []
+		au = doc.search("div#articleBar a").inner_text rescue ""
 		doc.search("div#articleBar a").each do |au|
 			au = au.inner_text.strip
 			author << au if au != ""
 		end
-		if doc.search("div#articleBar span").to_s.match("<br")
+		if au == ""
 			as = doc.search("div#articleBar span").to_s.match(/\>(.+?)\<br/)[1] rescue ""
+			as = "" if as.to_s.match("<a")
 			author << as if as != ""
 		end
 
