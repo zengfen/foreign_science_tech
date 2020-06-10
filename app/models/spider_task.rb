@@ -49,6 +49,7 @@ class SpiderTask < ApplicationRecord
   belongs_to :spider
 
   after_save :update_next_time
+  after_destroy :delete_redis_data
 
   TypeTaskWait = 0 # 未启动
   TypeTaskStart = 1 # 启动
@@ -324,6 +325,14 @@ class SpiderTask < ApplicationRecord
       next_time = Time.parse("#{day} #{time}")
       spider.update(next_time:next_time)
     end
+  end
+
+  def delete_redis_data
+    key = Subtask.task_key(self.id)
+    success_key = Subtask.task_success_key(self.id)
+    error_key = Subtask.task_error_key(self.id)
+    pause_key = Subtask.task_pause_key(self.id)
+    $redis.del(key,success_key,error_key,pause_key)
   end
 
 end

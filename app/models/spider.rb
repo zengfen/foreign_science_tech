@@ -22,6 +22,7 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: {maximum: 50},
             uniqueness: {case_sensitive: false}
 
+  after_destroy :destroy_cron
 
   def self.status_list
     cn_hash = {0 => '未启动', 1 => '周期运行中', 2 => '已停止'}
@@ -51,5 +52,13 @@ class Spider < ApplicationRecord
     end
   end
 
+
+  def destroy_cron
+    instance = TSkJobInstance.where(spider_name:self.spider_name).first
+    return if instance.blank?
+    cron = Sidekiq::Cron::Job.find instance.job_name
+    cron.destroy if cron.present?
+    # instance.destroy
+  end
 
 end
