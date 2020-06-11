@@ -2,7 +2,7 @@ class BbcComTech
 	def initialize
 		@site = "BBC-science"
 		@prefix = "https://www.bbc.com"
-		RestClient.proxy = "http://10.119.12.2:1076/"
+		# RestClient.proxy = "http://10.119.12.2:1076/"
 	end
 	def list(body)
 		tasks = []
