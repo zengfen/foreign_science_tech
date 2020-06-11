@@ -1,5 +1,5 @@
-class TSkJobInstancesJob < ApplicationJob
-  queue_as :t_sk_job_instances
+class UncompletedTasksJob < ApplicationJob
+  queue_as :uncompleted_tasks
 
   def perform(*args)
     SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskReopen]).each do |spider_task|
