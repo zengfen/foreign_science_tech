@@ -2,9 +2,12 @@ class TSkJobInstancesJob < ApplicationJob
   queue_as :t_sk_job_instances
 
   def perform(*args)
-    SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskReopen]).each do |spider_task|
-      puts "==uncompleted_spider_task_id====#{spider_task.id}="
-      spider_task.process_status
+    spider_name = args[0]["spider_name"]
+    puts "==spider_name====#{spider_name}===="
+    spider = Spider.where(spider_name:spider_name).first
+    res,spider_task = spider.create_spider_task(SpiderTask::CycleTask)
+    if res[:type] == "success"
+      res2 = spider_task.start_task
     end
   end
 end
