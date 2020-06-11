@@ -1,0 +1,6 @@
+MonitorInstancesJob:
+  cron: '* */2 * * * Asia/Shanghai'
+  class: MonitorInstancesJob
+ProcessStatusJob:
+  cron: '*/1 * * * * Asia/Shanghai'
+  class: ProcessStatusJob
