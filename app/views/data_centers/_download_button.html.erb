@@ -1,0 +1,10 @@
+<div class="btn-group">
+  <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+    下载 <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/data_centers/download_excel.xls?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载XLS</a></li>
+    <li><a href="/data_centers/download_csv.csv?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载CSV</a></li>
+    <li><a href="/data_centers/download_txt?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载TXT</a></li>
+  </ul>
+</div>
