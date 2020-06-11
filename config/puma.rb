@@ -75,13 +75,13 @@ preload_app!
 
 before_fork do
   ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
-  PumaWorkerKiller.config do |config|
-    config.ram           = 2048 # mb
-    config.frequency     = 5    # seconds
-    config.percent_usage = 0.25
-    config.reaper_status_logs = false
-    config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds, or 12.hours if using Rails
-  end
-  PumaWorkerKiller.start
+  # PumaWorkerKiller.config do |config|
+  #   config.ram           = 2048 # mb
+  #   config.frequency     = 5    # seconds
+  #   config.percent_usage = 0.25
+  #   config.reaper_status_logs = false
+  #   config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds, or 12.hours if using Rails
+  # end
+  # PumaWorkerKiller.start
 end
 
