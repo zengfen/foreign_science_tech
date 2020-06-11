@@ -188,8 +188,8 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 3 * 3600,
-        :open_timeout => 3 * 3600
+        :timeout => 10 * 3600,
+        :open_timeout => 10 * 3600
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
