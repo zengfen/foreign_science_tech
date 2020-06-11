@@ -36,13 +36,15 @@ class TSkJobInstance < CommonBase
       cron = Sidekiq::Cron::Job.new(name: self.job_name, cron: time, class: 'TSkJobInstancesJob', args: {spider_name: self.spider_name}) if cron.blank?
       if cron.valid?
         cron.save
-        # cron.enque!     # 立即调用（执行）
       else
         Rails.logger.info cron.errors
       end
     else
       if valid_time?
-        cron.enque! if need_enque!
+        time = "#{self.cron_minutes.to_i.to_s} #{self.cron_hour.to_i.to_s} * * * Asia/Shanghai"
+        cron.cron = time
+        cron.save
+        # cron.enque! if need_enque!
       else
         cron.destroy
       end
