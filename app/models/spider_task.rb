@@ -174,7 +174,10 @@ class SpiderTask < ApplicationRecord
       if line["mode"] == "item"
         link = JSON.parse(URI.decode(line["body"])).values.find{|x| x.match(/^http/)} rescue nil
         exist = TData.link_exist?(link)
-        return {type: "success", message: "数据已存在"} if exist
+        if exist
+          self.update(current_success_count:self.current_success_count.to_i + 1)
+          return {type: "success", message: "数据已存在"}
+        end
       end
       model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
     rescue Exception => e
