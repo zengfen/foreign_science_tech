@@ -10,11 +10,11 @@
           <% is_fuzzy_search = params[:search_type] == "fuzzy" %>
           <div class="tabs-container top-search-box">
             <ul class="nav nav-tabs">
-              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
-                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
-              </li>
               <li class="<%= is_fuzzy_search ? 'active' : '' %>">
                 <a data-toggle="tab" href="#tab_search_form_2">模糊搜索</a>
+              </li>
+              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
+                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
               </li>
             </ul>
             <div class="tab-content">
