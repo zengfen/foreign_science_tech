@@ -18,8 +18,33 @@
               </li>
             </ul>
             <div class="tab-content">
+              <div id="tab_search_form_2" class="tab-pane fade <%= is_fuzzy_search ? 'active in' : '' %>">
+                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
+                  <input type="hidden" name="search_type" value="fuzzy">
+                  <div class="clear-p">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <div class="form-control-label">检索内容：</div>
+                        <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <div>
+                          <input type="submit" class="btn btn-primary btn-warning w100" value="模糊搜索">
+                          <div class="pull-right">
+                            <%= render 'download_button' %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <%end%>
+              </div>
               <div id="tab_search_form_1" class="tab-pane fade <%= is_fuzzy_search ? '' : 'active in' %>">
                 <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
+                  <input type="hidden" name="search_type" value="accurate">
                   <div class="clear-p daterange-wrap">
                     <div class="col-md-2">
                       <div class="form-group">
@@ -72,30 +97,6 @@
                         <div class="form-control-label">&nbsp;</div>
                         <div>
                           <input type="submit" class="btn btn-primary btn-warning w100" value="精确搜索">
-                          <div class="pull-right">
-                            <%= render 'download_button' %>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <%end%>
-              </div>
-              <div id="tab_search_form_2" class="tab-pane fade <%= is_fuzzy_search ? 'active in' : '' %>">
-                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
-                  <input type="hidden" name="search_type" value="fuzzy">
-                  <div class="clear-p">
-                    <div class="col-md-8">
-                      <div class="form-group">
-                        <div class="form-control-label">检索内容：</div>
-                        <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
-                       </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <div class="form-control-label">&nbsp;</div>
-                        <div>
-                          <input type="submit" class="btn btn-primary btn-warning w100" value="模糊搜索">
                           <div class="pull-right">
                             <%= render 'download_button' %>
                           </div>
