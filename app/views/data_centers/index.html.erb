@@ -73,6 +73,29 @@
                         <input type="submit" class="btn btn-primary btn-warning full-width" value="精确搜索">
                       </div>
                     </div>
+
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_excel.xls?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载xls</a>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_csv.csv?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载csv</a>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_txt?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载txt</a>
+                      </div>
+                    </div>
+
                   </div>
                 <%end%>
               </div>
