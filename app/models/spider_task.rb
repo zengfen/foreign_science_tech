@@ -145,7 +145,7 @@ class SpiderTask < ApplicationRecord
       current_spider_task = SpiderTask.find(self.id)
       if current_spider_task.status == TypeTaskStop && subtask_ids.present?
         $redis.sadd(pause_key,subtask_ids)
-        ProcessStatusJob.perform_now()
+        ProcessStatusJob.perform_later()
         return
       end
       if subtask_ids.blank?
@@ -274,7 +274,7 @@ class SpiderTask < ApplicationRecord
     key = Subtask.task_key(self.id)
     $redis.sadd(key, tasks) if tasks.present?
     self.update(status: TypeTaskStart)
-    ProcessStatusJob.perform_now(self.id)
+    ProcessStatusJob.perform_later(self.id)
     # self.process_start
   end
 
@@ -298,7 +298,7 @@ class SpiderTask < ApplicationRecord
     self.create_subtasks
     self.update(status: SpiderTask::TypeTaskStart, current_task_count: self.current_task_count + 1)
     # 检查任务状态，处理任务
-    ProcessStatusJob.perform_now(self.id)
+    ProcessStatusJob.perform_later(self.id)
     return {type:"success",message:"任务启动成功"}
   end
 
