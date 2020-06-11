@@ -67,7 +67,7 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">爬虫名：</div>
-                        <select name="spider_name" class="chosen-select form-control">
+                        <select name="spider_name" class="chosen-select form-control" data-placeholder="请选择">
                           <option value="">不限</option>
                           <% @spiders.map{|x| x[0]}.each do |spider_name| %>
                             <option value="<%= spider_name%>"  <%= 'selected' if spider_name.to_s == params[:spider_name]%>><%= spider_name%></option>
@@ -78,7 +78,7 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">网站名：</div>
-                        <select name="website_name" class="chosen-select form-control">
+                        <select name="website_name" class="chosen-select form-control" data-placeholder="请选择">
                           <option value="">不限</option>
                           <% @spiders.map{|x| x[1]}.each do |website_name| %>
                               <option value="<%= website_name%>"  <%= 'selected' if website_name.to_s == params[:website_name]%>><%= website_name%></option>
