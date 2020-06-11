@@ -2,6 +2,7 @@ class DataCentersController < ApplicationController
   before_action :logged_in_user
 
   def index
+    params[:search_type] = params[:search_type] || "fuzzy"
     @spiders = Spider.pluck(:spider_name, :name_en)
     @page = (params[:page] || 1).to_i
     @per_page = (params[:per_page] || 20).to_i

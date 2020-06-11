@@ -10,11 +10,11 @@
           <% is_fuzzy_search = params[:search_type] == "fuzzy" %>
           <div class="tabs-container top-search-box">
             <ul class="nav nav-tabs">
-              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
-                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
-              </li>
               <li class="<%= is_fuzzy_search ? 'active' : '' %>">
                 <a data-toggle="tab" href="#tab_search_form_2">模糊搜索</a>
+              </li>
+              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
+                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
               </li>
             </ul>
             <div class="tab-content">
@@ -67,35 +67,17 @@
                         <input type="text" name="con_title" value="<%= params[:con_title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
                       </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <div class="form-control-label">&nbsp;</div>
-                        <input type="submit" class="btn btn-primary btn-warning full-width" value="精确搜索">
+                        <div>
+                          <input type="submit" class="btn btn-primary btn-warning w100" value="精确搜索">
+                          <div class="pull-right">
+                            <%= render 'download_button' %>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <div class="form-control-label">&nbsp;</div>
-                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_excel.xls?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载xls</a>
-                      </div>
-                    </div>
-
-
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <div class="form-control-label">&nbsp;</div>
-                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_csv.csv?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载csv</a>
-                      </div>
-                    </div>
-
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <div class="form-control-label">&nbsp;</div>
-                        <a class="btn btn-primary btn-warning w70 mb0" value="下载" href="/data_centers/download_txt?start_date=<%=  params[:start_date]%>&end_date=<%= params[:end_date]%>&con_author=<%=  params[:con_author]%>&spider_name=<%=  params[:spider_name]%>&website_name=<%=  params[:website_name]%>&con_title=<%=  params[:con_title]%>">下载txt</a>
-                      </div>
-                    </div>
-
                   </div>
                 <%end%>
               </div>
@@ -109,10 +91,15 @@
                         <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
                        </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <div class="form-control-label">&nbsp;</div>
-                        <input type="submit" class="btn btn-warning full-width" value="模糊搜索">
+                        <div>
+                          <input type="submit" class="btn btn-primary btn-warning w100" value="模糊搜索">
+                          <div class="pull-right">
+                            <%= render 'download_button' %>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
