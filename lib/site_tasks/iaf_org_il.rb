@@ -1,3 +1,4 @@
+require 'rss'
 class IafOrgIl
 	def initialize
 		@site = "以色列空军杂志-技术"
@@ -8,26 +9,26 @@ class IafOrgIl
 	def list(body)
     	tasks = []
     	if body.blank?
-      		urls = ["https://www.iaf.org.il/9202-en/IAF.aspx"]
-     		urls.each do |url|	
+      		urls = ["https://www.iaf.org.il/5045-en/IAF.aspx"]
+     		  urls.each do |url|	
         		body = {url:url}
-       			tasks << {mode:"list",body:URI.encode(body.to_json)}
+        			tasks << {mode:"list",body:URI.encode(body.to_json)}
        			# tasks << {mode:"list",body:body}
       		end
     	else
     		body = JSON.parse(URI.decode(body))
       		url = body["url"]
-      		res = RestClient.get(url)
-      		doc = Nokogiri::HTML(res.body)
-      		doc.search("a.info-box__link,a.cards-container__card-link").each_with_index do |item|
-        		link = item["href"] rescue nil
+          res = RestClient.get(url).body
+          doc = Nokogiri::XML(res, nil, 'utf-8')
+          doc.search("item").each do |item|
+        		link = item.search("link").inner_text rescue nil
         		puts "链接"
-        		puts link
+        		puts link 
         		body = {link:link}
         		tasks << {mode:"item",body:URI.encode(body.to_json)}
         		# tasks << {mode:"item",body:body}
       		end
-      	end
+      end
     	return tasks
 	end
 
@@ -54,11 +55,12 @@ class IafOrgIl
     	images = ::Htmlarticle.download_images(image_urls)
 
     	#获取时间
-    	ts = Time.parse(doc.search("span.ctl00_ContentPlaceHolder1_ucEventLog_publishDate")) rescue nil
+    	ts = Time.parse(doc.search("span#ctl00_ContentPlaceHolder1_ucEventLog_publishDate")) rescue nil
     	puts "时间"
     	puts ts
 
-    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
+      category = "武器与毁伤防护技术"
+    	task = {data_address:link,website_name:@site,category:category, data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
     	puts "====item==task==#{task}"
 
     	info = ::TData.save_one(task)

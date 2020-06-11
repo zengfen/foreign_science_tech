@@ -6,7 +6,7 @@ class BlogsAkamaiCom
 
   def list(body)
     tasks = []
-    lk = "https://blogs.akamai.com/"
+    lk = "https://blogs.akamai.com/index.html"
 
     str = RestClient.get(lk).body
     doc = Nokogiri::HTML(str)

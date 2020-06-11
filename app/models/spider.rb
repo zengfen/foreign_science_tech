@@ -22,6 +22,7 @@ class Spider < ApplicationRecord
   validates :spider_name, presence: true, length: {maximum: 50},
             uniqueness: {case_sensitive: false}
 
+  after_destroy :destroy_cron
 
   def self.status_list
     cn_hash = {0 => '未启动', 1 => '周期运行中', 2 => '已停止'}
@@ -34,6 +35,17 @@ class Spider < ApplicationRecord
 
   def real_time_status_cn
     self.spider_tasks.order(:created_at).last.status_cn rescue '未启动'
+  end
+
+  def self.init_next_time
+    Spider.all.each do |x|
+      job_instance = TSkJobInstance.where(spider_name:x.spider_name).first
+      day = Date.today.strftime("%F")
+      time = job_instance.cron_hour.to_i.to_s + ":" + job_instance.cron_minutes.to_i.to_s
+      time = Time.parse("#{day} #{time}")
+      next_time = Time.now > time ? time + 1.day : time
+      x.update(status:1,next_time:next_time)
+    end
   end
 
 
@@ -51,10 +63,13 @@ class Spider < ApplicationRecord
     end
   end
 
-  def self.update_complete(log_spider_id)
-    spider_name = TLogSpider.find(log_spider_id).spider_name
-    self.where(spider_name: spider_name).first.update(run_type: TypeTaskCompleted)
 
+  def destroy_cron
+    instance = TSkJobInstance.where(spider_name:self.spider_name).first
+    return if instance.blank?
+    cron = Sidekiq::Cron::Job.find instance.job_name
+    cron.destroy if cron.present?
+    # instance.destroy
   end
 
 end

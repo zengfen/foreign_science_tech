@@ -115,13 +115,26 @@ class Htmlarticle
 
   # 图片下载
   def self.download_images(image_urls)
+    status = false
     path = "#{Rails.root}/public/images"
     Dir.mkdir path if !Dir.exist?(path)
     files = []
+    extn = ""
     image_urls.each do |url|
+      next if url.blank?
       res = RestClient.get(url)
-      content_type = res.headers[:content_type]
-      extn = Rack::Mime::MIME_TYPES.invert[content_type]
+      style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
+      style.each do |one|
+        next if status == true
+        if url.to_s.match("#{one}")
+          extn = ".#{one}"
+          status = true
+        else
+          content_type = res.headers[:content_type]
+          extn = Rack::Mime::MIME_TYPES.invert[content_type]
+        end
+      end
+
       name = Digest::MD5.hexdigest(url) + extn
       if File.exist? "#{path}/#{name}"
         files << "/images/#{name}"

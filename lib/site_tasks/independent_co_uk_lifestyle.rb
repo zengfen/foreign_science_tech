@@ -1,14 +1,14 @@
-class IndependentCoUk
+class IndependentCoUkLifestyle
 
   def initialize
-    @site = "independent -science"
+    @site = "independent-technology"
     @prefix = "https://www.independent.co.uk"
   end
 
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://www.independent.co.uk/news/science"]
+      urls = ["https://www.independent.co.uk/life-style/gadgets-and-tech"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -51,7 +51,7 @@ class IndependentCoUk
     desp = doc.search("div.body-content").search("p,h2").collect{|x| x.inner_text.strip }.join("\n")
 
     files = []
-    category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、生物及交叉技术、海洋科学技术、"
+    category = "新闻综合"
     media = []
     media_url = []
     media_url << doc.search('meta[property="og:video"]')[0]["content"] rescue nil
