@@ -69,8 +69,8 @@ class WashingtonpostCom
 		puts images = ::Htmlarticle.download_images(images) 
 		category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺"
 		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: ts, con_text: desp,attached_img_info: images, attached_media_info: attached_media_info, category: category}
-		Rails.logger.info task
-		puts task.to_json
+
+
 		info = ::TData.save_one(task)
     	return info
 	end

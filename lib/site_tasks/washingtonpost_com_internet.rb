@@ -98,7 +98,7 @@ class WashingtonpostComInternet
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
-    puts task.to_json
+
 
     info = ::TData.save_one(task)
     return info

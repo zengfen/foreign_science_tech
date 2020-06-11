@@ -55,7 +55,7 @@ class CbcCaTechnology
     category = "新闻综合"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info:attached_media_info}
-    # puts task.to_json
+
     info = ::TData.save_one(task)
     return info
   end

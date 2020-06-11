@@ -83,7 +83,7 @@ class ReutersComMedia
     authors << doc.search("meta[name='Author']")[0]["content"].to_s
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,category: category,attached_media_info:medias}
-    puts task.to_json
+
     # puts "====item==task==#{task}"
     info = ::TData.save_one(task)
     return info

@@ -94,7 +94,7 @@ class LemondeFrPaleontologie
     medias = ::Htmlarticle.download_medias(media_urls)
     category = "生物及交叉技术、海洋科学技术"
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_time: ts, con_text: desp,attached_img_info: images,category: category,attached_media_info:medias}
-    puts task.to_json
+
     #  "====item==task==#{task}"
     info = ::TData.save_one(task)
     return info
