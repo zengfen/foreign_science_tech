@@ -60,6 +60,7 @@ class ApiController < ApplicationController
     spider_tasks.each do |spider_task|
       res << {spider_name:spider_task.spider.spider_name,
               mode:spider_task.task_type_cn,
+              status: spider_task.status_cn,
               current_task_count: spider_task.current_task_count,
               current_success_count: spider_task.current_success_count || 0,
               current_fail_count: spider_task.current_fail_count || 0,
