@@ -12,6 +12,7 @@ COPY . /foreign_science_tech
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+RUN RAILS_ENV=production bundle exec rake assets:precompile --trace
 EXPOSE 3000
 
 # Start the main process.
