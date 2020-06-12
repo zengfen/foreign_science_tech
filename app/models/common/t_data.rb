@@ -92,7 +92,7 @@ class TData < CommonBase
         return {type: "error", message: a.errors.full_messages}
       end
     rescue Exception => e
-      return {type: "error", message: e.message}
+      return {type: "error", message: e.message.to_s[0...300]}
     end
 
     return {type: "success"}
