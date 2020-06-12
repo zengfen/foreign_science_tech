@@ -50,6 +50,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :api do
+    collection do
+      get 'job_lists'
+      get 'start_task'
+      get 'stop_task'
+    end
+  end
+
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
   mount Sidekiq::Web, at: '/sidekiq'
