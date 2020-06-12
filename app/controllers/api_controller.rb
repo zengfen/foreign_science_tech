@@ -8,8 +8,8 @@ class ApiController < ApplicationController
       data_count = count[x.spider_name]
       spider = Spider.where(spider_name: x.spider_name).first
       if spider.present?
-        task_ids = spider.spider_tasks.pluck(:id)
-        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count
+        task_ids = spider.spider_tasks.order(:created_at).last.try(:id)
+        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count resuce 0
         datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
       else
         datas << {spider_name: x.spider_name, status: nil, data_count: data_count, error_count: []}
@@ -52,6 +52,20 @@ class ApiController < ApplicationController
     end
   end
 
+  # 停止任务
+  def task_details
+    spider_tasks = SpiderTask.includes('spider').order("created_at desc").page(params[:page]).per(20)
+    res = []
+    spider_tasks.eah do |spider_task|
+      res << {spider_name:spider_task.spider.spider_name,
+              mode:spider_task.task_type_cn,
+              current_task_count: spider_task.current_task_count,
+              current_success_count: spider_task.current_success_count || 0,
+              current_fail_count: spider_task.current_fail_count || 0
+      }
+    end
+    return render json: res
+  end
 
 end
 
