@@ -38,7 +38,7 @@ class LifehackerCom
 		Rails.logger.info time = Time.parse(doc.search("div.gfVGpi time")[0]["datetime"].to_s) rescue nil
 		images = []
 		doc.search("div.image-hydration-wrapper img").each do |img|
-			url = img["data-srcset"].to_s.split(", ").last.gsub(" 800w","").gsub(" 1600w","")
+			url = img["data-srcset"].to_s.split(", ").last.gsub(" 800w","").gsub(" 1600w","").gsub(" 470w","")
 			images << url
 		end
 		Rails.logger.info images = ::Htmlarticle.download_images(images.compact.uniq)
