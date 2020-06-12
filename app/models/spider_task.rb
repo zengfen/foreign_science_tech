@@ -180,6 +180,9 @@ class SpiderTask < ApplicationRecord
         end
       end
       model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+      if model_tasks == nil
+        return {type: "error", message: "result is nil"}
+      end
     rescue Exception => e
       return {type: "error", message: e}
     end
