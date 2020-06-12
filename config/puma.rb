@@ -46,7 +46,7 @@ pidfile "#{Rails.root}/tmp/pids/puma.pid"
 state_path "#{Rails.root}/tmp/pids/puma.state"
 stdout_redirect "#{Rails.root}/log/puma.stdout.log", "#{Rails.root}/log/puma.stderr.log", true
 bind "unix://#{Rails.root}/tmp/foreign_science_tech.sock"
-daemonize
+# daemonize
 threads 4,16
 preload_app!
 
@@ -69,9 +69,9 @@ preload_app!
 #   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 # end
 #
-# on_worker_boot do
-#   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
-# end
+on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
 
 before_fork do
   ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
