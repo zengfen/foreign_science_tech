@@ -7,9 +7,13 @@ class ApiController < ApplicationController
     TSkJobInstance.all.each do |x|
       data_count = count[x.spider_name]
       spider = Spider.where(spider_name: x.spider_name).first
-      task_ids = spider.spider_tasks.pluck(:id)
-      error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count
-      datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
+      if spider.present?
+        task_ids = spider.spider_tasks.pluck(:id)
+        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count
+        datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
+      else
+        datas << {spider_name: x.spider_name, status: nil, data_count: data_count, error_count: []}
+      end
     end
     render json: {datas: datas}
     # TData 是否支持实时查询
@@ -30,7 +34,7 @@ class ApiController < ApplicationController
       return render json: res
     end
     res = spider_task.start_task
-    render json: res.merge({task_id:spider_task.id})
+    render json: res.merge({task_id: spider_task.id})
   end
 
   # 停止任务
