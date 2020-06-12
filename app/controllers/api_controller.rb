@@ -54,14 +54,16 @@ class ApiController < ApplicationController
 
   # 停止任务
   def task_details
-    spider_tasks = SpiderTask.includes('spider').order("created_at desc").page(params[:page]).per(20)
+    page = params[:page] || 1
+    spider_tasks = SpiderTask.includes('spider').order("created_at desc").page(page).per(20)
     res = []
-    spider_tasks.eah do |spider_task|
+    spider_tasks.each do |spider_task|
       res << {spider_name:spider_task.spider.spider_name,
               mode:spider_task.task_type_cn,
               current_task_count: spider_task.current_task_count,
               current_success_count: spider_task.current_success_count || 0,
-              current_fail_count: spider_task.current_fail_count || 0
+              current_fail_count: spider_task.current_fail_count || 0,
+              created_at: spider_task.created_at
       }
     end
     return render json: res
