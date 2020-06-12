@@ -8,10 +8,8 @@ class NikkeiComMobile
 
   def list(body)
     tasks = []
-    lk = "https://www.nikkei.com/technology/mobile/"
-    for i in 1..25
-      j = i*20 + 1
-      lk = "https://www.nikkei.com/technology/mobile/?bn=#{j}"
+      lk = "https://www.nikkei.com/technology/mobile/"
+
       str = RestClient.get(lk).body
       doc = Nokogiri::HTML(str)
       doc.search("h3.m-miM09_title").each do |item|
@@ -24,7 +22,6 @@ class NikkeiComMobile
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
-    end
     return tasks
   end
 
@@ -51,7 +48,7 @@ class NikkeiComMobile
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、动力能源技术、新材料与新工艺"
 
     p task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
-    # puts task.to_json
+
     info = ::TData.save_one(task)
     return info
   end

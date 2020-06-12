@@ -1,6 +1,6 @@
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
+# OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
 class PcmagazineCoIlCategory
 	def initialize
 		@site = "电脑杂志-数据安全"
@@ -56,12 +56,14 @@ class PcmagazineCoIlCategory
 	    # tt = Time.parse(time).to_i rescue nil
 	    # puts ts = Time.at(tt) rescue nil
 		author = []
+		au = doc.search("div#articleBar a").inner_text rescue ""
 		doc.search("div#articleBar a").each do |au|
 			au = au.inner_text.strip
 			author << au if au != ""
 		end
-		if doc.search("div#articleBar span").to_s.match("<br")
+		if au == ""
 			as = doc.search("div#articleBar span").to_s.match(/\>(.+?)\<br/)[1] rescue ""
+			as = "" if as.to_s.match("<a")
 			author << as if as != ""
 		end
 
@@ -76,8 +78,8 @@ class PcmagazineCoIlCategory
 		puts images = ::Htmlarticle.download_images(images) 
 		category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术"
 		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images, attached_media_info: attached_media_info, category: category}
-		Rails.logger.info task
-		puts task.to_json
+
+
 		info = ::TData.save_one(task)
     	return info
 	end

@@ -53,10 +53,11 @@ class IndependentCoUkLifestyle
     files = []
     category = "新闻综合"
     media = []
-    media << doc.search('meta[property="og:video"]')[0]["content"] rescue nil
-
+    media_url = []
+    media_url << doc.search('meta[property="og:video"]')[0]["content"] rescue nil
+    media = ::Htmlarticle.download_medias(media_url) rescue nil
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
-    puts task.to_json
+
 
     info = ::TData.save_one(task)
     return info

@@ -51,8 +51,8 @@ class AustinforumOrg
     	puts ts
     	#获取作者
 
-
-    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title, con_time:ts, con_text:desp}
+      category = "新闻综合"
+    	task = {data_address:link,website_name:@site,category:category,data_spidername:self.class,data_snapshot_path:html_content,con_title:title, con_time:ts, con_text:desp}
     	puts "====item==task==#{task}"
 
     	info = ::TData.save_one(task)

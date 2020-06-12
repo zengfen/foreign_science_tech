@@ -1,0 +1,9 @@
+MonitorInstancesJob:
+  cron: '0 */2 * * * Asia/Shanghai'
+  class: MonitorInstancesJob
+#ProcessStatusJob:
+#  cron: '*/1 * * * * Asia/Shanghai'
+#  class: ProcessStatusJob
+UncompletedTasksJob:
+  cron: '0 */4 * * * Asia/Shanghai'
+  class: UncompletedTasksJob

@@ -1,6 +1,6 @@
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
+# OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
 class GobMx
 	def initialize
 		@site = "墨西哥航天局"
@@ -10,7 +10,7 @@ class GobMx
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://www.gob.mx/aem/archivo/articulos?idiom=es&filter_id=2179&filter_origin=archive","https://www.gob.mx/aem/archivo/prensa?idiom=es","https://www.gob.mx/aem/archivo/videos?idiom=es"]
+			urls = ["https://www.gob.mx/aem/es/archivo/articulos?filter_id=2179&filter_origin=archive&idiom=es&order=DESC&page=1","https://www.gob.mx/aem/es/archivo/prensa?idiom=es&order=DESC&page=1","https://www.gob.mx/aem/es/archivo/videos?idiom=es&order=DESC&page=1"]
 			urls.each do |url|
 				puts body = {url:url}
 				# tasks << {mode:"list",body:body}
@@ -49,7 +49,10 @@ class GobMx
 		# 	author << au.inner_text.strip
 		# end
 		# author = author.compact.uniq
-		desp = doc.search("div.article-body").search("p,li").collect{|x| x.inner_text.strip}.join("\n")
+		desp = doc.search("div.article-body").search("p,li").collect{|x| x.inner_text.strip}.join("\n") rescue ""
+		if desp == ""
+      		desp = doc.search("div.col-md-7").search("p,li").collect{|x| x.inner_text.strip}.join("\n") rescue ""
+    	end
 		videos = []
 	      if link.to_s.match("videos")
 	        puts id = doc.search("input.video-url").to_s.match(/value\=\"(.+?)\"/)[1]
@@ -70,8 +73,8 @@ class GobMx
 		puts images = ::Htmlarticle.download_images(image) 
 		category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺"
 		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images, attached_media_info: attached_media_info, category: category}
-		Rails.logger.info task
-		puts task.to_json
+
+
 		info = ::TData.save_one(task)
     	return info
 	end

@@ -1,4 +1,3 @@
-# require 'watir'
 require 'rss'
 class IafOrgIl
 	def initialize
@@ -60,7 +59,8 @@ class IafOrgIl
     	puts "时间"
     	puts ts
 
-    	task = {data_address:link,website_name:@site,data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
+      category = "武器与毁伤防护技术"
+    	task = {data_address:link,website_name:@site,category:category, data_spidername:self.class,data_snapshot_path:html_content,con_title:title,con_time: ts,con_text:desp,attached_img_info: images}
     	puts "====item==task==#{task}"
 
     	info = ::TData.save_one(task)

@@ -6,18 +6,16 @@ class AbcNetAuScience
 
   def list(body)
     tasks = []
-    for i in 2..50
-      lk = "https://www.abc.net.au/news/science/?page=#{i}"
+    lk = "https://www.abc.net.au/news/science/"
 
-      str = RestClient.get(lk).body
-      doc = Nokogiri::HTML(str)
-      doc.search("article .view-textlink").each do |item|
-        p link = "https://www.abc.net.au" + item.search("a")[0][:href] rescue nil
-        body = {link:link}
-        puts body.to_json
-        tasks << {mode:"item",body:URI.encode(body.to_json)}
-        # tasks << {mode:"item",body:body}
-      end
+    str = RestClient.get(lk).body
+    doc = Nokogiri::HTML(str)
+    doc.search("article .view-textlink").each do |item|
+      p link = "https://www.abc.net.au" + item.search("a")[0][:href] rescue nil
+      body = {link:link}
+      puts body.to_json
+      tasks << {mode:"item",body:URI.encode(body.to_json)}
+      # tasks << {mode:"item",body:body}
     end
     return tasks
   end

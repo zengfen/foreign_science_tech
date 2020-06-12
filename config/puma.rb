@@ -11,7 +11,6 @@ end
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 # threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
@@ -47,8 +46,8 @@ pidfile "#{Rails.root}/tmp/pids/puma.pid"
 state_path "#{Rails.root}/tmp/pids/puma.state"
 stdout_redirect "#{Rails.root}/log/puma.stdout.log", "#{Rails.root}/log/puma.stderr.log", true
 bind "unix://#{Rails.root}/tmp/foreign_science_tech.sock"
-daemonize
-threads 0,4
+# daemonize
+threads 4,16
 preload_app!
 
 # If you are preloading your application and using Active Record, it's
@@ -70,19 +69,19 @@ preload_app!
 #   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 # end
 #
-# on_worker_boot do
-#   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
-# end
+on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
 
 before_fork do
   ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
   # PumaWorkerKiller.config do |config|
-  #   config.ram           = 16*1024 # mb  服务器内存
-  #  # config.frequency     = 5    # seconds
-  #   config.percent_usage = 0.7 # 内存使用上限
-  #   config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds
+  #   config.ram           = 2048 # mb
+  #   config.frequency     = 5    # seconds
+  #   config.percent_usage = 0.25
+  #   config.reaper_status_logs = false
+  #   config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds, or 12.hours if using Rails
   # end
   # PumaWorkerKiller.start
 end
-# Allow puma to be restarted by `rails restart` command.
-# plugin :tmp_restart
+

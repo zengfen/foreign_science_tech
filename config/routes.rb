@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :users
 
 
-
   resources :home do
 
   end
@@ -36,13 +35,26 @@ Rails.application.routes.draw do
   end
 
   resources :dashboards
-  resources :data_centers
+  resources :data_centers do
+    collection do
+      get 'download_excel'
+      get 'download_csv'
+      get 'download_txt'
+    end
+  end
 
   resources :test do
     collection do
       get 'list'
       get 'item'
+    end
+  end
 
+  resources :api do
+    collection do
+      get 'job_lists'
+      get 'start_task'
+      get 'stop_task'
     end
   end
 

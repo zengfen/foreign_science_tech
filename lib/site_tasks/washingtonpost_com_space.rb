@@ -34,6 +34,13 @@ class WashingtonpostComSpace
     puts link = body["link"]
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
+    ts = doc.search('article div.display-date').inner_text rescue nil
+    if ts.blank?
+      ts = doc.search("script").to_s.match(/"datePublished":"(.*?)",/)[1] rescue nil
+    end
+    if ts.blank?
+      return
+    end
     title = doc.search("header h1").inner_text.strip rescue nil
     if title.blank?
       title = doc.search("h1.title").inner_text.strip rescue nil
@@ -43,8 +50,8 @@ class WashingtonpostComSpace
     authors = doc.search("div.author-names").search("a>span.author-name").map { |e| e.inner_text.strip }
 
     # 页面时间显示有问题:页面刷新后时区变化
-    ts = doc.search('article div.display-date').inner_text rescue nil
-    ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
+
+    ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S") rescue nil
     # puts time = Time.parse(ts).to_s rescue nil
     # tt = Time.parse(time).to_i rescue nil
     # puts Time.at(tt)
@@ -54,10 +61,23 @@ class WashingtonpostComSpace
     media = []
     image_urls = []
     media_url = []
-    puts image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
-    if image != nil
-      image_urls << image
+    mm = doc.search("script").to_s.match(/globalContent\=(.*?)\}\}\}\}\;/)[1] + "}}}}" rescue nil
+    if !mm.blank?
+      JSON.parse(mm)["content_elements"].each do |item|
+        img_temp = item["additional_properties"]["originalUrl"] rescue nil
+        if !img_temp.blank?
+          image_urls << img_temp
+        end
+      end
     end
+    if image_urls.blank?
+      image = doc.search('meta[property="og:image"]')[0][:content] rescue nil
+      if image != nil
+        image_urls << image
+      end
+    end
+    image_urls = image_urls.uniq
+    
     # image_urls = doc.search("figure img").map{|x| puts x["src"]} rescue nil
     # image_urls = image_urls.uniq
     # images = ::Htmlarticle.download_images(image_urls)
@@ -79,7 +99,7 @@ class WashingtonpostComSpace
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、量子技术、光学技术、动力能源技术、新材料与新工艺、"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
-    puts task.to_json
+
 
     info = ::TData.save_one(task)
     return info

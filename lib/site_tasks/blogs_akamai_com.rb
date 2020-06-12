@@ -6,18 +6,16 @@ class BlogsAkamaiCom
 
   def list(body)
     tasks = []
-    for i in 2..50
-      lk = "https://blogs.akamai.com/index#{i}.html"
+    lk = "https://blogs.akamai.com/index.html"
 
-      str = RestClient.get(lk).body
-      doc = Nokogiri::HTML(str)
-      doc.search("h2.post--title").each do |item|
-        p link = item.search("a")[0][:href] rescue nil
-        body = {link:link}
-        puts body.to_json
-        tasks << {mode:"item",body:URI.encode(body.to_json)}
-        # tasks << {mode:"item",body:body}
-      end
+    str = RestClient.get(lk).body
+    doc = Nokogiri::HTML(str)
+    doc.search("h2.post--title").each do |item|
+      p link = item.search("a")[0][:href] rescue nil
+      body = {link:link}
+      puts body.to_json
+      tasks << {mode:"item",body:URI.encode(body.to_json)}
+      # tasks << {mode:"item",body:body}
     end
     return tasks
   end
@@ -44,8 +42,8 @@ class BlogsAkamaiCom
     files = []
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术"
 
-    p task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
-    # puts task.to_json
+    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
+
     info = ::TData.save_one(task)
     return info
   end

@@ -1,7 +1,8 @@
 class TSkJobInstancesJob < ApplicationJob
-  queue_as :default
+  queue_as :t_sk_job_instances
 
   def perform(*args)
+    GC.enable
     spider_name = args[0]["spider_name"]
     puts "==spider_name====#{spider_name}===="
     spider = Spider.where(spider_name:spider_name).first

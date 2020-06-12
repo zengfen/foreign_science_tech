@@ -1,7 +1,7 @@
 class AuthorCounter < ApplicationRecord
 
   def self.init_author_counter
-    TData.where.not(con_author:["",nil,"[]"]).each do |x|
+    TData.where.not(con_author:["",nil,"[]"]).select("data_id,con_author,con_time").find_each do |x|
       authors = JSON.parse(x.con_author) rescue nil
       next if authors.blank?
       date = x.con_time.to_date

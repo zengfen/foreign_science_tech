@@ -1,11 +1,30 @@
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
 class BbcComTech
 	def initialize
 		@site = "BBC-science"
 		@prefix = "https://www.bbc.com"
-		# RestClient.proxy = "http://10.119.12.12:1077/"
+		# RestClient.proxy = "http://10.119.12.2:1076/"
+	end
+	def list(body)
+		tasks = []
+		if body.blank?
+			urls = ["https://www.bbc.com/news/technology"]
+			urls.each do |url|
+				body = {url:url}
+				tasks << {mode:"list",body:URI.encode(body.to_json)}
+			end
+		else
+			body = JSON.parse(URI.decode(body))
+			url = body["url"]
+			res = RestClient.get(url)
+			doc = Nokogiri::HTML(res.body)
+			doc.search("a.gs-c-promo-heading").each do |one|
+				link = one["href"]
+				link = @prefix + link if !link.match(/^http/)
+				body = {link:link}
+				tasks << {mode:"item",body:URI.encode(body.to_json)}
+			end
+		end
+		return tasks
 	end
 	# def list(body)
 	# 	tasks = []
@@ -17,39 +36,17 @@ class BbcComTech
 	# 		end
 	# 	else
 	# 		body = JSON.parse(URI.decode(body))
-	# 		url = body["url"]
-	# 		res = RestClient.get(url)
-	# 		doc = Nokogiri::HTML(res.body)
-	# 		doc.search("a.gs-c-promo-heading").each do |one|
-	# 			link = one["href"]
-	# 			link = @prefix + link if !link.match(/^http/)
+	# 		url = "https://push.api.bbci.co.uk/p?t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Fdot-com-ads-enabled%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Flx-old-stream-map-rerender%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Freactions-stream-v4%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F21%2Fversion%2F4.1.28&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F31%2Fversion%2F4.1.28&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F41%2Fversion%2F4.1.28&c=1"
+	# 		Rails.logger.info res = RestClient.get(url)
+	# 		res.to_s.split('{\"key\":\"').each do |one|
+	# 			Rails.logger.info key = one.to_s.split('",')[0].gsub('\\','').to_s rescue nil
+	# 			link = "https://www.bbc.com/news/technology-#{key}" rescue nil
 	# 			body = {link:link}
 	# 			tasks << {mode:"item",body:URI.encode(body.to_json)}
 	# 		end
 	# 	end
 	# 	return tasks
 	# end
-	def list(body)
-		tasks = []
-		if body.blank?
-			urls = ["https://www.bbc.com/news/technology"]
-			urls.each do |url|
-				body = {url:url}
-				tasks << {mode:"list",body:URI.encode(body.to_json)}
-			end
-		else
-			body = JSON.parse(URI.decode(body))
-			url = "https://push.api.bbci.co.uk/p?t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Fdot-com-ads-enabled%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Flx-old-stream-map-rerender%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-feature-toggle-manager%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2FfeatureToggle%2Freactions-stream-v4%2Fproject%2Fbbc-live%2Fversion%2F1.0.3&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F21%2Fversion%2F4.1.28&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F31%2Fversion%2F4.1.28&c=1&t=morph%3A%2F%2Fdata%2Fbbc-morph-lx-commentary-latest-data%2FassetUri%2Fnews%252Flive%252Ftechnology-47078793%2Flimit%2F41%2Fversion%2F4.1.28&c=1"
-			Rails.logger.info res = RestClient.get(url)
-			res.to_s.split('{\"key\":\"').each do |one|
-				Rails.logger.info key = one.to_s.split('",')[0].gsub('\\','').to_s rescue nil
-				link = "https://www.bbc.com/news/technology-#{key}" rescue nil
-				body = {link:link}
-				tasks << {mode:"item",body:URI.encode(body.to_json)}
-			end
-		end
-		return tasks
-	end
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		link = body["link"]

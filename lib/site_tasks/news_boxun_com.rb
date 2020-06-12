@@ -8,17 +8,17 @@ class NewsBoxunCom
   def list(body)
     tasks = []
     if body.blank?
-      urls = ["https://news.boxun.com/news/gb/finance/page1.shtml",
-              "https://news.boxun.com/news/gb/finance/page2.shtml",
-              "https://news.boxun.com/news/gb/finance/page3.shtml",
-              "https://news.boxun.com/news/gb/finance/page4.shtml",
-              "https://news.boxun.com/news/gb/finance/page5.shtml",
-              "https://news.boxun.com/news/gb/finance/page6.shtml",
-              "https://news.boxun.com/news/gb/finance/page7.shtml",
-              "https://news.boxun.com/news/gb/finance/page8.shtml",
-              "https://news.boxun.com/news/gb/finance/page9.shtml",
-              "https://news.boxun.com/news/gb/finance/page10.shtml"]
-      # urls = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
+      # urls = ["https://news.boxun.com/news/gb/finance/page1.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page2.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page3.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page4.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page5.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page6.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page7.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page8.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page9.shtml",
+      #         "https://news.boxun.com/news/gb/finance/page10.shtml"]
+      urls = ["https://news.boxun.com/news/gb/finance/page1.shtml"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json
@@ -67,14 +67,14 @@ class NewsBoxunCom
     # .F11 b,
     doc.search(".F11 script,.F11 noscript,.F11 tr td table,.F11 .dsq-brlink").remove
     doc.search(".F11 center")[0].remove
-    desp = doc.search(".F11").collect{|x| x.inner_text.strip }.join("")
-    media = doc.search(".F11 iframe").map { |e| e["src"] }
+    desp = doc.search(".F11").collect{|x| x.inner_text.strip }.join("\n")
+    media = []
+    # media = doc.search(".F11 iframe").map { |e| e["src"] }
     # .to_s.gsub("BR","\n").to_s.inner_text.join("\n")
     files = []
     category = "新闻综合"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
-    puts task.to_json
 
     info = ::TData.save_one(task)
     return info

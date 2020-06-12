@@ -6,27 +6,17 @@ class CbcCaTechnology
 
   def list(body)
     tasks = []
-    #lk = "https://www.cbc.ca/news/technology"
-    for i in 2..50
-      lk = "https://www.cbc.ca/aggregate_api/v1/items?typeSet=cbc-ocelot&pageSize=28&page=#{i}&lineupSlug=news-technology&categorySlug=empty-category&source=Polopoly"
-      doc = JSON.parse(RestClient.get(lk))
-      doc.each do |one|
-        link = one["typeAttributes"]["url"]
-        body = {link:link}
-        puts body.to_json
-        tasks << {mode:"item",body:URI.encode(body.to_json)}
-      end
-    end
+    lk = "https://www.cbc.ca/news/technology"
 
-    # str = RestClient.get(lk).body
-    # puts doc = Nokogiri::HTML(str)
-    # doc.search("a.contentWrapper,a.cardDefault").each do |item|
-    #   link = "https://www.cbc.ca" + item[:href] rescue nil
-    #   body = {link:link}
-    #   puts body.to_json
-    #   tasks << {mode:"item",body:URI.encode(body.to_json)}
-    #   # tasks << {mode:"item",body:body}
-    # end
+    str = RestClient.get(lk).body
+    puts doc = Nokogiri::HTML(str)
+    doc.search("a.contentWrapper,a.cardDefault").each do |item|
+      link = "https://www.cbc.ca" + item[:href] rescue nil
+      body = {link:link}
+      puts body.to_json
+      tasks << {mode:"item",body:URI.encode(body.to_json)}
+      # tasks << {mode:"item",body:body}
+    end
     return tasks
   end
 
@@ -51,20 +41,21 @@ class CbcCaTechnology
     desp = doc.search(".storyWrapper").search("p,h2").collect{|x| x.inner_text.strip}.join("\n")
     # html_content = doc.search("div.cmn-article_text").search("p,div").to_s
     video = []
-    json_doc["video"].each do |one|
-      id = one["identifier"]
-      url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/#{id}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
-      doc1 = Nokogiri::HTML(RestClient.get(url))
-      url1 = doc1.search("video")[0][:src]
-      video << RestClient.get(url1).to_s.match(/http.+?m3u8/)[0]
+    if json_doc["video"] != nil
+      json_doc["video"].each do |one|
+        id = one["identifier"]
+        url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/#{id}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
+        doc1 = Nokogiri::HTML(RestClient.get(url))
+        url1 = doc1.search("video")[0][:src]
+        video << RestClient.get(url1).to_s.match(/http.+?m3u8/)[0]
+      end
     end
-
     p attached_media_info = ::Htmlarticle.download_m3u8(video)
     files = []
     category = "新闻综合"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info:attached_media_info}
-    # puts task.to_json
+
     info = ::TData.save_one(task)
     return info
   end

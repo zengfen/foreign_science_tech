@@ -1,17 +1,13 @@
 class NikkeiComDriverless
   def initialize
-    #  RestClient.proxy = "http://192.168.50.1:1080/"
+  #  RestClient.proxy = "http://192.168.50.1:1080/"
     @site = "日本经济报-技术-自动驾驶"
     @prefix = "https://www.nikkei.com"
   end
 
   def list(body)
     tasks = []
-    lk = "https://www.nikkei.com/technology/driverless/"
-    for i in 1..25
-      j =i*20 + 1
-      lk = "https://www.nikkei.com/technology/driverless/?bn=#{i}"
-
+      lk = "https://www.nikkei.com/technology/driverless/"
 
       str = RestClient.get(lk).body
       p doc = Nokogiri::HTML(str)
@@ -25,7 +21,6 @@ class NikkeiComDriverless
         tasks << {mode:"item",body:URI.encode(body.to_json)}
         # tasks << {mode:"item",body:body}
       end
-    end
     return tasks
   end
 
@@ -51,8 +46,8 @@ class NikkeiComDriverless
     files = []
     category = "人工智能技术、无人系统、平台技术、网络与信息技术、电子科学技术、动力能源技术、新材料与新工艺"
 
-    p task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
-    # puts task.to_json
+    task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category}
+
     info = ::TData.save_one(task)
     return info
   end
