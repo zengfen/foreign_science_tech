@@ -36,7 +36,7 @@ class MonitorSidekiqJob < ApplicationJob
 
     # 根据需要重启
     # `bundle exec rake sidekiq:restart` if stats[:busy_size] == 15
-    if stats[:busy_size] == 0
+    if stats[:busy_size] == 15
       `bash ./stop_sidekiq.sh`
       `bash ./start_sidekiq.sh`
     end
