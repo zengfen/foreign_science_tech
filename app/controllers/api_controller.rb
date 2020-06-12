@@ -7,9 +7,13 @@ class ApiController < ApplicationController
     TSkJobInstance.all.each do |x|
       data_count = count[x.spider_name]
       spider = Spider.where(spider_name: x.spider_name).first
-      task_ids = spider.spider_tasks.pluck(:id)
-      error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count
-      datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
+      if spider.present?
+        task_ids = spider.spider_tasks.order(:created_at).last.try(:id)
+        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count rescue 0
+        datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
+      else
+        datas << {spider_name: x.spider_name, status: nil, data_count: data_count, error_count: []}
+      end
     end
     render json: {datas: datas}
     # TData 是否支持实时查询
@@ -30,7 +34,7 @@ class ApiController < ApplicationController
       return render json: res
     end
     res = spider_task.start_task
-    render json: res.merge({task_id:spider_task.id})
+    render json: res.merge({task_id: spider_task.id})
   end
 
   # 停止任务
@@ -48,6 +52,23 @@ class ApiController < ApplicationController
     end
   end
 
+  # 停止任务
+  def task_details
+    page = params[:page] || 1
+    spider_tasks = SpiderTask.includes('spider').order("created_at desc").page(page).per(20)
+    res = []
+    spider_tasks.each do |spider_task|
+      res << {spider_name:spider_task.spider.spider_name,
+              mode:spider_task.task_type_cn,
+              status: spider_task.status_cn,
+              current_task_count: spider_task.current_task_count,
+              current_success_count: spider_task.current_success_count || 0,
+              current_fail_count: spider_task.current_fail_count || 0,
+              created_at: spider_task.created_at
+      }
+    end
+    return render json: {datas:res,total_count:spider_tasks.total_count}
+  end
 
 end
 

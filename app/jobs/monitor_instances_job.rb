@@ -1,5 +1,5 @@
 class MonitorInstancesJob < ApplicationJob
-  queue_as :default
+  queue_as :monitor_instances
 
   def perform(*args)
     spider_names = Spider.where(status:1).pluck(:spider_name)

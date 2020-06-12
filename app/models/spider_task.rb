@@ -138,14 +138,14 @@ class SpiderTask < ApplicationRecord
     pause_key = Subtask.task_pause_key(self.id)
     while true
       subtask_ids = []
-      2.times do
+      200.times do
         subtask_id = $redis.spop(key)
         subtask_ids << subtask_id if subtask_id.present?
       end
       current_spider_task = SpiderTask.find(self.id)
       if current_spider_task.status == TypeTaskStop && subtask_ids.present?
         $redis.sadd(pause_key,subtask_ids)
-        ProcessStatusJob.perform_later()
+        ProcessStatusJob.perform_later(self.id)
         return
       end
       if subtask_ids.blank?
@@ -157,6 +157,7 @@ class SpiderTask < ApplicationRecord
         next if subtask.blank?
         line = JSON.parse(subtask.content) rescue {}
         error_content = process_one_task(line)
+        puts "======error_content========#{error_content}"
         # 将任务结果缓存到redis中
         if error_content.to_h[:type] == "error"
           $redis.sadd(error_key, {id: subtask_id, error_content: error_content.to_h[:message], error_at: Time.now.to_i, status: Subtask::TypeSubtaskError}.to_json)
@@ -174,9 +175,14 @@ class SpiderTask < ApplicationRecord
       if line["mode"] == "item"
         link = JSON.parse(URI.decode(line["body"])).values.find{|x| x.match(/^http/)} rescue nil
         exist = TData.link_exist?(link)
-        return {type: "success", message: "数据已存在"} if exist
+        if exist
+          return {type: "success", message: "数据已存在"}
+        end
       end
       model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
+      if model_tasks == nil
+        return {type: "error", message: "result is nil"}
+      end
     rescue Exception => e
       return {type: "error", message: e}
     end
@@ -192,21 +198,22 @@ class SpiderTask < ApplicationRecord
       subtasks << task
     end
     subtasks = subtasks.uniq
-    # ActiveRecord::Base.transaction do
-    destination_columns = subtasks.first.keys
-    Subtask.bulk_insert(*destination_columns, ignore: true, set_size: 5000) do |worker|
-      subtasks.each do |data|
-        worker.add(data)
+    if subtasks.present?
+      destination_columns = subtasks.first.keys
+      Subtask.bulk_insert(*destination_columns, ignore: true, set_size: 5000) do |worker|
+        subtasks.each do |data|
+          worker.add(data)
+        end
       end
+      # 更新count
+      self.update(current_task_count: self.current_task_count + subtasks.count)
+      $redis.sadd(key, subtasks.map { |x| x["id"] })
+    else
+      # 更新count
+      self.update(current_task_count: self.current_task_count + 1,current_success_count: self.current_success_count + 1)
     end
-    # 更新count
-    self.update(current_task_count: self.current_task_count + subtasks.count)
-    $redis.sadd(key, subtasks.map { |x| x["id"] })
-    # end
+
     return nil
-    # rescue Exception => e
-    #   return e
-    # end
   end
 
   # 删除和更新跑完的任务

@@ -122,7 +122,12 @@ class Htmlarticle
     extn = ""
     image_urls.each do |url|
       next if url.blank?
-      res = RestClient.get(url)
+      # res = RestClient.get(url)
+      res = RestClient::Request.execute(
+        :method => :get,
+        :url => url,
+        :timeout => 3 * 3600,
+      )
       style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
       style.each do |one|
         next if status == true
@@ -152,7 +157,13 @@ class Htmlarticle
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     file_urls.each do |url|
-      res = RestClient.get(url)
+      # res = RestClient.get(url)
+      res = RestClient::Request.execute(
+        :method => :get,
+        :url => url,
+        :timeout => 3 * 3600,
+        :open_timeout => 3 * 3600
+      )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn
@@ -173,7 +184,13 @@ class Htmlarticle
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
-      res = RestClient.get(url)
+      # res = RestClient.get(url)
+      res = RestClient::Request.execute(
+        :method => :get,
+        :url => url,
+        :timeout => 10 * 3600,
+        :open_timeout => 10 * 3600
+      )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
       name = Digest::MD5.hexdigest(url) + extn

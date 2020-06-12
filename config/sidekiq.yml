@@ -5,10 +5,14 @@
 :timeout: 30
 :queues:
   - default # 写在队列参数中的, 表示让 sidekiq 处理这个 queue
+  - monitor_instances
+  - process_status
+  - uncompleted_tasks
+  - t_sk_job_instances
  
 development:
-:concurrency: 5
+:concurrency: 15
 staging:
-:concurrency: 10
+:concurrency: 15
 production:
-:concurrency: 10
+:concurrency: 15

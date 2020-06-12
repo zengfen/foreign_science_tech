@@ -54,7 +54,7 @@ class TData < CommonBase
     key = TData.t_datas_key
     md5_id = Digest::MD5.hexdigest(a.data_address)
     if $redis.sismember(key, md5_id)
-      return {type:"success",message:"数据已存在"}
+      return {type: "success", message: "数据已存在"}
     end
 
 
@@ -80,17 +80,22 @@ class TData < CommonBase
     end
 
     if error_message.present?
-      return {type:"error",message:error_message}
+      return {type: "error", message: error_message}
     end
 
-    if a.save
-      $redis.sadd(key, md5_id)
-      # AuthorCounter.process_author(task[:con_author],a.con_time) if task[:con_author].present?
-      return {type:"success"}
-    else
-      return {type:"error",message:a.errors.full_messages}
+    begin
+      if a.save
+        $redis.sadd(key, md5_id)
+        # AuthorCounter.process_author(task[:con_author],a.con_time) if task[:con_author].present?
+        return {type: "success"}
+      else
+        return {type: "error", message: a.errors.full_messages}
+      end
+    rescue Exception => e
+      return {type: "error", message: e.message.to_s[0...300]}
     end
-    return {type:"success"}
+
+    return {type: "success"}
   end
 
 
@@ -127,13 +132,31 @@ class TData < CommonBase
     return if authors.blank?
     date = self.con_time.to_date
     authors.each do |author|
-      data = AuthorCounter.where(con_author:author).where(con_date:date).first
+      data = AuthorCounter.where(con_author: author).where(con_date: date).first
       if data.present?
-        data.update(count:data.count + 1)
+        data.update(count: data.count + 1)
       else
-        AuthorCounter.create(con_author:author,con_date:date,count:1)
+        AuthorCounter.create(con_author: author, con_date: date, count: 1)
       end
     end
+  end
+
+  def self.to_csv
+    # CSV.generate do |csv|
+    #   csv << column_names
+    #   all.each do |data|
+    #     csv << data.attributes.values_at(*column_names)
+    #   end
+    # end
+    head = 'EF BB BF'.split(' ').map { |a| a.hex.chr }.join()
+    CSV.generate(outfile= head) do |csv|
+      new_column_names = column_names - ["data_snapshot_path"]
+      csv << new_column_names
+      all.each do |data|
+        csv << data.attributes.values_at(*new_column_names)
+      end
+    end
+
   end
 
 

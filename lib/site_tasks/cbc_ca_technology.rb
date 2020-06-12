@@ -23,7 +23,7 @@ class CbcCaTechnology
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-   #link = "https://www.cbc.ca/news/technology/nodosaur-borealopelta-stomach-1.5600224"
+    #link = "https://www.cbc.ca/news/technology/nodosaur-borealopelta-stomach-1.5600224"
     res = RestClient.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.detailHeadline")[0].inner_text.strip rescue nil
@@ -41,20 +41,21 @@ class CbcCaTechnology
     desp = doc.search(".storyWrapper").search("p,h2").collect{|x| x.inner_text.strip}.join("\n")
     # html_content = doc.search("div.cmn-article_text").search("p,div").to_s
     video = []
-    json_doc["video"].each do |one|
-      id = one["identifier"]
-      url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/#{id}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
-      doc1 = Nokogiri::HTML(RestClient.get(url))
-      url1 = doc1.search("video")[0][:src]
-      video << RestClient.get(url1).to_s.match(/http.+?m3u8/)[0]
+    if json_doc["video"] != nil
+      json_doc["video"].each do |one|
+        id = one["identifier"]
+        url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/#{id}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
+        doc1 = Nokogiri::HTML(RestClient.get(url))
+        url1 = doc1.search("video")[0][:src]
+        video << RestClient.get(url1).to_s.match(/http.+?m3u8/)[0]
+      end
     end
-
     p attached_media_info = ::Htmlarticle.download_m3u8(video)
     files = []
     category = "新闻综合"
 
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info:attached_media_info}
-    # puts task.to_json
+
     info = ::TData.save_one(task)
     return info
   end

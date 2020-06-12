@@ -5,6 +5,7 @@ class SpidersController < ApplicationController
   def index
     opts = {}
     opts[:spider_name] = params[:spider_name] unless params[:spider_name].blank?
+    opts[:status] = params[:status] unless params[:status].blank?
     @spiders = Spider.where(opts).order('created_at desc').page(params[:page]).per(20)
     @spider = Spider.new
     @task_info = {}

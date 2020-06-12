@@ -1,11 +1,8 @@
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ssl_version] = 'TLSv1_2'
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers] += ':DES-CBC3-SHA'
 class BbcComTech
 	def initialize
 		@site = "BBC-science"
 		@prefix = "https://www.bbc.com"
-		RestClient.proxy = "http://10.119.12.2:1076/"
+		# RestClient.proxy = "http://10.119.12.2:1076/"
 	end
 	def list(body)
 		tasks = []

@@ -10,16 +10,41 @@
           <% is_fuzzy_search = params[:search_type] == "fuzzy" %>
           <div class="tabs-container top-search-box">
             <ul class="nav nav-tabs">
-              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
-                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
-              </li>
               <li class="<%= is_fuzzy_search ? 'active' : '' %>">
                 <a data-toggle="tab" href="#tab_search_form_2">模糊搜索</a>
               </li>
+              <li class="<%= is_fuzzy_search ? '' : 'active' %>">
+                <a data-toggle="tab" href="#tab_search_form_1">精确搜索</a>
+              </li>
             </ul>
             <div class="tab-content">
+              <div id="tab_search_form_2" class="tab-pane fade <%= is_fuzzy_search ? 'active in' : '' %>">
+                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
+                  <input type="hidden" name="search_type" value="fuzzy">
+                  <div class="clear-p">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <div class="form-control-label">检索内容：</div>
+                        <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <div class="form-control-label">&nbsp;</div>
+                        <div>
+                          <input type="submit" class="btn btn-primary btn-warning w100" value="模糊搜索">
+                          <div class="pull-right">
+                            <%= render 'download_button' %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <%end%>
+              </div>
               <div id="tab_search_form_1" class="tab-pane fade <%= is_fuzzy_search ? '' : 'active in' %>">
                 <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
+                  <input type="hidden" name="search_type" value="accurate">
                   <div class="clear-p daterange-wrap">
                     <div class="col-md-2">
                       <div class="form-group">
@@ -42,7 +67,7 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">爬虫名：</div>
-                        <select name="spider_name" class="chosen-select form-control">
+                        <select name="spider_name" class="chosen-select form-control" data-placeholder="请选择">
                           <option value="">不限</option>
                           <% @spiders.map{|x| x[0]}.each do |spider_name| %>
                             <option value="<%= spider_name%>"  <%= 'selected' if spider_name.to_s == params[:spider_name]%>><%= spider_name%></option>
@@ -53,7 +78,7 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <div class="form-control-label">网站名：</div>
-                        <select name="website_name" class="chosen-select form-control">
+                        <select name="website_name" class="chosen-select form-control" data-placeholder="请选择">
                           <option value="">不限</option>
                           <% @spiders.map{|x| x[1]}.each do |website_name| %>
                               <option value="<%= website_name%>"  <%= 'selected' if website_name.to_s == params[:website_name]%>><%= website_name%></option>
@@ -67,29 +92,15 @@
                         <input type="text" name="con_title" value="<%= params[:con_title] %>" class="form-control datepicker-input" placeholder="请输入内容" autocomplete="off">
                       </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <div class="form-control-label">&nbsp;</div>
-                        <input type="submit" class="btn btn-primary btn-warning full-width" value="精确搜索">
-                      </div>
-                    </div>
-                  </div>
-                <%end%>
-              </div>
-              <div id="tab_search_form_2" class="tab-pane fade <%= is_fuzzy_search ? 'active in' : '' %>">
-                <%=form_tag url_for(action: :index),:class=>"-form-horizontal",:autocomplete=>"off",:method=>:get do%>
-                  <input type="hidden" name="search_type" value="fuzzy">
-                  <div class="clear-p">
-                    <div class="col-md-8">
-                      <div class="form-group">
-                        <div class="form-control-label">检索内容：</div>
-                        <input type="text" placeholder="请输入内容" name="keyword" class="form-control" value="<%= params[:keyword] %>">
-                       </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group">
-                        <div class="form-control-label">&nbsp;</div>
-                        <input type="submit" class="btn btn-warning full-width" value="模糊搜索">
+                        <div>
+                          <input type="submit" class="btn btn-primary btn-warning w100" value="精确搜索">
+                          <div class="pull-right">
+                            <%= render 'download_button' %>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
