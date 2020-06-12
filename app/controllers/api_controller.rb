@@ -9,7 +9,7 @@ class ApiController < ApplicationController
       spider = Spider.where(spider_name: x.spider_name).first
       if spider.present?
         task_ids = spider.spider_tasks.order(:created_at).last.try(:id)
-        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count resuce 0
+        error_count = Subtask.where(task_id: task_ids, status: Subtask::TypeSubtaskError).count rescue 0
         datas << {spider_name: x.spider_name, status: spider.status_cn, data_count: data_count, error_count: error_count}
       else
         datas << {spider_name: x.spider_name, status: nil, data_count: data_count, error_count: []}

@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       get 'job_lists'
       get 'start_task'
       get 'stop_task'
+      get 'task_details'
     end
   end
 
