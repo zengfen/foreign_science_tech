@@ -207,7 +207,7 @@ class SpiderTask < ApplicationRecord
       $redis.sadd(key, subtasks.map { |x| x["id"] })
     else
       # 更新count
-      self.update(current_task_count: self.current_task_count + 1)
+      self.update(current_task_count: self.current_task_count + 1,current_success_count: self.current_success_count + 1)
     end
 
     return nil
