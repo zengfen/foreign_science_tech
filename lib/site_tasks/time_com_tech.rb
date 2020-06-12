@@ -17,9 +17,9 @@ class TimeComTech
 
   def list(body)
     tasks = []
-    if body.blank?  
-      # urls = ["https://time.com/section/tech/"]
-      urls = ["https://time.com/section/tech/?page=1","https://time.com/section/tech/?page=2","https://time.com/section/tech/?page=3","https://time.com/section/tech/?page=4","https://time.com/section/tech/?page=5","https://time.com/section/tech/?page=6"]
+    if body.blank?
+      urls = ["https://time.com/section/tech/"]
+      # urls = ["https://time.com/section/tech/?page=1","https://time.com/section/tech/?page=2","https://time.com/section/tech/?page=3","https://time.com/section/tech/?page=4","https://time.com/section/tech/?page=5","https://time.com/section/tech/?page=6"]
       urls.each do |url|
         body = {url:url}
         tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -55,8 +55,14 @@ class TimeComTech
     end
     authors << authors_temp
 
-    ts = doc.search("div.published-date").inner_text.strip
-    ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
+    ts = doc.search("div.published-date").inner_text.strip rescue nil
+    if ts.blank?
+      ts = doc.search("script").to_s.match(/datePublished":"(.*?)\"\,\"dateModified/)[1]
+    end
+    if ts == ""
+      return
+    end
+    puts ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     # []
     image_urls = doc.search("div.image-and-burst div.lead-media").map{|x| x["data-src"]} rescue nil
