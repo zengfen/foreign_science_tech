@@ -27,17 +27,17 @@
                     <%=select_tag(:status, options_for_select(Spider.status_list.invert.to_a, params["status"]),include_blank: "不限",:class=>"form-control chosen-select")%>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="form-control-label">&nbsp;</div>
-                    <input type="submit" class="btn btn-primary btn-warning w70" value="搜索">
-                    <div class="pull-right">
-                      <a class="btn btn-primary mb0 add-sql" href="javascript:void(0)">
-                        <i class="fa fa-plus"></i> 添加
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <!--<div class="col-md-6">-->
+                  <!--<div class="form-group">-->
+                    <!--<div class="form-control-label">&nbsp;</div>-->
+                    <!--<input type="submit" class="btn btn-primary btn-warning w70" value="搜索">-->
+                    <!--<div class="pull-right">-->
+                      <!--<a class="btn btn-primary mb0 add-sql" href="javascript:void(0)">-->
+                        <!--<i class="fa fa-plus"></i> 添加-->
+                      <!--</a>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
               </div>
             <% end %>
           </div>
