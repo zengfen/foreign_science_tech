@@ -66,7 +66,7 @@ class ApiController < ApplicationController
               created_at: spider_task.created_at
       }
     end
-    return render json: res
+    return render json: {datas:res,total_count:spider_tasks.total_count}
   end
 
 end
