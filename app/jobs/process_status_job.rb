@@ -7,8 +7,10 @@ class ProcessStatusJob < ApplicationJob
     #   puts "==spider_task_id====#{spider_task.id}="
     #   spider_task.process_status
     # end
+    GC.enable
     puts "==spider_task_id====#{spider_task_id}="
     spider_task = SpiderTask.find(spider_task_id) rescue nil
+    GC.enable
     if spider_task.present?
       spider_task.process_status
     end
