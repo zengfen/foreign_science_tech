@@ -1,6 +1,5 @@
 class TSkJobInstancesJob < ApplicationJob
   queue_as :t_sk_job_instances
-  sidekiq_options retry: false
 
   def perform(*args)
     GC.enable
