@@ -49,8 +49,9 @@ class ThevergeCom
     videos = []
     ss = doc.search("div.c-entry-content iframe")[0][:src] rescue ""
         if ss != ""
-          ur = ss
-            request_res = RestClient2.get(ur)
+          video_id = ss.to_s.split("embed/")[1].split("?")[0]
+           request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
+            request_res = RestClient2.get(request_url)
          urires = URI.decode(request_res.to_s)
         # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
         # jsonres = JSON.parse(uriressplit)
