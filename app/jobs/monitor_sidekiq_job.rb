@@ -13,7 +13,6 @@ class MonitorSidekiqJob < ApplicationJob
       namespaced_redis.smembers('queues'.freeze)
     end
 
-
     pipe2_res = namespaced_redis.pipelined do
       pipe1_res[2].each { |key| namespaced_redis.hget(key, 'busy'.freeze) }
       pipe1_res[3].each { |queue| namespaced_redis.llen("queue:#{queue}") }
@@ -33,13 +32,17 @@ class MonitorSidekiqJob < ApplicationJob
     stats.each do |stat, value|
       puts "#{stat}: #{value}"
     end
-
-    # 根据需要重启
-    # `bundle exec rake sidekiq:restart` if stats[:busy_size] == 15
-    if stats[:busy_size] == 15
+    if stats.values.uniq == [0]
+      # 根据需要重启
       `bash ./stop_sidekiq.sh`
       `bash ./start_sidekiq.sh`
+      SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskReopen]).each do |spider_task|
+        puts "==uncompleted_spider_task_id====#{spider_task.id}="
+        spider_task.process_status
+      end
     end
+
+
   end
 end
 
