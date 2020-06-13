@@ -16,7 +16,7 @@ class IndependentCoUk
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url).body
+      str = RestClient2.get(url).body
       doc = Nokogiri::HTML(str)
       doc.search("div.type-article>a").each do |item|
         link = item["href"] rescue nil
@@ -32,7 +32,7 @@ class IndependentCoUk
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.headline>span")[0].inner_text.strip rescue nil
 

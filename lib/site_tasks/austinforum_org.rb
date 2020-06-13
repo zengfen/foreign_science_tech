@@ -17,7 +17,7 @@ class AustinforumOrg
     	else
     		body = JSON.parse(URI.decode(body))
       		url = body["url"]
-      		res = RestClient.get(url)
+      		res = RestClient2.get(url)
       		doc = Nokogiri::HTML(res.body)
       		doc.search("h2.blog-title a.blog-title-link.blog-link").each_with_index do |item,index|
         		link = item["href"].gsub("//","") rescue nil
@@ -34,7 +34,7 @@ class AustinforumOrg
 	def item(body)
 		body = JSON.parse(URI.decode(body))
   		link = body["link"]
-   	 	res = RestClient.get(link).body
+   	 	res = RestClient2.get(link).body
     	doc = Nokogiri::HTML(res)
     	#获取标题	
     	title = doc.search("h2.blog-title a").inner_html.strip rescue nil

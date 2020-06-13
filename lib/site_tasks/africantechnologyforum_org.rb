@@ -28,7 +28,7 @@ class AfricantechnologyforumOrg
     	else
     		body = JSON.parse(URI.decode(body))
       		url = body["url"]
-      		res = RestClient.get(url,header = header)
+      		res = RestClient2.get(url,header = header)
       		doc = Nokogiri::HTML(res.body)
       		doc.search("div.td-module-thumb a").each_with_index do |item,index|
         		link = item["href"] rescue nil
@@ -55,7 +55,7 @@ class AfricantechnologyforumOrg
 		body = JSON.parse(URI.decode(body))
   		link = body["link"]
   		# link = "http://africantechnologyforum.org/shedalert-load-shedding-alerts/"
-   	 	res = RestClient.get(link,header = header).body
+   	 	res = RestClient2.get(link,header = header).body
     	doc = Nokogiri::HTML(res)
     	#获取标题
     	title = doc.search("h1.entry-title").inner_html.strip rescue nil

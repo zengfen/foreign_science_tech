@@ -8,7 +8,7 @@ class CbcCaTechnology
     tasks = []
     lk = "https://www.cbc.ca/news/technology"
 
-    str = RestClient.get(lk).body
+    str = RestClient2.get(lk).body
     puts doc = Nokogiri::HTML(str)
     doc.search("a.contentWrapper,a.cardDefault").each do |item|
       link = "https://www.cbc.ca" + item[:href] rescue nil
@@ -24,7 +24,7 @@ class CbcCaTechnology
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
     #link = "https://www.cbc.ca/news/technology/nodosaur-borealopelta-stomach-1.5600224"
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.detailHeadline")[0].inner_text.strip rescue nil
 
@@ -45,9 +45,9 @@ class CbcCaTechnology
       json_doc["video"].each do |one|
         id = one["identifier"]
         url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/#{id}/meta.smil?feed=Player%20Selector%20-%20Prod&format=smil&mbr=true&manifest=m3u"
-        doc1 = Nokogiri::HTML(RestClient.get(url))
+        doc1 = Nokogiri::HTML(RestClient2.get(url))
         url1 = doc1.search("video")[0][:src]
-        video << RestClient.get(url1).to_s.match(/http.+?m3u8/)[0]
+        video << RestClient2.get(url1).to_s.match(/http.+?m3u8/)[0]
       end
     end
     p attached_media_info = ::Htmlarticle.download_m3u8(video)

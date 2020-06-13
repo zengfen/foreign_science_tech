@@ -18,7 +18,8 @@ class ThevergeCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+      str = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
+      )
       doc = Nokogiri::HTML(str.body)
       doc.search("div.c-compact-river h2 a").each do |item|
         link = item["href"] rescue ""
@@ -34,7 +35,7 @@ class ThevergeCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     tss = doc.search("time.c-byline__item").inner_text.strip rescue nil
     ts = Time.parse(tss).to_s rescue nil
@@ -48,8 +49,9 @@ class ThevergeCom
     videos = []
     ss = doc.search("div.c-entry-content iframe")[0][:src] rescue ""
         if ss != ""
-          ur = ss
-            request_res = RestClient.get(ur)
+          video_id = ss.to_s.split("embed/")[1].split("?")[0]
+           request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
+            request_res = RestClient2.get(request_url)
          urires = URI.decode(request_res.to_s)
         # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
         # jsonres = JSON.parse(uriressplit)

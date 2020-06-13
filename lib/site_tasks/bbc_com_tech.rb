@@ -15,7 +15,7 @@ class BbcComTech
 		else
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
-			res = RestClient.get(url)
+			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
 			doc.search("a.gs-c-promo-heading").each do |one|
 				link = one["href"]
@@ -50,7 +50,7 @@ class BbcComTech
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		link = body["link"]
-		res = RestClient.get(link).body
+		res = RestClient2.get(link).body
 		doc = Nokogiri::HTML(res)
 		title = doc.search("h1.story-body__h1,h1.primary-heading,header.lx-c-event-header h1").inner_text.strip
 		ts = doc.to_s.match(/datePublished":"(.*?)",/)[1] rescue ""

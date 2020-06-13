@@ -4,9 +4,9 @@ MonitorInstancesJob:
 #ProcessStatusJob:
 #  cron: '*/1 * * * * Asia/Shanghai'
 #  class: ProcessStatusJob
-UncompletedTasksJob:
-  cron: '0 */4 * * * Asia/Shanghai'
-  class: UncompletedTasksJob
+#UncompletedTasksJob:
+#  cron: '0 */4 * * * Asia/Shanghai'
+#  class: UncompletedTasksJob
 MonitorSidekiqJob:
-  cron: '0 */5 * * * Asia/Shanghai'
+  cron: '*/20 * * * * Asia/Shanghai'
   class: MonitorSidekiqJob

@@ -8,7 +8,7 @@ class SmhComAuTechnology
     tasks = []
     lk = "https://www.smh.com.au/technology"
 
-    str = RestClient.get(lk).body
+    str = RestClient2.get(lk).body
     doc = Nokogiri::HTML(str)
     doc.search('a[data-test="article-link"]').each do |item|
       p link = "https://www.smh.com.au" + item[:href] rescue nil
@@ -24,7 +24,7 @@ class SmhComAuTechnology
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
    # link = "https://www.smh.com.au/technology/spacex-prototype-explosion-20200530-p54xx3.html"
-    puts res = RestClient.get(link).body
+    puts res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search('h1[data-test="headline"]')[0].inner_text.strip rescue nil
 
@@ -52,7 +52,7 @@ class SmhComAuTechnology
                 "User-Agent"=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"}
       puts video_id = doc.search("video")[0][:"data-video-id"]
       video_lk = "https://edge.api.brightcove.com/playback/v1/accounts/#{video_account}/videos/#{video_id}"
-      puts video_json = JSON.parse(RestClient.get(video_lk,headers=headers))
+      puts video_json = JSON.parse(RestClient2.get(video_lk,headers=headers))
       puts video << video_json["sources"][0]["src"]
     end
     files = []

@@ -126,9 +126,9 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 3 * 3600,
+        :timeout => 60,
       )
-      style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
+      style = ["bmp", "jpg", "png", "tif", "gif", "pcx", "tga", "exif", "fpx", "svg", "psd", "cdr", "pcd", "dxf", "ufo", "eps", "ai", "raw", "WMF", "webp"]
       style.each do |one|
         next if status == true
         if url.to_s.match("#{one}")
@@ -147,6 +147,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/images/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -161,8 +162,8 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 3 * 3600,
-        :open_timeout => 3 * 3600
+        :timeout => 3 * 60,
+        :open_timeout => 3 * 60
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
@@ -173,6 +174,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/files/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -188,8 +190,9 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 10 * 3600,
-        :open_timeout => 10 * 3600
+        :timeout => 5 * 60,
+        :open_timeout => 5 * 60,
+        # :raw_response => true
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
@@ -199,10 +202,12 @@ class Htmlarticle
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      `echo 1 > /proc/sys/vm/drop_caches`
       files << "/medias/#{name}"
     end
     return files
   end
+
   # m3u8下载
   def self.download_m3u8(urls)
     path = "#{Rails.root}/public/medias"
@@ -216,6 +221,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/medias/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end

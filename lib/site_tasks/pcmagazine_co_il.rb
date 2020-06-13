@@ -23,7 +23,7 @@ class PcmagazineCoIl
 			body = JSON.parse(URI.decode(body))
 			# body = JSON.parse(body)
 			url = body["url"]
-			res = RestClient.get(url,@headers).body
+			res = RestClient2.get(url,@headers).body
 			doc = Nokogiri::HTML(res)
 			doc.search("div.catbRight div#inCat").each do |one|
 				puts link = one.search("div.catItemTitle a")[0]["href"]
@@ -48,7 +48,7 @@ class PcmagazineCoIl
 		puts link = URI.encode(body["link"])
 		headers = @headers
 		# link = "http://www.pcmagazine.co.il/security/pid=7857&name=37-%D7%9E%D7%9C%D7%99%D7%95%D7%9F-%D7%9E%D7%A9%D7%AA%D7%9E%D7%A9%D7%99-%D7%90%D7%A9%D7%9C%D7%99-%D7%9E%D7%93%D7%99%D7%A1%D7%95%D7%9F-%D7%A0%D7%97%D7%A9%D7%A4%D7%99%D7%9D"
-		res = RestClient.get(link,headers).body
+		res = RestClient2.get(link,headers).body
 		doc = Nokogiri::HTML(res)
 		puts title = doc.search("div#ArticleId h1").inner_text.strip
 		puts time = body["time"]

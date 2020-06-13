@@ -20,7 +20,7 @@ class GobMx
 			body = JSON.parse(URI.decode(body))
 			# body = JSON.parse(body)
 			url = body["url"]
-			res = RestClient.get(url).body
+			res = RestClient2.get(url).body
 			doc = Nokogiri::HTML(res)
 			doc.search("article a.small-link").each do |one|
 				puts link = one["href"]
@@ -37,7 +37,7 @@ class GobMx
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# link = "https://www.gob.mx/aem/es/articulos/dr-salvador-landeros-ayala-director-general-de-la-agencia-espacial-mexicana-integrante-del-consejo-consultivo-del-ift?idiom=es"
-		res = RestClient.get(link).body
+		res = RestClient2.get(link).body
 		doc = Nokogiri::HTML(res)
 		title = doc.search("h1").inner_text.strip
 		ts = doc.search("section.border-box").to_s.match(/\d+? de \w+? de 20\d{2}/).to_s.gsub("enero","January").to_s.gsub("febrero","February").to_s.gsub("marzo","March").to_s.gsub("abril","April").to_s.gsub("mayo","May").to_s.gsub("junio","June").to_s.gsub("julio","July").to_s.gsub("agosto","August").to_s.gsub("septiembre","September").to_s.gsub("octubre","October").to_s.gsub("noviembre","November").to_s.gsub("diciembre","December").to_s.gsub("de","/").to_s.gsub(" ","") rescue nil
@@ -57,7 +57,7 @@ class GobMx
 	      if link.to_s.match("videos")
 	        puts id = doc.search("input.video-url").to_s.match(/value\=\"(.+?)\"/)[1]
 	        ur = "https://www.youtube.com/get_video_info?video_id=#{id}"
-	        	request_res = RestClient.get(ur)
+	        	request_res = RestClient2.get(ur)
 				 urires = URI.decode(request_res.to_s)
 				Rails.logger.info "**"*100
 				# Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]

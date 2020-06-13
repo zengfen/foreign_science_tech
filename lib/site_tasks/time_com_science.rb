@@ -32,7 +32,7 @@ class TimeComScience
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url).body
+      str = RestClient2.get(url).body
       doc = Nokogiri::HTML(str)
       doc.search("h3>a").each do |item|
         link = item["href"] rescue nil
@@ -49,7 +49,7 @@ class TimeComScience
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.headline")[0].inner_text.strip rescue nil
 
@@ -83,7 +83,7 @@ class TimeComScience
       data_account = item["data-account"]
       videoId = item["data-video-id"]
       m_url = "https://edge.api.brightcove.com/playback/v1/accounts/" + "#{data_account}" + "/videos/" + "#{videoId}"
-      str = RestClient.get(m_url,@header).body
+      str = RestClient2.get(m_url,@header).body
       mdoc = JSON.parse(str)
       media_url << mdoc["sources"][4]["src"]
     end

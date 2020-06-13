@@ -35,7 +35,7 @@ class ReutersComScience
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      res = RestClient.get(url,headers=@headers)
+      res = RestClient2.get(url,headers=@headers)
       doc = Nokogiri::HTML(res.body)
       doc.search("div.column1 div.story-content a").each_with_index do |item,index|
         link = item["href"] rescue nil
@@ -53,7 +53,7 @@ class ReutersComScience
     body = JSON.parse(URI.decode(body))
     link = body["link"]
     # link = "https://www.reuters.com/article/us-archaeology-deadsea-scrolls/hides-that-reveal-dna-helps-scholars-divine-dead-sea-scrolls-idUSKBN239241"
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("div.ArticleHeader_content-container h1.ArticleHeader_headline")[0].inner_text.strip rescue nil
 

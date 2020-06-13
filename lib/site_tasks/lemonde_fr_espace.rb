@@ -16,7 +16,7 @@ class LemondeFrEspace
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      res = RestClient.get(url)
+      res = RestClient2.get(url)
       doc = Nokogiri::HTML(res.body)
       doc.search("a.teaser__link").each_with_index do |item,index|
         link = item["href"] rescue nil
@@ -34,7 +34,7 @@ class LemondeFrEspace
     body = JSON.parse(URI.decode(body))
     link = body["link"]
     # link = "https://www.lemonde.fr/culture/article/2020/05/24/inegalites-salariales-genetique-guerre-de-coree-quatre-documentaires-pour-s-immerger-en-replay_6040566_3246.html"
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
 
     if doc.to_s.match("article__header")
@@ -83,7 +83,7 @@ class LemondeFrEspace
       src =  doc.search("meta[property='og:video']")[0]["content"]
       video_id = src.to_s.split("embed/")[1].split("?")[0]
       request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
-      request_res = RestClient.get(request_url)
+      request_res = RestClient2.get(request_url)
       urires = URI.decode(request_res.to_s)
       # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
       # jsonres = JSON.parse(uriressplit)
