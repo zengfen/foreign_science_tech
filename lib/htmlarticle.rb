@@ -173,6 +173,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/files/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -219,6 +220,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/medias/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
