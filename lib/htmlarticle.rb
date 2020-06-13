@@ -126,7 +126,7 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 3 * 3600,
+        :timeout => 60,
       )
       style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
       style.each do |one|
@@ -161,8 +161,8 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 3 * 3600,
-        :open_timeout => 3 * 3600
+        :timeout => 3 * 60,
+        :open_timeout => 3 * 60
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
@@ -188,8 +188,8 @@ class Htmlarticle
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
-        :timeout => 10 * 3600,
-        :open_timeout => 10 * 3600
+        :timeout => 5 * 60,
+        :open_timeout => 5 * 60
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
