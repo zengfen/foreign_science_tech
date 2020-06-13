@@ -147,6 +147,7 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/images/#{name}"
+      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -191,7 +192,7 @@ class Htmlarticle
         :url => url,
         :timeout => 5 * 60,
         :open_timeout => 5 * 60,
-        :raw_response => true
+        # :raw_response => true
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
