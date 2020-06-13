@@ -18,7 +18,7 @@ class IafOrgIl
     	else
     		body = JSON.parse(URI.decode(body))
       		url = body["url"]
-          res = RestClient.get(url).body
+          res = RestClient2.get(url).body
           doc = Nokogiri::XML(res, nil, 'utf-8')
           doc.search("item").each do |item|
         		link = item.search("link").inner_text rescue nil
@@ -35,7 +35,7 @@ class IafOrgIl
 	def item(body)
 		body = JSON.parse(URI.decode(body))
   		link = body["link"]
-   	 	res = RestClient.get(link).body
+   	 	res = RestClient2.get(link).body
     	doc = Nokogiri::HTML(res)
     	#获取标题	
     	title = doc.search("h1.titleHeader").inner_html.strip rescue nil

@@ -26,7 +26,7 @@ class GigaomCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url).body
+      str = RestClient2.get(url).body
       doc = Nokogiri::HTML(str)
       doc.search(".main-content h4.deck>a").each do |item|
         link = item["href"] rescue nil
@@ -43,7 +43,7 @@ class GigaomCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.entry-title")[0].inner_text.strip rescue nil
 
@@ -79,7 +79,7 @@ class GigaomCom
         puts src.to_s.split("embed/")[1]
         puts video_id
         request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
-        request_res = RestClient.get(request_url)
+        request_res = RestClient2.get(request_url)
         urires = URI.decode(request_res.to_s)
         Rails.logger.info "**"*100
         # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]

@@ -35,7 +35,7 @@ class ThevergeCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     tss = doc.search("time.c-byline__item").inner_text.strip rescue nil
     ts = Time.parse(tss).to_s rescue nil
@@ -50,7 +50,7 @@ class ThevergeCom
     ss = doc.search("div.c-entry-content iframe")[0][:src] rescue ""
         if ss != ""
           ur = ss
-            request_res = RestClient.get(ur)
+            request_res = RestClient2.get(ur)
          urires = URI.decode(request_res.to_s)
         # Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]
         # jsonres = JSON.parse(uriressplit)

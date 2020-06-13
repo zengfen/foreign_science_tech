@@ -20,7 +20,7 @@ class WashingtonpostCom
 			body = JSON.parse(URI.decode(body))
 			# body = JSON.parse(body)
 			url = body["url"]
-			res = RestClient.get(url).body
+			res = RestClient2.get(url).body
 			doc = Nokogiri::HTML(res)
 			doc.search("div.story-list h2 a").each do |one|
 				puts link = one["href"]
@@ -37,7 +37,7 @@ class WashingtonpostCom
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# link = "https://www.washingtonpost.com/technology/2019/11/18/banking-that-electric-cars-can-also-be-cool-ford-introduces-an-all-electric-mustang/"
-		res = RestClient.get(link).body
+		res = RestClient2.get(link).body
 		doc = Nokogiri::HTML(res)
 		puts title = doc.search("header h1").inner_text.strip
 		tss = doc.search("article div.display-date").inner_text rescue nil
@@ -56,7 +56,7 @@ class WashingtonpostCom
 	         id1 = doc.search("figure div.powa-skip").to_s.match(/uuid\=\"(.+?)\"/)[1]
 	         id2 = id1.to_s.gsub("-","")
 	        ur = "https://video-api.washingtonpost.com/api/v1/ansvideos/findByUuid?uuid=#{id1}&cb=powaCallback#{id2}"
-	         st = RestClient.get(ur).body
+	         st = RestClient2.get(ur).body
 	         stt = st.to_s.match(/\((.+?)\)\;/)[1]
 	         docc = JSON.parse(stt)
 	        puts shi = docc[0]["streams"][-1]["url"]
