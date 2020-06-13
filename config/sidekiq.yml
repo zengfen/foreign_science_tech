@@ -11,8 +11,8 @@
   - t_sk_job_instances
  
 development:
-:concurrency: 15
+:concurrency: 5
 staging:
-:concurrency: 15
+:concurrency: 5
 production:
-:concurrency: 15
+:concurrency: 5
