@@ -128,7 +128,7 @@ class Htmlarticle
         :url => url,
         :timeout => 60,
       )
-      style = ["bmp","jpg","png","tif","gif","pcx","tga","exif","fpx","svg","psd","cdr","pcd","dxf","ufo","eps","ai","raw","WMF","webp"]
+      style = ["bmp", "jpg", "png", "tif", "gif", "pcx", "tga", "exif", "fpx", "svg", "psd", "cdr", "pcd", "dxf", "ufo", "eps", "ai", "raw", "WMF", "webp"]
       style.each do |one|
         next if status == true
         if url.to_s.match("#{one}")
@@ -189,7 +189,8 @@ class Htmlarticle
         :method => :get,
         :url => url,
         :timeout => 5 * 60,
-        :open_timeout => 5 * 60
+        :open_timeout => 5 * 60,
+        :raw_response => true
       )
       content_type = res.headers[:content_type]
       extn = Rack::Mime::MIME_TYPES.invert[content_type]
@@ -203,6 +204,7 @@ class Htmlarticle
     end
     return files
   end
+
   # m3u8下载
   def self.download_m3u8(urls)
     path = "#{Rails.root}/public/medias"
