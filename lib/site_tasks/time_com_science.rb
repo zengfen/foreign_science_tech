@@ -18,12 +18,12 @@ class TimeComScience
   def list(body)
     tasks = []
     if body.blank?
-      # urls = ["https://time.com/section/science/"]
-      urls = ["https://time.com/section/science/?page=1",
-              "https://time.com/section/science/?page=2",
-              "https://time.com/section/science/?page=3",
-              "https://time.com/section/science/?page=4",
-              "https://time.com/section/science/?page=5"]
+      urls = ["https://time.com/section/science/"]
+      # urls = ["https://time.com/section/science/?page=1",
+      #         "https://time.com/section/science/?page=2",
+      #         "https://time.com/section/science/?page=3",
+      #         "https://time.com/section/science/?page=4",
+      #         "https://time.com/section/science/?page=5"]
       urls.each do |url|
         body = {url:url}
         puts body.to_json
@@ -60,7 +60,13 @@ class TimeComScience
     end
     authors << authors_temp
 
-    ts = doc.search("div.published-date").inner_text.strip
+    ts = doc.search("div.published-date").inner_text.strip rescue nil
+    if ts.blank?
+      ts = doc.search("script").to_s.match(/datePublished":"(.*?)\"\,\"dateModified/)[1]
+    end
+    if ts == ""
+      return
+    end
     ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     # []
