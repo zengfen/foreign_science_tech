@@ -200,6 +200,7 @@ class Htmlarticle
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      `echo 1 > /proc/sys/vm/drop_caches`
       files << "/medias/#{name}"
     end
     return files
