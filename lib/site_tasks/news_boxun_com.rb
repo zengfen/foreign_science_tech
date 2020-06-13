@@ -27,7 +27,7 @@ class NewsBoxunCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url).body
+      str = RestClient2.get(url).body
       doc = Nokogiri::HTML(str)
       doc.search('a[href*="news\/gb\/finance\/"]').each do |item|
         link = item["href"] rescue nil
@@ -47,7 +47,7 @@ class NewsBoxunCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title_temp = doc.search(".F11 center")[0].inner_text.strip rescue nil
     zz = doc.search("center")[2].search("font").inner_text.strip rescue nil
