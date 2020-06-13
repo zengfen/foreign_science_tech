@@ -16,7 +16,7 @@ class RandOrg
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      res = RestClient.get(url)
+      res = RestClient2.get(url)
       doc = Nokogiri::HTML(res.body)
       doc.search("div#results ul.teasers h3 a,ul.pub-list li a").each_with_index do |item,index|
         next if index > 4
@@ -37,7 +37,7 @@ class RandOrg
     link = body["link"]
     # res = ::TData.link_exist(link)
     # return res if res.present?
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1")[0].inner_text.strip rescue nil
     ts = Time.parse(doc.search("meta[name='rand-published-date']")[0]["content"] ) rescue nil

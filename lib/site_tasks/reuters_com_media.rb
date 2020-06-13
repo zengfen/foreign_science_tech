@@ -34,7 +34,7 @@ class ReutersComMedia
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      res = RestClient.get(url,headers=@headers)
+      res = RestClient2.get(url,headers=@headers)
       doc = Nokogiri::HTML(res.body)
       doc.search("div.column1 div.story-content a").each_with_index do |item,index|
         link = item["href"] rescue nil
@@ -51,7 +51,7 @@ class ReutersComMedia
   def item(body)
     body = JSON.parse(URI.decode(body))
     link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("div.ArticleHeader_content-container h1.ArticleHeader_headline")[0].inner_text.strip rescue nil
 

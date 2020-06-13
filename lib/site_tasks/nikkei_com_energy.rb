@@ -10,7 +10,7 @@ class NikkeiComEnergy
     tasks = []
       lk = "https://www.nikkei.com/business/energy/"
 
-      str = RestClient.get(lk).body
+      str = RestClient2.get(lk).body
       doc = Nokogiri::HTML(str)
       doc.search("h3.m-miM09_title").each do |item|
         next if item.to_s.match("有料会員限定")
@@ -28,7 +28,7 @@ class NikkeiComEnergy
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    puts res = RestClient.get(link).body
+    puts res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.cmn-article_title")[0].inner_text.strip rescue nil
 

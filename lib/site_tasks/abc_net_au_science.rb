@@ -8,7 +8,7 @@ class AbcNetAuScience
     tasks = []
     lk = "https://www.abc.net.au/news/science/"
 
-    str = RestClient.get(lk).body
+    str = RestClient2.get(lk).body
     doc = Nokogiri::HTML(str)
     doc.search("article .view-textlink").each do |item|
       p link = "https://www.abc.net.au" + item.search("a")[0][:href] rescue nil
@@ -23,7 +23,7 @@ class AbcNetAuScience
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("h1.title-padding-top-small")[0].inner_text.strip rescue nil
 

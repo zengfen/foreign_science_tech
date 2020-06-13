@@ -16,7 +16,8 @@ class LifehackerCom
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
 			i = 0
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
+			)
 			doc = Nokogiri::HTML(res.body)
 			doc.search("div.dFCKPx div.aoiLP a").each do |one|
 				puts url = one["href"]
@@ -29,7 +30,7 @@ class LifehackerCom
 	def item(body)
 		body = JSON.parse(URI.decode(body))
 		Rails.logger.info link = body["url"]
-		res = RestClient.get(link)
+		res = RestClient2.get(link)
 		doc = Nokogiri::HTML(res.body)
 		Rails.logger.info title = doc.search("div.gyRthi h1").inner_text.strip
 		author = []

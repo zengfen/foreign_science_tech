@@ -16,7 +16,7 @@ class WashingtonpostComBusiness
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url).body
+      str = RestClient2.get(url).body
       doc = Nokogiri::HTML(str)
       doc.search("section#main-content div.story-headline>h2>a").each do |item|
         puts link = item["href"] rescue nil
@@ -33,7 +33,7 @@ class WashingtonpostComBusiness
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("header h1").inner_text.strip rescue nil
     if title.blank?
@@ -86,7 +86,7 @@ class WashingtonpostComBusiness
       id1 = doc.search("figure div.powa-skip").to_s.match(/uuid\=\"(.+?)\"/)[1]
       id2 = id1.to_s.gsub("-","")
       ur = "https://video-api.washingtonpost.com/api/v1/ansvideos/findByUuid?uuid=#{id1}&cb=powaCallback#{id2}"
-      st = RestClient.get(ur).body
+      st = RestClient2.get(ur).body
       stt = st.to_s.match(/\((.+?)\)\;/)[1]
       docc = JSON.parse(stt)
       media_url << docc[0]["streams"][-1]["url"]

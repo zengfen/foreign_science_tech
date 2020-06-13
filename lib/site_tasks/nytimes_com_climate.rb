@@ -15,7 +15,7 @@ class NytimesComClimate
 		else
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
-			res = RestClient.get(url)
+			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
 			doc.search("ol.ekkqrpp2 li.ekkqrpp3 h2 a,div.css-13mho3u li.css-ye6x8s a").each do |one|
 				link = one["href"]
@@ -74,7 +74,7 @@ class NytimesComClimate
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# puts link = "https://venturebeat.com/2020/06/01/argo-closes-2-6-billion-round-from-vw-at-a-7-25-billion-valuation/"
-		res = RestClient.get(link).body
+		res = RestClient2.get(link).body
 		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
 		Rails.logger.info title = doc.search("div.css-1vkm6nb h1,h1#interactive-heading,h1.story-heading").inner_text.strip

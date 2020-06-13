@@ -60,7 +60,7 @@ class TheguardianComTech
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# puts link = "https://venturebeat.com/2020/06/01/argo-closes-2-6-billion-round-from-vw-at-a-7-25-billion-valuation/"
-		res = RestClient.get(link).body
+		res = RestClient2.get(link).body
 		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
 		Rails.logger.info title = doc.search("div.gs-container h1").inner_text.strip
@@ -80,7 +80,7 @@ class TheguardianComTech
 				src = video["src"]
 				Rails.logger.info video_id = src.to_s.split("embed/")[1].split("?")[0]
 				request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
-				request_res = RestClient.get(request_url)
+				request_res = RestClient2.get(request_url)
 				urires = URI.decode(request_res.to_s)
 				Rails.logger.info "**"*100
 				# Rails.logger.info uriressplit = urires.split('"url":"')[1].split('","mimeType"')[0]

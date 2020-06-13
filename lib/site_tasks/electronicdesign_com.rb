@@ -25,7 +25,7 @@ class ElectronicdesignCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient.get(url,header = @header).body
+      str = RestClient2.get(url,header = @header).body
       doc = Nokogiri::HTML(str)
       doc.search("div.page-grid__bottom-row h5.node__title>a").each do |item|
         link = item["href"] rescue nil
@@ -41,7 +41,7 @@ class ElectronicdesignCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient.get(link,header = @header).body
+    res = RestClient2.get(link,header = @header).body
     doc = Nokogiri::HTML(res)
 
     json_data = doc.search("script").to_s.match(/dataLayer.push\((.*?)\}\]\}\)/)[1].to_s + "}]}" rescue nil

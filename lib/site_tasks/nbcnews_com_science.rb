@@ -7,7 +7,7 @@ class NbcnewsComScience
     tasks = []
     lk = "https://www.nbcnews.com/science"
 
-    str = RestClient.get(lk).body
+    str = RestClient2.get(lk).body
     puts doc = Nokogiri::HTML(str)
     doc.search("h2 a").each do |item|
       link = item[:href] rescue nil
@@ -23,7 +23,7 @@ class NbcnewsComScience
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
     #link = "https://www.nbcnews.com/science/science-news/scientists-describe-chaos-being-stuck-field-amid-coronavirus-lockdowns-n1175996"
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     p title = doc.search("h1.article-hero__headline")[0].inner_text.strip rescue nil
     return if title == nil
@@ -57,7 +57,7 @@ class NbcnewsComScience
           elsif item.to_s.match("videoAssets")
             vide_json = item["video"]["videoAssets"][0]
             url = vide_json["publicUrl"] +"&format=redirect&manifest=m3u&format=redirect&Tracking=true&Embedded=true&formats=MPEG4"
-            video << RestClient.get(url).to_s.match(/http.+?m3u8/)[0]
+            video << RestClient2.get(url).to_s.match(/http.+?m3u8/)[0]
           end
         end
       end
