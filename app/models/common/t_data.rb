@@ -167,7 +167,9 @@ class TData < CommonBase
       file_name = file_path+"/"+file
       puts file_name
       sleep 5
+      a = TData.count
       File.open(file_name, "r") do |f|
+        count = 0
         while data = f.gets
           data = JSON.parse(data)
           data["con_author"] = data["con_author"].to_json if data["con_author"].class == Array
@@ -178,19 +180,28 @@ class TData < CommonBase
           data["data_source_type"] = "website"
           data["data_mode"] = "spider"
           datas << data
+          count += 1
+        end
+        if datas.count >= 100
+          destination_columns = datas.first.keys
+          TData.bulk_insert(*destination_columns, ignore: true, set_size: 100) do |worker|
+            datas.each do |data|
+              worker.add(data)
+            end
           end
+          datas = []
+          `echo 1 > /proc/sys/vm/drop_caches`
+        end
       end
-      a = TData.count
       destination_columns = datas.first.keys
-      TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
+      TData.bulk_insert(*destination_columns, ignore: true, set_size: 100) do |worker|
         datas.each do |data|
           worker.add(data)
         end
       end
-      `echo 1 > /proc/sys/vm/drop_caches`
       b = TData.count
       puts "b - a=============#{b - a}"
-      puts "datas.count======#{datas.count}"
+      puts "count======#{count}"
     end
   end
 
