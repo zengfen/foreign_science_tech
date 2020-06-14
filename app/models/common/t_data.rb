@@ -160,4 +160,39 @@ class TData < CommonBase
   end
 
 
+  def self.import_datas(file_path)
+    datas = []
+    Dir.foreach(file_path) do |file|
+      next if file == "." || file == ".."
+      file_name = file_path+"/"+file
+      puts file_name
+      sleep 5
+      File.open(file_name, "r") do |f|
+        while data = f.gets
+          data = JSON.parse(data)
+          data["con_author"] = data["con_author"].to_json if data["con_author"].class == Array
+          data["attached_media_info"] = data["attached_media_info"].to_json if data["attached_media_info"].class == Array
+          data["attached_img_info"] = data["attached_img_info"].to_json if data["attached_img_info"].class == Array
+          data["attached_file_info"] = data["attached_file_info"].to_json if data["attached_file_info"].class == Array
+          data["data_time"] = Time.now
+          data["data_source_type"] = "website"
+          data["data_mode"] = "spider"
+          datas << data
+          end
+      end
+      a = TData.count
+      destination_columns = datas.first.keys
+      TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
+        datas.each do |data|
+          worker.add(data)
+        end
+      end
+      `echo 1 > /proc/sys/vm/drop_caches`
+      b = TData.count
+      puts "b - a=============#{b - a}"
+      puts "datas.count======#{datas.count}"
+    end
+  end
+
+
 end
