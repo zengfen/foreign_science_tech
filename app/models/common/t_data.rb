@@ -166,7 +166,6 @@ class TData < CommonBase
       next if file == "." || file == ".."
       file_name = file_path+"/"+file
       puts file_name
-      sleep 5
       a = TData.count
       File.open(file_name, "r") do |f|
         count = 0
@@ -181,10 +180,11 @@ class TData < CommonBase
           data["data_mode"] = "spider"
           datas << data
           count += 1
+          next if count > 2
         end
-        if datas.count >= 100
-          destination_columns = datas.first.keys
-          TData.bulk_insert(*destination_columns, ignore: true, set_size: 100) do |worker|
+        if datas.count >= 1000
+          destination_columns = datas.first.keys  rescue nil
+          TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
             datas.each do |data|
               worker.add(data)
             end
@@ -193,8 +193,8 @@ class TData < CommonBase
           `echo 1 > /proc/sys/vm/drop_caches`
         end
       end
-      destination_columns = datas.first.keys
-      TData.bulk_insert(*destination_columns, ignore: true, set_size: 100) do |worker|
+      destination_columns = datas.first.keys rescue nil
+      TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
         datas.each do |data|
           worker.add(data)
         end
