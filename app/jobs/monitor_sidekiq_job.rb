@@ -32,7 +32,7 @@ class MonitorSidekiqJob < ApplicationJob
     stats.each do |stat, value|
       puts "#{stat}: #{value}"
     end
-    if stats.values.uniq == [0]
+    if stats[:scheduled_size] == 0 && stats[:busy_size] == 0 && stats[:enqueued_size] == 0 && SpiderTask.where(status:[SpiderTask::TypeTaskStart,SpiderTask::TypeTaskReopen]).present?
       # 根据需要重启
       `bash ./stop_sidekiq.sh`
       `bash ./start_sidekiq.sh`
