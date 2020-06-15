@@ -1,29 +1,19 @@
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-content">
-        <!-- 添加form -->
-        <%= form_for(@spider_task,:html=>{:class=>"form-horizontal"}) do |f| %>
-
-            <div class="form-group">
-              <label class="col-sm-2 control-label">选择爬虫</label>
-              <div class="col-sm-8">
-                <%= f.select(:spider_id,Spider.all.order('spider_name asc').collect{|x| [x.spider_name,x.id]},{include_blank: "请选择爬虫"},{class: "form-control m-b spider chosen-select"}) %>
-              </div>
-              <div class="col-sm-2">
-                <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="btn_ins"></i>
-              </div>
-            </div>
-
-          <div class="hr-line-dashed"></div>
-          <div class="form-group">
-            <div class="col-sm-2 col-sm-offset-10">
-              <button class="btn btn-primary" type="submit">保存</button>
-            </div>
-          </div>
-        <%end%>
-      </div>
+<%= form_for(@spider_task,:html=>{:class=>"form-horizontal"}) do |f| %>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">选择爬虫</label>
+    <div class="col-sm-8">
+      <%= f.select(:spider_id,Spider.all.order('spider_name asc').collect{|x| [x.spider_name,x.id]},{include_blank: "请选择爬虫"},{class: "form-control m-b spider chosen-select"}) %>
+    </div>
+    <div class="col-sm-2">
+      <i class="fa fa-info-circle m-sm" data-toggle="tooltip"  data-placement="bottom" title="请先选择模板" id="btn_ins"></i>
     </div>
   </div>
 
-</div>
+  <div class="hr-line-dashed"></div>
+
+  <div class="form-group">
+    <div class="col-sm-12 text-right">
+      <button class="btn btn-primary" type="submit">保存</button>
+    </div>
+  </div>
+<%end%>
