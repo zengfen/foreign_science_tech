@@ -6,7 +6,7 @@
     if(!$modal.length) {
       $modal = $([
         '<div class="modal fade" id="modal_custom_confirm">',
-          '<div class="modal-dialog">',
+          '<div class="modal-dialog" style="width: 450px;margin-top: 20vh">',
             '<div class="modal-content">',
               '<div class="modal-header">',
                 '<a href="javascript: void(0)" class="close" data-dismiss="modal">&times;</a>',
@@ -85,7 +85,7 @@
       opts.onHide && opts.onHide();
     });
 
-    $modal.modal({backdrop: 'static', keybaord: false});
+    $modal.modal();
   }
 
   window.gConfirm = gConfirm;
