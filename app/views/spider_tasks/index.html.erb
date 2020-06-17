@@ -107,13 +107,13 @@
 
 <!--这里是提示框-->
 <div id="modal-form-add-sql" class="modal fade in" aria-hidden="true">
-  <div class="modal-dialog" style="width: 800px;overflow-y: auto;">
+  <div class="modal-dialog" style="width: 650px">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">添加</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding: 40px 40px 30px">
         <!-- modal-body -->
         <%=render "form_body"%>
       </div>
@@ -154,20 +154,15 @@ $(document)
     })
 })
 .on("click",".remove-line",function(e){
-  
-    e.preventDefault();
+  e.preventDefault();
+  var $this = $(this);
+  var html = $this.closest('tr').find('td').first().html();
+  var message = '您确定要删除<span class="remove-html">'+ html +'</span>吗？';
 
-    //删除本行数据
-    //var _$this = $(this);
-    var $this = $(this),html = $this.closest('tr').find('td').first().html();
-    var $modal = $('#modal-form-remove');
-    $modal.find('.remove-html').html(html);
-    $modal.modal("show");
-
-    $('.sure-remove').off().on('click', function (e) {
-       e.preventDefault();
-      var _this=$(this);
-      //需要传到数据库中，需要后台传输数据，局部刷新页面
+  window.gConfirm && window.gConfirm({
+    title: '提示',
+    message: message,
+    onConfirm: function() {
       var url = $this.attr("href");
       if (url != "##") {
         $.ajax({
@@ -175,105 +170,58 @@ $(document)
           type: 'DELETE',
           success:function(data){
           if (data.type=="success"){
-            _this.closest('.modal').modal("hide");
             $this.closest('tr').remove();
           }
         }});
       }
-     
-    });
-
-  
-})
-  .on("click",'.cancel-remove',function(e){
-   var $modal = $('#modal-form-remove');
-      $modal.modal("hide");
-})
-  .on("click",".start-line, .stop-line",function(e){
-    e.preventDefault();
-    var $this = $(this);
-    var url = $this.attr("href");
-    if (url != "##") {
-      $.ajax({
-        url: url,
-        type: 'POST',
-        processData: false,
-        dataType: 'json',
-        success:function(data){
-          if (data.type=="success"){
-            toastr.success(data.message);
-            setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
-              window.location.reload();;
-            }, 1000);
-          }else{
-            toastr.error(data.message);
-          }
-        }
-      });
     }
   });
+})
+.on("click",".start-line, .stop-line",function(e){
+  e.preventDefault();
+  var $this = $(this);
+  var url = $this.attr("href");
+  if (url != "##") {
+    $.ajax({
+      url: url,
+      type: 'POST',
+      processData: false,
+      dataType: 'json',
+      success:function(data){
+        if (data.type=="success"){
+          toastr.success(data.message);
+          setTimeout(function () {  //使用  setTimeout（）方法设定定时2000毫秒
+            window.location.reload();;
+          }, 1000);
+        }else{
+          toastr.error(data.message);
+        }
+      }
+    });
+  }
+});
 
 $('.add-sql').on('click', function (e) {
   e.preventDefault();
   var $modal = $('#modal-form-add-sql');
   $modal.modal("show");
-})
-
-
-
-$(".submit_btn").on('click', function (e) {
-    $this = $(this);
-    $form = $this.closest('form');
-    var str = $form.find('.spider').val();
-    if (str == ''){
-    swal({
-        title: "提示",
-        text: "请选择爬虫模版！",
-        type: "error",
-    })
-    }else{
-      $form.submit();
-    }
 });
 
+$(".submit_btn").on('click', function (e) {
+  $this = $(this);
+  $form = $this.closest('form');
+  var str = $form.find('.spider').val();
+  if (str == ''){
+    swal({
+      title: "提示",
+      text: "请选择爬虫模版！",
+      type: "error",
+    });
+  }else{
+    $form.submit();
+  }
+});
 
-//window.setInterval(function(){
-//  var current_url = $("#current_url").val();
-//  var status = $(".task_status").find('span').text();
-//  var bool1 = !$('.all-page').hasClass('dn');
-//  //  && status.indexOf("执行中")!=-1
-//  if (bool1){
-//      $.ajax({
-//          url:current_url,
-//          type:'get',
-//          success:function(data){
-//            $(".all-page").find("[data-toggle='tooltip']").tooltip('destroy');
-//            $(".all-page").html(data);
-//            $(".all-page").find("[data-toggle='tooltip']").tooltip();
-//            var clipboard = new Clipboard('.keyword', {
-//              text: function(el) {
-//                var data = $(el).data('original-title')
-//                return data;
-//              }
-//            });
-//            clipboard.on('success', function(e) {
-//             toastr.success("复制成功");
-//            });
-//            clipboard.on('error', function(e) {
-//              console.log(e);
-//            });
-//          },
-//          complete: function (XHR, TS) {
-//            XHR = null
-//          }
-//      });
-//    // $.get(current_url, function(data){
-//    //   $("[data-toggle='tooltip']").tooltip('destroy');
-//    //   $(".all-page").html(data);
-//    //   $("[data-toggle='tooltip']").tooltip();
-//    // })
-//  }
-//}, 20000);
 $("[data-toggle='tooltip']").tooltip();
 var clipboard = new Clipboard('.keyword', {
       text: function(el) {
