@@ -14,9 +14,9 @@ class DataCentersController < ApplicationController
     # 模糊搜索
     if params[:search_type] == "fuzzy"
       keyword = params[:keyword].to_s.strip
-      @datas = TData
+      @datas = TData.where("data_time > ?",Time.parse("2020-06-01"))
       if keyword.present?
-        @datas = @datas.where("con_title like '%#{keyword}%' or con_text like '%#{keyword}%'").where("data_time > ?",Time.parse("2020-06-01"))
+        @datas = @datas.where("con_title like '%#{keyword}%' or con_text like '%#{keyword}%'")
       end
     else
       # 精确查询
