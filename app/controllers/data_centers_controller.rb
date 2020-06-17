@@ -16,7 +16,7 @@ class DataCentersController < ApplicationController
       keyword = params[:keyword].to_s.strip
       @datas = TData
       if keyword.present?
-        @datas = @datas.where("con_title like '%#{keyword}%' or con_text like '%#{keyword}%'")
+        @datas = @datas.where("con_title like '%#{keyword}%' or con_text like '%#{keyword}%'").where("data_time > ?",Time.parse("2020-06-01"))
       end
     else
       # 精确查询
