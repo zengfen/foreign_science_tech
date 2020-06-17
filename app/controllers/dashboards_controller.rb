@@ -2,7 +2,7 @@ class DashboardsController < ApplicationController
   before_action :logged_in_user
 
   def index
-    @total_data_count = TData.count
+    @total_data_count = TData.where("data_time > ?",Time.parse("2020-06-01")).count
     @today_count = TData.during(Date.today,Date.today).count
     @last_week_count = TData.during(Date.today.at_beginning_of_week,Date.today).count
     @last_month_count = TData.during(Date.today.at_beginning_of_month,Date.today).count

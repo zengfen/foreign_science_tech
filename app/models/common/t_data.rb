@@ -160,17 +160,27 @@ class TData < CommonBase
   end
 
 
-  def self.import_datas(file_path)
-    datas = []
+  # nohup rails r TData.import_datas &
+  def self.import_datas
+    # a = ["/Users/zengfen/Downloads/t_data历史数据/all_json/ReutersComEnergy.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComDriverless.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NytimesComClimate.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/ThevergeCom.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComLeadingEdge.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/BlogsAkamaiCom.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/AbcNetAuScience.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFrCosmos.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/.DS_Store", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComAi.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/SmhComAuTechnology.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFrArcheologie.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFrMedecine.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/PcmagazineCoIl.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/PcmagazineCoIlCategory.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComFintech.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/ReutersComScience.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComMobile.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComEnergy.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NytimesComSpace.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/TheguardianComScience.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/TheguardianComTech.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFrPaleontologie.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/ReutersComMedia.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NikkeiComIot.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/NytimesComPersonaltech.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/GobMx.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/VenturebeatComAi.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFrEspace.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/CbcCaTechnology.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/LemondeFr.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/IafOrgIl.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/WashingtonpostCom.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/AfricantechnologyforumOrg.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/ReutersCom.json", "/Users/zengfen/Downloads/t_data历史数据/all_json/AustinforumOrg.json"]
+    file_path = "/Users/zengfen/Downloads/t_data历史数据/all_json_2"
+    a = []
     Dir.foreach(file_path) do |file|
       next if file == "." || file == ".."
       file_name = file_path+"/"+file
-      puts file_name
-      a = TData.count
-      File.open(file_name, "r") do |f|
-        count = 0
+      a << file_name
+    end
+    puts a
+
+    a.each do |file|
+      datas = []
+      index = 0
+      File.open(file, "r") do |f|
         while data = f.gets
-          data = JSON.parse(data)
+          index += 1
+          puts "index=======#{index}"
+          data = JSON.parse(data) rescue nil
+          next if data.blank?
           data["con_author"] = data["con_author"].to_json if data["con_author"].class == Array
           data["attached_media_info"] = data["attached_media_info"].to_json if data["attached_media_info"].class == Array
           data["attached_img_info"] = data["attached_img_info"].to_json if data["attached_img_info"].class == Array
@@ -178,31 +188,36 @@ class TData < CommonBase
           data["data_time"] = Time.now
           data["data_source_type"] = "website"
           data["data_mode"] = "spider"
+          data["data_snapshot_path"] = data["data_snapshot_path"][0...65535]
           datas << data
-          count += 1
-          next if count > 2
-        end
-        if datas.count >= 1000
-          destination_columns = datas.first.keys  rescue nil
-          TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
-            datas.each do |data|
-              worker.add(data)
+          if datas.count >= 10
+            destination_columns = datas.first.keys
+            TData.bulk_insert(*destination_columns, ignore: true, set_size: 10) do |worker|
+              datas.each do |data|
+                worker.add(data)
+              end
             end
+            # TData.create(datas)
+            datas = []
           end
-          datas = []
-          `echo 1 > /proc/sys/vm/drop_caches`
         end
       end
-      destination_columns = datas.first.keys rescue nil
-      TData.bulk_insert(*destination_columns, ignore: true, set_size: 1000) do |worker|
+      destination_columns = datas.first.keys
+
+      # all_address = datas.map{|x| x["data_address"]}
+      # have = TData.where(data_address:all_address).pluck(:data_address)
+      # none = all_address - have
+      # datas = datas.find_all{|k| none.include? k["data_address"]}
+      # puts "=======datas=======#{datas.count}"
+
+      TData.bulk_insert(*destination_columns, ignore: true, set_size: 10) do |worker|
         datas.each do |data|
           worker.add(data)
         end
       end
-      b = TData.count
-      puts "b - a=============#{b - a}"
-      puts "count======#{count}"
     end
+
+
   end
 
 
