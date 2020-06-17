@@ -82,8 +82,8 @@ class GigaomCom
     media = []
     media_url = []
     doc.search("div.responsive-embed p iframe").each do |video|
-      if video["src"].include? "youtube"
-        src = video["src"]
+      src = video["src"]
+      if src.include? "youtube"
         Rails.logger.info video_id = src.to_s.split("embed/")[1].split("?")[0]
         request_url = "https://www.youtube.com/get_video_info?video_id=#{video_id.to_s}"
         request_res = RestClient2.get(request_url)
@@ -95,11 +95,15 @@ class GigaomCom
         Rails.logger.info viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
         media_url << viurl
       else
-        media_url << video["src"]
+        str = RestClient.get(src).body
+        str_reg = str.to_s.match(/config\ \=(.*?)\;\ if\ \(\!c/)[1]
+        jdoc = JSON.parse(str_reg)
+        media_url << jdoc["request"]["files"]["progressive"][2]["url"]
+        # media_url << video["src"]
       end
     end
     media_url << doc.search("script").to_s.match(/\'url\'\:\ \"(.*?)\.mp3\"\,/)[1] + ".mp3" rescue []
-    puts media_url = media_url.compact.uniq
+    media_url = media_url.compact.uniq
     Rails.logger.info media_url
     if media_url.join.include?(".mp3")
       media = download_mp3(media_url)
@@ -107,10 +111,31 @@ class GigaomCom
       media = ::Htmlarticle.download_medias(media_url)
     end
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: ts, con_text: desp,attached_img_info: images,attached_file_info: files,category: category,attached_media_info: media}
-    puts task.to_json
+    task.to_json
 
     info = ::TData.save_one(task)
     return info
+  end
+
+  # 音视频下载
+  def download_medias(urls)
+    path = "#{Rails.root}/public/medias"
+    Dir.mkdir path if !Dir.exist?(path)
+    files = []
+    urls.each do |url|
+      res = RestClient.get(url)
+      link = url.split("\.")[0]
+      extn = File.extname  link
+
+      name = Digest::MD5.hexdigest(url) + extn + ".mp4"
+      if File.exist? "#{path}/#{name}"
+        files << "/medias/#{name}"
+        next
+      end
+      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
+      files << "/medias/#{name}"
+    end
+    return files
   end
 
   # mp3下载
