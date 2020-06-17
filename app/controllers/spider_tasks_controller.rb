@@ -12,7 +12,7 @@ class SpiderTasksController < ApplicationController
     start_date = params[:start_date].present? ? params[:start_date] : (Date.today - 1.month)
     end_date = params[:end_date].present? ? params[:end_date] : Time.now
     end_date = end_date.to_time.end_of_day > Time.now ? Time.now : end_date.to_time.end_of_day
-    @spider_tasks = SpiderTask.includes('spider').where(opts).during(start_date, end_date).order("created_at desc").page(params[:page]).per(20)
+    @spider_tasks = SpiderTask.includes('spider').where(opts).during(start_date, end_date).where("created_at > ?",Time.parse("2020-05-01")).order("created_at desc").page(params[:page]).per(20)
   end
 
 

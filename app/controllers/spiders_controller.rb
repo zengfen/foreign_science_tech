@@ -6,7 +6,7 @@ class SpidersController < ApplicationController
     opts = {}
     opts[:spider_name] = params[:spider_name] unless params[:spider_name].blank?
     opts[:status] = params[:status] unless params[:status].blank?
-    @spiders = Spider.where(opts).order('created_at desc').page(params[:page]).per(20)
+    @spiders = Spider.where(opts).where("created_at > ?",Time.parse("2020-05-01")).order('created_at desc').page(params[:page]).per(20)
     @spider = Spider.new
     @task_info = {}
     TSkJobInstance.all.each do |x|
