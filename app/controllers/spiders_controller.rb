@@ -9,8 +9,8 @@ class SpidersController < ApplicationController
     @spiders = Spider.where(opts).where("created_at > ?",Time.parse("2020-05-01")).order('created_at desc').page(params[:page]).per(20)
     @spider = Spider.new
     @task_info = {}
-    TSkJobInstance.all.each do |x|
-      @task_info[x.spider_name] = {freq:"1day",next_time:Date.today}
+    @spiders.pluck(:spider_name).each do |x|
+      @task_info[x] = {freq:"1day",next_time:Date.today}
     end
     @total_count = TData.group(:data_spidername).count
   end
