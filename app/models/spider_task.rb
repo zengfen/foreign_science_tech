@@ -180,7 +180,6 @@ class SpiderTask < ApplicationRecord
         end
       end
       model_tasks = eval(line["spider_name"]).new.send(line["mode"], line["body"])
-      `echo 1 > /proc/sys/vm/drop_caches`
       if model_tasks == nil
         return {type: "error", message: "result is nil"}
       end

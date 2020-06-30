@@ -10,7 +10,6 @@ class ProcessStatusJob < ApplicationJob
     puts "==spider_task_id====#{spider_task_id}="
     spider_task = SpiderTask.find(spider_task_id) rescue nil
     GC.start
-    `echo 1 > /proc/sys/vm/drop_caches`
     if spider_task.present?
       spider_task.process_status
     end

@@ -147,7 +147,6 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/images/#{name}"
-      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -174,7 +173,6 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/files/#{name}"
-      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
@@ -202,7 +200,6 @@ class Htmlarticle
         next
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      `echo 1 > /proc/sys/vm/drop_caches`
       files << "/medias/#{name}"
     end
     return files
@@ -213,7 +210,13 @@ class Htmlarticle
     path = "#{Rails.root}/public/medias"
     files = []
     urls.each do |url|
-      res = RestClient.get(url)
+      res = RestClient::Request.execute(
+        :method => :get,
+        :url => url,
+        :timeout => 5 * 60,
+        :open_timeout => 5 * 60,
+      # :raw_response => true
+      )
       name = Digest::MD5.hexdigest(url) + ".m3u8"
       if File.exist? "#{path}/#{name}"
         files << "/medias/#{name}"
@@ -221,7 +224,6 @@ class Htmlarticle
       end
       File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
       files << "/medias/#{name}"
-      `echo 1 > /proc/sys/vm/drop_caches`
     end
     return files
   end
