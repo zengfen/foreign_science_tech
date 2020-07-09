@@ -95,7 +95,7 @@ class GigaomCom
         Rails.logger.info viurl = URI.decode(URI.decode(video_url)).gsub('\u0026',"&")
         media_url << viurl
       else
-        str = RestClient.get(src).body
+        str = RestClient2.get(src).body
         str_reg = str.to_s.match(/config\ \=(.*?)\;\ if\ \(\!c/)[1]
         jdoc = JSON.parse(str_reg)
         media_url << jdoc["request"]["files"]["progressive"][2]["url"]
@@ -123,7 +123,7 @@ class GigaomCom
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
-      res = RestClient.get(url)
+      res = RestClient2.get(url)
       link = url.split("\.")[0]
       extn = File.extname  link
 
@@ -143,7 +143,7 @@ class GigaomCom
     path = "#{Rails.root}/public/medias"
     files = []
     urls.each do |url|
-      res = RestClient.get(url)
+      res = RestClient2.get(url)
       name = Digest::MD5.hexdigest(url) + ".mp3"
       if File.exist? "#{path}/#{name}"
         files << "/medias/#{name}"

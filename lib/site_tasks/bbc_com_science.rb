@@ -1,3 +1,4 @@
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class BbcComScience
 	def initialize
 		@site = "BBC-science"
@@ -5,6 +6,9 @@ class BbcComScience
 		# RestClient.proxy = "http://10.119.12.2:1076/"
 	end
 	def list(body)
+		proxy = Net::HTTP::Proxy("http://198.58.127.51","52563",nil,"ZAQ12wsx")
+		proxy.get(URI.parse(url))
+
 		tasks = []
 		if body.blank?
 			urls = ["https://www.bbc.com/news/science_and_environment"]

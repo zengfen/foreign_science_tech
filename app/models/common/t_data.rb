@@ -22,6 +22,14 @@ class TData < CommonBase
   after_destroy :delete_redis_data
   after_save :update_author_counter
 
+  def self.init_redis_data
+    key = TData.t_datas_key
+    TData.find_each do |x|
+      md5_id = Digest::MD5.hexdigest(x.data_address)
+      $redis.sadd(key, md5_id)
+    end
+  end
+
   def self.link_exist?(link)
     key = TData.t_datas_key
     md5_id = Digest::MD5.hexdigest(link)

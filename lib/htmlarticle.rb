@@ -123,11 +123,17 @@ class Htmlarticle
     image_urls.each do |url|
       next if url.blank?
       # res = RestClient.get(url)
+      # res = RestClient::Request.execute(
+      #   :method => :get,
+      #   :url => url,
+      #   :timeout => 60,
+      # )
       res = RestClient::Request.execute(
         :method => :get,
         :url => url,
         :timeout => 60,
-      )
+        :proxy => Setting.proxy,
+        :verify_ssl => false)
       style = ["bmp", "jpg", "png", "tif", "gif", "pcx", "tga", "exif", "fpx", "svg", "psd", "cdr", "pcd", "dxf", "ufo", "eps", "ai", "raw", "WMF", "webp"]
       style.each do |one|
         next if status == true
@@ -157,22 +163,26 @@ class Htmlarticle
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     file_urls.each do |url|
-      # res = RestClient.get(url)
-      res = RestClient::Request.execute(
-        :method => :get,
-        :url => url,
-        :timeout => 3 * 60,
-        :open_timeout => 3 * 60
-      )
-      content_type = res.headers[:content_type]
-      extn = Rack::Mime::MIME_TYPES.invert[content_type]
-      name = Digest::MD5.hexdigest(url) + extn
-      if File.exist? "#{path}/#{name}"
+      begin
+        res = RestClient::Request.execute(
+          :method => :get,
+          :url => url,
+          :timeout => 3 * 60,
+          :open_timeout => 3 * 60,
+          :proxy => Setting.proxy,
+          :verify_ssl => false)
+
+        content_type = res.headers[:content_type]
+        extn = Rack::Mime::MIME_TYPES.invert[content_type]
+        name = Digest::MD5.hexdigest(url) + extn
+        if File.exist? "#{path}/#{name}"
+          files << "/files/#{name}"
+          next
+        end
+        File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
         files << "/files/#{name}"
-        next
+      rescue
       end
-      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/files/#{name}"
     end
     return files
   end
@@ -184,23 +194,26 @@ class Htmlarticle
     Dir.mkdir path if !Dir.exist?(path)
     files = []
     urls.each do |url|
-      # res = RestClient.get(url)
-      res = RestClient::Request.execute(
-        :method => :get,
-        :url => url,
-        :timeout => 5 * 60,
-        :open_timeout => 5 * 60,
-        # :raw_response => true
-      )
-      content_type = res.headers[:content_type]
-      extn = Rack::Mime::MIME_TYPES.invert[content_type]
-      name = Digest::MD5.hexdigest(url) + extn
-      if File.exist? "#{path}/#{name}"
+      begin
+        res = RestClient::Request.execute(
+          :method => :get,
+          :url => url,
+          :timeout => 5 * 60,
+          :open_timeout => 5 * 60,
+          :proxy => Setting.proxy,
+          # :raw_response => true
+          :verify_ssl => false)
+        content_type = res.headers[:content_type]
+        extn = Rack::Mime::MIME_TYPES.invert[content_type]
+        name = Digest::MD5.hexdigest(url) + extn
+        if File.exist? "#{path}/#{name}"
+          files << "/medias/#{name}"
+          next
+        end
+        File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
         files << "/medias/#{name}"
-        next
+      rescue
       end
-      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/medias/#{name}"
     end
     return files
   end
@@ -210,20 +223,24 @@ class Htmlarticle
     path = "#{Rails.root}/public/medias"
     files = []
     urls.each do |url|
-      res = RestClient::Request.execute(
-        :method => :get,
-        :url => url,
-        :timeout => 5 * 60,
-        :open_timeout => 5 * 60,
-      # :raw_response => true
-      )
-      name = Digest::MD5.hexdigest(url) + ".m3u8"
-      if File.exist? "#{path}/#{name}"
+      begin
+        res = RestClient::Request.execute(
+          :method => :get,
+          :url => url,
+          :timeout => 5 * 60,
+          :open_timeout => 5 * 60,
+          :proxy => Setting.proxy,
+          # :raw_response => true
+          :verify_ssl => false)
+        name = Digest::MD5.hexdigest(url) + ".m3u8"
+        if File.exist? "#{path}/#{name}"
+          files << "/medias/#{name}"
+          next
+        end
+        File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
         files << "/medias/#{name}"
-        next
+      rescue
       end
-      File.open("#{path}/#{name}", 'wb') { |f| f.write(res.body) }
-      files << "/medias/#{name}"
     end
     return files
   end

@@ -16,8 +16,9 @@ class LifehackerCom
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
 			i = 0
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
-			)
+			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
+			# )
+			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
 			doc.search("div.dFCKPx div.aoiLP a").each do |one|
 				puts url = one["href"]

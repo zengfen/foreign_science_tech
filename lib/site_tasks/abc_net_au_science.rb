@@ -1,3 +1,4 @@
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class AbcNetAuScience
   def initialize
     #RestClient.proxy = "http://192.168.50.1:1080/"
@@ -31,9 +32,9 @@ class AbcNetAuScience
     # authors << JSON.parse(doc.search('script[type="application/ld+json"]').inner_text)["author"]["name"]
     ts = doc.search('meta[property="article:published_time"]')[0][:content] rescue nil
     if ts == nil
-      ts = doc.search('mata[property="og:updated_time"]')[0][:content]
+      ts = doc.search('mata[property="og:updated_time"]')[0][:content] rescue nil
     end
-    puts ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
+    puts ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S") rescue nil
 
     image_urls = []
     doc.search('figure img[data-component="Image"]').each do |one|

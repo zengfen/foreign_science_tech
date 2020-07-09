@@ -4,10 +4,16 @@ OpenTimeout_vaule = 10
 
 module RestClient2
 
-
   def self.get(url, headers={}, &block)
-    RestClient::Request.execute(:method => :get, :url => url, :headers => headers, :timeout =>Timeout_vaule,:open_timeout =>OpenTimeout_vaule, &block)
-
+    RestClient::Request.execute(
+      :method => :get,
+      :url => url,
+      :headers => headers,
+      :timeout =>Timeout_vaule,
+      :open_timeout =>OpenTimeout_vaule,
+      :proxy =>Setting.proxy,
+      :verify_ssl => false,
+      &block)
   end
 
 

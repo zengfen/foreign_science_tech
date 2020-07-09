@@ -16,9 +16,9 @@ class VenturebeatComAi
 			# puts "---------------#{body}"
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
-			# res = RestClient.get(url)
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
-			)
+			res = RestClient2.get(url)
+			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
+			# )
 			doc = Nokogiri::HTML(res.body)
 			doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
 				link = one["href"]

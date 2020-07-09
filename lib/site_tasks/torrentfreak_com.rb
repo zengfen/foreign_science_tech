@@ -17,7 +17,7 @@ class TorrentfreakCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      res = RestClient.get(url)
+      res = RestClient2.get(url)
       doc = Nokogiri::HTML(res.body)
       doc.search("div.grid-equalHeight div.col-4_sm-6_xs-12 a").each_with_index do |item,index|
         link = item["href"] rescue nil
@@ -35,7 +35,7 @@ class TorrentfreakCom
     body = JSON.parse(URI.decode(body))
     link = body["link"]
     # link = "https://torrentfreak.com/team-xecuter-accuses-nintendo-of-censorship-and-legal-scare-tactics-200611/"
-    res = RestClient.get(link).body
+    res = RestClient2.get(link).body
     doc = Nokogiri::HTML(res)
     title = doc.search("div.container div.hero__content h1.hero__title")[0].inner_text.strip rescue nil
 

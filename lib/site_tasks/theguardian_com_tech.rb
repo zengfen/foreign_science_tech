@@ -15,7 +15,8 @@ class TheguardianComTech
 		else
 			body = JSON.parse(URI.decode(body))
 			url = body["url"]
-			res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
+			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
 			doc.search("a.js-headline-text").each do |one|
 				link = one["href"]
