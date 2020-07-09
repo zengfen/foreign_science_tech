@@ -18,8 +18,10 @@ class ThevergeCom
     else
       body = JSON.parse(URI.decode(body))
       url = body["url"]
-      str = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
-      )
+      # str = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
+      # )
+      str = RestClient2.get(url)
+
       doc = Nokogiri::HTML(str.body)
       doc.search("div.c-compact-river h2 a").each do |item|
         link = item["href"] rescue ""
