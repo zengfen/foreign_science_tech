@@ -8,5 +8,5 @@ MonitorInstancesJob:
 #  cron: '0 */4 * * * Asia/Shanghai'
 #  class: UncompletedTasksJob
 MonitorSidekiqJob:
-  cron: '* */12 * * * Asia/Shanghai'
+  cron: '0 */1 * * * Asia/Shanghai'
   class: MonitorSidekiqJob

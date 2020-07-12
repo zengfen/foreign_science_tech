@@ -132,7 +132,7 @@ class Htmlarticle
         :method => :get,
         :url => url,
         :timeout => 60,
-        :proxy => Setting.proxy,
+        :proxy => ENV["PROXY"],
         :verify_ssl => false)
       style = ["bmp", "jpg", "png", "tif", "gif", "pcx", "tga", "exif", "fpx", "svg", "psd", "cdr", "pcd", "dxf", "ufo", "eps", "ai", "raw", "WMF", "webp"]
       style.each do |one|
@@ -169,7 +169,7 @@ class Htmlarticle
           :url => url,
           :timeout => 3 * 60,
           :open_timeout => 3 * 60,
-          :proxy => Setting.proxy,
+          :proxy => ENV["PROXY"],
           :verify_ssl => false)
 
         content_type = res.headers[:content_type]
@@ -200,7 +200,7 @@ class Htmlarticle
           :url => url,
           :timeout => 5 * 60,
           :open_timeout => 5 * 60,
-          :proxy => Setting.proxy,
+          :proxy => ENV["PROXY"],
           # :raw_response => true
           :verify_ssl => false)
         content_type = res.headers[:content_type]
@@ -229,7 +229,7 @@ class Htmlarticle
           :url => url,
           :timeout => 5 * 60,
           :open_timeout => 5 * 60,
-          :proxy => Setting.proxy,
+          :proxy => ENV["PROXY"],
           # :raw_response => true
           :verify_ssl => false)
         name = Digest::MD5.hexdigest(url) + ".m3u8"
