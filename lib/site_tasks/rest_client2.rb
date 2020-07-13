@@ -11,7 +11,8 @@ module RestClient2
       :headers => headers,
       :timeout =>Timeout_vaule,
       :open_timeout =>OpenTimeout_vaule,
-      :proxy =>ENV["PROXY"],
+      # :proxy =>ENV["PROXY"],
+      :proxy =>Setting.proxy[0],
       :verify_ssl => false,
       &block)
   end

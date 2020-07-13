@@ -80,7 +80,6 @@ class BbcComTech
 		author << doc.search("div.byline span.byline__name").inner_text.strip.gsub("By ","") rescue nil
 		author = author.compact.uniq
 		task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: author, con_time: time, con_text: desp,attached_img_info: images,attached_file_info: files, category: category, attached_media_info: attached_media_info}
-		Rails.logger.info task
 		info = ::TData.save_one(task)
 		return info
 	end
