@@ -14,19 +14,6 @@
                 <b class="caret"></b></span>
             </span>
           </a>
-          <ul class="dropdown-menu animated fadeInRight m-t-xs">
-            <% if !@current_user.blank? %>
-              <!--<li>-->
-                <!--<%#= link_to "修改头像", edit_user_avatar_path(current_user) %>-->
-              <!--</li>-->
-              <li><%= link_to "修改信息", edit_user_path(current_user) %>
-              </li>
-              <li class="divider"></li>
-              <li><%= link_to logout_path, :method => :delete do %>退出
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
         </div>
         <div class="logo-element">
           Center
