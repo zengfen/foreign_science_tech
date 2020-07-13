@@ -46,7 +46,8 @@ class AustinforumOrg
     	puts "正文"
     	puts desp
     	#获取时间
-    	ts = Time.parse(doc.search("p.blog-date span.date-text").inner_html.strip).to_s
+    	ts_info = doc.search("p.blog-date span.date-text").inner_html.strip.split("/") rescue nil
+		  ts = Time.parse("#{ts_info[2]}-#{ts_info[0]}-#{ts_info[1]}") rescue nil
     	puts "时间"
     	puts ts
     	#获取作者
