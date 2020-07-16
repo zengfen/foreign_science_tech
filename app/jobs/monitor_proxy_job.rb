@@ -6,8 +6,7 @@ class MonitorPorxyJob < ApplicationJob
     bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
     # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test2"
     inactive_proxy = []
-    proxy_list = [nil] + $default_proxy
-    proxy_list.each do |proxy|
+    $proxy_list.each do |proxy|
       res = RestClient::Request.execute(
         :method => :get,
         :url => bind_proxy_api_url,
@@ -19,10 +18,9 @@ class MonitorPorxyJob < ApplicationJob
         inactive_proxy << proxy if proxy.present?
         next
       else
-        break
+        $proxy_list = JSON.parse(res.body)["datas"] rescue $default_proxy
       end
     end
-    $proxy_list = JSON.parse(res.body)["datas"] rescue $default_proxy
 
     if inactive_proxy.present?
       to_users = [
