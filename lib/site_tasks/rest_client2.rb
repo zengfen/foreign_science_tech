@@ -44,7 +44,6 @@ module RestClient2
         res = RestClient::Request.execute(
           :method => :get,
           :url => url,
-          :headers => headers,
           :timeout => timeout,
           :open_timeout => open_timeout,
           :proxy => proxy,
