@@ -122,18 +122,13 @@ class Htmlarticle
     extn = ""
     image_urls.each do |url|
       next if url.blank?
-      # res = RestClient.get(url)
       # res = RestClient::Request.execute(
       #   :method => :get,
       #   :url => url,
       #   :timeout => 60,
-      # )
-      res = RestClient::Request.execute(
-        :method => :get,
-        :url => url,
-        :timeout => 60,
-        :proxy =>Setting.proxy[0],
-        :verify_ssl => false)
+      #   :proxy =>Setting.proxy[0],
+      #   :verify_ssl => false)
+      res = RestClient2.get2(url,60,60)
       style = ["bmp", "jpg", "png", "tif", "gif", "pcx", "tga", "exif", "fpx", "svg", "psd", "cdr", "pcd", "dxf", "ufo", "eps", "ai", "raw", "WMF", "webp"]
       style.each do |one|
         next if status == true
@@ -164,14 +159,14 @@ class Htmlarticle
     files = []
     file_urls.each do |url|
       begin
-        res = RestClient::Request.execute(
-          :method => :get,
-          :url => url,
-          :timeout => 3 * 60,
-          :open_timeout => 3 * 60,
-          :proxy =>Setting.proxy[0],
-          :verify_ssl => false)
-
+        # res = RestClient::Request.execute(
+        #   :method => :get,
+        #   :url => url,
+        #   :timeout => 3 * 60,
+        #   :open_timeout => 3 * 60,
+        #   :proxy =>Setting.proxy[0],
+        #   :verify_ssl => false)
+        res = RestClient2.get2(url,3 * 60,60)
         content_type = res.headers[:content_type]
         extn = Rack::Mime::MIME_TYPES.invert[content_type]
         name = Digest::MD5.hexdigest(url) + extn
@@ -195,14 +190,16 @@ class Htmlarticle
     files = []
     urls.each do |url|
       begin
-        res = RestClient::Request.execute(
-          :method => :get,
-          :url => url,
-          :timeout => 5 * 60,
-          :open_timeout => 5 * 60,
-          :proxy =>Setting.proxy[0],
-          # :raw_response => true
-          :verify_ssl => false)
+        # res = RestClient::Request.execute(
+        #   :method => :get,
+        #   :url => url,
+        #   :timeout => 5 * 60,
+        #   :open_timeout => 5 * 60,
+        #   :proxy =>Setting.proxy[0],
+        #   # :raw_response => true
+        #   :verify_ssl => false)
+        res = RestClient2.get2(url,5 * 60,60)
+
         content_type = res.headers[:content_type]
         extn = Rack::Mime::MIME_TYPES.invert[content_type]
         name = Digest::MD5.hexdigest(url) + extn
@@ -224,14 +221,15 @@ class Htmlarticle
     files = []
     urls.each do |url|
       begin
-        res = RestClient::Request.execute(
-          :method => :get,
-          :url => url,
-          :timeout => 5 * 60,
-          :open_timeout => 5 * 60,
-          :proxy =>Setting.proxy[0],
-          # :raw_response => true
-          :verify_ssl => false)
+        # res = RestClient::Request.execute(
+        #   :method => :get,
+        #   :url => url,
+        #   :timeout => 5 * 60,
+        #   :open_timeout => 5 * 60,
+        #   :proxy =>Setting.proxy[0],
+        #   # :raw_response => true
+        #   :verify_ssl => false)
+        res = RestClient2.get2(url,5 * 60,60)
         name = Digest::MD5.hexdigest(url) + ".m3u8"
         if File.exist? "#{path}/#{name}"
           files << "/medias/#{name}"

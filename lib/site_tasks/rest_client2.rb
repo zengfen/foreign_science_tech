@@ -4,13 +4,9 @@ OpenTimeout_vaule = 10
 
 module RestClient2
 
-  def self.all_proxy
-    proxies = ENV["PROXY"] || Setting.proxy
-  end
-
   def self.get(url, headers={}, &block)
     proxies = $proxy_list
-    return nil if proxie.blank?
+    return nil if proxies.blank?
     res = nil
     proxies.each do |proxy|
       begin
@@ -37,6 +33,27 @@ module RestClient2
     #   :proxy =>Setting.proxy[0],
     #   :verify_ssl => false,
     #   &block)
+  end
+
+  def self.get2(url, timeout, open_timeout)
+    proxies = $proxy_list
+    return nil if proxies.blank?
+    res = nil
+    proxies.each do |proxy|
+      begin
+        res = RestClient::Request.execute(
+          :method => :get,
+          :url => url,
+          :headers => headers,
+          :timeout => timeout,
+          :open_timeout => open_timeout,
+          :proxy => proxy,
+          :verify_ssl => false,
+          &block)
+      rescue
+      end
+    end
+    return res
   end
 
 
