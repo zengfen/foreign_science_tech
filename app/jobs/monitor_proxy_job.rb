@@ -23,11 +23,16 @@ class MonitorProxyJob < ApplicationJob
     end
 
     if inactive_proxy.present?
-      to_users = [
-        # 'lijinmin@china-revival.com',
-        #          "xulei@china-revival.com",
-        "zengfen@china-revival.com",
-      ]
+      to_users =["zhaoyuting@china-revival.com",
+                 "zengfen@china-revival.com",
+                 "fanglongqing@china-revival.com",
+                 "caobaishun@china-revival.com",
+                 "haobaozhi@china-revival.com",
+                 "xulei@socialdatamax.com",
+                 "baomingdong@china-revival.com",
+                 "penghao@china-revival.com",
+                 "yuanrunze@china-revival.com",
+                 "jiawenqi@china-revival.com"]
       ProxyMailer.inactive_monitor(to_users,inactive_proxy).deliver_now
 
     end
