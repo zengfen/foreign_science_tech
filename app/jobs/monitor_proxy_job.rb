@@ -1,4 +1,4 @@
-class MonitorPorxyJob < ApplicationJob
+class MonitorProxyJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
