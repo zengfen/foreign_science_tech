@@ -7,7 +7,6 @@ module RestClient2
   def self.get(url, headers={}, &block)
     proxies = $proxy_list
     return nil if proxies.blank?
-    res = nil
     proxies.each do |proxy|
       begin
         res = RestClient::Request.execute(
@@ -19,26 +18,15 @@ module RestClient2
           :proxy => proxy,
           :verify_ssl => false,
           &block)
+        return res if res.present?
       rescue
       end
     end
-    return res
-    # RestClient::Request.execute(
-    #   :method => :get,
-    #   :url => url,
-    #   :headers => headers,
-    #   :timeout =>Timeout_vaule,
-    #   :open_timeout =>OpenTimeout_vaule,
-    #   # :proxy =>ENV["PROXY"],
-    #   :proxy =>Setting.proxy[0],
-    #   :verify_ssl => false,
-    #   &block)
   end
 
   def self.get2(url, timeout, open_timeout)
     proxies = $proxy_list
     return nil if proxies.blank?
-    res = nil
     proxies.each do |proxy|
       begin
         res = RestClient::Request.execute(
@@ -49,10 +37,10 @@ module RestClient2
           :proxy => proxy,
           :verify_ssl => false,
           &block)
+        return res if res.present?
       rescue
       end
     end
-    return res
   end
 
 
