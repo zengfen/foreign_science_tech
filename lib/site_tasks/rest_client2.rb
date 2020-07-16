@@ -35,8 +35,7 @@ module RestClient2
           :timeout => timeout,
           :open_timeout => open_timeout,
           :proxy => proxy,
-          :verify_ssl => false,
-          &block)
+          :verify_ssl => false)
         return res if res.present?
       rescue
       end
