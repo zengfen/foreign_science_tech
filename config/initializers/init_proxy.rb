@@ -3,8 +3,8 @@ class InitProxy
     $default_proxy = ["http://zhenhua:ZA12wsx@98.58.127.51:1587",
                       "http://zhenhua:ZA12wsx@173.255.255.38:1587"]
     api_url = Setting.proxy_api["base_url"]
-    # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
-    bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test1"
+    bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
+    # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test1"
     res = nil
     proxy_list = [nil] + $default_proxy
     proxy_list.each do |proxy|
