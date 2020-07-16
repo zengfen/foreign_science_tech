@@ -1,6 +1,6 @@
 class InitProxy
   def self.proxy_list
-    $default_proxy = ["http://zhenhua:ZA12wsx@98.58.127.51:1587",
+    $default_proxy = ["http://zhenhua:ZA12wsx@198.58.127.51:1587",
                       "http://zhenhua:ZA12wsx@173.255.255.38:1587"]
     api_url = Setting.proxy_api["base_url"]
     bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
@@ -21,7 +21,8 @@ class InitProxy
         break
       end
     end
-    $proxy_list = JSON.parse(res.body)["datas"] rescue $default_proxy
+    $proxy_list = JSON.parse(res.body)["datas"] rescue nil
+    $proxy_list = $default_proxy if $proxy_list.blank?
   end
 end
 InitProxy.proxy_list
