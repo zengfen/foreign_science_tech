@@ -10,3 +10,6 @@ MonitorInstancesJob:
 MonitorSidekiqJob:
   cron: '0 */1 * * * Asia/Shanghai'
   class: MonitorSidekiqJob
+MonitorProxyJob:
+  cron: '0 0 * * * Asia/Shanghai'
+  class: MonitorProxyJob

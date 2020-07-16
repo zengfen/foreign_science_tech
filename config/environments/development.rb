@@ -28,6 +28,16 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method   = Setting.mailer_provider.to_sym
+
+  config.action_mailer.default_url_options = { host: Setting.domain}
+
+  if Setting.mailer_provider == 'postmark'
+    config.action_mailer.postmark_settings = Setting.mailer_options.deep_symbolize_keys rescue "postmark_settings"
+  else
+    config.action_mailer.smtp_settings = Setting.mailer_options.deep_symbolize_keys rescue "smtp_settings"
+  end
 
   config.action_mailer.perform_caching = false
 
