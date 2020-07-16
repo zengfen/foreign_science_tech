@@ -1,6 +1,6 @@
 class BbcComTech
 	def initialize
-		@site = "BBC-science"
+		@site = "BBC-tech"
 		@prefix = "https://www.bbc.com"
 		# RestClient.proxy = "http://10.119.12.2:1076/"
 	end
