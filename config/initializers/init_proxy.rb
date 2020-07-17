@@ -23,7 +23,7 @@ class InitProxy
     end
     $proxy_list = JSON.parse(res.body)["datas"] rescue nil
     $proxy_list = $default_proxy if $proxy_list.blank?
-    RestClient.proxy = $proxy_list[1]
+    RestClient.proxy = $proxy_list[0]
   end
 end
 InitProxy.proxy_list
