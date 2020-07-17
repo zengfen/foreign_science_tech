@@ -34,8 +34,24 @@ class MonitorProxyJob < ApplicationJob
                  "penghao@china-revival.com",
                  "yuanrunze@china-revival.com",
                  "jiawenqi@china-revival.com"]
-      ProxyMailer.inactive_monitor(to_users,inactive_proxy).deliver_now
+      begin
+        ProxyMailer.inactive_monitor(to_users,inactive_proxy).deliver_now
+      rescue
+        mail_proxy_api_url = "#{api_url}/api/mail_proxy?inactive_proxy=#{URI.encode(inactive_proxy.join(",").to_json)}"
+        ([nil] + $proxy_list).each do |proxy|
+          res = RestClient::Request.execute(
+            :method => :get,
+            :url => mail_proxy_api_url,
+            :proxy => proxy,
+            :verify_ssl => false,
+            :timeout => 10,
+            :open_timeout => 10,) rescue nil
+          if res.present?
+            break
+          end
+        end
 
+      end
     end
 
 
