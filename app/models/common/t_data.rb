@@ -24,7 +24,7 @@ class TData < CommonBase
 
   def self.init_redis_data
     key = TData.t_datas_key
-    TData.find_each do |x|
+    TData.select(:data_id,:data_address).find_each do |x|
       md5_id = Digest::MD5.hexdigest(x.data_address)
       $redis.sadd(key, md5_id)
     end
