@@ -4,12 +4,12 @@ class MonitorProxyJob < ApplicationJob
   def perform(*args)
     api_url = Setting.proxy_api["base_url"]
     bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
-    # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test2"
+    # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test4"
     inactive_proxy = []
     $proxy_list.each do |proxy|
       res = RestClient::Request.execute(
         :method => :get,
-        :url => bind_proxy_api_url,
+        :url => bind_proxy_api_urla,
         :proxy => proxy,
         :verify_ssl => false,
         :timeout => 10,
