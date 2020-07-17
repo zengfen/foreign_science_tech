@@ -1,6 +1,6 @@
-Timeout_vaule = 10
+Timeout_vaule = 15
 
-OpenTimeout_vaule = 10
+OpenTimeout_vaule = 15
 
 module RestClient2
 
