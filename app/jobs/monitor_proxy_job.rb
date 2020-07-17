@@ -18,7 +18,8 @@ class MonitorProxyJob < ApplicationJob
         inactive_proxy << proxy if proxy.present?
         next
       else
-        $proxy_list = JSON.parse(res.body)["datas"] rescue $default_proxy
+        $proxy_list = JSON.parse(res.body)["datas"] rescue nil
+        $proxy_list = $default_proxy if $proxy_list.blank?
       end
     end
 
