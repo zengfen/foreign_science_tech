@@ -9,7 +9,7 @@ class MonitorProxyJob < ApplicationJob
     $proxy_list.each do |proxy|
       res = RestClient::Request.execute(
         :method => :get,
-        :url => bind_proxy_api_urla,
+        :url => bind_proxy_api_url,
         :proxy => proxy,
         :verify_ssl => false,
         :timeout => 10,
