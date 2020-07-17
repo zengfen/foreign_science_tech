@@ -1,7 +1,7 @@
 class InitProxy
   def self.proxy_list
-    $default_proxy = ["http://zhenhua:ZAQ12wsx@198.58.127.51:1587",
-                      "http://zhenhua:ZAQ12wsx@173.255.255.38:1587"]
+    $default_proxy = ["http://zhenhua:ZAQ12wsx@198.58.127.51:80",
+                      "http://zhenhua:ZAQ12wsx@173.255.255.38:80"]
     api_url = Setting.proxy_api["base_url"]
     bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=#{ENV["ProjectName"]}"
     # bind_proxy_api_url = "#{api_url}/api/bind_proxy?project_name=test1"
