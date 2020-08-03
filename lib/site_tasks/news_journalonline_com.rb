@@ -67,7 +67,7 @@ class NewsJournalonlineCom
       created_time = Time.parse(desp_json["pubDateFormat"]["yyyy-mm-ddThh:mm:ss"]).to_i rescue nil
     end
 
-    images = ::Htmlarticle.download_images(images)
+    images = ::Htmlarticle.download_images(images.map{|x| URI.encode(x)}) if images.present?
 
     category = "新闻综合"
     task = {data_address: link,website_name:@site,data_spidername:self.class,data_snapshot_path:res,con_title:title, con_author: authors, con_time: created_time, con_text: desp,attached_img_info: images,attached_file_info: [],category: category,attached_media_info:[]}

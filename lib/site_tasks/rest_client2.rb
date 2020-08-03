@@ -38,6 +38,7 @@ module RestClient2
           :verify_ssl => false)
         return res if res.present?
       rescue
+        return nil
       end
     end
   end
