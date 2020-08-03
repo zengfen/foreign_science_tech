@@ -76,6 +76,29 @@ class NewsJournalonlineCom
     return info
   end
 
+  def get_desp(desp, html_content, item)
+    if item.children.present?
+      item.children.each do |item2|
+        if ["p","h2","li"].include?(item2.name) && item2.search("br").blank?
+          desp += item2.inner_text.gsub_html.strip + "\n"
+          html_content += item2.to_s
+        elsif item2.name == "text"
+          desp += item2.to_s.gsub_html.strip
+          html_content += item2.to_s
+        elsif item2.name == "br"
+          desp += "\n"
+          html_content += item2.to_s
+        else
+          desp, html_content = get_desp(desp, html_content, item2)
+        end
+      end
+    else
+      desp += item.to_s.gsub_html.strip
+      html_content += item.to_s
+    end
+    return desp, html_content
+  end
+
 end
 
 
