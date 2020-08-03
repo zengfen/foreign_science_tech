@@ -99,6 +99,13 @@ class NewsJournalonlineCom
     return desp, html_content
   end
 
+  class String
+    def gsub_html
+      self.gsub(/(?imx)<script.+?script>/,"").gsub(/(?imx)<style(.+?)style>/,"").gsub(/(?imx)<(\S*?)[^>]*>.*?|<.*? \/>/,"")
+    end
+  end
+
+
 end
 
 
