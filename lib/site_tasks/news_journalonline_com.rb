@@ -37,7 +37,7 @@ class NewsJournalonlineCom
         desp += image_desp + "\n"
         html_content = html_content.to_s + "<p>" + image_desp + "</p>"
       end
-      created_time = Time.parse(desp_json["pubDate"] + " -0500").to_i rescue nil
+      created_time = Time.parse(desp_json["pubDate"]) rescue nil
     else
       title = doc.search("h1.headline").first.inner_text.strip rescue nil
       # 正文
@@ -64,7 +64,7 @@ class NewsJournalonlineCom
       desp = (desp.split("\n") - [""]).join("\n")
 
       authors = desp_json["byline"].map { |x| x["name"] } rescue nil
-      created_time = Time.parse(desp_json["pubDateFormat"]["yyyy-mm-ddThh:mm:ss"]).to_i rescue nil
+      created_time = Time.parse(desp_json["pubDateFormat"]["yyyy-mm-ddThh:mm:ss"]) rescue nil
     end
 
     images = ::Htmlarticle.download_images(images.map{|x| URI.encode(x)}) if images.present?
