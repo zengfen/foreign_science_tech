@@ -58,7 +58,7 @@ class NewsJournalonlineCom
       end
       desp = (desp.split("\n") - [""]).join("\n")
 
-      authors = desp_json["byline"].map { |x| x["name"] } rescue nil
+      authors = desp_json["byline"].map { |x| x["name"].split(" and") }.flatten rescue nil
       created_time = Time.parse(desp_json["pubDateFormat"]["yyyy-mm-ddThh:mm:ss"]) rescue nil
     end
 
