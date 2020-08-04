@@ -92,3 +92,5 @@ gem 'mechanize'
 gem 'csv'
 
 gem 'rack-cors'
+
+gem 'htmlentities'

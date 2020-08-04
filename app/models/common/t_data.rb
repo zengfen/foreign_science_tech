@@ -41,17 +41,18 @@ class TData < CommonBase
   end
 
   def self.save_one(task)
+    @coder = HTMLEntities.new
     a = TData.new
     a.data_address = task[:data_address]
     a.website_name = task[:website_name]
     a.data_spidername = task[:data_spidername]
     a.data_snapshot_path = task[:data_snapshot_path]
     a.data_time = Time.now
-    a.con_title = task[:con_title]
-    a.con_from = task[:con_from]
-    a.con_author = task[:con_author]
+    a.con_title = @coder.decode(task[:con_title])
+    a.con_from = @coder.decode(task[:con_from])
+    a.con_author = task[:con_author].to_a.map{|x| @coder.decode(x)}
     a.con_time = task[:con_time]
-    a.con_text = task[:con_text]
+    a.con_text = @coder.decode(task[:con_text])
     a.category = task[:category]
     a.attached_media_info = task[:attached_media_info]
     a.attached_img_info = task[:attached_img_info]
@@ -142,9 +143,9 @@ class TData < CommonBase
     authors.each do |author|
       data = AuthorCounter.where(con_author: author).where(con_date: date).first
       if data.present?
-        data.update(count: data.count + 1)
+        data.update(count: data.count + 1) rescue nil
       else
-        AuthorCounter.create(con_author: author, con_date: date, count: 1)
+        AuthorCounter.create(con_author: author, con_date: date, count: 1) rescue nil
       end
     end
   end
