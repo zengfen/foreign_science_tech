@@ -29,7 +29,6 @@ class NewsJournalonlineCom
       desp_str = doc.search("script").find { |x| x.to_s.match(/var __gh__coreData/) }.inner_text
       desp_json = JSON.parse(desp_str.match(/__gh__coreData.content=(.*?)__gh__coreData.pageData = /m)[1].strip.gsub(/;$/, "")) rescue {}
       title = desp_json["title"]
-      # abstract = desp_json["summary"]
       images = desp_json["items"].map { |x| x["link"]}.flatten.uniq rescue []
       image_desps = desp_json["items"].map { |x| x["caption"]} rescue []
       desp,html_content = "",""
@@ -40,12 +39,8 @@ class NewsJournalonlineCom
       created_time = Time.parse(desp_json["pubDate"]) rescue nil
     else
       title = doc.search("h1.headline").first.inner_text.strip rescue nil
-      # 正文
       desp_str = doc.search("script").find { |x| x.to_s.match(/var __gh__coreData/) }.inner_text
-
       desp_json = JSON.parse(desp_str.match(/__gh__coreData.content=(.*?)__gh__coreData.content.bylineFormat = /m)[1].strip.gsub(/;$/, "").strip.gsub(/,\r\n\t\],\r\n\t\"rail\":/, "\r\n\t\],\r\n\t\"rail\":")) rescue {}
-
-      # abstract = desp_json["summary"].gsub_html.strip rescue nil
       html_content_str = desp_json["body"].join("") rescue nil
 
       desp, html_content = '', ''
@@ -80,7 +75,7 @@ class NewsJournalonlineCom
     if item.children.present?
       item.children.each do |item2|
         if ["p","h2","li"].include?(item2.name) && item2.search("br").blank?
-          desp += item2.inner_text.gsub_html.strip + "\n"
+          desp += item2.to_s.gsub_html.strip + "\n"
           html_content += item2.to_s
         elsif item2.name == "text"
           desp += item2.to_s.gsub_html.strip
