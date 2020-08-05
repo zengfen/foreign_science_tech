@@ -69,24 +69,6 @@
       </div>
     </div>
 
-    <!--<div class="col-lg-6">-->
-      <!--<div class="ibox">-->
-        <!--<div class="ibox-title">每日采集任务量趋势图</div>-->
-        <!--<div class="ibox-content">-->
-          <!--<div class="graph-box" id="graph_task_data" style="height: 400px"></div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="col-lg-6">-->
-      <!--<div class="ibox">-->
-        <!--<div class="ibox-title">每日成功采集任务量趋势图</div>-->
-        <!--<div class="ibox-content">-->
-          <!--<div class="graph-box" id="graph_success_task_data" style="height: 400px"></div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-
     <div class="col-lg-6">
       <div class="ibox">
         <div class="ibox-title">网站发布统计</div>
@@ -155,19 +137,6 @@
           seriesName: '每日采集数据量', 
           dataArray: <%== @spider_every_day.to_json %>
         },
-//        {
-//          selector: '#graph_task_data',
-//          xAxisName: '日期',
-//          yAxisName: '数量/条',
-//          seriesName: '每日采集任务量',
-
-//        },
-//        {
-//          selector: '#graph_success_task_data',
-//          xAxisName: '日期',
-//          yAxisName: '数量/条',
-//          seriesName: '每日成功采集任务量',
-//        },
         { 
           selector: '#graph_website_statistic', 
           xAxisName: '日期',

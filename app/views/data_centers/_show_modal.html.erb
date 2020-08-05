@@ -10,6 +10,12 @@
       <h3 class="data__title"><%= @data.con_title %></h3>
       <ul class="data__items">
         <li>
+          <span>源链接：</span>
+          <strong>
+            <a href="<%= @data.data_address %>" target="_blank" class="block"><%= @data.data_address %></a>
+          </strong>
+        </li>
+        <li>
           <span>时间：</span>
           <strong><%= @data.con_time.strftime("%F %T") rescue nil %></strong>
         </li>
