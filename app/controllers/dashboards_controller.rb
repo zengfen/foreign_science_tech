@@ -12,10 +12,6 @@ class DashboardsController < ApplicationController
     # 网站每天发布的新闻 要每两小时统计一次
     # 每天总的发布数量
     # 计算每个站点每天发布的新闻
-    # 日期 2020-01-01 a 发布量3条  采集量4条
-    # 2020-01-02 a 4条
-    # 2020-01-01 b 4条
-    # 2020-01-02 b 5条
     # 本地图片未展示 日期选择范围是多长
     # 问题 采集量是按照新闻发布时间con_tim统计还是采集时间统计data_time  若con_tim 则需要更新
     # 爬虫统计和网站统计不是相同的结果吗
@@ -27,17 +23,17 @@ class DashboardsController < ApplicationController
     @author_count = [] # 作者发布统计
     @spider_name_count = [] # 爬虫采集统计 按站点
     spider_every_day = TData.during(start_date,end_date).group("date(data_time)").select("date(data_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
-    # spider_data_count = TData.during_con_time(start_date,end_date).group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
+    spider_data_count = TData.during_con_time(start_date,end_date).group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
     @spider_name_count = TData.during(start_date,end_date).group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }.sort_by{|x| x[:value]}
 
     # 多个作者的情况
     @author_count = AuthorCounter.during(start_date,end_date).group("con_author").select("con_author,sum(count) count").map { |x| {name: x.con_author, value: x.count} }.sort_by{|x| x[:value]}
 
-    spider_task_count = SpiderTask.during(start_date,end_date).group("date(created_at)").select("date(created_at) date,sum(current_task_count) task_count,sum(current_success_count) success_count").map { |x| {name: x.date.strftime("%F"), task_count: x.task_count, success_count: x.success_count} }
+    # spider_task_count = SpiderTask.during(start_date,end_date).group("date(created_at)").select("date(created_at) date,sum(current_task_count) task_count").map { |x| {name: x.date.strftime("%F"), task_count: x.task_count} }
     (start_date..end_date).each do |date|
       date = date.strftime("%F")
-      data = spider_task_count.find { |x| x[:name] == date }
-      data = {name: date, value: 0} if data.blank?
+      # data = spider_task_count.find { |x| x[:name] == date }
+      data = {name: date, value: 0}
       # if data.blank?
       #   data = {name: date, value: 0}
       #   @spider_task_count << data
@@ -52,12 +48,12 @@ class DashboardsController < ApplicationController
       else
         @spider_every_day << one_spider_every_day
       end
-      # one_spider_data_count = spider_data_count.find { |x| x[:name] == date }
-      # if one_spider_data_count.blank?
-      #   @spider_data_count << data
-      # else
-      #   @spider_data_count << one_spider_data_count
-      # end
+      one_spider_data_count = spider_data_count.find { |x| x[:name] == date }
+      if one_spider_data_count.blank?
+        @spider_data_count << data
+      else
+        @spider_data_count << one_spider_data_count
+      end
     end
   end
 end
