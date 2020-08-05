@@ -21,13 +21,13 @@ class DashboardsController < ApplicationController
     # 爬虫统计和网站统计不是相同的结果吗
     # 每日采集数据量趋势图
     @spider_every_day = [] # 每日采集数据量趋势图
-    @spider_task_count = [] # 每日采集任务量趋势图
-    @spider_success_task = [] # 每日成功采集任务量趋势图
+    # @spider_task_count = [] # 每日采集任务量趋势图
+    # @spider_success_task = [] # 每日成功采集任务量趋势图
     @spider_data_count = [] # 网站发布统计 按日期
     @author_count = [] # 作者发布统计
     @spider_name_count = [] # 爬虫采集统计 按站点
     spider_every_day = TData.during(start_date,end_date).group("date(data_time)").select("date(data_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
-    spider_data_count = TData.during_con_time(start_date,end_date).group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
+    # spider_data_count = TData.during_con_time(start_date,end_date).group("date(con_time)").select("date(con_time) date,count(*) count").map { |x| {name: x.date.strftime("%F"), value: x.count} }
     @spider_name_count = TData.during(start_date,end_date).group("website_name").select("website_name,count(*) count").map { |x| {name: x.website_name, value: x.count} }.sort_by{|x| x[:value]}
 
     # 多个作者的情况
@@ -37,26 +37,26 @@ class DashboardsController < ApplicationController
     (start_date..end_date).each do |date|
       date = date.strftime("%F")
       data = spider_task_count.find { |x| x[:name] == date }
-      if data.blank?
-        data = {name: date, value: 0}
-        @spider_task_count << data
-        @spider_success_task << data
-      else
-        @spider_task_count << {name: data[:name], value: data[:task_count]}
-        @spider_success_task << {name: data[:name], value: data[:success_count]}
-      end
+      # if data.blank?
+      #   data = {name: date, value: 0}
+      #   @spider_task_count << data
+      #   @spider_success_task << data
+      # else
+      #   @spider_task_count << {name: data[:name], value: data[:task_count]}
+      #   @spider_success_task << {name: data[:name], value: data[:success_count]}
+      # end
       one_spider_every_day = spider_every_day.find { |x| x[:name] == date }
       if one_spider_every_day.blank?
         @spider_every_day << data
       else
         @spider_every_day << one_spider_every_day
       end
-      one_spider_data_count = spider_data_count.find { |x| x[:name] == date }
-      if one_spider_data_count.blank?
-        @spider_data_count << data
-      else
-        @spider_data_count << one_spider_data_count
-      end
+      # one_spider_data_count = spider_data_count.find { |x| x[:name] == date }
+      # if one_spider_data_count.blank?
+      #   @spider_data_count << data
+      # else
+      #   @spider_data_count << one_spider_data_count
+      # end
     end
   end
 end
