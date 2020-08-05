@@ -37,6 +37,7 @@ class DashboardsController < ApplicationController
     (start_date..end_date).each do |date|
       date = date.strftime("%F")
       data = spider_task_count.find { |x| x[:name] == date }
+      data = {name: date, value: 0} if data.blank?
       # if data.blank?
       #   data = {name: date, value: 0}
       #   @spider_task_count << data
