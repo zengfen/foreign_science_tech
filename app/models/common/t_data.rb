@@ -46,7 +46,7 @@ class TData < CommonBase
     a.data_address = task[:data_address]
     a.website_name = task[:website_name]
     a.data_spidername = task[:data_spidername]
-    a.data_snapshot_path = task[:data_snapshot_path].to_s[0...65535]
+    a.data_snapshot_path = task[:data_snapshot_path]
     a.data_time = Time.now
     a.con_title = @coder.decode(task[:con_title])
     a.con_from = @coder.decode(task[:con_from])
