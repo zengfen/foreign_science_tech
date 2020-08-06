@@ -64,7 +64,7 @@ class TheguardianComScience
 		res = RestClient2.get(link).body
 		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
-		Rails.logger.info title = doc.search("div.gs-container h1").inner_text.strip
+		Rails.logger.info title = doc.search("div.gs-container h1,h1.css-rtdfvn").inner_text.strip
 		Rails.logger.info ts = doc.search("meta[property='article:published_time']")[0]["content"] rescue nil
 		time = Time.parse(ts) rescue nil
 		author = []
