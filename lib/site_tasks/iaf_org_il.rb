@@ -9,7 +9,7 @@ class IafOrgIl
 	def list(body)
     	tasks = []
     	if body.blank?
-      		urls = ["https://www.iaf.org.il/5045-en/IAF.aspx"]
+      		urls = ["https://www.iaf.org.il/9202-en/IAF.aspx"]
      		  urls.each do |url|	
         		body = {url:url}
         			tasks << {mode:"list",body:URI.encode(body.to_json)}
@@ -20,8 +20,8 @@ class IafOrgIl
       		url = body["url"]
           res = RestClient2.get(url).body
           doc = Nokogiri::XML(res, nil, 'utf-8')
-          doc.search("item").each do |item|
-        		link = item.search("link").inner_text rescue nil
+          doc.search("a.cards-container__card-link").each do |item|
+        		link = item[:href]
         		puts "链接"
         		puts link 
         		body = {link:link}
@@ -43,19 +43,27 @@ class IafOrgIl
     	puts title
 
     	#获取正文
-    	params = {doc:doc,content_selector:"div.innerBox strong,div.innerBox p",html_replacer:"strong||||p",content_rid_html_selector:""}
+    	params = {doc:doc,content_selector:"div.container,div.innerBox p",html_replacer:"strong||||p",content_rid_html_selector:""}
     	desp,html_content = ::Htmlarticle.get_html_content(params)
     	puts "正文"
     	puts desp
 
     	# 获取图片
-    	image_urls = doc.search("img.oneImg").map { |x| x["src"].match(/^http/) ? x["src"] : @prefix + x["src"] } rescue nil
+    	# image_urls = doc.search("img.oneImg").map { |x| x["src"].match(/^http/) ? x["src"] : @prefix + x["src"] } rescue nil
+      image_urls = []
+      doc.search("div.innerBox img").each do |img|
+        if img[:src].to_s.include?"http://www.iaf.org.il"
+          image_urls << img[:src].to_s
+        else
+          image_urls << "http://www.iaf.org.il"+img[:src].to_s
+        end
+      end
     	puts "图片链接"
     	puts image_urls
     	images = ::Htmlarticle.download_images(image_urls)
 
     	#获取时间
-    	ts = Time.parse(doc.search("span#ctl00_ContentPlaceHolder1_ucEventLog_publishDate")) rescue nil
+    	ts = Time.parse(doc.search("div.titleText span#ctl00_ContentPlaceHolder1_ucEventLog_publishDate")) rescue nil
     	puts "时间"
     	puts ts
 

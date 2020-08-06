@@ -18,7 +18,7 @@ class TheguardianComScience
 			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
 			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
-			doc.search("a.js-headline-text").each do |one|
+			doc.search("a.js-headline-text,div.fc-item__container a").each do |one|
 				link = one["href"]
 				link = @prefix + link if !link.match(/^http/)
 				if link.include? "/science/"
@@ -64,7 +64,7 @@ class TheguardianComScience
 		res = RestClient2.get(link).body
 		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
-		Rails.logger.info title = doc.search("div.gs-container h1").inner_text.strip
+		Rails.logger.info title = doc.search("div.gs-container h1,h1.css-rtdfvn").inner_text.strip
 		Rails.logger.info ts = doc.search("meta[property='article:published_time']")[0]["content"] rescue nil
 		time = Time.parse(ts) rescue nil
 		author = []
