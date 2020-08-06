@@ -2,32 +2,22 @@ class VenturebeatComAi
 	def initialize
 		@site = "VentureBeat-AI"
 		@prefix = "https://venturebeat.com"
-		# RestClient.proxy = "http://10.119.12.2:1076/"
+		# RestClient.proxy = "http://192.168.116.1:1080/"
 	end
-	def list(body)
+	def list(bod="")
 		tasks = []
-		if body.blank?
-			urls = ["https://venturebeat.com/category/ai/"]
-			urls.each do |url|
-				body = {url:url}
-				tasks << {mode:"list",body:URI.encode(body.to_json)}
+		# puts "---------------#{body}"
+		# res = RestClient2.get("https://venturebeat.com/category/ai/").body
+		res = RestClient::Request.execute(method: :get,url:"https://venturebeat.com/category/ai/",verify_ssl: false,:timeout =>10,:open_timeout =>10)
+		doc = Nokogiri::HTML(res)
+		doc.search("a.article-title-link,h2.article-title a,h2.ArticleListing__title a").each_with_index do |one|
+			link = one["href"]
+			link = @prefix + link if !link.match(/^http/)
+			if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
+				body = {link:link}
+				tasks << {mode:"item",body:URI.encode(body.to_json)}
 			end
-		else
-			# puts "---------------#{body}"
-			body = JSON.parse(URI.decode(body))
-			url = body["url"]
-			res = RestClient2.get(url)
-			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10
-			# )
-			doc = Nokogiri::HTML(res.body)
-			doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
-				link = one["href"]
-				link = @prefix + link if !link.match(/^http/)
-				if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
-				end
-			end
+		
 		end
 		return tasks
 	end
@@ -94,7 +84,7 @@ class VenturebeatComAi
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# puts link = "https://venturebeat.com/2020/06/01/argo-closes-2-6-billion-round-from-vw-at-a-7-25-billion-valuation/"
-		res = RestClient2.get(link).body
+		res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false,:timeout =>10,:open_timeout =>10)
 		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
 		puts title = doc.search("header.article-header h1.article-title").inner_text.strip
