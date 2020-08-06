@@ -41,8 +41,7 @@ class ElectronicdesignCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    link =
-      res = RestClient2.get(link,header = @header).body
+    res = RestClient2.get(link,header = @header).body
     doc = Nokogiri::HTML(res)
 
     json_data = doc.search("script").to_s.match(/dataLayer.push\((.*?)\}\]\}\)/)[1].to_s + "}]}" rescue nil
