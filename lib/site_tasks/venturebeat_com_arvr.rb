@@ -6,27 +6,18 @@ class VenturebeatComArvr
 	end
 	def list(body)
 		tasks = []
-		if body.blank?
-			urls = ["https://venturebeat.com/category/arvr/"]
-			urls.each do |url|
-				body = {url:url}
-				tasks << {mode:"list",body:URI.encode(body.to_json)}
-			end
-		else
-			# puts "---------------#{body}"
-			body = JSON.parse(URI.decode(body))
-			url = body["url"]
-			# res = RestClient.get(url)
-			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false,:timeout =>10,:open_timeout =>10)
-			res = RestClient2.get(url)
-			doc = Nokogiri::HTML(res.body)
-			doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
-				link = one["href"]
-				link = @prefix + link if !link.match(/^http/)
-				if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
-				end
+		body = JSON.parse(URI.decode(body))
+		url = body["url"]
+		# res = RestClient.get(url)
+		res = RestClient::Request.execute(method: :get,url:"https://venturebeat.com/category/arvr/",verify_ssl: false,:timeout =>10,:open_timeout =>10)
+		res = RestClient2.get(url)
+		doc = Nokogiri::HTML(res.body)
+		doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
+			link = one["href"]
+			link = @prefix + link if !link.match(/^http/)
+			if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
+				body = {link:link}
+				tasks << {mode:"item",body:URI.encode(body.to_json)}
 			end
 		end
 		return tasks
@@ -94,7 +85,7 @@ class VenturebeatComArvr
 		puts link = body["link"]
 		# puts link = "https://venturebeat.com/2020/06/01/argo-closes-2-6-billion-round-from-vw-at-a-7-25-billion-valuation/"
 		res = RestClient2.get(link).body
-		# res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
+		res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
 		puts title = doc.search("header.article-header h1.article-title").inner_text.strip
 		puts ts = doc.search("meta[property='article:published_time']")[0]["content"].to_s
