@@ -18,7 +18,7 @@ class TheguardianComScience
 			# res = RestClient::Request.execute(method: :get,url:url,verify_ssl: false)
 			res = RestClient2.get(url)
 			doc = Nokogiri::HTML(res.body)
-			doc.search("a.js-headline-text,div.fc-item__container").each do |one|
+			doc.search("a.js-headline-text,div.fc-item__container a").each do |one|
 				link = one["href"]
 				link = @prefix + link if !link.match(/^http/)
 				if link.include? "/science/"
