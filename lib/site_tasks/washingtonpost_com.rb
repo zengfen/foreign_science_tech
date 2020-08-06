@@ -22,7 +22,7 @@ class WashingtonpostCom
 			url = body["url"]
 			res = RestClient2.get(url).body
 			doc = Nokogiri::HTML(res)
-			doc.search("div.story-list h2 a").each do |one|
+			doc.search("h2 a").each do |one|
 				puts link = one["href"]
 				puts link = @prefix + link if !link.match(/^http/)
 				if link.include? "washingtonpost"
