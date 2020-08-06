@@ -24,27 +24,24 @@ class GobMx
 			doc = Nokogiri::HTML(res)
 			a = doc.search("article a")[0][:href] rescue ""
 			if a.to_s.match("&page")
-				url = "#{url}&idiom=es&page=2"
-				res = RestClient2.get(url).body
-				doc = Nokogiri::HTML(res)
+				doc.to_s.scan(/\"small\-link\\\"\ href\=\\\"(.+?)\"/).each do |one|
+					link = one
+					puts link = @prefix + link if !link.match(/^http/)
+					if link.include? "gob"
+						body = {link:link}
+						tasks << {mode:"item",body:URI.encode(body.to_json)}
+					end
+				end
+			else
 				doc.search("article a.small-link").each do |one|
-				puts link = one["href"]
-				puts link = @prefix + link if !link.match(/^http/)
-				if link.include? "gob"
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
+					puts link = one["href"]
+					puts link = @prefix + link if !link.match(/^http/)
+					if link.include? "gob"
+						body = {link:link}
+						tasks << {mode:"item",body:URI.encode(body.to_json)}
+					end
 				end
 			end
-		else
-			doc.search("article a.small-link").each do |one|
-				puts link = one["href"]
-				puts link = @prefix + link if !link.match(/^http/)
-				if link.include? "gob"
-					body = {link:link}
-					tasks << {mode:"item",body:URI.encode(body.to_json)}
-				end
-			end
-		end
 		end
 		return tasks
 	end
