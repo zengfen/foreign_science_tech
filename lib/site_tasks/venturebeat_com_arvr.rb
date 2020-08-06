@@ -6,9 +6,7 @@ class VenturebeatComArvr
 	end
 	def list(body)
 		tasks = []
-		body = JSON.parse(URI.decode(body))
-		url = body["url"]
-		# res = RestClient.get(url)
+		
 		res = RestClient::Request.execute(method: :get,url:"https://venturebeat.com/category/arvr/",verify_ssl: false,:timeout =>10,:open_timeout =>10)
 		res = RestClient2.get(url)
 		doc = Nokogiri::HTML(res.body)
