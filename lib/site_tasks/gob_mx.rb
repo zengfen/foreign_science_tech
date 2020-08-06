@@ -10,7 +10,7 @@ class GobMx
 	def list(body)
 		tasks = []
 		if body.blank?
-			urls = ["https://www.gob.mx/aem/es/archivo/articulos?filter_id=2179&filter_origin=archive&idiom=es&order=DESC&page=1","https://www.gob.mx/aem/es/archivo/prensa?idiom=es&order=DESC&page=1","https://www.gob.mx/aem/es/archivo/videos?idiom=es&order=DESC&page=1"]
+			urls = ["https://www.gob.mx/aem/es/archivo/articulos?filter_id=2179&filter_origin=archive&idiom=es","https://www.gob.mx/aem/es/archivo/prensa?idiom=es","https://www.gob.mx/aem/es/archivo/videos?idiom=es"]
 			urls.each do |url|
 				puts body = {url:url}
 				# tasks << {mode:"list",body:body}
@@ -22,6 +22,20 @@ class GobMx
 			url = body["url"]
 			res = RestClient2.get(url).body
 			doc = Nokogiri::HTML(res)
+			a = doc.search("article a")[0][:href] rescue ""
+			if a.to_s.match("&page")
+				url = "#{url}&idiom=es&page=2"
+				res = RestClient2.get(url).body
+				doc = Nokogiri::HTML(res)
+				doc.search("article a.small-link").each do |one|
+				puts link = one["href"]
+				puts link = @prefix + link if !link.match(/^http/)
+				if link.include? "gob"
+					body = {link:link}
+					tasks << {mode:"item",body:URI.encode(body.to_json)}
+				end
+			end
+		else
 			doc.search("article a.small-link").each do |one|
 				puts link = one["href"]
 				puts link = @prefix + link if !link.match(/^http/)
@@ -30,6 +44,7 @@ class GobMx
 					tasks << {mode:"item",body:URI.encode(body.to_json)}
 				end
 			end
+		end
 		end
 		return tasks
 	end
