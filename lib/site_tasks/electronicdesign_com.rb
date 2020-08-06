@@ -41,10 +41,15 @@ class ElectronicdesignCom
   def item(body)
     body = JSON.parse(URI.decode(body))
     puts link = body["link"]
-    res = RestClient2.get(link,header = @header).body
+    link =
+      res = RestClient2.get(link,header = @header).body
     doc = Nokogiri::HTML(res)
 
     json_data = doc.search("script").to_s.match(/dataLayer.push\((.*?)\}\]\}\)/)[1].to_s + "}]}" rescue nil
+
+    if json_data.blank?
+      json_data = doc.search("script").to_s.match(/dataLayer.push\((.*?)\]\}\)/)[1].to_s + "]}" rescue nil
+    end
     jdoc = JSON.parse(json_data)
     title = jdoc["content"]["name"]
     ts = Time.parse(jdoc["content"]["published"]).strftime("%Y-%m-%d %H:%M:%S")
@@ -56,7 +61,7 @@ class ElectronicdesignCom
     # ts = Time.parse(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     image_urls = []
-    puts image_urls = doc.search("div.content-page-node")[0].search("span[data-embed-type='image']>img").map{|x| x["data-src"]} 
+    puts image_urls = doc.search("div.content-page-node")[0].search("span[data-embed-type='image']>img").map{|x| x["data-src"]}
     image_urls << doc.search('meta[property="og:image"]')[0]["content"] rescue nil
     image_urls = image_urls.uniq
     images = ::Htmlarticle.download_images(image_urls)
