@@ -2,7 +2,7 @@ class VenturebeatComArvr
 	def initialize
 		@site = "VentureBeat-ARVR"
 		@prefix = "https://venturebeat.com"
-		# RestClient.proxy = "http://10.119.12.2:1076/"
+		# RestClient.proxy = "http://192.168.116.1:1080/"
 	end
 	def list(body)
 		tasks = []
@@ -10,7 +10,7 @@ class VenturebeatComArvr
 		res = RestClient::Request.execute(method: :get,url:"https://venturebeat.com/category/arvr/",verify_ssl: false,:timeout =>10,:open_timeout =>10)
 		# res = RestClient2.get(url)
 		doc = Nokogiri::HTML(res.body)
-		doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
+		doc.search("a.article-title-link,h2.article-title a,h2.ArticleListing__title a").each_with_index do |one|
 			link = one["href"]
 			link = @prefix + link if !link.match(/^http/)
 			if !link.match(/\d{4}\/\d{2}\/\d{2}/).nil?
