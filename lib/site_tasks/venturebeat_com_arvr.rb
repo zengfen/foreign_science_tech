@@ -8,7 +8,7 @@ class VenturebeatComArvr
 		tasks = []
 		
 		res = RestClient::Request.execute(method: :get,url:"https://venturebeat.com/category/arvr/",verify_ssl: false,:timeout =>10,:open_timeout =>10)
-		res = RestClient2.get(url)
+		# res = RestClient2.get(url)
 		doc = Nokogiri::HTML(res.body)
 		doc.search("a.article-title-link,h2.article-title a").each_with_index do |one|
 			link = one["href"]
@@ -82,7 +82,7 @@ class VenturebeatComArvr
 		body = JSON.parse(URI.decode(body))
 		puts link = body["link"]
 		# puts link = "https://venturebeat.com/2020/06/01/argo-closes-2-6-billion-round-from-vw-at-a-7-25-billion-valuation/"
-		res = RestClient2.get(link).body
+		# res = RestClient2.get(link).body
 		res = RestClient::Request.execute(method: :get,url:link,verify_ssl: false).body
 		doc = Nokogiri::HTML(res)
 		puts title = doc.search("header.article-header h1.article-title").inner_text.strip
