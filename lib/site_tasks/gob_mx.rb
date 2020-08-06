@@ -23,7 +23,7 @@ class GobMx
 			res = RestClient2.get(url).body
 			doc = Nokogiri::HTML(res)
 			items = doc.search("article a.small-link").map{|x| x["href"]} rescue []
-			items = doc.search("article a").map{|x| x["href"]}.reject{|x| x.include?("&idiom=es&page=")}.map{|x| x.gsub("\\\"","")} rescue [] if items.blank?
+			items = doc.search("article a").map{|x| x["href"]}.reject{|x| x.include?("&page=")}.map{|x| x.gsub("\\\"","")} rescue [] if items.blank?
 
 			items.each do |link|
 				puts link = @prefix + link if !link.match(/^http/)
