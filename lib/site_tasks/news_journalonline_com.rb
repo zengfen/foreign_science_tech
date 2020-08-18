@@ -46,7 +46,7 @@ class NewsJournalonlineCom
       title = doc.search("h1.gnt_ar_hl").first.inner_text.strip rescue nil
       authors = doc.search("a.gnt_ar_by_a").map{|x| x.inner_text.strip} rescue nil
       images = doc.search("div.gnt_ar_b figure img").map{|x| x["src"].match(/^http/)? x["src"] : @prefix + x["src"] } rescue []
-      images += doc.search("div.gnt_ar_b aside a.gnt_em_ifg_ph").map{|x| x["href"].match(/^http/)? x["href"] : @prefix + x["href"] } rescue []
+      # images += doc.search("div.gnt_ar_b aside a.gnt_em_ifg_ph").map{|x| x["href"].match(/^http/)? x["href"] : @prefix + x["href"] } rescue []
 
       params = {doc:doc,content_selector:"div.gnt_ar_b",html_replacer:"p||||br||||li",content_rid_html_selector:"div[@aria-label='advertisement']||||figure:nth-child(1)"}
       desp,_ = Htmlarticle.get_html_content(params)
