@@ -12,11 +12,11 @@ class NewsJournalonlineCom
     res = RestClient2.get(lk)
     # doc = JSON.parse(res.body)
     # item_links = doc["main"].map { |x| x["link"] }
-    doc = Nokogiri::HTML(res) rescue nil
+    doc = Nokogiri::HTML(res.body) rescue nil
     doc.search("dov.gnt_pr>a,div.gnt_m>a").each do |item|
       link = item["href"]
       next if link.blank?
-      link = @prefix + x["href"] if link.match(/^http/)
+      link = @prefix + link if !link.match(/^http/)
       body = {link:link}
       tasks << {mode:"item",body:URI.encode(body.to_json)}
     end
@@ -26,8 +26,8 @@ class NewsJournalonlineCom
   def item(body)
     task = JSON.parse(URI.decode(body))
     link = task["link"]
-    res = RestClient2.get(link).body rescue nil
-    doc = Nokogiri::HTML(res) rescue nil
+    res = RestClient2.get(link) rescue nil
+    doc = Nokogiri::HTML(res.body) rescue nil
     authors = nil
     return if doc.blank?
     if link.match(/photogallery/)
@@ -43,28 +43,14 @@ class NewsJournalonlineCom
       end
       created_time = Time.parse(desp_json["pubDate"]) rescue nil
     else
-      title = doc.search("h1.headline").first.inner_text.strip rescue nil
-      desp_str = doc.search("script").find { |x| x.to_s.match(/var __gh__coreData/) }.inner_text
-      desp_json = JSON.parse(desp_str.match(/__gh__coreData.content=(.*?)__gh__coreData.content.bylineFormat = /m)[1].strip.gsub(/;$/, "").strip.gsub(/,\r\n\t\],\r\n\t\"rail\":/, "\r\n\t\],\r\n\t\"rail\":")) rescue {}
-      html_content_str = desp_json["body"].join("") rescue nil
+      title = doc.search("h1.gnt_ar_hl").first.inner_text.strip rescue nil
+      authors = doc.search("a.gnt_ar_by_a").map{|x| x.inner_text.strip} rescue nil
+      images = doc.search("div.gnt_ar_b figure img").map{|x| x["src"].match(/^http/)? x["src"] : @prefix + x["src"] } rescue []
+      images += doc.search("div.gnt_ar_b aside a.gnt_em_ifg_ph").map{|x| x["href"].match(/^http/)? x["href"] : @prefix + x["href"] } rescue []
 
-      desp, html_content = '', ''
-      Nokogiri::HTML(html_content_str.to_s).children.each do |item|
-        desp, html_content = get_desp(desp, html_content, item)
-      end
-
-      images = desp_json["relatedContent"]["items"].select { |x| ["mainImage", "images", "gallery"].include?(x["type"]) }.map { |x| x["items"].map { |y| y["link"] } }.flatten rescue nil
-      images.uniq!
-      image_desps = desp_json["relatedContent"]["items"].select { |x| ["mainImage", "images", "gallery"].include?(x["type"]) }.map { |x| x["items"].map { |y| y["caption"] } }.flatten rescue []
-
-      image_desps.each do |image_desp|
-        desp += image_desp + "\n"
-        html_content = html_content.to_s + "<div>" + image_desp + "</div>"
-      end
-      desp = (desp.split("\n") - [""]).join("\n")
-
-      authors = desp_json["byline"].map { |x| x["name"].split(" and") }.flatten rescue nil
-      created_time = Time.parse(desp_json["pubDateFormat"]["yyyy-mm-ddThh:mm:ss"]) rescue nil
+      params = {doc:doc,content_selector:"div.gnt_ar_b",html_replacer:"p||||br||||li",content_rid_html_selector:"div[@aria-label='advertisement']||||figure:nth-child(1)"}
+      desp,_ = Htmlarticle.get_html_content(params)
+      created_time = Time.parse(doc.to_s.match(/"datePublished":"(.*?)"/)[1]) rescue nil
     end
 
     images = ::Htmlarticle.download_images(images.map{|x| URI.encode(x)}) if images.present?
