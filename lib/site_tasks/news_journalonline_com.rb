@@ -30,18 +30,21 @@ class NewsJournalonlineCom
     doc = Nokogiri::HTML(res.body) rescue nil
     authors = nil
     return if doc.blank?
-    if link.match(/photogallery/)
-      desp_str = doc.search("script").find { |x| x.to_s.match(/var __gh__coreData/) }.inner_text
-      desp_json = JSON.parse(desp_str.match(/__gh__coreData.content=(.*?)__gh__coreData.pageData = /m)[1].strip.gsub(/;$/, "")) rescue {}
-      title = desp_json["title"]
-      images = desp_json["items"].map { |x| x["link"]}.flatten.uniq rescue []
-      image_desps = desp_json["items"].map { |x| x["caption"]} rescue []
-      desp,html_content = "",""
-      image_desps.each do |image_desp|
-        desp += image_desp + "\n"
-        html_content = html_content.to_s + "<p>" + image_desp + "</p>"
+    if link.match(/picture-gallery/)
+      title = doc.search("h1.display-2").first.inner_text.strip rescue nil
+      authors = doc.search("a.gnt_ar_by_a").map{|x| x.inner_text.strip} rescue nil
+      images = doc.search("media-gallery-vertical slide").map{|x| x["original"].match(/^http/)? x["original"] : @prefix + x["original"] } rescue []
+      # images += doc.search("div.gnt_ar_b aside a.gnt_em_ifg_ph").map{|x| x["href"].match(/^http/)? x["href"] : @prefix + x["href"] } rescue []
+      desp = []
+      doc.search("media-gallery-vertical slide").each do |item|
+        desp << item["caption"]
+        desp << item["author"]
       end
-      created_time = Time.parse(desp_json["pubDate"]) rescue nil
+      desp = desp.join("\n")
+
+      params = {doc:doc,content_selector:"media-gallery-vertical",html_replacer:"p||||br||||li||||div",content_rid_html_selector:"div[@aria-label='advertisement']||||figure:nth-child(1)"}
+      desp,_ = Htmlarticle.get_html_content(params)
+      created_time = Time.parse(doc.search("story-timestamp")[0]["publish-date"]) rescue nil
     else
       title = doc.search("h1.gnt_ar_hl").first.inner_text.strip rescue nil
       authors = doc.search("a.gnt_ar_by_a").map{|x| x.inner_text.strip} rescue nil
