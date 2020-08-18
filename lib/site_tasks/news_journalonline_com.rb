@@ -41,9 +41,6 @@ class NewsJournalonlineCom
         desp << item["author"]
       end
       desp = desp.join("\n")
-
-      params = {doc:doc,content_selector:"media-gallery-vertical",html_replacer:"p||||br||||li||||div",content_rid_html_selector:"div[@aria-label='advertisement']||||figure:nth-child(1)"}
-      desp,_ = Htmlarticle.get_html_content(params)
       created_time = Time.parse(doc.search("story-timestamp")[0]["publish-date"]) rescue nil
     else
       title = doc.search("h1.gnt_ar_hl").first.inner_text.strip rescue nil
