@@ -1,17 +1,22 @@
 class NewsJournalonlineCom
   def initialize
     @site = "The Daytona Beach News-Journal"
+    @prefix = "https://www.news-journalonline.com"
   end
 
 
   def list(body="")
     tasks = []
-    # https://www.news-journalonline.com/news
-    lk = "https://www.news-journalonline.com/news?template=JSON&mime=json&c=25&start=1&topicEvergreen=false"
+    lk = "https://www.news-journalonline.com/news"
+    # lk = "https://www.news-journalonline.com/news?template=JSON&mime=json&c=25&start=1&topicEvergreen=false"
     res = RestClient2.get(lk)
-    doc = JSON.parse(res.body)
-    item_links = doc["main"].map { |x| x["link"] }
-    item_links.each do |link|
+    # doc = JSON.parse(res.body)
+    # item_links = doc["main"].map { |x| x["link"] }
+    doc = Nokogiri::HTML(res) rescue nil
+    doc.search("dov.gnt_pr>a,div.gnt_m>a").each do |item|
+      link = item["href"]
+      next if link.blank?
+      link = @prefix + x["href"] if link.match(/^http/)
       body = {link:link}
       tasks << {mode:"item",body:URI.encode(body.to_json)}
     end
