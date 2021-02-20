@@ -2,10 +2,10 @@ default: &default
   adapter: mysql2
   username: <%= ENV["MYSQL_USER"] %>
   password: <%= ENV["MYSQL_PASSWORD"] %>
-  encoding: utf8
+  encoding: utf8mb4
   host: <%= ENV["MYSQL_HOST"] %>
   port: <%= ENV["MYSQL_PORT"] %>
-  pool: 20
+  pool: 15
 
 development:
   <<: *default
@@ -25,12 +25,12 @@ common_data:
   adapter: mysql2
   database: <%= ENV["MYSQL_COMMEN_DATABASE"] %>
   username: <%= ENV["MYSQL_COMMEN_USER"] %>
-#  password: <%= ENV["MYSQL_COMMEN_PASSWORD"] %>
-  password:
-  encoding: utf8
+  password: <%= ENV["MYSQL_COMMEN_PASSWORD"] %>
+  encoding: utf8mb4
   host: <%= ENV["MYSQL_COMMEN_HOST"] %>
   port: <%= ENV["MYSQL_COMMEN_PORT"] %>
   timeout: 20
+  pool: 15
 
 
 #default: &default
