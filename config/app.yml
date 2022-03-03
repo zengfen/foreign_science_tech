@@ -1,0 +1,37 @@
+# config/app.yml for rails-settings-cached
+defaults: &defaults
+  mailer_provider: 'smtp'
+  mailer_sender: 'zengfen@china-revival.com'
+  mailer_options:
+    address: 'smtp.exmail.qq.com'
+    port: 465
+    domain: 'exmail.qq.com'
+    user_name: 'zengfen@china-revival.com'
+    password: 'Fenfenlehe312'
+    authentication: 'login'
+    enable_starttls_auto: true
+    ssl: true
+  proxy_api:
+    base_url: "http://47.89.208.184:80"
+#    base_url: "http://127.0.0.1:3000"
+  redis:
+    host: '127.0.0.1'
+    user: root
+    port: 6379
+    db: 3
+    password:
+#    host: <%= ENV["REDIS_HOST"] %>
+#    user: <%= ENV["REDIS_USER"] %>
+#    port: <%= ENV["REDIS_PORT"] %>
+#    db: <%= ENV["REDIS_DB"] %>
+#    password: <%= ENV["REDIS_PASSWORD"] %>
+
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

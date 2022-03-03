@@ -1,0 +1,73 @@
+#default: &default
+#  adapter: mysql2
+#  username: <%= ENV["MYSQL_USER"] %>
+#  password: <%= ENV["MYSQL_PASSWORD"] %>
+#  encoding: utf8mb4
+#  host: <%= ENV["MYSQL_HOST"] %>
+#  port: <%= ENV["MYSQL_PORT"] %>
+#  pool: 15
+#
+#development:
+#  <<: *default
+#  database: <%= ENV["MYSQL_DATABASE"] %>
+#
+#test:
+#  <<: *default
+#  database: <%= ENV["MYSQL_DATABASE"] %>
+#
+#
+#production:
+#  <<: *default
+#  database: <%= ENV["MYSQL_DATABASE"] %>
+#
+#
+#common_data:
+#  adapter: mysql2
+#  database: <%= ENV["MYSQL_COMMEN_DATABASE"] %>
+#  username: <%= ENV["MYSQL_COMMEN_USER"] %>
+#  password: <%= ENV["MYSQL_COMMEN_PASSWORD"] %>
+#  encoding: utf8mb4
+#  host: <%= ENV["MYSQL_COMMEN_HOST"] %>
+#  port: <%= ENV["MYSQL_COMMEN_PORT"] %>
+#  timeout: 20
+#  pool: 15
+
+
+
+#===========================
+
+
+default: &default
+  adapter: mysql2
+  username: root
+  password: fenfenlehe
+  encoding: utf8
+  host: localhost
+  port: 3306
+  pool: 15
+  timeout: 300
+
+development:
+  <<: *default
+  database: foreign_science_tech
+
+test:
+  <<: *default
+  database: foreign_science_tech
+
+
+production:
+  <<: *default
+  database: foreign_science_tech
+
+
+common_data:
+  adapter: mysql2
+  database: data_collection
+  username: root
+  password: fenfenlehe
+  encoding: utf8
+  host: localhost
+  port: 3306
+  timeout: 300
+  pool: 15
