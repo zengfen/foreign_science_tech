@@ -1,2 +1,2 @@
 #! /bin/sh 
-rails s puma -e development
+rails s puma -e development -d
