@@ -13,10 +13,11 @@
 !/tmp/pids/.keep
 !/log/.keep
 !/tmp/.keep
-/config/database.yml
-/config/app.yml
-/config/redis.yml
-/Gemfile.lock
+
+#/config/database.yml
+#/config/app.yml
+#/config/redis.yml
+#/Gemfile.lock
 
 /public/*
 !/public/*.html
@@ -26,7 +27,7 @@
 !/public/robots.txt
 !/public/countrys
 .idea
-db/schema.rb
+#db/schema.rb
 
 /node_modules
 /yarn-error.log
